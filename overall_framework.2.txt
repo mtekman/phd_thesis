@@ -1,0 +1,221 @@
+
+Abstract   ( 1 page )
+========
+
+
+Background:  ( Total: 27 pages )
+===========
+- Molecular Genetics ( 18 pages )
+	- DNA
+		- Polarity
+		- Chromosomes
+		- Genes and Function
+		
+	- Heredity
+		- Meiosis
+			- Meiosis I
+			- Meiosis II
+
+		- Recombination
+
+	- Molecular Maps
+		- Markers
+			- Tandem Repeats
+			- Point Mutations
+			- dbSNP
+
+		- Linkage Maps
+			- Physical Maps
+			- Genetic Maps
+
+		- Modes of Inheritance
+			- Mendel's Laws
+			- Mendel's Laws Revised
+			- Pedigrees
+			- Inheritance Models
+
+		- Haploblocks
+
+
+- Linkage Analysis and Haplotype Generation ( 8 pages )
+
+	- Theory of Linkage Analysis
+		- Likelihood and LODs
+
+	- Linkage Algorithms
+		- Elston-Stewart
+		- Lander-Green
+		- Hidden Markov Models and Haplotype Reconstruction
+			- The Viterbi Algorithm
+
+
+
+Methods:
+===========
+
+- Linkage Pipelines and Processing ( 26 pages )
+	- Input Data
+	- Pre-Runtime Configuration
+		- Folder Conventions
+		- Effective Filesystem Management (perhaps goes to discussion?)
+		- User Confirmation and Setup
+
+	- Runtime Filtering
+		- auto_stage1.sh
+		- auto_stage2.sh
+		- auto_stage3.sh
+
+	- Runtime Linkage
+		- Preliminary LOD Estimation
+		- Simwalk
+		- Genehunter
+		- Allegro
+
+	- Post-Linkage Processing
+
+	- Linkage Pipeline Limiations and Solutions
+		- Parallelization
+		- X-Linkage
+		- Large Pedigrees
+		- Graphical Tools and Post Analysis Software
+		- Linkage Visualization
+		- Haplotype Inspection and Rendering
+			- HaploPainter
+
+	- Program Index
+
+
+- HaploHTML5: A Comprehensive Pedigree and Haplotype Analysis Suite for the Web
+  ( 7 pages currently, estimated at 45 )
+
+	- Application Requirements
+	- Development Frameworkds
+		- Programming Frameworks
+			- C++, Perl, Javascript
+			- (discuss various haplotype reconstruction programs and their languages, practicality)
+			- Data Parallelism
+				- (SIMD, SIMT)
+				- Graphics card Stream Processors
+					- OpenCL, CUDA
+					- shared memory, mutex (ref LitBookSemiphores)
+
+			- WebGL
+				- HTML5, stage
+				- Accelerated Graphics
+				- (ease of use, open source, etc etc)
+				- Graphics Libraries
+					- SVG (good for data, but no HW accel)
+					- (list and compare other frameworks)
+					- KineticJS
+					- No jQuery overhead
+
+		- Hardware
+			- Development machine
+			- Minimum Specifications
+			- Future speedups
+
+
+	- Haploblock Determination
+		- Theory
+			- Problem of ambiguous states
+
+		- Approaches:
+			- Flanking informative Alleles
+			- Neighbouring states (HaploPainter)
+			- Pathfinding
+				- A* best-first
+
+			- Discussion of approaches
+
+		- Implementation:
+			- Neighbouring States
+				- Issues
+
+			- A* Best-first
+				- Effect of number of paths on performance, speedups etc.
+
+		- Optimization:
+			- Pointer cleanup
+
+		- (Output Formats)
+			- Standard LINKAGE pedfile
+			- Haplotype formats of various programs
+
+
+	- X-Linked Inheritance
+		- Theory
+			- Problem of picking alleles in Haplopainter
+
+		- Implementation:
+			- X and Y simplify pattern, input file for Y chromosome
+			- Show correct inheritance set
+
+
+	- Pedigree Rendering
+		- Theory
+			- Graph duplication, mapping (key counter to check for consanguinuity in future?)
+			- Family specific modification (add nodes), Global analysis (compare all affecteds)
+
+	- Implementation:
+		- Matelines, Siblines
+		- Generation Grid, recursion
+		- Consanguinuity
+		- Groups, pointers to haplo data, general CompareHaploAll method
+		- Degrees of Seperation
+
+
+	- Pedigree Creation
+	- Obfuscation Methods
+
+
+
+Results
+(estimated at 20 pages)
+===================================
+
+- Case Studies
+    - Program settings
+    - Data Preperation
+    - Autosomal Recessive
+    - X-Linked Dominant
+
+- Performance
+    - Desktop 32-bit
+    - Desktop 64-bit
+    - Mobile ARM
+
+
+
+
+Discussion:
+(estimated at 20 pages)
+===================================
+
+- Javascript
+  - Integer types, numeric 
+and references, int8array
+
+- Features
+    - Scrolling window approach
+    - Family specific and non-specific analyses
+    - Homology Tools
+    - Fluid Transitions
+
+- Comparison with HaploPainter
+    - Feature-wise
+        - X-linked inheritance
+        - Block splitting artefacts
+
+    - Performance
+        - Perl vs WebGL
+
+
+
+Conclusion:
+(estimated at 7 pages)
+==================================
+
+ - Summary of Thesis
+ - Critical Evaluation
+ - Future Research
+
