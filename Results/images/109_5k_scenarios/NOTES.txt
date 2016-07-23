@@ -1,0 +1,4 @@
+- genotype errors were all the same
+- grr was the same too
+
+AD 21bits
