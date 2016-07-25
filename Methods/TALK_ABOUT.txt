@@ -1,0 +1,5 @@
+
+
+Code bfusc -- mention never roll your own crypto and how method is not that useful.
+
+Mention CSS used for dialogs in methods
