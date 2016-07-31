@@ -1,0 +1,74 @@
+
+
+data = (read.table('data_multicore.table', sep='\t'))
+
+list_of_colors = rainbow(6)
+
+top=500
+
+#png("runtimes_multicore.png", width=1366, height=768, res=120)
+
+
+sigma <- 5        # The standard deviation.
+n <- 25           # The sample size.
+theta0 <- 0       # The value of theta0 in H0.
+pow <- 0.80       # The minimum desired power.
+alpha <- 0.01     # The significance level. Try 0.01, 0.05, 0.10
+beta <- 1 - pow   # The desired maximum Type II error probability.
+z.alpha <- qnorm(1-alpha)  # P( Z > z.alpha ) = alpha
+z.beta <- qnorm(1-beta)    # P( Z > z.beta ) = beta
+
+## Plot The Power Function, gamma(theta), theta >= theta0
+
+### Here is where we use that the Test Statistic
+### hat{theta} is normal. Because of this, the
+### power function gamma(theta) is a piece a normal
+### Cumulative Distribution Function (CDF).
+###
+### If we assume that theta (not theta0) is the true mean of
+### hat{theta}, then
+###
+### gamma(theta)
+### = P( hat{theta} > theta0 + (sigma/sqrt(n))*z.alpha )
+### = P( Z < sqrt(n)*(theta - theta0)/sigma - z.alpha )
+### = Phi( sqrt(n)*(theta - theta0)/sigma - z.alpha ),
+###
+### where Phi(z) = P( Z < z ) is the CDF for the standard
+### normal random variable, Z.
+
+### In R, the function pnorm(x) is the CDF of Z.
+### The R function "curve(...)" will plot an expression
+### of the variable "x" and that is why the formula uses
+### "x" instead of "theta."
+
+plot(data, type="p", col="red", ylim=c(0,top), ylab="", xlab="Chromosome")
+
+### This command plots the power function
+curve(pnorm(sqrt(n)*(x - theta0)/sigma - z.alpha),
+from=theta0,                   # Left endpoint of the domain
+to=theta0+3.7*sigma/sqrt(n),   # Right endopint of the domain
+col="blue",                    # Try different colors
+main="Power Function",         # The Main Title
+xlab=expression(theta),        # Label the horizontal axis
+ylab=expression(gamma(theta)), # Label the vertical axis
+lwd=2,                         # Line width.
+add=NA)                      # TRUE or NA. NA erases old plots.
+
+
+names = c("3-bit","5-bit","7-bit","9-bit","15-bit","18-bit")
+ltyes = c(1,1,1,1,1,1)
+lwdes = c(2,2,2,2,2,2)
+
+#legend(16, 1000000, names,lty=ltyes, lwd=lwdes, col=list_of_colors)
+
+#ylabel <- seq(0, top, by = top/10)
+#xlabel <- seq(1, 23, by = 1)
+#xlabel2 <- seq(1,23, by = 1)
+#xlabel2[23] <- "X"
+
+#axis(1, at = xlabel, labels=xlabel2)
+#axis(2, at = ylabel, las = 1)
+#box()
+
+
+#dev.off()
