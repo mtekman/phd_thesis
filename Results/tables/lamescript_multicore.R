@@ -9,11 +9,11 @@ top=500
 #png("runtimes_multicore.png", width=1366, height=768, res=120)
 
 
-sigma <- 5        # The standard deviation.
-n <- 25           # The sample size.
-theta0 <- 0       # The value of theta0 in H0.
-pow <- 0.80       # The minimum desired power.
-alpha <- 0.01     # The significance level. Try 0.01, 0.05, 0.10
+sigma <- 10        # The standard deviation.
+n <- 120           # The sample size.
+theta0 <- 1.3       # The value of theta0 in H0.
+pow <- 0.1       # The minimum desired power.
+alpha <- 0.001     # The significance level. Try 0.01, 0.05, 0.10
 beta <- 1 - pow   # The desired maximum Type II error probability.
 z.alpha <- qnorm(1-alpha)  # P( Z > z.alpha ) = alpha
 z.beta <- qnorm(1-beta)    # P( Z > z.beta ) = beta
@@ -41,34 +41,32 @@ z.beta <- qnorm(1-beta)    # P( Z > z.beta ) = beta
 ### of the variable "x" and that is why the formula uses
 ### "x" instead of "theta."
 
-plot(data, type="p", col="red", ylim=c(0,top), ylab="", xlab="Chromosome")
+plot(data, type="p", col="red", ylim=c(0,top), ylab="Runtime (seconds)", xlab="Bit Size", axes=FALSE)
 
 ### This command plots the power function
-curve(pnorm(sqrt(n)*(x - theta0)/sigma - z.alpha),
-from=theta0,                   # Left endpoint of the domain
-to=theta0+3.7*sigma/sqrt(n),   # Right endopint of the domain
+curve(400 * pnorm(sqrt(n)*(0.3*x - theta0)/sigma - z.alpha) + 45,
+from=0,                   # Left endpoint of the domain
+to=20,                    # Right endpoint of the domain
 col="blue",                    # Try different colors
 main="Power Function",         # The Main Title
-xlab=expression(theta),        # Label the horizontal axis
-ylab=expression(gamma(theta)), # Label the vertical axis
 lwd=2,                         # Line width.
-add=NA)                      # TRUE or NA. NA erases old plots.
+add=TRUE)                      # TRUE or NA. NA erases old plots.
 
 
 names = c("3-bit","5-bit","7-bit","9-bit","15-bit","18-bit")
 ltyes = c(1,1,1,1,1,1)
 lwdes = c(2,2,2,2,2,2)
 
-#legend(16, 1000000, names,lty=ltyes, lwd=lwdes, col=list_of_colors)
+legend(16, 1000000, names,lty=ltyes, lwd=lwdes, col=list_of_colors)
 
-#ylabel <- seq(0, top, by = top/10)
-#xlabel <- seq(1, 23, by = 1)
-#xlabel2 <- seq(1,23, by = 1)
-#xlabel2[23] <- "X"
+ylabel <- seq(0, top, by = top/10)
+xlabel <- seq(1, 23, by = 1)
+xlabel2 <- seq(1,23, by = 1)
+xlabel2[23] <- "X"
 
-#axis(1, at = xlabel, labels=xlabel2)
-#axis(2, at = ylabel, las = 1)
-#box()
+axis(1, at = xlabel, labels=xlabel2)
+axis(2, at = ylabel, las = 1)
+box()
 
 
 #dev.off()
