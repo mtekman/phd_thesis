@@ -1,0 +1,172 @@
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+% needs to be before gloassary to be able to link
+\usepackage{natbib}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=blue,
+    filecolor=blue,
+    linkcolor=blue,
+    urlcolor=red
+}
+
+\usepackage{amssymb}
+
+\usepackage[nopostdot,acronym,toc,section=chapter,style=indexgroup,sanitize={name=false,description=false,symbol=true}]{glossaries}
+\glossarystyle{list}
+\makeglossaries
+
+%Arrows in tablesTT
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+
+
+%\newcommand*\circled[3]{\tikz[baseline=(char.base)]{
+%            \node[shape=circle,draw=#3,#2] (char) {#1};}}
+
+\newcommand*\circled[3]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw=#3,#2, x radius=0.1mm] (char) {#1};}}
+
+
+\newcommand*\circleSolid[1]{\circled{#1}{solid}{blue}}
+\newcommand*\circleDashed[1]{\circled{#1}{dashed}{blue}}
+
+
+
+\usepackage{footnote}
+%\makesavenoteenv{description}
+
+\usepackage{cancel} % i.e. cancel to zero in math mode
+
+\usepackage[T1]{fontenc} % set input encoding (not needed with XeLaTeX)
+
+%%% PAGE DIMENSIONS
+%\usepackage[top=0.6in, bottom=0.6in, left=0.3in, right=0.3in]{geometry} % to change the page dimensions
+%\geometry{a4paper} % or letterpaper (US) or a5paper or....
+\newcommand{\tab}{\hspace*{2em}}
+
+%%% PACKAGES
+\usepackage[font=small]{caption}
+
+\usepackage{natbib}
+
+\usepackage{graphicx} % support the \includegraphics command and options
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+\usepackage{url}
+\usepackage{enumerate}
+\usepackage{cleveref}  %cites figures intelligently
+\usepackage{float}  %These two ensure that table position follows text by specifying {table}[H]
+\usepackage{wrapfig} % Figure wrapping
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+
+\usepackage{floatpag}
+
+\usepackage{booktabs} % for much better looking tables
+\usepackage{multirow}
+\restylefloat{table}
+
+%CODE LISTINGS
+\usepackage{color}
+\usepackage{listings}
+\usepackage{anyfontsize}
+
+\renewcommand*\ttdefault{cmvtt}
+\newcommand{\mystyle}{\textbf{\normalfont}\fontsize{8}{8}\selectfont}
+\newcommand{\commstyle}{\color[rgb]{0.133,0.545,0.133}\sffamily\fontsize{7}{0}\selectfont}
+
+\lstset{
+	tabsize=1,
+%	language=matlab,
+	basicstyle=\mystyle,
+%     	upquote=true,
+%       	aboveskip={\baselineskip},
+	columns=fixed,
+	showstringspaces=false,
+	extendedchars=true,
+	breaklines=true,
+	prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+	frame=single,
+	showtabs=false,
+	showspaces=false,
+	showstringspaces=false,
+	identifierstyle=\mystyle,
+	keywordstyle=\color[rgb]{0,0,1},
+	commentstyle=\commstyle,
+	stringstyle=\color[rgb]{0.627,0.126,0.941},
+	language=Python
+}
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\usepackage{titlesec}
+{\vspace{-5 pt}}
+
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+%\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+%Disable multicols and enable multicols after section headers
+%\renewenvironment{\subsection}{\end{multicols}}{\start{multicols}{2}}
+	
+%\let\origsubsection\subsection
+%\renewcommand{\subsection}[1]{\end{multicols}\origsubsection{#1}\start{multicols}{2}}
+
+%My specific customizations
+\usepackage{multicol}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+
+%For figures and tables to float properly in multicol environment
+\makeatletter
+\newenvironment{tablehere}
+  {\def\@captype{table}}
+  {}
+
+\newenvironment{figurehere}
+  {\def\@captype{figure}}
+  {}
+\makeatother
+
+
+%linespacing
+\usepackage{setspace}
+\setstretch{1.2}
+
+\newcommand{\glsemph}[1]{\textit{\gls{#1}\glslink{#1}}}
+%\include{glossary}
+
+\author{Mehmet Tekman}
+\title{High-Throughput Linkage Analysis Pipeline}
+
+\begin{document}
+\maketitle 
+
+\pagebreak
+\tableofcontents
+
+\include{./Sections/Background}
+\include{./Sections/Methods_1_Linkage}
+\include{./Sections/Methods_2_Haplo}
+\include{./Sections/Results}
+
+
+\bibliographystyle{plainnat}
+\bibliography{bibliography.bib}
+
+
+\end{document}
