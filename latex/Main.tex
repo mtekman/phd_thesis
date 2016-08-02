@@ -1,6 +1,7 @@
 \documentclass[11pt]{report} % use larger type; default would be 10pt
 
 \input{./Preamble}
+\input{./Commands}
 \input{./Sections/Glossary}
 
 
@@ -15,7 +16,9 @@
 \maketitle 
 
 %\pagebreak
+\begin{spacing}{1}
 \tableofcontents
+\end{spacing}
 
 \include{./Sections/Background}
 \include{./Sections/Methods_1_Linkage}

@@ -9,6 +9,9 @@
     urlcolor=red
 }
 
+\usepackage{setspace} % set line spacing within a \begin\end environment
+
+\usepackage[font=small,labelfont=bf]{caption}
 \usepackage{graphicx} % support the \includegraphics command and options
 \usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
 \usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
@@ -25,6 +28,11 @@
 
 
 %% Graphics
+% Images here
+\newenvironment{figurehere}
+  {\def\@captype{figure}}
+  {}
+\makeatother
 
 %Arrows in tablesTT
 \usepackage{tikz}

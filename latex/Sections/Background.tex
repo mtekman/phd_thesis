@@ -102,6 +102,7 @@ Haldane's model of recombination modelled crossovers as a Poisson\footnote{See A
 
 \begin{equation}
 \theta = \frac{1}{2} (1 –  e^{-2d})
+\label{eqn:morgan}
 \end{equation}
 
 Note that Haldane’s model does not model \gls{crossover interference}, where the act of a crossover prevents the nearby act of another crossover from happening. 
@@ -184,30 +185,209 @@ Gregor Mendel was a botanist monk who outlined the first basic principles of gen
 
 \subsubsection{Law of Segregation}
 
-Every diploid organism has two alleles that segregate during gamete formation to create diploid offspring that bears just one of the alleles from that parent (i.e. each offspring inherits one allele from their parents). As shown in Figure 1, this has the interesting effect such that two homozygous parents with genotypes \textit{ww} and \textit{RR} respectively will \textit{always} have heterozygous offspring with \textit{wR} genotypes, yet these heterozygous offspring can further mate to reconstitute their parent's genotypes.
+\begin{figure}[h]
+	\begin{center}
+	\includegraphics[width=0.5\columnwidth]{../writer/Background/images/Mendelian_inheritance_3_1.png}
+	\caption{Image courtesy of Wikimedia Commons}
+	\label{fig:back1}
+	\end{center}
+\end{figure}
+
+
+Every diploid organism has two alleles that segregate during gamete formation to create diploid offspring that bears just one of the alleles from that parent (i.e. each offspring inherits one allele from their parents). As shown in Figure~\ref{fig:back1}, this has the interesting effect such that two homozygous parents with genotypes \textit{ww} and \textit{RR} respectively will \textit{always} have heterozygous offspring with \textit{wR} genotypes, yet these heterozygous offspring can further mate to reconstitute their parent's genotypes.
+
 
 \subsubsection{Law of Independent Assortment}
+
+Separate alleles allude to separate traits, and their transmission from parent to offspring are independent of one another. A zygote can end up with any combination of parental alleles, and may end up with genotypes that are entirely different from their parents. Offspring that (by chance) have the same genotypes as any of their parents are called \gls{recombinant}, and offspring with differing genotypes from any of their parents are called \gls{non-recombinant}.
+
 \subsubsection{Law of Dominance}
 
+If the presence of a single form of an allele is enough to produce the phenotype, then that heterozygous allele is said to be \gls{dominant} (as is the case with \textit{wR}, where the \textit{R} trait dominates the w trait). Conversely, if a single form of an allele is \underline{not} enough to produce the phenotype, then that heterozygous allele is said to be \gls{recessive} (as is the case with wR, where the w trait is dominated by the R trait and cannot be expressed).
+
+
 \subsection{Mendel's Laws Revised}
+
+Though Mendel was ahead of his time in describing genes as allelic traits, he did not take into account that genes from diploid individuals may have more than two alleles (i.e. \gls{multi-allelic}) due to variations within a population.  He also made the erroneous assumption\footnote{One that likely every geneticist makes when first entering the field!} that one allele maps to one trait, where in reality there are numerous \gls{polygenic traits} produced by the interaction of many alleles. 
+
+In relation to his third law, the concept of \gls{codominance} is missed; if the two potential phenotypes within heterozygous alleles are independent of each other and do not conflict, they can both be expressed. Alternately, if the two potential phenotypes within heterozygous alleles are capable of conflicting or interacting with one another, then the phenotype is usually a 'blend' of the two, and said to be of \gls{incomplete dominance} since neither allele is completely dominant over the other.
+
+
 \subsection{Pedigrees}
 
+\begin{figure}[h]
+	\begin{center}
+	\includegraphics[width=0.5\columnwidth]{../writer/Background/images/simple_pedigree.png}
+	\caption{Typical pedigree, with females represented as circles and males as squares. Affectation is represented by a red colour fill.}
+	\label{fig:back2pedigree}
+	\end{center}
+\end{figure}
+
+Individuals from the same family share a \gls{pedigree}, and each individual is grouped into two classes: \gls{founders} and \gls{non-founders}. 
+Founders are individuals who contribute unique \gls{founder alleles} to the pedigree, and the non-founders are the individuals who inherit them.
+The larger the pedigree the more complex it is to process, with a function that is referred to as the \gls{bit size}.
+
+\begin{equation}
+\label{bitsize}
+B = 2n -f -g
+\end{equation}
+where:
+
+\begin{description}
+\listitem{n}{number of non-founders}
+\listitem{f}{number of founders}
+\listitem{g}{number of ungenotyped founder couples}
+\end{description}
+
+Inbred pedigrees where related individuals have produced offspring are said to be \gls{consanguineous}.
+
+
 \subsection{Inheritance Models}
+
+Inheriting a disease allele is not a straightforward process, since the disease may not be visible in every individual who has the allele. For a given individual it is assumed that the disease status is always known\footnote{At least in binary traits which are present at birth.}.  There is an empirical probability that they will present with the disease phenotype, given a set of disease alleles. This is the derived through what is known as a penetrance function:
+
+\begin{equation}
+P (D | A) = [0,1]
+\end{equation}
+where:
+\begin{description}
+\listitem{D}{Affected or Unaffected}
+\listitem{A}{Genotype belonging to {GG,Gg,gg} where G is the disease allele.}
+\end{description}
+
+
 \subsubsection{Autosomal Dominant}
+
+If the disease segregates through an autosomal dominant model, then the disease trait is dominant and the penetrance function is thus:  \(P(D|GG) = P(D|Gg) = 1\), and \(P(D|gg)=0\)
+Affected individuals are present at all generations, and because the disease trait lies within the autosomes (chromosomes 1 to 22), affectation is non-gender specific and both sexes have equal probability in inheriting the trait.
+
 \subsubsection{Autosomal Recessive}
+
+Autosomal recessive is a more constrained mode, where instead the disease trait is recessive and the penetrance function is limited to: \(P(D|GG)=1\), and \(P(D|Gg) = P(D|gg) = 0\)
+
+Here, affected individuals appear to skip generations since parents carrying a heterozygous genotype will not present the phenotype, but instead be \gls{carriers} of the disease trait that can be reconstituted as a homozygous disease allele in their offspring. In consanguineous pedigrees, the likelihood of this happening is significantly increased due to the multiple pathways the disease allele can take, with each generation having potentially double the chance of inheriting the disease allele after each subsequent consanguineous pairing.
+
 \subsubsection{X-linked Dominant}
+
+The disease trait rests solely on chromosome X.  Due to males having only one X-chromosome and one Y-chromosome, this simplifies the inheritance pattern such that males can only inherit the single Y-chromosome from their father, and females can only inherit the single  X-chromosome from their father – removing much ambiguity. The male's X-chromosome can still be one of the two maternal X-chromosomes, and likewise the female's maternal X-chromosome can be one of the two as well.  X-linked dominant pedigrees can be identified by a distinct lack of father-to-son transmission, since that would imply that the Y-chromosome is the disease allele. Due to dominant nature of the trait, the penetrance function is identical to that of autosomal dominant.
+
 \subsubsection{X-linked Recessive}
+
+In X-linked recessive diseases, both of the inherited X-chromosomes must contain the disease allele (i.e. be homozygous), with the exception of males who need only copy to express the phenotype since the X-chromosome inherently dominates the Y-chromosome.  Males cannot be carriers in X-linked pedigrees making them \gls{autozygous}.
+Typically the pedigree exhibits more affected males than females, with skipped generations where the mother is only a carrier. 
+The penetrance function is gender-specific, taking on the same rules for females as autosomal recessive, but differing for males:
+
+\begin{description}
+\item[If Female:]{\(P(D|GG)=1, P(D|Gg) = P(D|gg)=0\)}
+\item[If Male:]{\(P(D|GG)=N/A,   P(D|Gg)=1, and P(D|gg)=0\)}
+\end{description}
+
 
 \section{Haploblocks}
 
+An individual's genotype is usually acquired in an \gls{unphased} manner, meaning that that genotyping process acquired the alleles present at a locus, but the ordering was unimportant so that the maternal and paternal allele are ambiguous.
+
+A genotype with a known path of inheritance for its alleles is said to be \gls{phased}, and a phased genotype is also known as a \gls{haplotype}.  A haplotype typically spans a single locus similar to an allele, but a haplotype is encapsulated and a restricted to a larger group of haplotypes known as a \gls{haploblock}, which represent the intervals between two recombination events\footnote{Including the recombination that occurs at the start/end of each chromosome}.
+
+These blocks represent the splitting of founder alleles which occurs at every meiosis, effectively halving the founder data within the allele at each generation. 
+
+A founder allele stretching across \textit{m} markers and undergoing \textit{n} meiosis, will have an expected length of \(\frac{m}{n}\) markers over \textit{n} generations.
+
+In Figure~\ref{fig:back_inheritance} the offspring is recombinant at that particular locus due to a crossover in the maternal alleles. Note that at the level of a single marker it is not clear which way a genotype is phased, e.g. the sixth marker where the maternal alleles (2,2) and the paternal alleles (2,2) leave much ambiguity to which particular chromosome the offspring inherited their alleles (2,2).
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.5\columnwidth]{../writer/Background/images/simple_inheritance.png}
+	\caption2{Four complete haploblocks from two founders inherited by their non-founder offspring. The sixth marker is highlighted due to ambiguous genotypes.}
+	\label{fig:back_inheritance}
+	\end{center}
+\end{figure}
+
+
+Resolving ambiguous genotypes to specific chromosomes requires providing the genotype with some neighbouring context such that it knows whether it is in a recombination hotspot, or whether it lies within an existing block.  
+
+It is the aim of this thesis to derive methods to explore such problems,  but in order to do so we must first understand how haplotypes are generated through linkage analysis.
+
 \section{Linkage Analysis and Haplotype Generation}
+
+In this chapter we look at the underlying principles that power linkage analysis; the general methodology, as well as the algorithms best suited for generating haplotypes from incomplete genotypes.
 
 \subsection{Theory of Linkage Analysis}
 
+In the previous chapter we discussed how genotypes are mapped to specific markers, and that a disease locus is usually only flanked by the nearest adjacent markers which may or may not be within the same haploblock, and thus may or may not be co-segragated by the disease allele during meiosis.
+If a given marker co-segregates with a disease allele over multiple recombination events, then it is safe to assume that they are in close proximity of one another. Such bound loci are said to be \textit{in linkage} with one another, and when one undergoes a meiosis; so does the other.
+
+In linkage analysis, this translates as pinpointing the multiple subsets of markers with the fewest number of crossovers between themselves, such that the the number of meioses in the cases is minimized and the controls are maximized (i.e. which markers/traits are in linkage with one another in affected individuals, but are not in linkage within unaffected individuals).
+Classical linkage analysis involves doing this by direct means; counting each crossover event for each marker against every other marker, but the complexity of such a task scales exponentially for large sets and is almost highly impractical.
+
+Modern linkage analysis determines this using statistical means; through the filter of the correct genetic model to establish a correct penetrance function,  the assumption of linkage equilibrium between markers to simplify computation by discounting crossover interference, the lack of monozygotic twins\footnote{Identical genotypes in twins bias the analysis since meioses may not be independent.}, and the known recombination frequencies between markers as well as their ordering. These are then used to establish a likelihood score that rates each marker upon the aforementioned principles such that disease loci can be found by scanning for the highest likelihood.
+
 \subsubsection{Likelihood and LODs}
 
+This likelihood is known as a logarithm of the odds (\gls{LOD}) score, and is a ratio  that compares the likelihood of any two traits being in linkage compared to them not being in linkage. 
+
+\begin{equation}
+LOD(\theta) = log_{10} (\frac{L(\hat{\theta})}{L(\theta = 0.5)}
+\end{equation}
+
+where:
+\begin{itemize}
+\listitem{\bf \( \theta = \frac{1}{2}(1 - e^{-2d}) \)}{
+The Haldane map function that estimates the recombination frequency given the genetic distance in centiMorgan (as defined in equation~ \ref{eqn:morgan} on page~\pageref{eqn:morgan}).
+}
+\listitem{\bf \( \theta = 0.5 \)}{
+The probability that  two traits segregate independently (are essentially unlinked).
+}
+\listitem{\bf \( L(\theta)\)}{The joint likelihood}
+\end{itemize}
+
+The joint likelihood is main core of what the linkage analysis tries to solve, iterating over all individuals and markers, as defined by:
+
+
+\begin{equation}
+L = \sum_{g1} \dots \sum_{gn} \prod P(Y_i|g_i) \prod_{k,l,m} P(g_m|g_k,g_l)
+\end{equation}
+
+\pagebreak
+where:
+\begin{spacing}{1}
+\begin{description}
+\listitem{\(g_n=\)}{genotypes of individual \textit{n}}
+\listitem{\(Y_n=\)}{phenotype of individual \textit{n}}
+\listitem{\(P(Y_i|g_i)=\)}{penetrance probability applied over all individuals. This is the probability of a phenotype given a genotype.}
+\listitem{\(P(g_j)=\)}{founder probability applied to founders only. Modelled under Hardy-Weinberg and assumes linkage equilibrium.}
+\listitem{\(P(g_m|g_k,g_l)=\)}{transmission probability. Probability of non-founder genotypes (m) given parental genotypes (k and l).}
+\end{description}
+\end{spacing}
+
+%%% TURN THIS INTO AN NEW COMMAND ENVIRONMENT THAT DOESN'T MESS UP WITH LINE SPACING
+
+There is a narrow window of relevance when dealing with LOD scores, typically any score less than -2 suggests complete lack of linkage and though may seem uninformative, is actually a good indicator of where a disease locus \textit{cannot} be.
+
+A LOD score greater than or equal to 3 is considered to be of great significance for pinpointing a disease locus, but the reasoning for this is mostly historical.
+
 \subsection{Linkage Algorithms}
+
+Though the methodology between algorithms varies somewhat, all work under the same principle of determining a LOD score and generating missing genotypes, though some are more engineered towards resolving phase than others.
+
 \subsubsection{Elston-Stewart}
+
+The very first linkage algorithm first computed upon paper, by performing a task known as peeling upon a \gls{pedigree}.
+
+A connected graph of individuals (as nodes) and relationships (as edges) would be recursively peeled in a depth-first manner, by collapsing LOD score calculations onto members of a pedigree known as \textit{pivots}, who are key to the pedigree such that their removal would create two detached pedigrees. 
+
+At each stage, the algorithm considers a simple nuclear family (mother, father, offspring(s)) and performs a LOD score computation of the offspring inheriting their founder parents genotypes, then flattening the score up a generation into that founder parent.
+
+This eventually resorts in a single node that contains the total LOD summation of the entire pedigree for a given marker.
+
+Over time, programs such as \textbf{Linkage} allowed multiple markers to be considered at the same time and gave rise to \gls{multi-point parametric} linkage analysis that became the standard for subsequent linkage packages.
+
+The algorithm scales linearly with the number of individuals in a pedigree, but exponentially with the number of markers for a multi-point analysis; a severe limiting step in an age where the density of markers were on the increase.
+
+Generating fast and reasonable accurate LOD results became the main aim for a lot of programs, each performing a different approximation upon the LOD score calculations to generate a faster analysis. The program \textbf{Vitesse} was boasted as being able to analyse 8 markers jointly using "fuzzy inheritance".
+
+Since haplotype reconstruction requires precise determination of a missing genotype, the Elston-Stewart algorithm was lacking in this regard.
+
 \subsubsection{Lander-Green}
 \subsubsection{Hidden Markov Models and Haplotype Reconstruction}
 \subsubsection{Viterbi Algorithm}
