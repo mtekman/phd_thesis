@@ -1,0 +1,126 @@
+%%% Glossary
+\usepackage{xifthen}
+\glossarystyle{list}
+
+%% Script to grab italics from xhtml word file
+%grep -oP '(<span class="T6">)[^<]*(</span>)' Background.v1.html | awk -F ">" '{print "___"$2}' | awk -F '<' '{print $1"---"}' | sed 's/___/\\addgloss{/' | sed 's/---/}{FILL}/'
+
+\newcommand{\addgloss}[2]
+{
+        \newglossaryentry{#1}{
+                name={#1},
+                description={#2}
+        }
+}
+
+
+\include{glossary}
+%%% Background
+% DNA
+\addgloss{nucleotides}{FILL}
+\addgloss{genome}{FILL}
+\addgloss{chromosomes}{FILL}
+\addgloss{nucleobase}{FILL}
+\addgloss{base pairs}{FILL}
+\addgloss{double helix}{FILL}
+%-    Polarity
+\addgloss{forward}{FILL}
+\addgloss{sense}{FILL}
+\addgloss{reverse}{FILL}
+\addgloss{antisense}{FILL}
+%-    Chromosomes
+\addgloss{chromatin}{FILL}
+\addgloss{haploid}{FILL}
+\addgloss{pairs}{FILL}
+\addgloss{diploid}{FILL}
+\addgloss{centromere}{FILL}
+\addgloss{telomeres}{FILL}
+\addgloss{homologs}{FILL}
+\addgloss{autosomal}{FILL}
+\addgloss{allosomal}{FILL}
+\addgloss{alleles}{FILL}
+%-     Genes and Function
+\addgloss{phenotype}{FILL}
+\addgloss{coding}{FILL}
+\addgloss{exons}{FILL}
+\addgloss{codons}{FILL}
+\addgloss{RNA polymerase}{FILL}
+\addgloss{ribosome}{FILL}
+\addgloss{open reading frame}{FILL}
+\addgloss{intergenic}{FILL}
+\addgloss{translated}{FILL}
+\addgloss{start codon}{FILL}
+\addgloss{stop codon}{FILL}
+\addgloss{mRNA}{FILL}
+\addgloss{uracil}{FILL}
+\addgloss{splicing}{FILL}
+\addgloss{transcription}{FILL}
+\addgloss{amino-acid}{FILL}
+\addgloss{meiosis}{FILL}
+\addgloss{UTR}{FILL}
+% Heredity
+\addgloss{zygote}{FILL}
+\addgloss{bivalent}{FILL}
+\addgloss{meiotic spindle}{FILL}
+\addgloss{metaphase plate}{FILL}
+%-     Recombination
+\addgloss{chiasmata}{FILL}
+\addgloss{crossover}{FILL}
+\addgloss{recombination frequency}{FILL}
+\addgloss{linkage disequilibrium}{FILL}
+\addgloss{Morgan}{FILL}
+\addgloss{crossover interference}{FILL}
+% Molecular Maps
+\addgloss{markers}{FILL}
+\addgloss{polymorphic}{FILL}
+\addgloss{biallelic}{FILL}
+\addgloss{co-dominance}{FILL}
+\addgloss{Hardy-Weinberg Equilibrium}{FILL}
+%-       Markers
+\addgloss{minisatellite}{FILL}
+\addgloss{VNTR}{FILL}
+\addgloss{microsatellite}{FILL}
+\addgloss{STR}{See microsatellite}
+\addgloss{SNP}{FILL}
+% Modes of Inheritance
+\addgloss{homozygous}{FILL}
+\addgloss{heterozygous}{FILL}
+%-   Mendel's Lawss
+\addgloss{recombinant}{FILL}
+\addgloss{non-recombinant}{FILL}
+\addgloss{dominant}{FILL}
+\addgloss{recessive}{FILL}
+%-  Mendel's Laws Revised
+\addgloss{multi-allelic}{FILL}
+\addgloss{polygenic traits}{FILL}
+\addgloss{codominance}{FILL}
+\addgloss{HWE}{FILL}
+\addgloss{incomplete dominance}{FILL}
+\addgloss{pedigree}{FILL}
+\addgloss{founders}{FILL}
+\addgloss{non-founders}{FILL}
+\addgloss{founder alleles}{FILL}
+\addgloss{bit size}{FILL}
+\addgloss{consanguineous}{FILL}
+\addgloss{penetrance function}{FILL}
+\addgloss{carriers}{FILL}
+\addgloss{autozygous}{FILL}
+% Haploblocks
+\addgloss{unphased}{FILL}
+\addgloss{phased}{FILL}
+\addgloss{haplotype}{FILL}
+\addgloss{haploblock}{FILL}
+%Linkage Analysis and Haplotype Generation
+\addgloss{co-segregate}{FILL}
+\addgloss{LOD}{FILL}
+\addgloss{peeling}{FILL}
+\addgloss{multi-point parametric}{FILL}
+\addgloss{inheritance vector}{FILL}
+\addgloss{forward probabilities}{FILL}
+\addgloss{backward probabilities}{FILL}
+
+
+
+
+%% END
+\makeglossaries
