@@ -204,7 +204,7 @@ However the closed-source nature of Flash\footnote{Created by Macromedia and lat
 
 This created a noticeable gap in trusted content, and the need for a new specification that could provide media support without the need for insecure/proprietary plugins prompted the conception of the HTML5 schema that all modern browsers strive to follow.
 
-Javascript previously was just a language to manage the various background tasks in webpages, but the arrival of the HTML5 schema as well as developments in \gls{comp:ECMAScript} have made the language more graphics-centric, and multiple visual libraries exist to cater for the various 3D and 2D contexts that the new canvas element can cater for. 
+Javascript previously was just a language to manage the various background tasks in webpages, but the arrival of the HTML5 schema as well as developments in \gls{comp:ECMAScript6} have made the language more graphics-centric, and multiple visual libraries exist to cater for the various 3D and 2D contexts that the new canvas element can cater for. 
 
 
 \subsection{Javascript Overview}\label{ref:haplo:javaover}
@@ -215,7 +215,7 @@ Javascript in the context of general web page management makes use of the Docume
 
 Javascript follows this Object model to an almost religious extent, by treating all variables as Objects that can be extended by methods. Primitives do exist, but they are interchangeable depending on context. Indeed, a long running joke amongst developers is how the '=' operator takes on multiple meanings depending on context\footnote{
 
-e.g.1.		a = [] ? 1 : 2, is a standard terniary operator which in most languages would ask, "is array true ? If so return value 1, otherwise return value 2".\\
+e.g.1.		a = [] ? 1 : 2, is a standard \gls{comp:terniary} operator which in most languages would ask, "is array true ? If so return value 1, otherwise return value 2".\\
 e.g.2.		a = [] == true ? 1: 2,  is the same statement this time directly asking the question of whether the array is true, however Javascript is now forced to treat the array as a primitive in order to perform the comparison, but converts the array into a string in order for the statement to make sense, essentially evaluating to ' "" == true ' which is false.
 }
 
@@ -233,43 +233,695 @@ With the ECMAScript6 specification came class and inheritance models, which alre
 
 
 \section{Javascript and Hardware-Accelerated Graphics}
+
+The graphical contexts now supplied by the HTML5 schema provided a canvas for 3D or 2D graphics to be drawn into by either software or hardware.
+
+With the need for graphics on the web coming into fruition, a new initiative was developed to provide Javascript bindings to the OpenGL API, aptly named \gls{comp:WebGL}, which provides syntactic-sugar to the low-level graphics API specification OpenGL.
+
+All graphics card vendors cater to both \gls{comp:OpenGL} and \gls{comp:DirectX} API standards, but it is only the former which has open-source implementations (\gls{comp:MESA}) and generally better cross-platform support. 
+
+The canvas element not only allows for graphics via the 2D and 3D WebGL API, but also has accelerated 2D graphics of its own. In somewhat of a misnomer, canvas-accelerated graphics are commonly generalised under the WebGL banner, despite using very different APIs to render graphics. However for the purpose of conciseness we will also adopt this convention, and silently note that there are three contexts that the canvas element supports: 3D and 2D (WebGL API, hardware-accelerated), and another 2D (Canvas API, hardware or software accelerated).
+
+
 \subsection{WebGL Frameworks}
+
+Various intermediate Javascript libraries provide layers of abstraction to separate web developers from the convoluted hardware-specific syntax that usually only game programmers for enterprise-level games have to deal with.
+
+There is a multitude of these fast-growing graphical frameworks, each divided into a 3D or 2D context. 
+
+3D frameworks are built upon the \gls{comp:Three.js} library which provides direct C-like almost 1:1 mappings of various OpenGL calls. The library by itself is primarily used by graphics card aficionados with prior experience in the \gls{comp:GPU} programming, but is of no practical use to developers diving into the field for the first time. 
+
+A more commonly used syntactically pleasant framework that is built upon \textit{Three.js} is \textit{Babylon.js}, which provides basic functionality without the complex calls related to exhibiting finer control over a 3D scene.
+
+At the early stages of development for our applications, a 3D framework was considered  with the intention of representing haplotypes via a zoomable interface which would focus individuals under inspection into the foreground, and move the remainder into a background using 3D transitions; but this is would require a “2.5D” library at best, since the same functionality could be performed via a simple layering structure. Using a 3D framework would only increase the system requirements for the application without providing that much advantage in usage.
+
+The application was programmed with transitions and other graphical methods in mind (e.g. creating shapes, text, colours), but these would be implemented via an interface library so that the underlying library could be swappable if required\footnote{e.g. To create a red square, the function "drawSquare(10, red)" from my interface library would suffice, without having to worry about the underlying graphics framework used. If direct Canvas was used, the function would bind to "Canvas.drawRect(\{width:10, height:10, fill: 'red'\})". If another framework was used, it may bind to "Other.drawSquare(10,red)"}. This is useful if the framework loses functionality in future browsers, and another one can be quickly implemented without needing a fine rewrite of the full code, since all changes required would be contained in a single interface.
+
+The remainder of this section will focus on the 2D frameworks considered to aid in this process.
+
+
 \subsubsection{Canvas (pure)}
+
+This is essentially the raw Canvas without supporting frameworks whatsoever.  
+
+At code conception, graphics were drawn straight onto the canvas context itself. Drawing functions all follow the same schema of grabbing a context, initialising a 'path' (a group that contains points), and then manipulating that path via primitive Canvas API calls such as 'rect' (rectangle), 'arc' (arcs and circles), and 'lineTo'/'moveTo' for more complex shapes such as diamonds and zigzags. 
+
+\begingroup
+\begin{spacing}{1}
+\begin{lstlisting}[label=code:canvasapi]
+function drawDiamond([c_x,c_y], color, nodeSize)
+{
+    ctx.beginPath();
+
+    ctx.moveTo(c_x - nodeSize, c_y); 
+    ctx.lineTo(c_x, c_y - nodeSize);  ctx.lineTo(c_x + nodeSize, c_y); 
+    ctx.lineTo(c_x, c_y + nodeSize);  ctx.lineTo(c_x - nodeSize, c_y);
+    
+    ctx.fillStyle = color; 
+    ctx.fill(); ctx.stroke();
+    ctx.closePath();
+}
+\end{lstlisting}
+\vspace{-10pt}
+\captionof{lstlisting}{Example Canvas API call for drawing a diamond}
+\end{spacing}
+\endgroup
+
+It should be noted that a shape is not returned after a function call for later manipulation or property editing, but is drawn directly to the screen and would need to be repeat 'clear()' and 'draw()' calls to implement any changes.
+
+This grew cumbersome over time and the need for more useful features such as layering, grouping, shape management, and efficient screen redraws became more apparent. 
+
 \subsubsection{PIXI}
+
+PIXI can render graphics via both the Canvas and WebGL(2D) APIs, but it is extremely tailored to delivering fast graphics and is more suitable in a game development environment, likely paired with a physics engine. 
+
+Under such a model, the physics engine would pre-compute the locations of all the shapes and objects within a simulation, and the PIXI renderer would then draw the final positions to screen. 
+
+It does not do any grouping or layering  by default, simply renders graphics under a specific 2D context. 
+
+It is mentioned here since this is the first framework that was attempted after direct Canvas rendering in the hopes that it would simplify the drawing process at least. This it did, but the duplicity required in shape management became hard to manage and it was quickly abandoned.
+
+
 \subsubsection{jCanvas}
+
+This library provides layers, animations, and also makes use of Javascript's asynchronous callback structure through the extension of \gls{comp:event listeners}, where functions are bound to specific events such as mouse clicks or keyboard presses, or even more complex events such as object collision detection.
+
+It provides its own complete shape library for drawing nice primitive shapes such as rectangles, circles, lines, and custom shapes.
+
+
+\begingroup
+\begin{spacing}{1}
+\begin{lstlisting}[label=code:jCanvasapi]
+function drawDiamond([c_x,c_y], color, size){
+	Canvas.drawRect({
+		fillStyle:  color,
+		x: c_x,	y: c_y,
+		width: size,
+		height: size,
+		rotation: 45
+	});
+}
+\end{lstlisting}
+\vspace{-10pt}
+\captionof{lstlisting}{jCanvas function to draw a diagonal by simply rotating a square.}
+\end{spacing}
+\endgroup
+
+This greatly simplifies in the rendering of shapes, but it should once again be noted that the graphics are drawn directly to screen, so the entire scene must be composed first through external shape management before being drawn to screen in order to reduce the number of redraws.
+
+jCanvas does not use WebGL, so it can only draw using the Canvas API and hardware-acceleration depends upon the support of the platform.
+
+Another drawback is the dependency of this framework of jQuery; a large library used for a manner of other web related tasks such as simplifying common tasks such as transitioning DOM elements, table management, and form input.
+
+jQuery has been in wide circulation since 2007 and has been a polarizing source of contention between web developers: for some, jQuery is a do-everything library that greatly simplifies web development and empowers the developer to make extremely rich-looking interactive web pages; for others, it is an extremely bloated resource-heavy library that fundamentally changes the default Javascript syntax and prevents developers from implementing their own methods.
+
+Efficient resource-usage should not be a concern of a developer in a modern age, but jQuery is a rapidly growing library  and lot of utilities it sports are of no relevance in a canvas context. This likely suggests that the jCanvas developer(s) preferred the jQuery syntax over pure Javascript and were willing to take on the risk of any potential slowdowns in order achieve it.
+
+
 \subsubsection{KineticJS}
 
+KineticJS follows the same easy syntax as jCanvas, but with the addition of a core interaction shape model. Shapes can now be created first, modified, added to layers, and assigned other custom properties before being rendered onto the screen. This greatly simplifies the development process, since changes can be made to  the active scene and rendered/updated at the developers will. 
+
+\begingroup
+\begin{spacing}{1}
+\begin{lstlisting}[label=code:kineticjs]
+function drawDiamond([c_x,c_y], color, size){
+	return new Kinetic.Rect({
+		fillStyle:  color,
+		x: c_x,	y: c_y,
+		width: size,
+		height: size,
+		rotation: 45
+	});
+}
+\end{lstlisting}
+\vspace{-10pt}
+\captionof{lstlisting}{KineticJS function to draw a diagonal (a rotated square) and returns an object.}
+\end{spacing}
+\endgroup
+
+KineticJS makes use of layers and groups. Groups are shapes that move together when one of them is transformed in terms of position, rotation, or scale. 
+
+Layers are interestingly separate canvas elements altogether: that is, elements in two different layers are animated separately onto separate canvases, and then overlayed upon one another to create the illusion of layering.
+This may seem needlessly contrived, but it enables the developer to manage their elements efficiently by restricting more repeatedly updated shapes into a more 'active' layer, so that a full scene redraw is not being called for the otherwise more static elements which would exist on another layer.
+
+There is a limit to this speedup, and any performance gains begin to falter if too many layers are used, with a good balanced number being two active layers and one static reserve.
+
+The framework comes with its own transition library, custom event listeners and handlers. It does not rely on any other framework, and can render graphics using both canvas and WebGL (2D) contexts.
+
+In terms of optimization, the library has stopped being actively developed and has remained stable since 2014\footnote{<XXXREF> \url{https://github.com/ericdrowell/KineticJS}}, meaning the API will not change during application development. Documentation is clear, and ample examples are provided, as well as a strong community and fanbase to offer insight and advice.
+
+KineticJS seems to provide the relevant WebGL canvas extensions required to create a web application without over breaching the application requirements and retaining an optimized minimality in its features, and it was for this reason why it was used as the main underlying framework in the thesis.
+
 \section{Application Development}
+
+The application was developed at first using small terminal text editors such as \gls{prog:nano} and \gls{prog:vi}, but as the need for multiple buffers to be open at the same time became apparent, \gls{prog:emacs} was adopted. Emacs is a terminal text editor, but has modules that allow for word \gls{comp:autocompletion}, \gls{comp:compilation}, command testing, and many more via the (M)EPLA\footnote{(Milkypostman's) Emacs Lisp Package Archive, a large collection of script extensions for Emacs \url{https://github.com/melpa/melpa}} repository.
+
+In later stages of development the graphical \gls{prog:SublimeText} editor was used, providing the standard IDE features such as split views, multiple renaming, function usage, and code syntax highlighting (with support for the \gls{comp:ECMAScript6} schema).
+
+The application process was split primarily into two main groups of focus: the user interface, and the theoretical backbone. A great deal of work was performed in user interface section for rendering pedigrees, but these will be discussed later. We will first explore the theoretical core of the application that tackles the two main issues of this thesis: Haploblock Resolution, and X-Linked Inheritance. 
+
+
 \subsection{Haploblock Resolution}
+
+Haploblock resolution is the method of phasing a set of genotypes from related individuals to generate haplotypes, which are then used to determine points of recombination between parent-offspring trios under the heuristic of a genetic model and a likelihood over a locus.
+
+Table~\ref{table:haplo:trioalleles} shows the four main trio cases that cater for the combination of different parental alleles that are presented, as well as the possible child alleles from such variations.
+
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{ *8c } \toprule
+\emph{Trio Genotype} & \emph{Parental} & \multicolumn{2}{c}{\emph{Child Alleles}} & \multicolumn{4}{c}{\emph{Possible Allele Desc.}} \\
+\emph{Cases} & \emph{Alleles} & \emph{Possible} & \emph{Illegal} & \emph{R.} & \emph{A.} & \emph{PS} & \emph{Type} \\
+\midrule
+Homozygous  & AA | AA & AA & AB or BB & Y & Y & N & O \\
+(identical) & BB | BB & BB & AB or AA & N & Y & N & O \\
+\hline
+Homozygous      &         & AA &    & N & N & Y & C\\
+(Non identical) & AA | BB & BB & -  & N & N & Y & C\\
+                &         & AB &    & Y & Y & Y & B\\
+\hline
+                &         & AA &    & Y & N & Y & C\\
+Heterozygous    & AB | AB & BB & -  & Y & N & Y & C\\
+                &         & AB &    & N & Y & N & O\\
+\hline
+Homozygous and  & AA | AB & AA & BB & Y & Y & Y & B\\
+Heterozygous    &         & AB &    & N & Y & Y & B\\
+                & BB | AB & BB & AA & Y & Y & Y & B\\
+                &         & AB &    & N & Y & Y & B\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Trio Allele Cases showing applicable cases on separate lines, with possible and impossible child alleles, and parental alleles separated by a vertical pipe. A, R, and P denote whether the possible child alleles are Ambiguous, Recombinant, and Parental-Specificity.}\label{table:haplo:trioalleles}
+\end{table}
+
+For the sake readability and clarity, we will define three types of alleles: \textit{sealed} (unambiguous), \textit{bound} (ambiguous, parent specific), and \textit{orphaned} (ambiguous, non-parent specific).
+
+The majority of ambiguous alleles stem from the combination of homozygous and heterozygous parental alleles, however they are all of the bound type since the attributing parent of an allele is always known even if the specific allele is not (see the PS field). 
+
+The most ambiguous group by far are the identical homozygous parental alleles, containing only orphaned alleles without any parental-specificity at all.
+
+Though the heterozygous parental alleles and the non-identical homozygous parental alleles seem to share the same degree of ambiguity, with 2 out of 3 cases being of the sealed type, it is the latter group that has full parental-specificity.
+
+It is interesting to note that of the 12 individual cases presented only 4 are unambiguously phased, but that 5 of the remaining 8 ambiguous cases are parent-specific; illustrating that though the task at hand may seem difficult, it is only a quarter of the cases that we are completely unsure about.
+
+
 \subsection{Approaches}
 
+The key to resolving haploblocks lies in making use of the sealed trio cases in order to solve for the ambiguous ones. 
+
+Here we will discuss the three main implementations attempted within the application under this premise: Neighbouring States, Iterative Inspection, and Path Finding.
+
 \subsection{Neighbouring States}
+
+The neighbouring states approach follows a very straightforward methodology: upon finding an ambiguous trio of genotypes at a given marker locus, find the nearest set of flanking markers that contain unambiguous trios.
+
+This enables the ambiguous trio to 'orient' itself relative to the flanking unambiguous trios.  This is a fairly common technique used in many problems of a similar nature, and Illumina actually employ a variant of this technique in their Top-Bottom encoding for representing the direction of ambiguous SNPs <XXXREFpaper>.
+
 \subsubsection{Theory}
+
+\fignow{../writer/Methods/images/simple_haplotypes.png}
+	{A simple parent-offspring trio, with coloured blocks representing founder allele groups.}
+	{fig:haplo:fags}
+	{0.5}
+
+
+
+As highlighted in Figure~\ref{fig:haplo:fags}, the approach operates by crawling up and down a genotype of interest to find flanking unambiguous neighbouring alleles. If the neighbouring haplogroups are the same, they are absorbed into the group. If they differ, an informed choice on the point of recombination must be made
+
+Genotypes are reduced into two simple cases; one where flanking sealed genotypes are of the same founder allele group, and one where the flanking alleles differ as shown in Figure~\ref{fig:haplo:neighbouring}. In the former case, the uncertain genotype is encompassed totally by the group, but the latter case requires more thought.
+
+\fignow{../writer/Methods/images/Neighbouring.png}
+	{Two possible neighbouring state scenarios, where uncertain genotypes (UG1 and UG2) are flanked by sealed genotypes with: (Top) the same founder allele group, (Bottom) different founder allele groups.}
+	{fig:haplo:neighbouring}
+	{0.5}
+
+When flanking sealed genotypes differ, there are limited resolution strategies that can be taken to investigate where a point of recombination has occurred:
+
+\begin{enumerate}
+\enumdesc{Offspring Validation}{Checking within the genotypes of descendants for sealed genotypes at the same locus.}
+\enumdesc{Random Assignment}{Picking one of two blocks.}
+\enumdesc{Iterative Block Estimation}{Estimating the size of founder haploblocks and determining which encompassing block is more valid.}
+
+Each strategy comes with their own advantages and drawbacks, but these are discussed in more detail in the conclusion.
+\end{enumerate}
+
 \subsubsection{Implementation}
-\subsubsection{Conclusions}
+
+The pseudocode code below demonstrates the underlying method used to iterate through a list of markers, extract the genotype trios for a given marker, and then crawl back and forward from that marker location to find the nearest unambiguously phased markers. 
+
+
+\begingroup
+\begin{spacing}{1}
+\begin{lstlisting}[label=code:neighbouringjs]
+FOR m IN RANGE [0, max]:
+
+	marker        :=  markerList[m]
+	genotypesTrio :=  getGenotypeTrios(marker)
+	
+	IF isAmbiguous( genotypesTrio ):	
+
+		UNTIL flankingBackMarker EXISTS:
+
+			FOR b IN RANGE [0, m-1]:
+				backmarker        := markerList[b]
+				backgenotypesTrio := getGenotypeTrios(backmarker)
+				
+				IF NOT isAmbiguous( backgenotypesTrio ):
+					flankingBackMarker := backmarker
+					BREAK
+		
+		UNTIL flankingForwMarker EXISTS:
+
+			FOR b IN RANGE [m+1, max]:
+				forwmarker        := markerList[b]
+				forwgenotypesTrio := getGenotypeTrios(forwmarker)
+				
+				IF NOT isAmbiguous( forwgenotypesTrio ):
+					flankingForwMarker := forwmarker;
+					BREAK;
+
+		flankingBackGenotypes := getGenotypeTrios( flankingBackMarker ) 
+		flankingForwGenotypes := getGenotypeTrios( flankingForwMarker ) 
+
+		resolvePhase( genotypesTrio, 
+			flankingBackGenotypes, 
+			flankingForwGenotypes )
+	ELSE:
+		resolvePhase( genotypesTrio )
+\end{lstlisting}
+\vspace{-10pt}
+\captionof{lstlisting}{Pseudocode for Neighbouring States approach.}
+\end{spacing}
+\endgroup
+
+There is some redundancy in this, for contiguous ambiguous regions will likely crawl over the same positions multiple times to reach the same unambiguously phased flanking markers, giving an average time complexity of $n * log(n)$. 
+
+Actual implementation first mapped out unambiguous markers in an initial pass, and then a second pass bisected the map to find the nearest flanking markers, reducing the time complexity to \textit{n}.
+
+One more variant of this method that provided 2x speedup in the process was to use the newly resolved genotype trio states within the ongoing analysis. This means that the unambiguous back marker in subsequent iterations will always be the directly adjacent previous marker because it would have been resolved in the previous iteration; essentially meaning that only a forward search is required.
+
+\subsubsection{Discussion}
+
+The 2x speedup variant method raises the concern that the search may be greedily optimistic; with uncertain genotypes towards the end of analysis being too dependent upon the uncertain genotypes analysed just prior. This could effectively "box" the later uncertain genotype trios into more restricted groups, since the former iterations aggressively remove potential groups from the back-selection; creating the tendency of resisting crossover events in favour of maximising the current haploblock. Though not necessarily wrong\footnote{A solution will always be reached since a crossover event will be prompted eventually (at maximum) just before the last flanking sealed genotype}, it may create a noticeable disparity in the distribution of haploblock sizes in later generations.
+
+The real core of the neighbouring states approach lies within the \textit{resolvePhase()} function referenced (but not defined) in the pseudocode. The reason for this is due to the the numerous ways that the function was implemented, and ultimately abandoned.
+
+The first approach of Offspring Validation seemed to have a sound basis, where uncertain genotype trios that could not be resolved were then prompted to measure the genotype trios of any direct offspring at the same locus. In theory, if one of the offspring trios were (optimistically) sealed, then this was suggestive of a recombination event. In practice however, if the genotype trio in question was uncertain, then the offspring trios would also tend to be uncertain, forcing the method to move onto the next marker locus in hopes of finding a sealed genotype trio. Often entire uncertain contiguous blocks of genotypes were analysed this way without a sealed genotype ever being found.
+
+The second approach of Random Assignment also quickly ran into complications, where two directly adjacent uncertain genotypes within the same A-B locus were (randomly) assigned to different groups creating an $A-AABBABAB-B$ populated region that suggested an unreasonable amount of crossovers have taken place.
+
+A considered solution to this problem would be to expand the region uncertain genotypes into one general “uncertain block” and then to assign the entire block to either A or B, creating either an $A-AAAAAAAA-B$ or $A-BBBBBBBB-B$ assignment. This is, of course, a terrible idea, since the point of recombination can occur anywhere within the A-B locus and large block assignments will likely create problems with offspring dependent upon the individual under inspection.
+
+The main problem with the neighbouring states approaches evaluated so far are that they are subject to the local maximization\footnote{A common problem in "hill-climbing" algorithms, where the heuristic to find the "maximum peak" of some search involves climbing upwards and determining the discovery of a peak based upon reaching a plateau. Of course, there could many hills and many varied uphill walks with different starting positions would be required to actually find the global maximum peak, and not just the local one.} pitfalls. In order to find a more global solution, more attention would need to be given to the global size and ranges of the haploblocks being analysed.
+
+The not yet mentioned third strategy (Iterative Block Estimation) works on this principle, but requires a section of its own to be properly assessed.
+
 
 \subsection{Iterative Block Estimation}
+
+This method is an extension of the Neighbouring States approach, but with more global limitations in place to focus the analysis in a more structured way.
+
+Ambiguous stretches of alleles that fall within sealed loci sharing the same phase are said to exist within the same haploblock, on the condition that the genetic map distance between them is small enough to cast doubt on a crossover event having occurred. 
+
+Conversely, ambiguous stretches that fall within sealed loci which have different phases are indicative of at least one recombination having occurred. 
+
+In this case, the genetic distance between the sealed loci by itself is of no assistance, since a crossover event could have occurred at any point in prior meioses.  However we can estimate a limit based upon the number of meioses expected for a given founder allele. For example, a founder allele originally spanning 1000 markers, would expect to span 250 markers after two meiosis\footnote{\label{footnote:consang}Assuming a non-consanguineous pedigree. When inbreeding occurs, there is always the undismissable case that two haploblocks of the same founder group recombining in an offspring from two different paths of descent may be directly adjacent or in overlapping proximity to one another, making the founder block appear longer than it should.}. By keeping track of the size of a founder haploblock from sealed genotypes, we can make a more informed decision upon whether an uncertain genotype exists within that haploblock or not.
+
+
 \subsubsection{Theory and Implementation}
-\subsubsection{Conclusions}
+
+An orphaned genotype of an unknown founder allele group U is flanked between a sealed genotype of founder allele group A upstream, and another sealed genotype of founder allele group B downstream. Within the region encompassing the A-B locus, it can then be said one of two events occurred:
+
+\begin{description}
+\enumdesc{Event1}{ Group A underwent a crossover to group B, and U is either of type of A or B.}
+\enumdesc{Event2}{ Group A underwent a crossover to group X followed by any number of successive crossovers (to group Y, group Z, etc.) before finally crossing over to group B, where U is of any applicable founder allele group type.}
+\end{description}
+
+In order to determine which of these two events occurred, we first initially map out the positions of all sealed genotypes in order to gauge the approximate known sizes of the available founder haploblocks. These can then be compared to the expected sizes of the founder haploblocks for that individual in the pedigree when evaluating the orphaned genotype in the A-B locus.
+
+\fignow{../writer/Methods/images/IterInspect_AB.png}
+	{Small (top), Medium (top), and Large (bottom) A-B locus showing the types of inspection that can be performed. A and B are sealed genotypes; UG1 and UG2 are uncertain genotypes. Dashed lines indicate regions where the size of a block is known/estimatable but the start position is not. In the small A-B case, UG1 falls within the range of the green haploblock with a known starting position as observed by a prior crossover event. UG1 and UG2 also fall under estimated range of the blue haploblock, though UG1 is less likely because the green haploblock is more definitive.}
+	{fig:haplo:iterinspect}
+	{0.9}
+
+The rest of the method can be broken down into specific cases of uncertain genotypes within an A-B locus of specific size ranges:
+
+\begin{description}
+\enumdesc{Small}{If the A-B locus spans a region smaller than the smallest expected founder haploblock, then Event 1 has occurred, and further analysis can be performed to determine whether U is of type A or B.}
+\enumdesc{Medium}{If the A-B locus is larger than the smallest expected founder haploblock, but smaller than the average expected founder haploblock size; then we must probe the region by alternately assuming U=A and then U=B, and testing if the size of haploblock in question exceeds its expected size, where an Event 1 has occurred upon the success of one of these probes.}
+\enumdesc{Large}{If the A-B locus is larger than the average expected founder haploblock size, then we must investigate whether two (or more) crossovers have occurred in the A-B locus, and that an entire haploblock (or more) exists within said locus. If so, an Event 2 type has taken place.}
+\end{description}
+
+
+
+The small case is straight-forward to evaluate, since U is encompassed within at most two valid blocks and the resolution is non-problematic. Figure~\ref{fig:haplo:iterinspect} provides an example of this (top) in the case of UG1 which falls within the two block ranges, but is better defined in the green block and is more likely to be assigned to it.
+
+The medium case is more involved, where an Event1 is confirmed upon the success of one of the assumptions of U belonging to either A or B. However upon failure of both assumptions, the genotype is flagged for later reattempt after all other uncertain genotypes have been converted into sealed types.  A reattempt would ensure a more complete set of sealed genotypes to work with which would have more defined sizes of founder haploblocks, and aid in the resolution process.
+
+The large case is seemingly complex, but large cases (Event 2 types) are only evaluated after all Event1 processing has taken place, allowing the large cases to be evaluated with a more defined model of haploblock ranges and sizes.
+
+Under this more complete model of haploblock sizes, we can then probe U against each of the available founder allele groups and test whether the model still holds. For example, if the founder allele group S is identified in a region much further downstream than U, where the region spans a locus of sealed genotypes that is consistent with its expected size, then it is unlikely that a whole S  haploblock would also exist within the A-B locus\footnote{See footnote \ref{footnote:consang}}.
+
+In the unlikely event that after probing U with the available founder groups, a clear result still cannot be established, then a compatible haploblock group is picked at random (an operation dubbed "Event 3"), since it is impossible to distinguish between any one group.
+
+
+\subsubsection{Discussion}
+The handling of Event3 types may have serious ramifications in later descendants if the wrong haploblock is picked, wherein a complete recursive re-run of that particular individual (and descendants of) would need to be performed with a different random haploblock being assigned. If incompatible haploblocks are still detected in later descendants, then this process is repeated ad infinitum until there are no more blocks to choose from. 
+
+The iterative nature of this process can take quite some time to process, since though the method itself runs in approximately $O(n^2)$ time, it may repeat numerously for every Event3 encountered. Computational slowdowns not withstanding, the model cannot handle consanguineous pedigrees effectively, since much of the resolution involved in the Event2 process depends upon the assumption of non-repeating haploblocks, which may exist if there are multiple paths of descent a haploblock can take to reach an individual.
+
+The coding and maintenance of this method also became extremely lengthy, as separate classes had to be written to handle each event. Solutions to transparent biological processes should be natural and simple, and this method was quickly becoming unmanageable in its attempt to separately cater for all event types. Further, Event2 and Event3 types had a tendency to continuously recurse down through the pedigree often repeating previous analyses to favour the current individual in question. By the time root founder couples were analysed a complete consistent model was found, but run times exceeded practical limits with massive latency ($>$10s) between reading in the genotypes and presenting them.
+
+Despite the great deal of time and effort that went into the iterative inspection method, it was ultimately abandoned in pursuit of a more elegant approach.
 
 % This sub is more a background
 \subsection{Path Finding}
+
+Path finding algorithms are search algorithms that find an optimal (usually shortest) path between  two points though a complex of inter-connected nodes in a graph via weighted edges. 
+
+A path-finding search is typically conducted by starting a given start node and exploring all adjacent nodes under some graph-traversal heuristic until the end node is reached. Multiple paths may be discovered leading from the start node to the end node, but each path is graded based upon the total weight of the edges that constitute it.
+
 \subsubsection{Graph Traversal}
+
+Graph-traversal techniques are split into two types of (usually recursive) methods: \textit{Depth-first}, and \textit{Breadth-first} searches.
+
+\fignow{../writer/Methods/images/depthfirst.png}
+	{Recursive Depth-First function; Expands into each child node until there are no more children to expand into.}
+	{fig:haplo:recurdepthfirst}
+	{0.6}
+
+Depth-first searches run under the simplistic notion that each node encountered is immediately expanded upon (until there are no more nodes to expand), and only later exploring adjacent nodes at the same point in the path. It is implemented in a trivial recursive fashion outlined in Figure~\ref{fig:haplo:recurdepthfirst}, where the order of nodes traversed would be: ${0,1,3,4,9,13,15,16,10,5,2,6,7,11,14,12,8}$
+
+Breadth-first searches on the other hand iterate through all nodes available before expanding into another node, where the order of nodes would follow a more standard ${0,1,2,3,4,5,6,7,8,9,10,11,12,13,14}$
+
+If the aim of the search is to find a specific node, then the advantages each search strategy can be seen with respect to nodes 8 and 15; where node 15 is found after only six iterations in the depth-first approach (15th in the bread-first search), and node 8 is found after fifteen iterations in the depth-first approach (8th in the bread-first).
+
+Depth-first searches are \textit{optimistic searches} and are prone to being misled; possibly expanding down the wrong path in order to reach a target node that may lie only just adjacent to the root.  Breadth-first searches are \textit{conservative searches} and treat all nodes equally such that they assume all paths have an equal chance of leading to the target node. 
+
+It is clear that though a breadth-first search has the disadvantage of under-estimating where the target node will, it never over-assumes that the target node is just within reach as in the case with a depth-first search.
+
+Thankfully, there are algorithms that combine the advantages of both methods such that only nodes that are determined to be more likely to yield the target node are expanded upon without the cost of over-estimating, a concept known as an \textit{admissable} heuristic. In order to do this, the edges of the graph need to be \textit{weighted}, meaning that the choice of traversing from one node to another needs to incur a cost in order to actually compare paths. 
+
+Such algorithms are known as \textit{Best-First} searches since they expand only the most promising node chosen under a particular heuristic. Though they are seen more as a sub variant of breadth-first searches, they do incorporate depth-first principles.
+
+The application of these algorithms to haploblock resolution may not yet seem apparent because we must first understand the methodology of one particular type of best-first search. 
+
+
 \subsubsection{Dijkstra's Algorithm}
+
+All path-finding algorithms are derived from the Edgar Dijkstra's work, with his landmark paper 1959 paper <XXXRef>, which outlined a best-first method of finding the shortest path between two points. 
+
+Since the nodes in his graph are connected via weighted edges, Dijkstra's algorithm also qualifies as a uniform-cost search algorithm, since it takes into account the (long-term) cost of going down one edge over another\footnote{Though technically the algorithm could operate on any graph with equally weighted edges.}.  
+
+The algorithm works under the heuristic of minimizing the cost of unvisited neighbouring nodes. Its method is outlined as follows:
+\begingroup
+\begin{spacing}{1}
+\begin{enumerate}
+\enumdesc{}{The node now occupied is the current node, $n$.}
+\enumdesc{}{If n is the target node, terminate the search.}
+\enumdesc{}{Consider all adjacent nodes and the cost of traversing to them. For each adjacent node, $\alpha$:
+
+\begin{enumerate}
+\item{Calculate the cost $w$, equal to the cost of traversing the weighted edge to it.}
+\item{If $\alpha$ already has a cost assigned to it from a previous cost evaluation, and that cost happens to be lower than $w$, do nothing. Otherwise assign $w$ to $\alpha$.}
+\end{enumerate}
+}
+
+\enumdesc{}{Remove n from the search and move to the adjacent node with the lowest assigned cost.}
+\enumdesc{}{Go to\footnote{Dijkstra would be spinning in his grave at this careless use of the $GOTO$ statement that he so famously campaigned against in favour of the now well precedented $FOR$ loop <XXXRef>.} step 1.}
+\end{enumerate}
+\end{spacing}
+\endgroup
+
+The optimal path is always discovered because much like a breadth-first upon which it is founded, all nodes in turn are considered. For $n$ nodes, the number of unvisited neighbouring nodes considered is $n-1$, giving it a time complexity of $O(n^2)$.
+
+
 \subsubsection{Application to Haploblock Resolution}
+
+The search heuristic it employs is of most interest to us, because it works under the principle of trying to minimize a future cost. 
+
+If we treat each node as a particular haploblock group and assign zero edge weights between groups of the same type, and non-zero edge weights between groups of different types; we can find an optimal path through our network of nodes that tries to minimize the number of meioses.
+
+This is illustrated in Figure~\ref{fig:haplo:network1} as a multi-layered network graph. In layered networks, nodes within the same layer are not connected; only connections between layers are permitted. Each layer represents a single individual-marker locus, and all nodes within a given layer denote the possible founder allele groups for that individual-marker.
+
+\fignow{../writer/Methods/images/dijkstra_easy.png}
+	{Founder allele groups represented by separate colours. Transitions between groups of the same type (bold) incur no edge cost; non-zero weights (dashed) are less favoured.}
+	{fig:haplo:network1}
+	{0.7}
+
+Nodes that are connected to the nodes of the same group incur no edge cost, whereas nodes that are joined to those of different groups (indicating a meiosis) have non-zero costs associated with them. By traversing through the network under the heuristic of finding the path with the smallest cost, we can minimize the number of meioses and trace an optimal path.
+
+The nature of this task scales with number of markers \textit{m}, and the number of possible founder allele groups \textit{f}, effectively placing it on the order polynomial-time, and this can be very resource intensive for practical usage.
+
+
+The problem with Dijkstra's algorithm is that it explores all routes. This is not necessary, as we will see in the next section.
 
 % Broad topic, needs its own section
 \section{A* Best-First}
+
+The A* ("A-star")  search algorithm is the most widely used path-finding algorithm due to its efficiency and accuracy. Being an extension of Dijkstra’s algorithm, it is just as admissible, yet it only considers a small subset of the total nodes in the graph. This is because A* performs optimistic estimates on the cost of an active path without over-breaching the true cost of that path.
+
+The algorithm works on the principle of expanding a "frontier" of paths under a simple heuristic of:
+
+\begin{equation}
+f(n) = g(n) + h(n)
+\end{equation}
+
+
+where for the last node \textit{n} on the current path, \textit{g(n)} is the cumulative cost of the path so far, and \textit{h(n)} is the heuristic that estimates the cost of the smallest path to the target node.
+
+All the search algorithms visited so far can be implemented by the A* search algorithm; Dijkstra’s being the special case where $h(n)= 0$ (i.e. no estimation is made), as with all Breadth-first searches; Depth-first being $h(n)=X$, where \textit{X} is a large number greater than the total cost of the search where upon inspection of each node, it is decremented by 1 such that nodes are evaluated in the order they are discovered.
+
+To understand what is meant by the frontier of the search path, consider the state-space grid shown in Figure~\ref{fig:haplo:statespace}. This can be viewed as a network graph where each square represents a node, and each adjacent square/node is connected to it via an edge with a uniform edge weight cost.
+
+\fignow{../writer/Methods/images/astar.png}
+	{State-space diagram showing the optimal path as discovered by an A* best-first search: 1st iteration (Top-Left), 2nd iteration (Bottom-Left), 3rd iteration (Top-Right), 22nd iteration (Bottom-Right)}
+	{fig:haplo:statespace}
+	{0.9}
+	
+The green square is the start node, and the blue square is the target end node. All available edges have equal cost, and upon start there four active paths under consideration by the algorithm (up, down, left, right) with a value of 1 . Upon second iteration of the algorithm, the 4 paths can expand, each in 3 more unvisited directions yielding ($4 \times 3 = $) 12 paths, though four of these actually overlap with same cost; so a total of 8 active paths are under consideration for the next iteration. At the third iteration, we have ($8 \times 3 = $) 24 paths, though twelve of these overlap with already visited paths and one of them  has hit the end of the grid and has nowhere to expand to leaving 11 active paths.
+
+It does not take much imagination to see that the algorithm scales linearly (\textit{4k}, for \textit{k} iterations), with the overlaps and wall intersections keeping the number of active paths relatively low. For example, by the 19th iteration there should be 76 active paths being considered, but wall constraints  have limited this to just 4.
+
+To bring this back to more a genomic context, for \textit{f} founders in a pedigree, there are a maximum of $2fm$ active paths by the $m$th marker. For a simple pedigree with 4 founders and 500 markers, a maximum of 4000 active paths would be under consideration.
+
+Of course, haplotype resolution has wall constraints of its own; sealed and bound genotypes  collectively reducing the amount of available founder allele groups at specific markers, which work to remove whole path varieties altogether.
+
+Nonetheless, for \textit{i} individuals in a pedigree with \textit{2i} chromosomes\footnote{There are of course 23 pairs of chromosomes in an individual, but analyses are chromosome specific so only the current pair is considered.}, where each path \textit{p} explored in the chromosome took 0.05 seconds, there would be a delay of $2i \times p \times 0.05  =$ ) $0.1 ip$ seconds. If there are over 20 active paths being explored, then this is over 2 seconds of processing per individual, and over 20 seconds of delay for a pedigree with 10 members in it.
+
+\subsubsection{Active Queue}
+
+Thankfully one of the A* search algorithms greatest strengths is its search heuristic $h(n)$ which only considers a sub-selection of active paths it believes will lead to the target node. 
+
+Active paths are sorted by priority of lowest cumulative score $g(n)$, and the leading \textit{P} paths are added to a queue of predetermined length \textit{P}. All paths that are not added into the queue before the next iteration are dropped from the analysis altogether. 
+
+This ensures that that there are at maximum \textit{P} active paths under consideration at any given iteration, and keeps the analysis bounded within reasonable time constraints, for reasonable values of \textit{P}.
+
+% This is not suboptimal because...?
+
 \subsection{Implementation}
+
+Implementing the A* search algorithm within haplotype reconstruction involves two passes of the data; the first pass for populating a chromosome map with possible founder allele groups, and the second pass for performing the search itself.
+
 \subsubsection{First Pass: Priming the Data}
+
+When pedigree data is first parsed, genotypes for each chromosome are structured into an Allele\footnote{See Allele class in pedigree.js for more information.} object which contains four types of data:
+
+\begin{description}
+\enumdesc{data\_array}{A signed 8-bit array (\textit{Int8Array}) to compactly store the genotypes, and is initialised to the actual genotypes described by the input file.}
+\enumdesc{pter\_array}{A temporary standard Array (\textit{Javascript Object}) which carries pointers to founder allele "colour" groups, and is initialised as empty.}
+\enumdesc{unique\_groups}{Another temporary standard Array for storing the unique founder allele groups encountered across the entire chromosome, also initialised as empty.}
+\enumdesc{haplogroup\_array}{A signed 8-bit array (\textit{Int8Array}) to store the resolved founder allele group designations in a compact format, initialised as a null pointer.}
+\end{description}
+
+The usage of these constructs is carried out in the \textit{haploblock\_backend.js} file, and performs the first pass procedure as follows:
+
+\begin{enumerate}
+\enumdesc{Founder Initialization}{All founder chromosomes are assigned unique colour groups\footnote{Unique colours that will be used to represent these groups are also assigned, evenly distributed across the colour spectrum as designated under a \gls{comp:HSV} colour space (see Appendix section on page~\ref{ref:app:colour} for more information).} via the function \textit{initFounderAlleles()}. The entire stretch of the pointer array for a founder Allele class is populated with the same colour.
+
+e.g. pter\_array = [ [5] , [5], [5],  $\dots$ , [5] ]     (for the 5th founder allele being processed)}
+
+\enumdesc{Non-Founder to Founder Group Assignment}{The function \textit{assignHgroups()} performs a top-down sweep over the pedigree and processes each parent-offspring trio by descending down until there is no more offspring to process.  For each trio encountered, a length check is performed on their data to assert that the number of genotypes in the analysis is the same. Then the function \textit{child2parent\_link(child, mother, father, family)} performs the brunt of operation, where at each marker locus:
+
+\begin{enumerate}
+\enumdesc{Empty Data Assignment}{Maternal and paternal genotypes with no data (i.e. have a marker allele index designation of 0) are assigned to a zero colour group (-1).}
+\enumdesc{Autosomal Inheritance Modelling}{For maternal alleles \textit{m1 m2}, paternal alleles \textit{p1 p2}, and child alleles \textit{c1 c2}; check for genotype equality such that \textit{\{c1,c2\}} exists within the four valid genotype designations \textit{\{ \{m1,p1\}, \{m1,p2\}, \{m2, p1\}, \{m2,p2\} \}}. If a match is found (or multiple) then the parental allele colour groups are pushed onto the child allele colour groups in a mutually-exclusive fashion such that \textit{c1 c2} would only share the same colour groups by chance.}
+\end{enumerate}
+}
+
+\enumdesc{Parental Exclusion}{At this stage some clean up is required to deal with the overly ambiguous regions such that the next generation deals with a clean inheritance set of colour groups. The problem is that each child allele could inherit from one of the four parental chromosomes, but needs to do so in an exclusive fashion such that a maternal haploblock does not also appear in the childs paternal haploblock (i.e. no two blocks can have the same colour across sister alleles).
+
+To counter this, we populate exclusion groups where all the unique colour groups from both maternal alleles across the entire chromosome comprise a maternal exclusion array, and likewise for paternal alleles into a paternal exclusion array. This arrays assist in the A* search later on.}
+
+\enumdesc{Consanguineous Check}{If the maternal/paternal relationship has been labelled consanguineous, then we must slacked the parental exclusion somewhat since having duplicate haploblock groups in both child alleles is now not impossible. To do so, we first find the the intersection of  the maternal and paternal unique colour groups, and then remove the colors identified from both groups. At this stage, the pter\_array is now fully primed for the A* search algorithm to process.}
+\end{enumerate}
+
 \subsubsection{Second Pass: Path-finding Algorithm}
 
+The algorithm is contained within the function \textit{a\_star\_bestfirst()} which takes a pointer array as argument, as well as an (optional) exclusion list.
+
+First, a function to define whether an item exists within the exclusion list is determined based upon whether the list itself is:
+\begin{enumerate}[label=(\alph*)]
+\enumdesc{Undefined / Non-existent}{where upon the function simply returns false}
+\enumdesc{A single index/number}{where a simple equality check is performed.}
+\enumdesc{A list}{where the exclusion list is mapped and items are checked against the map.}
+\end{enumerate}
+
+The global parameter \textit{MAX\_ROUTES}  defines the number of active routes at any point within the iteration, and optional global parameters such as allowing single-marker stretches.
+
+With these parameters set, the actual algorithm runs under the pseudo-code representation in Listing~\ref{code:astarbf}. 
+
+\pagebreak
+\begingroup
+\begin{spacing}{0.9}
+\begin{lstlisting}
+WHILE algorithm_running AND routes_to_explore:
+
+	// Sort routes in descending order of significance,
+	// extract max number of routes
+	routes_to_explore = sortAndGetTopRoutes( routes_to_explore , MAX_ROUTES)
+		
+	current_route = routes_to_explore[0];		// Examine first route
+	route_length = getLength( current_route )
+	route_colors = getColors( current_route )
+
+	// Map to store lengths of paths traced by each color
+	ordered_routes = {}  
+
+	FOR current_color IN route_colors:
+		
+		IF inExcludeList( current_color ): 
+			SKIP
+
+		 // Perform lookahead for current group
+		stretch_iterator = route_length + 1
+
+		WHILE stretch IS LESS THAN END:
+
+			color_groups_at_marker = getColorGroupsAt( stretch_iterator  )
+
+			// stop lookahead if new color encountered
+			// that is not a zero group
+			IF NOT current_color EXISTS IN color_groups_at_marker:
+				IF NOT color_groups_at_marker EQUAL zero_color_group:
+					BREAK
+			
+			stretch_iterator  ++
+	
+		// After lookahead for current route and current color is finished,
+		//  store color with key as the length of current lookahead stretch
+		lookahead_stretch = stretch_iterator  - route_length
+		ordered_routes[ lookahead_stretch ] = current_color
+
+	// Examine color keys in descending stretch order
+	FOR color_stretch IN descendingKeyOrder( ordered_routes ):
+		
+		IF color_stretch LESS THAN OR EQUAL TO 1:
+			//Not significant change, dead end route.
+			SKIP
+
+		color_for_stretch = ordered_routes[color_stretch];
+
+		// Create a new route, based on the current route with
+		// the lookahead color added the same amount of times
+		// as the color stretched.
+		new_route = clone( current_route )
+		        + addcolor( color_for_stretch, color_stretch)
+
+		IF length(new_route) EQUALS END			// Found a complete route
+			complete_routes.add( new_route )
+
+		ELSE: 	// Otherwise, add new route to active search
+			routes_to_explore.add( new_route )
+
+	// Remove current route, now expanded by new routes
+	routes_to_explore.remove( current_route )
+\end{lstlisting}
+\vspace{-10pt}
+\captionof{lstlisting}{A* Best-First Haplotype Pseudocode Representation}\label{code:astarbf}
+\end{spacing}
+\endgroup
+
+Essentially the number of active paths expands with the number of available colour groups at the frontier of each path, with every path split into several sub-paths each designated an available colour group. Each of these sub-paths attempts to maximize their colour group as much as possible to create new paths that will be used in the next iteration.
+
+To maximise a colour group, a lookahead is performed that steps forward from the current path's frontier and asserts the colour group exists at each step, whereupon failing the length of the lookahead (the "stretch") is stored to be used as a metric to grade the colour group that performed the stretch over the other colour groups for the same path. 
+
+New paths are then formed from the current path, each padded with separate stretches of the colour group that performed the lookahead. These new paths are added to the active search (assuming they satisfy a minimum stretch limitation), and the current path is removed because it is no longer the frontier of the search.
+
+The exclusion list is used during the lookahead process, where any colour groups encountered from the frontier of the search that appear in the exclusion list are not expanded upon. This serves the purpose of separating maternal and paternal blocks from each other in order to prevent illegally inherited  blocks from propagating down the pedigree.
+
+The A* best-first search is run under two mutually-exclusive assumptions:
+\begin{enumerate}
+\enumdesc{}{Either the chromosome is \textbf{maternally-inherited}, therefore the paternal exclusion list should be used. The sister chromosome should perform the opposite (paternally-inherited, maternal exclusion).}
+\enumdesc{}{Or the chromosome is \textbf{paternally-inherited}, therefore the maternal exclusion list should be used. The sister chromosome  should perform the opposite (maternally-inherited, paternal exclusion).}
+\end{enumerate}
+
+It may seem that two whole searches are being performed, but it should be noted that a search on a chromosome performed under the wrong assumption will terminate very early due to the colour group inconsistencies being encountered early on.
+
+Only one route can be chosen as the best from the complete routes, and this is determined by sorting the complete routes by ascending number of sets and picking the first route,  i.e. the route that has the fewest unique colour groups and number of meioses.
+
+
 \subsection{Optimization}
+
+Several optimizations are undertaken to reduce the overall complexity and excess system resource usage of the algorithm; and these can be broken down into modes attributed to stages of processing that occur prior to, during, and after the search algorithm has run its course.
+
 \subsubsection{Prior Processing: Step Contraction}
+
+The first speedup is introduced during the first pass of procedure, where the overall number of nodes that the search algorithm has to evaluate during the lookahead section is reduced. 
+
+Previously, in order for the algorithm to perform a lookahead it had to step through each marker in order to determine whether the colour group under consideration existed at that locus. By adapting the \textit{child2parent\_link} function to store a sliding window of the colour groups it processes, a very rudimentary lookahead can be performed within the same pass used to prime the colour groups.  
+
+This effectively means that prior information upon the colour groups can be gained and utilized by the A* search, such that nodes are tailored so that the algorithm can pass over known stretches without having to crawl through them first.
+
+Figure~\ref{fig:haplo:lookahead}  illustrates this quite effectively; where the information contained within the set has not been transformed under the Lookahead arrangement, only that the more optimal paths are better defined. For the other less optimal paths, nothing has been changed: R-Y-G-B-R-G remains the same under both representations.
+
+\fignow{../writer/Methods/images/dijkstra_both.png}
+	{Step Contraction, assisting in the A* search algorithm by reducing the number of steps needed to be evaluated, e.g. $R-R-R-R-R-G$ under the Standard priming technique (Top) can be reduced to $R-R-G$ under the Lookahead priming technique.}
+	{fig:haplo:lookahead}
+	{0.8}
+
+The gains in this technique may seem small, and indeed the total number of nodes and edges between the Standard and Lookahead representations in Figure~\ref{fig:haplo:lookahead} differs by only 1. However, A* is a best-first algorithm, meaning that only the leading paths in each expanding iteration of the frontier are considered. It is these leading paths that benefit the most from this step contraction, since they are the ones ultimately will have to step through the most.
+
+For a sliding-window of size \textit{s} stepping through a haploblock of estimated size $\frac{h}{m}$ for \textit{m} meoises and \textit{h} initial founder length, this produces a linear reduction on the order of $\frac{h}{sm}$.
+
 \subsubsection{Runtime Processing}
+
+Some back-processing occurs during actual runtime with the intention of improving upon the compactness of the data.
+
+\begin{description}
+\enumline{Debug and Release}{The A* algorithm is actually first defined in the function \textit{a\_star\_bestfirst\_\_DEBUG}, which logs to console every step of the analysis for later inspection. This is useful for debugging purposes, but is impractical during standard processing because the JavaScript runtime environment must queue these output messages to be printed in a timely manner, expending system resources.
+
+The flexibility in the JavaScript Object model means that attributes can be bound to a given object during runtime and do not need to be explicitly defined before\footnote{Several other languages incorporate similar functionality (C++ via virtual functions) but with more rigid parameters.}. Since functions and objects in JavaScript are implemented the same way, this means that functions can be defined at runtime too.
+
+A new optimized "release" function \textit{a\_star\_bestfirst} is defined that takes the content of the debug function and truncates all logging references in order to boost performance. This also means that two varieties of the function only exist when required (i.e. during processing), and that the optimized function does not need to be manually re-written every time the original function undergoes a revision.}
+
+\enumline{Homology Path Bunching}{This extra feature is less a performance optimization and more an analysis optimization. As an analysis progresses through a chromosome, the top \textit{N} paths begin to "bunch" together in such a way that the \textit{MAX\_ROUTES} limit could compromise the admissibility of the search, if the similarity between active paths becomes too homologous as $N \rightarrow MAX\_ROUTES$.
+
+To prevent this bunching behaviour and encourage a more diverse selection of paths, the number of active paths N only contribute towards the maximum route limit if they do not share the same length score at given iteration. This essentially changes \textit{MAX\_ROUTES} to \textit{MAX\_TIERED\_ROUTES} such that unique sets of active routes are considered.
+
+For example,  a \textit{MAX\_ROUTES} limit of 4 would be able to give active route lengths of \{32,  21, 21, 21, 15 ,12,12\} instead of \{32, 21, 21, 21\}. Paths that have identical scores are usually indicative of a long stretch where (in the case of 21, three) colour groups maintain their colours through an ambiguous region that caters for them all.
+
+By allowing a greater variety of path sizes, earlier branching points in the analysis are not pruned off too eagerly and provide a more diverse set overall.}
+
+\end{description}
+
 \subsubsection{Post Processing: Pointer Cleanup}
 
+After the processing is complete and the result of the best-first search is returned unambiguously for both parental alleles, a cleanup operation is performed upon the Allele class containing the data. The pointer array contained within the class was a non-compact representation of all the possible colour groups that could propagate to a given individual through accepted models of inheritance, and was operated upon via the A* search.
+
+Once the search is fully complete for all members of the pedigree, the pointer arrays have served their purpose and are no longer required. The function \textit{removePointers} in the file \textit{pointer\_cleanup.js} sweeps down through pedigree and initialises the \textit{haplogroup\_array} with a compact signed Int8Array that stores the best path for each individual-chromosome. The pointer array is then requested for a delete by the JavaScript garbage collector.
+
+The memory saved from this cleanup should not be understated: For a typical 1000 marker chromosome stretch with a maximum of 8 possible founder allele groups (from 4 founders) where each allele group is a (64-bit) reference to a group, this produces a total of ($1000 \times 8 \times 64 = 512000$ bits $=$) 64 kilobytes per chromosome. By compacting the colour group data into an 8-bit array, the total is shrunk down to ($8 \times 8 \times 1000 = 64000 $bits $=$) 8 kilobytes per chromosome.
+
+It is arguable that the only savings being made are at the kilobyte level and even the most modern platforms by default sport at least 1GB of memory, however the data is now structured in contiguous parts of memory instead of dotted around via pointer arrays and the JavaScript runtime environment can now free up memory and run under a smaller more optimized region of the RAM.
+
+
 \section{X-linked Inheritance}
+
+As shown in the Autosomal Inheritance implementation on page 43, parental alleles are represented as {p1 p2},{m1 m2} pointers which each represent a possible array or founder allele “colour” groups. The valid child allele {c1 c2} configurations are shown in Table 3 below.
+
 \subsection{Comparison with HaploPainter}
 \begin{enumerate}
 \item[Non-zero Alleles Assigned Zero-Allele Blocks]{}

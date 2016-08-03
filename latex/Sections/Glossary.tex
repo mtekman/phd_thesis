@@ -18,9 +18,9 @@
 \usepackage[nopostdot,acronym,toc,section=chapter,style=indexgroup,sanitize={name=false,description=false,symbol=true}]{glossaries}
 \glossarystyle{list}
 
-\newglossary[nlg]{biology}{bio}{ntn}{Biology}
-\newglossary[nlg]{computer}{comp}{ntn}{Computing}
-\newglossary[nlg]{programs}{prog}{ntn}{Program Listing}
+\newglossary[nlg]{biology}{bio}{ntn1}{Biology}
+\newglossary[nlg]{computer}{comp}{ntn2}{Computing}
+\newglossary[nlg]{programs}{prog}{ntn3}{Program Listing}
 \makeglossaries
 
 \newcommand{\addglossbio}[2]
@@ -191,7 +191,7 @@
 \addglosscomp{MISD}{}
 \addglosscomp{IDE}{}
 \addglosscomp{JIT}{}
-\addglosscomp{macros}{} %Snippets of code defined within the \gls{comp:IDE} usually with the intention of running only for a specific platform, though they can be used whenever the cost of repeatedly calling a function has a higher cost than simply copy/pasting the code snippet. At compilation, the compiler detects the platform and moves/pastes the appropriate macro into the normal code scope and produces a binary specific to that platform.}
+\addglosscomp{macros}{Snippets of code defined within the IDE usually with the intention of running only for a specific platform, though they can be used whenever the cost of repeatedly calling a function has a higher cost than simply copy/pasting the code snippet. At compilation, the compiler detects the platform and moves/pastes the appropriate macro into the normal code scope and produces a binary specific to that platform.}
 \addglosscomp{Cross-platform}{}
 \addglosscomp{overflow/underflow}{If a variable tries to store information that exceeds ('overflows') the upper-bound of the data type it is within, it may undesirably take on the value of the lower-bound of that data type. The reverse is also true ('underflow').}
 \addglosscomp{primitives}{}
@@ -199,9 +199,21 @@
 \addglosscomp{object-oriented}{}
 \addglosscomp{IP}{}
 \addglosscomp{DNS}{}
-\addglosscomp{ECMAScript}{}
+\addglosscomp{ECMAScript6}{}
 \addglosscomp{Strings}{}
 \addglosscomp{regex}{}
 \addglosscomp{DOM}{}
+\addglosscomp{terniary}{}
+\addglosscomp{MESA}{MESA is an open-source software implementation of OpenGL and enables graphics to be drawn under the API using the CPU. For this reason it is not as fast as the OpenGL implemented by card vendors such as Nvidia or AMD upon their respective GPUs.}
+\addglosscomp{DirectX}{}
+\addglosscomp{OpenGL}{}
+\addglosscomp{WebGL}{}
+\addglosscomp{Three.js}{}
+\addglosscomp{GPU}{}
+\addglosscomp{event listeners}{}
+\addglosscomp{autocompletion}{}
+\addglosscomp{compilation}{}
+\addglosscomp{HSV}{}
+
 
 %% END
