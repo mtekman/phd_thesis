@@ -1,18 +1,32 @@
 %%% Glossary
 \usepackage{xifthen}
-\usepackage{glossaries}
+
+% needs to be before gloassary to be able to link
+\usepackage{natbib}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor=blue,
+    filecolor=blue,
+    linkcolor=blue,
+    urlcolor=red,
+    pdfborderstyle={/S/B/W 2},
+    linkbordercolor=red
+}
+
+%\usepackage[nomain]{glossaries}
+\usepackage[nopostdot,acronym,toc,section=chapter,style=indexgroup,sanitize={name=false,description=false,symbol=true}]{glossaries}
 \glossarystyle{list}
 
-%% Script to grab italics from xhtml word file
-%grep -oP '(<span class="T6">)[^<]*(</span>)' Background.v1.html | awk -F ">" '{print "___"$2}' | awk -F '<' '{print $1"---"}' | sed 's/___/\\addgloss{/' | sed 's/---/}{FILL}/'
-
-\newglossary[tlg]{bio}{tld}{tdn}{Biology}
-\newglossary[tlg]{comp}{tld}{tdn}{Computing}
+\newglossary[nlg]{biology}{bio}{ntn}{Biology}
+\newglossary[nlg]{computer}{comp}{ntn}{Computing}
+\newglossary[nlg]{programs}{prog}{ntn}{Program Listing}
+\makeglossaries
 
 \newcommand{\addglossbio}[2]
 {
-        \newglossaryentry{#1}{
-        		   type=bio,
+        \newglossaryentry{bio:#1}{
+                type=biology,
                 name={#1},
                 description={#2}
         }
@@ -20,8 +34,8 @@
 
 \newcommand{\addglosscomp}[2]
 {
-        \newglossaryentry{#1}{
-        		   type=comp,
+        \newglossaryentry{comp:#1}{
+                type=computer,
                 name={#1},
                 description={#2}
         }
@@ -158,7 +172,36 @@
 \addglosscomp{swap space}{}
 \addglosscomp{horizontal-buffering}{}
 
-
-
+% HAPLO
+\addglosscomp{forking}{}
+\addglosscomp{Cairo}{}
+\addglosscomp{Perl}{}
+\addglosscomp{Java}{}
+\addglosscomp{Python}{}
+\addglosscomp{C++}{}
+\addglosscomp{Bash}{}
+\addglosscomp{Tk}{}
+\addglosscomp{Qt}{}
+\addglosscomp{OS}{}
+\addglosscomp{standard template libraries}{}
+\addglosscomp{MVC}{}
+\addglosscomp{API}{}
+\addglosscomp{SIMD}{}
+\addglosscomp{MIMD}{}
+\addglosscomp{MISD}{}
+\addglosscomp{IDE}{}
+\addglosscomp{JIT}{}
+\addglosscomp{macros}{} %Snippets of code defined within the \gls{comp:IDE} usually with the intention of running only for a specific platform, though they can be used whenever the cost of repeatedly calling a function has a higher cost than simply copy/pasting the code snippet. At compilation, the compiler detects the platform and moves/pastes the appropriate macro into the normal code scope and produces a binary specific to that platform.}
+\addglosscomp{Cross-platform}{}
+\addglosscomp{overflow/underflow}{If a variable tries to store information that exceeds ('overflows') the upper-bound of the data type it is within, it may undesirably take on the value of the lower-bound of that data type. The reverse is also true ('underflow').}
+\addglosscomp{primitives}{}
+\addglosscomp{object}{}
+\addglosscomp{object-oriented}{}
+\addglosscomp{IP}{}
+\addglosscomp{DNS}{}
+\addglosscomp{ECMAScript}{}
+\addglosscomp{Strings}{}
+\addglosscomp{regex}{}
+\addglosscomp{DOM}{}
 
 %% END

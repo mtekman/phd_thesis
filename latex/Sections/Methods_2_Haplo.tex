@@ -1,28 +1,236 @@
 \chapter{Methods - HaploHTML5: A Comprehensive Pedigree and Haplotype Analysis Suite for the Web}
 
+The problems with current haplotype visualization tools highlighted in the previous section prompted the need for a new tool that would meet the shortcomings of its predecessors. Such a tool would have to be developed with a more modern perspective on the needs of both the geneticists and the data they deal with.
+
 \section{Application Requirements}
 
+In order for the application to be of use in a post-analysis haplotypes context, the following specifications must be met:
+
+\begin{description}
+\item[\textbf{Haploblock Resolution}]{Haplotypes must be correctly parsed and fielded into distinct allele blocks that describe recombination intervals within founder alleles. This applies to all penetrance models; recessive/dominant, autosomal/X-linked.}
+\item[\textbf{Haploblock Rendering}]{The application must be able to correctly render the blocks into coloured rectangles behind the haplotypes, with each coloured rectangle representing a found allele group, and any recombination events being represented as a distinct break between two coloured blocks.}
+\item[\textbf{Pedigree Generation}]{In order for the application to be a true replacement for HaploPainter, it should also be possible to draw entirely new pedigrees, and export them to supported formats.}
+\item[\textbf{Format Flexible}]{Haplotype files can come in a variety of output formats; Simwalk, Genehunter, Allegro, and many others. The application should be able to detect and read from these formats, as well as export to them.}
+\item[\textbf{User Accessible}]{It should not be hard for the user to obtain, install, and run the application. There should also (ideally) be no licensing barriers preventing the user from using the application in any kind of free context.}
+\item[\textbf{Intuitive Analysis Interface}]{The application should enable the user to compare any number of differently affected individuals in a determined region/locus of their own choosing. The region of interest should be simple to specify, as well as being easy and fast to manipulate without hindering the overall analysis process.}
+\item[(Optional) \textbf{Analysis Tools}]{It is likely that the user will be inspecting the haplotypes with the intention of discovering regions of homology between cases and controls. It would be beneficial to the user to programatically aid this process by providing a utility of some design.}
+\item[(Optional) \textbf{Resumeable}]{The user should be able to resume an ongoing analysis without having to reload the same data twice.}
+\item[(Optional) \textbf{Annotation Tools}]{The option to add custom annotations visible either across the entire view, or within a specific region of interest.}
+\item[(Optional) \textbf{Shareable}]{The user should be able to share an analysis with another user. Privacy controls would be required, and patient identifiers would have to be hidden to alleviate patient data sensitivities.}
+\end{description}
+
+
+Before development can begin to address the requirements set out in this schema, we must first explore the various frameworks that would be used to create such an application.
+
+
 \section{Development Frameworks}
+
+The first step in any development process is to choose a basis that would allow us to program more efficiently without having to "reinvent the wheel". There are many ways to perform the same task, but some ways are more geared towards certain types of tasks than others, with each method having their own respective advantages and disadvantages.  
+
+E.g. A data-mining task that requires some mathematical capabilities as well as the ability to read/write to file. If hardware constraints are not an issue, then a large encompassing framework that provides a vast array of utilities such as file operations, operating system non-specifics, and even its own filtering functions may suit the task well, albeit at the cost of high memory and CPU resources. However if the focus is more upon optimization, then maybe a smaller underlying framework that provides only basic file utilities may be sufficient for the task.
+
+The problem, of course, is the constant balance between defining just the right amount of specificity in the task at hand without compromising the ability to implement further features at a later time. A constant mantra spoken to generations of university undergraduates in computer science: "Never optimize too early".
+
+
 \subsection{Programming Frameworks}
+
+Programming is a transferable skill; practice in one will aid in the practice of another, and most imperative languages share a great deal of similarity between each other in terms of structure and syntax. Here we will compare a wide range of popular programming languages: Bash, C++, Java, Javascript, Perl, and Python. There are many concepts that a developer must consider when choosing the appropriate language to program in. Different languages offer a different selection of the features and concepts outlined below
+
 \subsubsection{Licensing and Access}
+
+The applications produced by different languages are typically split into two groups; scripts and programs, each with their own forms of accession and distribution.
+
+Scripting languages such as Bash, Javascript, Perl, and Python are high-level runtime dependent languages written in plain-text into files that can be directly executed by their respective interpreters. Scripts are said to be open-source, where to share or distribute the script is to openly share the code source with all users.
+
+Programs allude to languages where all the files containing the code are used to generate a binary that contains a reduction of all the files related to the application parsed into machine code; namely C++ and Java. These binaries are distributed to end-users but the users cannot see the code source used to create the binary\footnote{here are however numerous methods to reverse-engineer the code source from a binary.}. It is then up to developer to share their code (making the program open-source) so that the user can compile the binary themselves, or the developer can choose not to share their code at all (making the program closed-source) and it is then up to the user to decide whether the binary is trustworthy or not\footnote{The problem with closed-source development is the room for abuse in which code can be written with malicious intent without the end-user knowing about it.}.
+
+Open-source applications are also avenues for the misuse of the developers original intention to the distribution and modification of their code. For an overview of the various types of licensing in digital media, please see section Licensing in the Appendix.
+
 \subsubsection{Multi-Threading}
+
+There are times when an application often needs to execute multiple tasks simultaneously; usually either to speed up the computation of an operation by delegating it over multiple processes, or to provide operability and feedback to the user about an ongoing background task. Some languages implement threading automatically\footnote{Even abstracting it from the developer entirely by incorporating it intrinsically into the language. See page~\pageref{ref:haplo:javaover} on Javascript.}, but others may require more work from the developer.
+
+Threading is mainly implemented via three methods:
+
 \begin{enumerate}
-\item[Run and Wait]{}
-\item[Queue and Dispatch]{}
-\item[Asynchronous Callback]{}
+\enumline{Run and Wait}{A thread is bound to a function and executed immediately in parallel to the normal flow of code execution (a method known as \gls{comp:forking}). The rest of the code execution resumes normally until it reaches a portion in the code where it is specified that it must wait and block all further execution until the thread finishes, where control is then handed back to the main process. Numerous threads can be spawned, and numerous block calls can be made. Bash implements this behaviour by default using the '\&' modifier to fork off a process and the 'wait' command to block. \gls{comp:C++}, \gls{comp:Java}, and \gls{comp:Perl} incorporate this basic forking methodology too in their respective \gls{comp:standard template libraries}.}
+\enumline{Queue and Dispatch}{Threads are not executed straight away but are treated as jobs that are added to a queue. Jobs are then dispatched from this queue on a first-come first-serve basis to any available threads. If there are no available threads, then the jobs wait in the queue until there are. This method is used primarily in batch processing where the job types are similar and the code is parallelizing data would otherwise have been iterated through via a standard for loop. Not many languages incorporate this natively, with Bash relying on the parallel framework\footnote{See \gls{prog:parallel} specification within the Program Listings (page~\pageref{ref:meth:proglist})}, and other languages dependent on external implementations.}
+\enumline{Asynchronous Callback}{This structure does not follow the traditional sequential flow of control; rather that there is no "main" flow of control, and all code blocks instead inhabit separate realms which are all assumed to be independent of each other and can be executed concurrently, unless a dependency between a group of blocks is detected in which case blocks within the group are executed sequentially.
+
+\begin{description}
+\item{e.g. A,B,C,D,E,F are six separate functions, some sharing inter related variables. C is spawned from D, and E is also spawned from D, but variables in E depend upon the outcome of C. F is spawned from B but depends upon the outcome of E. A representation of this scenario can be seen in figure~\ref{fig:haplo:async}.}
+\item{\fignow{../writer/Methods/images/asynch_example.png}
+	{Horizontal lines depicting the number of active threads with the respect to a horizontal time axis. Vertical down lines depict spawned processes, and up lines indicate the return of code control to another process. Dashed lines represent a process waiting for another. Arrows highlight callbacks where the functions are executed upon the termination of another. At t0 there are 3 concurrent processes; t1 there are 4; t2 and t3 there is 1.}
+	{fig:haplo:async}
+	{0.8}
+	}
+	\end{description}
+}
 \end{enumerate}
 
+This asynchronous callback structure is native to Javascript, where there is no guarantee to the order in which two separate lines of code will execute; the interpreter decides what load order is best based upon a dependency model it creates. The Qt framework which has bindings in both C++, Python, and Java, also incorporates this model using a "signals-and-slots" architecture where functions are bound to 'slots' (code blocks) which emit 'signals' that prompt other slots into action, where a termination signal is a holder for a callback function.
+
+Each type of multi-threading process is suited to different tasks, but the asynchronous callback architecture removes a lot of the user-imposed blocking processes and automatically derives the most efficient method to handle concurrent tasks. In order for a developer to effectively wield the other two methods, they must have at least a general understanding of mutual exclusive variables and semaphores\footnote{See relevant section in Appendix (page~\pageref{ref:app:semaphores}}. 
+
+
 \subsubsection{Graphical Libraries}
+
+Graphical libraries allow a developer to use existing styles and display methods that can aid them in the application development process, without the need to write their own graphical libraries from scratch. A good graphical library has its own set of buttons, windows, progress indicators, input fields, and other form selection items that the user can pick and choose from.
+
+A common application paradigm is the Model-View-Controller (\gls{comp:MVC}) principle which separates application components into the Model (which holds the data in memory or local storage), the View (which is the graphical front-end and contains placeholders for Model data to be represented within), and the Controller (which interacts between the View and the Model). 
+
+Most languages have libraries that incorporate this popular model in some way, the exception being Bash which is not suited for graphical applications but has graphical input helper utilities such as \gls{prog:zenity}, which can be used to sequentially prompt the user for input.
+
+The Qt framework has a graphical interface in which a developer can actually draw the input form by dragging and dropping buttons and other display fields into horizontal/vertical/grid-like layouts to automatically space components\footnote{Or the developer can ignore tiling altogether and manually specify their own dimensions.}. Javascript under a browser context has the entirety of the HTML5 specification to play with; the most relevant item being the canvas specifier, which allows for direct drawing to a webpage without any layout constraints at all.
+
 \subsubsection{Application Programming Interface (API)}
+
+The Application Programmers Interface (\gls{comp:API}) is a full index of how the developer interacts with the language or framework. If the API has a complex function hierarchy or class structure (or lack thereof), it may require a steep learning curve until the developer fully grasps how to wield the various features of the language/framework effectively. If the API is more straight-forward, it is quite likely that the developer will not have to waste time on API specifics and can focus on tackling more application-specific tasks. 
+
+Good APIs also must be well documented, meaning that the official documentation provides a good explanation of the concepts and functions behind the API, as well as small working examples for those who are already familiar with the concepts and merely want a quick-start. Another feature of good APIs is balancing the fine line between no development and rigorous active development; the former being limiting factor in future improvements, and the latter being a general hindrance in current development if methods are constantly being added or depreciated.
+
+Perl and Bash are not as modern in terms of active development then Python, C++, Java, or Javascript. As a result their documentation is somewhat harder to find, but they have their own active communities with users who can provide excellent feedback and examples. The Qt framework has a clear and extensible API for all supported binding platforms, and is well documented with good examples and code standards. Javascript is somewhat of a scripter's preference and is one of the most rapidly evolving and diversely populated languages out there, essentially meaning that stable API's are hard to come by, and projects need to be version specific to the framework's used.
+
 \subsubsection{Portability and Performance}
+
+Some languages can be ported more readily between different systems than others. If the developer already knows what specific system(s) their application will run in, then portability may not be a problem. The cost of portability is the resource cost of the language interpreter (or runtime environment) required to run the application. If the language is compiled, then depending upon whether it has been translated into byte-code (for an optimized interpreter to process), or machine-code (for the CPU to process), then this resource cost is greatly reduced.
+
+Languages that are very feature-rich often experience slowdowns associated with the bloated libraries and background daemons required to run them. This is often the case with high-level languages that provide a level of abstraction from the developer in order to simplify the development process as much as possible. Advances in compiler and toolchain  technologies <XXXREF, LLVM1> have reduced the performance cost of these high-level languages by providing optimization techniques that can reduce the code into a platform-independent intermediate representation which can be converted directly into machine code. Programming now exists in an age where there is greater emphasis in producing clean and readable code with the intention of modularity and team collaboration, rather than needlessly efficient code from conception; all the optimization is done by the interpreter or compiler\footnote{See relevant section in Appendix on page~\pageref{ref:app:compiler}}. To go further, it is even said that there is no such thing as a "true" low-level language anymore, since even sequential assembly code fed straight to the CPU still undergoes optimization by categorizing related variables into separate dependency trees which are then executed in parallel to speed up computation. The advent of multi-core CPUs has given rise to advanced instruction sets, allowing for data to be channelled into hardware CPU parallelisms such as: Single Instruction Multiple Data (\gls{comp:SIMD}), Multiple Instruction Multiple Data (\gls{comp:MIMD}), and Multiple Instruction Single Data (\gls{comp:MISD}).
+
+C++ is compiled straight to machine-code but is historically not a  very portable language; code written for one platform will likely not translate well to another. \gls{comp:Cross-platform} frameworks and compilers have been created to address this such as \gls{comp:Qt} (via \gls{prog:qmake}), and \gls{prog:CMake}, but the process requires much prior configuration and often \gls{comp:OS}-specific \gls{comp:macros} need to be included to get an application running.
+
+Python, Java, and Javascript are interpreted languages that require their respective runtime environments to work, but – as stated previously – massive advancements have been made with compiler targets that provide speedups such as just-in-time (\gls{comp:JIT}) temporary binaries for portions of code known to otherwise create slowdowns. 
+
+Bash exists solely on UNIX and UNIX-like systems, and has only been ported to Windows systems via compatibility environments such as \gls{prog:cygwin}. 
+
 \subsubsection{Programming Style}
+
+There are several styles or paradigms in programming to aid in the process of either keeping functions within a specific scope, or providing flexible contractions for familiar or overly-used code blocks:
+
+\begin{description}
+\descitem{Object-oriented programming}{with a focus of encapsulating functions into 'classes' that are specific to them, and creating 'instances' of a class, which are able to hide and share methods and variables between other instances of the same class or other classes.}
+\descitem{Recursive programming}{which enables the same function to be called within itself repeatedly until some terminal condition is reached, using minimal amount of code.}
+\descitem{Lambda programming}{a style that borrows heavily from recursive strategies to perform the same task upon an array of items for the purposes of mapping, filtering, or condensing the array.}
+\descitem{Pointers}{the ability for the developer to access specific system resources for the intention of optimization. An example would be accessing a portion of memory populated by another function. Pointers allow for direct modification to a variable by proving a reference to either another process in control of it or the actual address of where that variable lies within memory. This removes the need for the default procedure of modifying a variable wherein the contents of the variable are directly copied into a temporary buffer by the function using it, operated upon, and then copied back (or overwritten) to the original variable. Many high-level languages manage this automatically by providing the developer with a pointer for large variables and accessing functions associated with the pointer by abstracted means. More low-level core languages leave it up to the developer to create pointers and to delete them after usage.}
+\descitem{Garbage collection}{a background process belonging to the runtime environment that automatically detects when a function or variable falls out of 'scope', i.e. it can no longer be accessed after a certain point, or is not used again in later portions of the code. Items that fall out of scope still occupy portions of the memory and should be removed. The garbage collector performs routine sweeps upon the memory used by the application and seeks and destroys these pointers in order to free up resources. Garbage collection is a costly process that requires pausing the execution of the current application in order to perform its task before resuming it again\footnote{Indeed, some languages do not implement it at all in the interests of speed and optimization, and leave it up to the developer to clean up their own garbage!}.}
+\end{description}
+
+Table~\ref{table:haplo:complang} outlines and compares the differences between the various languages being compared with respect to the programming styles described in this section.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{ r c c c c c } \toprule
+\emph{Language} & \emph{Object-} & \emph{Recursive} & \emph{Lambda} & \emph{Pointers} & \emph{Garbage} \\
+& \emph{Oriented} & \emph{-Functions} & & & \emph{Collection} \\
+\midrule
+\textit{Bash} & N & Y & N & N & N$^1$ \\
+\textit{C++} &  Y & Y & N$^2$ & Y & N$^3$ \\
+\textit{Java} & Y & Y & N & N & Y \\
+\textit{Javascript} & Y & Y & Y & N & Y \\
+\textit{Perl} & N & Y & N & Y & Y \\
+\textit{Python} & Y & Y & Y & N & Y \\ \bottomrule
+\hline
+\end{tabular}
+\end{center}
+\caption{Comparison of different programming styles. Notes:$^1$variables must be unset, $^2$C++11 specification does support this but not widely used, $^3$however smart pointers  perform their own}\label{table:haplo:complang}
+\end{table}
+
+
 \subsubsection{Type and String Handling}
+
+The aim of a data type is to capture the information within an item of data using the fewest amounts of bits possible. Snippets of text containing numeric data could be more efficiently used if the numeric data was stored in a numeric type.  Most programming languages are built upon a foundation of  well-established data types called \gls{comp:primitives}\footnote{See Appendix page~\pageref{ref:app:primitives}}, which are known for their efficient handling of information. Primitives allow the developer to store the data in set compact representations of their own volition. However, some languages perform automatic typing such that the type of variable is never explicitly stated but inferred from the context in which it is used. This has the advantage of freeing the developer from hardware constraints and \gls{comp:overflow/underflow} errors, but may represent large amounts of data inefficiently. Some languages do not even use primitives, but treat all data as an \gls{comp:object}, a concept borrowed from \gls{comp:object-oriented} languages  that allows a variable to have functions and properties attached to it.
+
+String data is harder to quantify, since a string is essentially just an array of characters, and depending upon what character encoding is used (ASCII, Unicode-16, Unicode-32)  string can take up an arbitrary amount of data. \gls{comp:Strings}\footnote{See Appendix page~\pageref{ref:app:strings}} are immutable, meaning that they are not editable at runtime and require powerful libraries to workaround this behaviour.
+
+C++ and Java classically follow the primitives directive, but newer versions also allow the inclusion of automatic type specifiers. Python distinguishes between decimals and floating-point numbers, but automatically scales the number of bits required to represent both.  Javascript treats all numeric data as floats, but has devices to remove redundancy over number arrays. 
+
+C++ has poor native runtime string handling, with modifications on strings requiring unintuitive function calls to C methods. Java, Javascript, Python, and Perl have excellent string handling, with string being a class with basic methods that allow a string to be split, copied, and appended/concatenated. 
+
+Bash takes a different approach altogether and treats everything as a string, with numeric operations requiring the string to be fed to an external program for processing (where upon return it is converted back to a string). It is not without consequence that string manipulation in Bash is unparalleled, with native concatenation and many methods to perform variable substitutions as well as in-built regular expression (\gls{comp:regex}\footnote{See Appendix page~\pageref{ref:app:regex}}) matching.
+
+%There is also It should further be noted that my ability to waffle about the various contrivances derived from the destitute dregs of my half-remembered pompously-bloated understanding of the subject in question is somewhat dampened by the realisation that these seemingly detailed machinations so elaborately described upon these pages may be none other than mad destitute ramblings of man too far gone to grasp the true gravity of the increasing severity of the deadline that lies so openly before him. Indeed it is as the others say; he is a verifiable cunt. In other news wordswords
+
+
 \subsection{Conclusion of Programming Languages}
+
+Programming is a transferable skill; knowledge in one will aid in the knowledge of another, and most imperative languages share a great deal of similarity between each other in terms of syntax. 
+
+It is clear that C++ will offer greater control and optimization to an application, but will be prone to portability hangups as well as various bugs related to type checking and pointer misuse; issues that could severely hinder the development process. Further, C++ does not have intuitive graphics support and requires extensive frameworks (such as Qt) to perform even basic drawing tasks. The same is true for Java, with the extra caveat that it would require a resource-heavy runtime environment for the application to run as well as the constant threat of Java updates to deter users from using it at all.
+
+Perl (and to some extent Python) are composed of modules that are compiled upon installation and run just as fast as any binary except for the overhead in repeatedly calling it from the runtime environment. Perl and Bash are excellent scripting languages, but can get very lengthy to manage even if the source is split over several files. 
+
+In a graphics context, Bash does not have any graphical frameworks associated with it since it is primarily used to automate system calls. Perl on the other hand has good bindings with visual libraries such as \gls{comp:Tk} and \gls{comp:Cairo}, and it was with this language and these very frameworks that \gls{prog:HaploPainter} was written. However a cursory glance at the source code reveals a very lengthy (albeit well-formatted) list of functions and variables that would require extremely careful deliberation to program with. The \gls{prog:HaploPainterRFH} modification only appended 50 lines of code to the original, but the patching was not a straightforward process; repeated scrolling up and down the code to check if a variable was still within scope.
+
+In terms of the application requirements, the victor seems quite clear;  Javascript is a well supported scripting language that caters for a variety of different programming styles, as well as excellent graphics support and an inexhaustible choice of graphics libraries and supporting frameworks to choose from.
+
+Javascript's asynchronous callback structure can take some getting used to, but allows the developer to focus on the task at hand, rather than worrying about specific multi-core optimizations. In-browser development has the added benefit of being able to quickly see the changes made at any stage in the development process due to the quick startup time needed to refresh an application. Many modern browsers even allow for runtime editing such that variables can be modified in real time with changes being displayed immediately; a feature that should not be under sold, for it greatly increases the speed of the development process.
+
+One concept that was not explored in the previous section due to the uncertain nature of it is the "shelf life" of a language. The easier it is for a language to program in, the more likely it will have longer popularity amongst  developers as well as better future support since more people would have invested their time in it. 
+
+Languages come and go, but Javascript is here to stay with every major browser supporting some version of it; an act that prompted the drive for hardware accelerated graphics via the WebGL and canvas initiative that has only further ensured the future of the language.
+
+
 \subsection{A Case For Open Source}
 
 
+Before we go any further, the need of open source software within academia should be addressed. The role of scientists and researchers is to push the boundaries of their understanding of a concept in order to make new discoveries that benefits not only them, but their field, and in turn, science in general. 
+
+The scientific principle works under the notion of iterating towards a consistent truth model through the use of reproducible peer-reviewed experiments and analyses.  In order for this to be the case, other scientists must be able to assess these experiments by accessing the same data sets and the same tools or methods to reproduce the same results. The whole process must be transparent; with no ambiguity at any stage that could cast doubt on the experiment in question.
+
+With open-source software, an inquisitive scientist has the freedom to take an existing method or tool and tailor it better to their experiment\footnote{Depending on licensing. See Appendix page~\pageref{ref:app:licensing}}. With open-source software, a reviewer can go through the source code and understand the method in which data was analysed.
+
+The transparency of this process becomes somewhat clouded as soon as more black-box methods are employed; software binaries or proprietary owned cloud-computing models.
+
+Binaries can offer more clarity if their source code is available, since the code can be compiled and tested against an input data set to make sure the result between two binaries of the same stated source is actually the case.
+
+Closed source binaries are more untrustworthy. They may employ known methods which can be evidenced by the input set and the processed output set, but there is no actual guarantee that the program performed the method correctly (e.g it may have seen that input set before and produced the output from a stored source, the method employed might be badly implemented and only works in a few use-cases, etc.)
+
+Proprietary cloud-computing solutions are even worse in this regard; essentially forcing the researcher to surrender their data to another location so that they can perform all their tests offsite within the platform itself. The researcher may then be at the mercy of the platform when it comes to releasing their results and showing their methods.
+
+The issue of privacy and ease-of-use is another factor. The ongoing battle to keep free information access as open as possible has been met with many pitfalls; net neutrality, \gls{comp:IP} blocking, \gls{comp:DNS} ownership, purposefully weakened encryption, and untrustworthy proprietary security protocols. 
+
+However, client security remains a boundary that not many are willing to compromise upon, mostly because of the privacy issues related to client data. As a result only an open-source language could be trusted to run on the client machines, and a large-scale effort has been undertaken to ensure that this is the case with Javascript\footnote{Even corporate institutions such as Google, Apple, and Microsoft have aided and given support to this initative<XXXREF>.}.
+
+
 \section{HTML5 and Javascript}
-\subsection{Javascript Overview}
+
+Before HTML5, media support for web browsers was managed by extensive (insecure) plugins that each browser handled in their own different ways (ActiveX\footnote{Traditionally supported by Microsoft, though no longer in their current Edge browser.}, and NPAPI\footnote{Used by Java, Silverlight, Unity, and others. Chromium based browsers no longer support it and use their own PPAPI (Pepper API plugin API).}).
+
+Flash used to be the main plugin that covered all the media requirements that browsers would not; video/audio, and graphics. Other plugins also existed (Shockwave, Silverlight, media player extensions) but these suffered from cross-platform incompatibility issues and licensing disagreements.
+
+Flash is scripted in a language called Actionscript which is also ECMAScript based, and developed a very longstanding loyal following with the new generation of game developers and web advert designers because of the ease-of-use it provided for dealing with vector graphics.
+
+However the closed-source nature of Flash\footnote{Created by Macromedia and later acquired by Adobe.}, paired with continuous security risks and update requests, the non-free proprietary nature of its IDE, and its reluctant uptake of hardware acceleration made its approval wane over time. The final nail in coffin was sealed however, when Adobe dropped Flash support for Linux altogether in 2012\footnote{<XXXREF>\url{http://www.adobe.com/devnet/flashplatform/whitepapers/roadmap.html}} and effectively managed to distance itself from a large portion of its fanbase. 
+
+This created a noticeable gap in trusted content, and the need for a new specification that could provide media support without the need for insecure/proprietary plugins prompted the conception of the HTML5 schema that all modern browsers strive to follow.
+
+Javascript previously was just a language to manage the various background tasks in webpages, but the arrival of the HTML5 schema as well as developments in \gls{comp:ECMAScript} have made the language more graphics-centric, and multiple visual libraries exist to cater for the various 3D and 2D contexts that the new canvas element can cater for. 
+
+
+\subsection{Javascript Overview}\label{ref:haplo:javaover}
+
+Javascript's open-source asynchronous callback structure may seem like a major diversion from standard programming styles and principles, but the (somewhat reluctant) uptake of said principles in other languages only reinforces the notion that Javascript is setting the stage for things to come.
+
+Javascript in the context of general web page management makes use of the Document Object Model (\gls{comp:DOM}) for manipulating elements of a page. The DOM model is a nested collection of inter-related objects following a parent-child hierarchy such that each child can reference their containing parent, and each parent can iterate through their child elements. Elements are accessed using unique identifying tags, or via multiply-specifiable class names.
+
+Javascript follows this Object model to an almost religious extent, by treating all variables as Objects that can be extended by methods. Primitives do exist, but they are interchangeable depending on context. Indeed, a long running joke amongst developers is how the '=' operator takes on multiple meanings depending on context\footnote{
+
+e.g.1.		a = [] ? 1 : 2, is a standard terniary operator which in most languages would ask, "is array true ? If so return value 1, otherwise return value 2".\\
+e.g.2.		a = [] == true ? 1: 2,  is the same statement this time directly asking the question of whether the array is true, however Javascript is now forced to treat the array as a primitive in order to perform the comparison, but converts the array into a string in order for the statement to make sense, essentially evaluating to ' "" == true ' which is false.
+}
+
+Numeric data used to be a problem in Javascript prior to ECMAScript version 6, since the numbers would be converted into a floating-point type that would take 32 or 64 bits of memory depending on the platform. 
+
+This large overhead does not translate well for small numbers, but makes sense in the automatic pointer control context; since all data are Objects and Objects are passed as references which are simply memory addresses (that are once again either 32-bit or 64-bit depending on the platform). It therefore does not matter significantly if individual numbers are passed this way since they occupy the same space in memory under the Object model. 
+
+However, large collections of numbers (or number arrays) quickly begin to eat at memory resources under this model. To get around this, Type Arrays were introduced in ECMAScript6 which bounds numeric data into elements that fit them better; with signed and unsigned arrays with element sizes of 8/16/32/64 bits.
+
+Consider haplotype data which in the case of SNPs represents exactly 3 values: 1 (first allele), 2 (not first allele), and 0 (error). This can be captured very easily by 2-bits ($2^2 = 4$ unique addresses), but under the old array model each haplotype would be contained under 32-bits on a 32-bit platform.
+
+Assuming 1,000 markers for a given chromosome, this translates to 32,000 bits to capture the haplotypes with 30,000 of those bits being padded with nothing but zeros.  An 8-bit Typed Array saves a lot of this redundancy and uses at most 8,000 bits to represent the data which is a memory saving multiplier of 4 – 8 times depending on platform. 8-bit arrays allow for each element to have ($2^8 =$) 256 possible values which very easily covers the number of alleles represented by polymorphic markers.
+
+With the ECMAScript6 specification came class and inheritance models, which already existed under the Object model but now provided bindings for the more familiar syntax that object-oriented developers were used to.
+
 
 \section{Javascript and Hardware-Accelerated Graphics}
 \subsection{WebGL Frameworks}

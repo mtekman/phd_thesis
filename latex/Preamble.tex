@@ -1,13 +1,4 @@
-% needs to be before gloassary to be able to link
-\usepackage{natbib}
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks,
-    citecolor=blue,
-    filecolor=blue,
-    linkcolor=blue,
-    urlcolor=red
-}
+
 
 \usepackage{setspace} % set line spacing within a \begin\end environment
 
@@ -18,14 +9,15 @@
 \usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
 \usepackage{url}
 \usepackage{enumerate}
+
+\usepackage{booktabs} % Better looking tables
+\usepackage{tablefootnote}
+
 \usepackage{cleveref}  %cites figures intelligently
 \usepackage{float}  %These two ensure that table position follows text by specifying {table}[H]
 \usepackage{wrapfig} % Figure wrapping
 
 \usepackage{amssymb}
-
-\usepackage[nopostdot,acronym,toc,section=chapter,style=indexgroup,sanitize={name=false,description=false,symbol=true}]{glossaries}
-
 
 %% Graphics
 % Images here

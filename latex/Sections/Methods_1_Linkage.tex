@@ -19,7 +19,7 @@ This file contains the information upon each family member, with every line deno
 
 An individual's line consists of data that numerically maps their sex ({male\(\rightarrow\)1, female\(\rightarrow\)2,  unknown\(\rightarrow\)0}) and their phenotypic status ({unaffected\(\rightarrow\)1, affected\(\rightarrow\)2,  unknown\(\rightarrow\)0}). Depending on the program used, an unknown sex may not be permitted. While it is not uncommon to see an unknown affectation, it is generally of no use to include it within a linkage run as it adds no power to the analysis. 
 
-Other fields record the relationship of that individual to other family members (mother, father). This mother-father-offspring grouping is referred to as a \gls{trio}. 
+Other fields record the relationship of that individual to other family members (mother, father). This mother-father-offspring grouping is referred to as a \gls{bio:trio}. 
 
 \begingroup
 \begin{lstlisting}[label=verb:pedfile]
@@ -121,7 +121,7 @@ Genotyping chipsets have fixed buffer sizes, and so if there are not enough memb
 
 Though there is nothing wrong in including uninformative SNPs in a linkage analysis, it is up to the researcher whether they wish to trim the genotypes file so that it only contains members of the pedigree.
 
-The Python tool \gls{snpbutcher} was developed to facilitate in the creation of these maps under the aforementioned filtering precedents, with the added inclusion of spacing criterion as well as a number of other different optional parameters (see Appendix section <XXXREF> for full program functional disclosure), with all parameters saved to a log file. 
+The Python tool \gls{prog:snpbutcher} was developed to facilitate in the creation of these maps under the aforementioned filtering precedents, with the added inclusion of spacing criterion as well as a number of other different optional parameters (see Appendix section <XXXREF> for full program functional disclosure), with all parameters saved to a log file. 
 
 Linkage analyses before dense genotyping chipsets allowed for a spacing requirement of 0.2 cM ($\sim$ 10,000 markers) between any two adjacent markers, but subsequent analyses in more modern times have iteratively led to a default spacing requirement of approximately 0.05 cM ($\sim$ 40,000 markers), keeping the marker count low for the linkage algorithm without compromising the power of the analysis.
 
@@ -155,37 +155,37 @@ Once an analysis is fully complete (i.e. it is understood that there will be no 
 
 <XXX Maybe this section should go in the discussion: Why Upgrading Disk Technology Wont Necessarily Lend a Performance Increase...>
 
-The working directory should be seen as a temporary file system at best, since many linkage programs generate a substantial amount of temporary files during processing. Though modern file systems are excellent at keeping track of and recovering files (a task known as \gls{journaling}), it is still good practice to "mount a scratch monkey" such that temporary working files are isolated away from archived ones in distinctly separate partitions. 
+The working directory should be seen as a temporary file system at best, since many linkage programs generate a substantial amount of temporary files during processing. Though modern file systems are excellent at keeping track of and recovering files (a task known as \gls{comp:journaling}), it is still good practice to "mount a scratch monkey" such that temporary working files are isolated away from archived ones in distinctly separate partitions. 
 
-It is preferable to isolate the two file systems on different disks altogether, such that a disk-wide read error on a given hard disk won't affect the operation of another. Most modern file systems have journaling enabled by default, which writes extra data to disk so that a recovery is possible in the event of a crash, but this becomes more problematic with Solid State Drives (\gls{SSD}s) which have a limited number of read/write operations, and are prone to seizing should an operating system over-breach those limits.
+It is preferable to isolate the two file systems on different disks altogether, such that a disk-wide read error on a given hard disk won't affect the operation of another. Most modern file systems have journaling enabled by default, which writes extra data to disk so that a recovery is possible in the event of a crash, but this becomes more problematic with Solid State Drives (\gls{comp:SSD}s) which have a limited number of read/write operations, and are prone to seizing should an operating system over-breach those limits.
 
-This is not an improbable occurrence; operating systems routinely write temporary files to disk in order to manage RAM constraints in a process known as \gls{paging}, where not immediately required portions of system memory can be sequestered into slower disk storage to free up space in the RAM for more higher priority tasks. 
+This is not an improbable occurrence; operating systems routinely write temporary files to disk in order to manage RAM constraints in a process known as \gls{comp:paging}, where not immediately required portions of system memory can be sequestered into slower disk storage to free up space in the RAM for more higher priority tasks. 
 
-When a system begins to run low on \gls{RAM} (as in the frequent case of extensive linkage analysis), a great deal of paging is performed to keep the linkage program in memory, leading to a substantial amount of disk writes on a journaled file-system. Mechanical (spin) drives can handle these read/write requests robustly, but they are an order of magnitude slower than SSDs and significant bottlenecks can occur where the system has to wait for the disk to be ready in order to perform a block\footnote{If multiple sequential operations are requested on same contiguous portion of a disk, then the operating system groups the individual requests under a large contiguous 'block' request, that performs one long read/write operation instead of several short ones.}    read/write to it.
+When a system begins to run low on \gls{comp:RAM} (as in the frequent case of extensive linkage analysis), a great deal of paging is performed to keep the linkage program in memory, leading to a substantial amount of disk writes on a journaled file-system. Mechanical (spin) drives can handle these read/write requests robustly, but they are an order of magnitude slower than SSDs and significant bottlenecks can occur where the system has to wait for the disk to be ready in order to perform a block\footnote{If multiple sequential operations are requested on same contiguous portion of a disk, then the operating system groups the individual requests under a large contiguous 'block' request, that performs one long read/write operation instead of several short ones.}    read/write to it.
 
 It is clear that SSDs offer no advantage at all in the use-case of frequent large temporary file activity, since though the operating system will rarely have to wait in order to perform a read/write, the limitations on the number of these operations shortens their lifetime considerably.
 
 The best long-term compromise is to use mechanical disks with a filesystem without journaling; either an older filesystem where journaling was never implemented (though file size constraints may be enacted), or a newer filesystem where journaling is disabled upon initialization. This reduces the total number of read/write operations whilst still ensuring disk longevity.
 
-Recoverability may be jeopardized, but the temporary nature of the files within the system imply that a re-run of the same analysis would not be resumable in any case; for it is the operating system that dispatches the temporary files to the linkage programs, and not the linkage program itself (with the  notable exception of \gls{Simwalk}).
+Recoverability may be jeopardized, but the temporary nature of the files within the system imply that a re-run of the same analysis would not be resumable in any case; for it is the operating system that dispatches the temporary files to the linkage programs, and not the linkage program itself (with the  notable exception of \gls{prog:Simwalk}).
 
 
 \subsubsection{RAID Configuration}
 
-One extra caveat to reduce the number of operations upon a single disk \textit{and} keep some level of redundancy is to distribute the load across several disk drives in a standard redundant array of independent disks (\gls{RAID}); specifically a RAID-5 level setup. RAID relies on the method of storing contiguous data across several mediums (a concept known as \gls{striping}), as well as ensuring the data is correct and error-checkable without having to scan the entire block of data (a concept known as \gls{parity}). The failure of one disk drive would not be enough to impede the setup and an ongoing analysis could be reconstituted from the other remaining disks, though a minimum of three identically sized disks is required.
+One extra caveat to reduce the number of operations upon a single disk \textit{and} keep some level of redundancy is to distribute the load across several disk drives in a standard redundant array of independent disks (\gls{comp:RAID}); specifically a RAID-5 level setup. RAID relies on the method of storing contiguous data across several mediums (a concept known as \gls{comp:striping}), as well as ensuring the data is correct and error-checkable without having to scan the entire block of data (a concept known as \gls{comp:parity}). The failure of one disk drive would not be enough to impede the setup and an ongoing analysis could be reconstituted from the other remaining disks, though a minimum of three identically sized disks is required.
 
 These features lend well to a large temporary filesystem, since the storage capacities of multiple disks can now be combined to store a great amount of data, as well as the number of operations on any one disk being reduced by a factor of \textit{n} (for \textit{n} disks in the setup). The setup will still have the same read/write speeds as an ordinary disk, but there will not be any added complexity since the operating system will detect it as a single volume.
 
 \subsection{User Confirmation and Setup}
 
-Once the input files have been set, the \gls{linkagepipeline} script is called to perform a thorough assessment upon the input files to determine if they are indeed primed correctly for analysis, and then acts as as a pre-analysis screening for the user to set run parameters and perform a double-confirmation that the set parameters are indeed correct. In order, the tasks are performed are:
+Once the input files have been set, the \gls{prog:linkagepipeline} script is called to perform a thorough assessment upon the input files to determine if they are indeed primed correctly for analysis, and then acts as as a pre-analysis screening for the user to set run parameters and perform a double-confirmation that the set parameters are indeed correct. In order, the tasks are performed are:
 
 \begin{enumerate}[labelsep=1em, align=left, labelwidth=4em, labelindent=2em, leftmargin=*]
-\lineitem{Encapsulation}{The \gls{GNU}-based \gls{screen} session is initiated (if not already present); a program that allows the user to re-access an ongoing process. Multiple linkage analyses can be run at the same time through different screen sessions without interfering with one another, though this is not encouraged for large projects since they would still be competing for the same system resources.}
+\lineitem{Encapsulation}{The \gls{prog:GNU}-based \gls{prog:screen} session is initiated (if not already present); a program that allows the user to re-access an ongoing process. Multiple linkage analyses can be run at the same time through different screen sessions without interfering with one another, though this is not encouraged for large projects since they would still be competing for the same system resources.}
 
 \lineitem{Display Detection}{This portion of the script detects whether there is a user logged on remotely or locally, and forwards graphical applications accordingly so that they appear either on their machine, or locally on the host machine. This has the added benefit of the user being able to inspect the data remotely during the pre-filter stage described later.}
 
-\lineitem{Input Parsing}{The input files are checked for consistency with one another, most of the work being delegated to the Python script \gls{prelimcheck}, which asserts the following:
+\lineitem{Input Parsing}{The input files are checked for consistency with one another, most of the work being delegated to the Python script \gls{prog:prelimcheck}, which asserts the following:
 
 \begin{enumerate}
 \item{Folder naming conventions are adhered to in the current working directory.}
@@ -196,14 +196,14 @@ Once the input files have been set, the \gls{linkagepipeline} script is called t
 \end{enumerate}
 
 }
-\item[Run Configuration]{The user is prompted for analysis-specific options: dominant or recessive; autosomal\footnote{It should be noted that even if an autosomal analysis is specified, the genotypes must still contain chromosome X markers for accurate gender detection in the next section.} or X-linked; single-core or multi-core. Since chromosomes segregate independently, the multi-core option allows for multiple chromosomes to be evaluated simultaneously using the GNU \gls{parallel} framework. Once set, the user is presented with the options they just specified, and if all is correct, a log of what was just entered is stored in a hidden file to be used in readme generation later. At this stage, the appropriate pipeline script is started.}
+\item[Run Configuration]{The user is prompted for analysis-specific options: dominant or recessive; autosomal\footnote{It should be noted that even if an autosomal analysis is specified, the genotypes must still contain chromosome X markers for accurate gender detection in the next section.} or X-linked; single-core or multi-core. Since chromosomes segregate independently, the multi-core option allows for multiple chromosomes to be evaluated simultaneously using the GNU \gls{prog:parallel} framework. Once set, the user is presented with the options they just specified, and if all is correct, a log of what was just entered is stored in a hidden file to be used in readme generation later. At this stage, the appropriate pipeline script is started.}
 \end{enumerate}
 
 
 
 \section{Runtime Filtering}
 
-Filtering is the first and foremost important step in the entire pipeline. The genotypes, pedigrees, and markers are all checked for relational consistency and preliminary tests are run to better gauge the data. The filtering step is split into three main script components: \gls{autostage1}, \gls{autostage2}, and \gls{autostage3}.
+Filtering is the first and foremost important step in the entire pipeline. The genotypes, pedigrees, and markers are all checked for relational consistency and preliminary tests are run to better gauge the data. The filtering step is split into three main script components: \gls{prog:autostage1}, \gls{prog:autostage2}, and \gls{prog:autostage3}.
 
 \subsection{auto\_stage1.sh}
 
@@ -211,11 +211,11 @@ This script is split into four main components: pedigree checking, gender checki
 
 \subsubsection{Pedigree Check}
 
-The first stage involves re-checking the pedigree for inconsistencies as before (duplicates, project IDs), but the \gls{Perl} program \gls{HaploPainter} goes deeper to also follow the relationship in all trios and check that each member is defined. If no errors are discovered, a PDF of the pedigree is generated and the pipeline resumes.
+The first stage involves re-checking the pedigree for inconsistencies as before (duplicates, project IDs), but the \gls{comp:Perl} program \gls{prog:HaploPainter} goes deeper to also follow the relationship in all trios and check that each member is defined. If no errors are discovered, a PDF of the pedigree is generated and the pipeline resumes.
 
 \subsubsection{Gender Check}
 
-Here, the Perl program \gls{Alohomora} reads in the map file and the maf file, where the minor allele frequencies are mapped to the markers and then compared with the genotypes by counting the number of heterozygous SNPs in chromosome X. Gender detection relies on the ratio of the heterozygous alleles of females against the hemizygous alleles of males towards the q-arm of chromosome X, due to a shortened Y chromosome in the males. Errors at this stage are rare, but are often caused by sample mix up, and can be rectified by changing pedigree members to their correct genders in the input pedfile.
+Here, the Perl program \gls{prog:Alohomora} reads in the map file and the maf file, where the minor allele frequencies are mapped to the markers and then compared with the genotypes by counting the number of heterozygous SNPs in chromosome X. Gender detection relies on the ratio of the heterozygous alleles of females against the hemizygous alleles of males towards the q-arm of chromosome X, due to a shortened Y chromosome in the males. Errors at this stage are rare, but are often caused by sample mix up, and can be rectified by changing pedigree members to their correct genders in the input pedfile.
 
 The program outputs a relationship file containing a mixture of pedigree data and genotypes which is to be used in the next step.
 
@@ -231,14 +231,14 @@ In this case, a new maf file is generated and the previous step is re-run to gen
 
 \subsubsection{Relationship Checking}
 
-The next step is the visual inspection of the genotypes through the genetics relationship representation program \gls{GRR}. GRR evaluates the genotype distribution of between related individuals and determines how much allele-sharing is occurring compared to how much is expected, classed by their respective levels of relation. Unrelated individuals will share fewer alleles than more related individuals, and this can be plotted in a graph with axes of standard error vs standard deviation. 
+The next step is the visual inspection of the genotypes through the genetics relationship representation program \gls{prog:GRR}. GRR evaluates the genotype distribution of between related individuals and determines how much allele-sharing is occurring compared to how much is expected, classed by their respective levels of relation. Unrelated individuals will share fewer alleles than more related individuals, and this can be plotted in a graph with axes of standard error vs standard deviation. 
 
 \fignow{../writer/Methods/images/GRR.jpg}
 	{A simulated data set showing relationship clusters coloured by type and plotted by mean against standard deviation.}
 	{fig:methgrr}
 	{0.8}
 	
-GRR uses \textit{identity-by-state} (\gls{IBS}) allele sharing in its metrics, allowing it to identify monozygotic twins (who share identical alleles) without having trace haplotypes. 
+GRR uses \textit{identity-by-state} (\gls{bio:IBS}) allele sharing in its metrics, allowing it to identify monozygotic twins (who share identical alleles) without having trace haplotypes. 
 
 Each point is formed by querying the relationships between any two individuals, coloured by the type of relationship specified in the pedigree, and plotting the mean against the standard deviation of the allele's being shared.
 
@@ -272,7 +272,7 @@ This is a user-evaluated step, with a PDF of the plot being displayed on the scr
 
 \subsubsection{Preliminary Linkage Overview}
 
-Once the erroneous markers from the list of unlikely genotypes have been removed, the linkage analysis program \gls{Merlin} is started. The error detection  suite detects genotyping errors by inferring inconsistent haploblocks in otherwise consistent stretches of alleles between siblings. Such blocks are easily detectable by searching for double recombinations within small marker intervals where the likelihood of such an event occurring is extremely improbable.
+Once the erroneous markers from the list of unlikely genotypes have been removed, the linkage analysis program \gls{prog:Merlin} is started. The error detection  suite detects genotyping errors by inferring inconsistent haploblocks in otherwise consistent stretches of alleles between siblings. Such blocks are easily detectable by searching for double recombinations within small marker intervals where the likelihood of such an event occurring is extremely improbable.
 
 \fignow{../writer/Methods/images/merlin_error.png}
 	{Two siblings have identical genotypes over a given allele (left), compared to the same alleles but with one contradicting genotype (right), indicating an unlikely double recombination event and a likely genotyping error}
@@ -283,7 +283,7 @@ Another output list of erroneous markers is generated from this analysis and pas
 
 \subsection{auto\_stage3.sh}
 
-This stage does not perform any filtering, but uses Merlin to generate input files for the main three linkage programs in the pipeline: \gls{Allegro}, \gls{Simwalk}, and \gls{Genehunter}.
+This stage does not perform any filtering, but uses Merlin to generate input files for the main three linkage programs in the pipeline: \gls{prog:Allegro}, \gls{prog:Simwalk}, and \gls{prog:Genehunter}.
 
 Each program is given its own folder, and pre-existing folders (from a previous run where errors were flagged) are renamed with a timestamp suffix ( e.g. allegro \(\rightarrow\) allegro-2016-04-02\_10-58 ).
 
@@ -296,7 +296,7 @@ This is the longest stage of the entire pipeline, with the previous filtering (a
 
 \subsection{Preliminary LOD estimation}
 
-The first step is to produce a maximum estimated LOD (\gls{ELOD}) score, using a simulated data upon the pedigree.  This is produced by the \gls{Python} script \gls{clodhopper.py} which generates false linkage files for both Allegro and Genehunter using the shortest chromosome input files as templates (chromosome 21).
+The first step is to produce a maximum estimated LOD (\gls{bio:ELOD}) score, using a simulated data upon the pedigree.  This is produced by the \gls{comp:Python} script \gls{prog:clodhopper.py} which generates false linkage files for both Allegro and Genehunter using the shortest chromosome input files as templates (chromosome 21).
 
 The maximum ELOD score is parsed straight from the output files, storing largest result in a parent folder, and then all related files are deleted in preparation for the real linkage analysis. Scores between Allegro and GeneHunter tend to differ by only $\pm$ 0.2. Any larger discrepancies are suspect, and usually prompt a Simwalk run as a precautionary third control.
 
@@ -322,13 +322,13 @@ The fastest, memory compact, and consistently accurate linkage program in the en
 
 After each linkage step, clean up operations are performed to reclaim the disk space generated by the temporary files that were created at runtime. This largely involves recursively crawling through the directories within the parent folder, and removing any folders that match numeric-only filenames\footnote{The find command paired with a good regular expression is an excellent one-liner method of discovering these folders: \usebox\myVerb2}.
 
-Filtering is performed via the script \gls{messner} which parses the output the linkage files in each of the three linkage program folders (Allegro, GeneHunter, Simwalk) and extracts the any linkage regions with a score above 2, as well as the name of the flanking markers for each region. This result is stored in a messner\_<program>.txt file in the parent folder.
+Filtering is performed via the script \gls{prog:messner} which parses the output the linkage files in each of the three linkage program folders (Allegro, GeneHunter, Simwalk) and extracts the any linkage regions with a score above 2, as well as the name of the flanking markers for each region. This result is stored in a messner\_<program>.txt file in the parent folder.
 
-Conversion operations are also performed at this step, with the \gls{chromosomes.sh} taking the output result files of the linkage program folder it is invoked within (Allegro, GeneHunter, Simwalk), and generating graphical plots with the data by using the graphing tool \gls{GNUplot} which outputs the graph in postscript format, later converted to \gls{PDF} via the \gls{ps2pdf} system utilities. The \gls{mkhaplotypes.sh} script converts the haplotype output files generated by Allegro (\textit{ihaplo.out}) and feeds them into \gls{HaploPainter}, which then renders them using the \gls{Cairo} library, and outputs them in the PDF format.
+Conversion operations are also performed at this step, with the \gls{prog:chromosomes.sh} taking the output result files of the linkage program folder it is invoked within (Allegro, GeneHunter, Simwalk), and generating graphical plots with the data by using the graphing tool \gls{prog:GNUplot} which outputs the graph in postscript format, later converted to \gls{comp:PDF} via the \gls{prog:ps2pdf} system utilities. The \gls{prog:mkhaplotypes.sh} script converts the haplotype output files generated by Allegro (\textit{ihaplo.out}) and feeds them into \gls{prog:HaploPainter}, which then renders them using the \gls{comp:Cairo} library, and outputs them in the PDF format.
 
-This happens automatically, with the final message of the pipeline prompting the user to run \gls{readmegen}, which generates the readme file using the saved logs from snpbutcher and pre-linkage user criterion to fill in the core of the data such as: project ID, genotyping chipset, number of markers used, recessive/dominant, and autosomal/X-linked. It is up to the user to fill in other fields such as: original genotypes filename, name of user/technician, and any extra notes specific to the run.
+This happens automatically, with the final message of the pipeline prompting the user to run \gls{prog:readmegen}, which generates the readme file using the saved logs from snpbutcher and pre-linkage user criterion to fill in the core of the data such as: project ID, genotyping chipset, number of markers used, recessive/dominant, and autosomal/X-linked. It is up to the user to fill in other fields such as: original genotypes filename, name of user/technician, and any extra notes specific to the run.
 
-At the end of the pipeline, all files instrumental to the analysis of the data are extracted into a separate directory (outside of the parent folder) through the \gls{collect.sh} script. The files collected are the 4 input files (map, maf, genotypes, pedigree), the readme file, the mendelian errors plot, the GRR relationship plot, the messner file, the linkage plot PDFs, the haplotype PDFs, and the pedigree PDF.
+At the end of the pipeline, all files instrumental to the analysis of the data are extracted into a separate directory (outside of the parent folder) through the \gls{prog:collect.sh} script. The files collected are the 4 input files (map, maf, genotypes, pedigree), the readme file, the mendelian errors plot, the GRR relationship plot, the messner file, the linkage plot PDFs, the haplotype PDFs, and the pedigree PDF.
 
 
 \section{Linkage Pipeline Limitations and Solutions}
@@ -339,9 +339,9 @@ All that was described in the previous chapter was how the linkage program opera
 
 The need for parallelization in linkage becomes apparent almost immediately after the first run; chromosomes are evaluated independently, and the program uses only a single core to perform the computation using a small percentage of the total RAM, whilst other cores lay idle.
 
-An ideal run would utilize all the cores/threads available on a system at any given time, by processing several chromosomes at the same time.  Such a process must first be \gls{thread safe}, meaning that any two instances of the same program either use independent output resources (temporary files, output files, blocks of memory) or any shared resources are accessed mutually exclusively such that they do not write to the same resource at the same time (see Appendix section <XXXRef> for a quick overview on semaphores).
+An ideal run would utilize all the cores/threads available on a system at any given time, by processing several chromosomes at the same time.  Such a process must first be \gls{comp:thread safe}, meaning that any two instances of the same program either use independent output resources (temporary files, output files, blocks of memory) or any shared resources are accessed mutually exclusively such that they do not write to the same resource at the same time (see Appendix section <XXXRef> for a quick overview on semaphores).
 
-Three scripts were developed under the parallel framework to ease this process, by queuing up chromosomes (or 'jobs') in a waiting buffer, and dispatching from it whenever a core (or 'resource') became available. The script \gls{ghparallel} dispatched jobs from Genehunter, and the script \gls{allegroparallel} did the same from Allegro. The script \gls{simwalkmulticore} worked under the same principle, but operated differently because Simwalk splits its input not just into chromosomes, but smaller fixed-size loci. This has the benefit of being able to partially process an entire chromosome, since some of the sub-input files might have been  processed and others not. This also allows the script to be \textit{resumeable}, in the manner that the script can be terminated prematurely, and then re-run, but it would not start from scratch upon each chromosome, but would resume from the files it had not processed yet. The parallel description in the Program Listing (page ~\pageref{ref:meth:proglist}) goes into further detail about the nature of these scripts.
+Three scripts were developed under the parallel framework to ease this process, by queuing up chromosomes (or 'jobs') in a waiting buffer, and dispatching from it whenever a core (or 'resource') became available. The script \gls{prog:ghparallel} dispatched jobs from Genehunter, and the script \gls{prog:allegroparallel} did the same from Allegro. The script \gls{prog:simwalkmulticore} worked under the same principle, but operated differently because Simwalk splits its input not just into chromosomes, but smaller fixed-size loci. This has the benefit of being able to partially process an entire chromosome, since some of the sub-input files might have been  processed and others not. This also allows the script to be \textit{resumeable}, in the manner that the script can be terminated prematurely, and then re-run, but it would not start from scratch upon each chromosome, but would resume from the files it had not processed yet. The parallel description in the Program Listing (page ~\pageref{ref:meth:proglist}) goes into further detail about the nature of these scripts.
 
 \subsection{Distribution}
 
@@ -349,13 +349,13 @@ The initial pipeline was built for a very specific platform in mind: Ubuntu 10.0
 
 Linux OS's are structured under a tree schema, with all locations being derived from the root /\footnote{Not to be confused with '/root/' which is where the root user stores their files, the root user having full access to every part of the system. Other (less-privileged) users keep their personal files in '/home'} and most Linux subsystems exist off this root\footnote{See section Linux <XXXref> in the Appendix for an overview of the Linux filesystem structure.}, locations of note being: /usr/bin and /usr/local/bin, each being included in the systems PATH variable which allows all files within those locations\footnote{It should be noted that inclusion is not recursive; any items within sub-folders at a given location are not included.} to be seen by the entire system without having to type out the entire filename.
 
-e.g. If the binary \gls{echo} is placed in the location /usr/local/bin/, it now exists as /usr/local/bin/echo. It is cumbersome to have to type out /usr/local/bin/echo every time we wish to use the command, so if the path /usr/local/bin is included within our \gls{PATH} variable, we can use the command by simply calling 'echo'.
+e.g. If the binary \gls{prog:echo} is placed in the location /usr/local/bin/, it now exists as /usr/local/bin/echo. It is cumbersome to have to type out /usr/local/bin/echo every time we wish to use the command, so if the path /usr/local/bin is included within our \gls{comp:PATH} variable, we can use the command by simply calling 'echo'.
 
 The pipelines interconnecting scripts, program scripts, and binaries, were solely contained within the /usr/bin/ and /usr/local/bin locations, meaning that they were mixed amongst the operating systems binaries making it very hard to distinguish between the two. One of the first operations performed in the second iteration of the pipeline was extracting the binaries specific to the pipeline from these locations and storing them in separate locations. 
 
-The method required involved a brute-force approach of cloning the operating system and programatically deleting any scripts or programs not called by the pipeline. The \gls{ldd} utility was also employed in this regard to discover the locations of libraries, and library dependencies so that these could be extracted too. It was thought at the time that the pipeline was version specific to the utilities it depended upon.
+The method required involved a brute-force approach of cloning the operating system and programatically deleting any scripts or programs not called by the pipeline. The \gls{prog:ldd} utility was also employed in this regard to discover the locations of libraries, and library dependencies so that these could be extracted too. It was thought at the time that the pipeline was version specific to the utilities it depended upon.
 
-Once extracted, an installer script was developed and through trial-and-error and most of the vast library dependencies were removed as the pipeline became less Ubuntu/Debian based and more Linux-centric. The pipeline was then moved under the \gls{git} school of \gls{version control}, so that further development could be managed more effectively with a private backup on the code hosting site bitbucket.org. Changes to the pipeline could be performed upon separate feature branches without affecting the base code, and if the modifications were stable and successful they could be merged into base (or ‘main’) branch. 
+Once extracted, an installer script was developed and through trial-and-error and most of the vast library dependencies were removed as the pipeline became less Ubuntu/Debian based and more Linux-centric. The pipeline was then moved under the \gls{prog:git} school of \gls{prog:version control}, so that further development could be managed more effectively with a private backup on the code hosting site bitbucket.org. Changes to the pipeline could be performed upon separate feature branches without affecting the base code, and if the modifications were stable and successful they could be merged into base (or ‘main’) branch. 
 
 Under this new distribution model, the pipeline has since been ported onto more modern versions of Ubuntu (from version 12.04 to 15.04) as well as other Linux OS's such as Arch and Gentoo.
 
@@ -366,7 +366,7 @@ The first iteration of the pipeline was unable to generate the relevant input fi
 
 There were several stages where this problem could originate, the most likely being the Alohomora input file generation stage, but closer inspection revealed that the program merely re-formats the data and makes no assumptions upon the genetic model. The real source of the error messages was from the separate linkage programs themselves.
 
-Upon painstakingly thorough cross-checking between the input formats of the Allegro and Genehunter, seperate male and female penetrances could be set \footnote{As per the GeneHunter Manual, found <XXXREF>}, and correct run configuration files could be generated for the setup. This process was automated via the script \gls{xmakedat} which modifies the chromosome X "datain" input files by setting the "use X" flag\footnote{(0 $\rightarrow$ 1, top line third column)}, and producing an extra line of male-specific penetrances\footnote{7th line denotes female penetrances (3 values). Male penetrances duplicate a line above this, modifying the second value 0 $\rightarrow$ 1 if dominant} specific to the dominant/recessive models within Genehunter.
+Upon painstakingly thorough cross-checking between the input formats of the Allegro and Genehunter, seperate male and female penetrances could be set \footnote{As per the GeneHunter Manual, found <XXXREF>}, and correct run configuration files could be generated for the setup. This process was automated via the script \gls{prog:xmakedat} which modifies the chromosome X "datain" input files by setting the "use X" flag\footnote{(0 $\rightarrow$ 1, top line third column)}, and producing an extra line of male-specific penetrances\footnote{7th line denotes female penetrances (3 values). Male penetrances duplicate a line above this, modifying the second value 0 $\rightarrow$ 1 if dominant} specific to the dominant/recessive models within Genehunter.
 
 Another script (xallegroinhaploout) generates the correct the Allegro run parameters in an almost identical manner. The same script is also used after a linkage run to convert haplotype output files into a more consistent formatting scheme, where males which only have 1 allele haplotyped in the analysis, now have two (a Y-chromosome consisting of entirely zeroes), aiding in the haplotype visualization process when inspecting the results.
 
@@ -399,15 +399,15 @@ Due to the unresolved splitting problem in large pedigrees for Genehunter, Alleg
 
 Allegro required much more time and thought, resulting in a costly solution that involved patching a bug within the program binary itself.  
 
-The method in which Allegro spared itself extra computation was by making use of Multi Terminal Binary Decision Diagrams \gls{MTBDD}s (see section <XXXRef>) which provided a compact structure to access and store ongoing calculations without duplication or redundancy. The MTBDDs were implemented via the Colarado University Decision Diagrams (\gls{CUDD}) library <XXXREF>, which at the time of Allegro's conception was on version 2.4.1 and included within the program source.  Careful debugging of the errors thrown by Allegro led to this CUDD source, and it was assumed that the fault lay there.
+The method in which Allegro spared itself extra computation was by making use of Multi Terminal Binary Decision Diagrams \gls{comp:MTBDD}s (see section <XXXRef>) which provided a compact structure to access and store ongoing calculations without duplication or redundancy. The MTBDDs were implemented via the Colarado University Decision Diagrams (\gls{comp:CUDD}) library <XXXREF>, which at the time of Allegro's conception was on version 2.4.1 and included within the program source.  Careful debugging of the errors thrown by Allegro led to this CUDD source, and it was assumed that the fault lay there.
 
 Updating the library to the (then) latest version of 2.6 yielded no success\footnote{As of 2015 there is now a version 3.0 of the CUDD library, but the changelog  reveals that only the overall packaging has changed, and the library code has not been modified since 2.6.}, and the program would not compile due to various inconsistent function calls between versions. Many of these had been depreciated in favour of new ones that no doubt simplified and/or merged several tasks under a single call within the library itself, but broke specific functionality in Allegro.
 
 The only other option left was to disable the CUDD library altogether, by forcing Allegro to skip the pre-existing computation checks, and attempt to keep all calculations within memory, caching to disk where possible.
 
-This worked somewhat, and pedigrees smaller than 19-bits had no significant change in their performance. Pedigrees larger than 21-bits was the limit where the system resources started to become more scarce. The analyses would run, but very slowly and at the cost of quickly diminishing RAM and disk space. Haplotype reconstruction required almost no disk space, but often over 10 TB\footnote{TeraBytes. Not MegaBytes, or GigaBytes. TeraBytes.} of memory to function, the most of which was implemented via \gls{VRAM} by using disk space as \gls{swap space}. The default Allegro binary could run both multi-point parametric linkage and haplotype reconstruction in the same pass, but the newly patched binary could only now do one at a time.
+This worked somewhat, and pedigrees smaller than 19-bits had no significant change in their performance. Pedigrees larger than 21-bits was the limit where the system resources started to become more scarce. The analyses would run, but very slowly and at the cost of quickly diminishing RAM and disk space. Haplotype reconstruction required almost no disk space, but often over 10 TB\footnote{TeraBytes. Not MegaBytes, or GigaBytes. TeraBytes.} of memory to function, the most of which was implemented via \gls{comp:VRAM} by using disk space as \gls{comp:swap space}. The default Allegro binary could run both multi-point parametric linkage and haplotype reconstruction in the same pass, but the newly patched binary could only now do one at a time.
 
-Large pedigrees can now be run via the \gls{allegro21bitstart.sh} script, which calls  the newly compiled allegro binary over the input files, and takes an argument that allows it perform either haplotype reconstruction or multi-point parametric linkage (but not both). The user is greeted with a display detailing how much available swap space, memory, and cores/threads are available. If the scratch partition is not detected, the user is prevented from starting any processes. 
+Large pedigrees can now be run via the \gls{prog:allegro21bitstart.sh} script, which calls  the newly compiled allegro binary over the input files, and takes an argument that allows it perform either haplotype reconstruction or multi-point parametric linkage (but not both). The user is greeted with a display detailing how much available swap space, memory, and cores/threads are available. If the scratch partition is not detected, the user is prevented from starting any processes. 
 
 The script also has the capability of parallelizing the process, but given the large memory demands of a single instance, this functionality goes largely unused unless the analysis is constrained to the higher (smaller) chromosomes. 
 
@@ -424,9 +424,9 @@ Genetic distance, though an extremely  useful representation of the expected num
 
 The spread of markers are also not taken into account, since most SNPs do not fall within telomeric or centromeric regions, meaning that there should be a noticeable gap within the plot towards the head, tail, and off-middle section.
 
-To add some context to the plots, the overarching script \gls{physicallinkageplot} was developed with the intention of reading in the output files, and remapping the scores back to physical distance for a specified version of the human genome\footnote{Currently hg19 is used, but any build within the UCSC Genome Browser can be used.}. This is performed through the Python script \gls{readalllinkage}, which performs an additional quality check of splitting data over impossible regions, such as any linkage peaks spanning the centromere (possible due to the last informative marker on the p-arm having the same score as the first-informative marker on the q-arm). The script works under the principle of bisecting the data at fixed intervals, such that plots are not variably-spaced and prone to joining over long distances.
+To add some context to the plots, the overarching script \gls{prog:physicallinkageplot} was developed with the intention of reading in the output files, and remapping the scores back to physical distance for a specified version of the human genome\footnote{Currently hg19 is used, but any build within the UCSC Genome Browser can be used.}. This is performed through the Python script \gls{prog:readalllinkage}, which performs an additional quality check of splitting data over impossible regions, such as any linkage peaks spanning the centromere (possible due to the last informative marker on the p-arm having the same score as the first-informative marker on the q-arm). The script works under the principle of bisecting the data at fixed intervals, such that plots are not variably-spaced and prone to joining over long distances.
 
-The re-plotting involves reconstituting the data within a GNUplot  environment, and this is done through the script \gls{plotlinkagephysical} which not only takes in the remapped data, but also a map file of chromosomal regions that dictates the true length of each chromosome (rather than the length inferred from the first and last markers in the analysis), and another map file of chromosomal bands which contains the names and regions of each band and sub-band of every chromosomal band. These bands are then overlayed upon the linkage plot to provide instantly visible context to some of the more questionable peaks in an analysis by allowing the user to see the density of the band the linkage peak falls within.
+The re-plotting involves reconstituting the data within a GNUplot  environment, and this is done through the script \gls{prog:plotlinkagephysical} which not only takes in the remapped data, but also a map file of chromosomal regions that dictates the true length of each chromosome (rather than the length inferred from the first and last markers in the analysis), and another map file of chromosomal bands which contains the names and regions of each band and sub-band of every chromosomal band. These bands are then overlayed upon the linkage plot to provide instantly visible context to some of the more questionable peaks in an analysis by allowing the user to see the density of the band the linkage peak falls within.
 
 Genomewide and individual plots are generated under this method, with the individual plots being generated simultaneously using the parallel framework. The overarching script can handle output data from allegro, simwalk, and swiftlink; producing the same type of plots for each (though titled accordingly) so as to provide some consistency when comparing plots from two different program.
 
@@ -457,14 +457,14 @@ Haplotype inspection is problematic. The allegro output haplotype file (ihaplo.o
 \end{spacing}
 \endgroup
 
-Dealing with the actual file involves transposing and trimming the headers, and then inspecting the haplotypes with a text editor that uses window-space buffering such that the entire file is not evaluated upon opening (which introduces visible slowdowns in programs that do not have \gls{horizontal-buffering} such as \gls{gedit}, and \gls{notepad}).
+Dealing with the actual file involves transposing and trimming the headers, and then inspecting the haplotypes with a text editor that uses window-space buffering such that the entire file is not evaluated upon opening (which introduces visible slowdowns in programs that do not have \gls{comp:horizontal-buffering} such as \gls{prog:gedit}, and \gls{prog:notepad}).
 
 Of course, browsing haplotype data alone is not enough for a haplotype analysis, since the real interest in the analysis is the representation of the haplotype blocks which cannot be shown in a plain text format. An application capable of resolving and representing the data as distinct blocks under a genetics model is required for a true analysis.
 
 
 \subsubsection{HaploPainter}
 
-HaploPainter is the one of the most commonly used open source pedigree and haplotype rendering tools, built upon a framework of powerful and well-maintained Perl libraries such as Cairo and \gls{Tk}, it can produce a wide variety of output formats from the graphics that it renders. 
+HaploPainter is the one of the most commonly used open source pedigree and haplotype rendering tools, built upon a framework of powerful and well-maintained Perl libraries such as Cairo and \gls{comp:Tk}, it can produce a wide variety of output formats from the graphics that it renders. 
 It is primarily used by researchers for drawing pedigrees, but is also used in rendering haplotypes.
 
 Researchers can examine an allegro output haplotype file by loading it into the application, which then renders the pedigree and then the complete haplotypes trailing underneath each individual.
@@ -482,7 +482,7 @@ Though seemingly sensible in relation to the pedigree structure, this ultimately
 
 \subsubsection{haplo\_region.py}
 
-In order to address the minuscule fonts as well as the pan and zoom limitations, the extremely feature-rich script \gls{haploregion.py} was developed to produce a subset haplotypes file that would reduce the number of markers to just the region of interest. The region of interest is usually common regions of heterozygosity/homozygosity across cases which the script also produces. The script has many functions:
+In order to address the minuscule fonts as well as the pan and zoom limitations, the extremely feature-rich script \gls{prog:haploregion.py} was developed to produce a subset haplotypes file that would reduce the number of markers to just the region of interest. The region of interest is usually common regions of heterozygosity/homozygosity across cases which the script also produces. The script has many functions:
 
 \begin{description}
 \item[Producing Haplotype Subsets]{It does this by taking pairs of markers as argument as well as an optional flanking parameter. The script transposes the headers in the original file, and attempts to match the marker-pairs specified in the arguments to find consecutive non-overlapping regions within the file. The flanking parameter (by default set to 0) specifies the amount at which the region(s) of interest is expanded outwards, such that a flanking parameter of 10 would expand 10 markers left and 10 markers right of the region specified by the marker pair being evaluated. Due to the script usually preceding the modified HaploPainterRFH script, it requires not only the ihaplo.out file but also the map.N file (where N is a chromosome number) to be in the same directory.}
@@ -492,9 +492,12 @@ In order to address the minuscule fonts as well as the pan and zoom limitations,
 \item[Haplotype Extraction]{Haplotypes in the ihaplo.out file are depicted horizontally which is not the ideal format when trying to copy/paste haplotypes spanning a given region, since regions will need to be copied line-by-line manually by the user, which could introduce errors. The haplotype extraction mode works under the default assumption that all genotypes from all individuals are to be extracted, and it does so by transposing the headers and the data separately and then printing the data out into a table such that marker identifiers are rows, and individual identifiers are columns. It should be noted that this is the same format as the debug mode used in detecting regions of homology (outlined in the previous bullet point), but this mode does not perform any homology checks, and also takes optional parameters to specify a subset of individuals and/or a subset of markers. The resultant output file is then in a much more useable format, and copy/pasting haplotypes in a given region is facilitated via the conventional method of selecting a region of text that spans multiple lines.}
 \end{description}
 
-Using the script in precession with \gls{HaploPainterRFH} (a modified HaploPainter clone) produces a much more useable representation of the haplotypes that the user does not need to extensively pan/zoom through. 
+Using the script in precession with \gls{prog:HaploPainterRFH} (a modified HaploPainter clone) produces a much more useable representation of the haplotypes that the user does not need to extensively pan/zoom through. 
 
 
 
 \section{Program List}
 \label{ref:meth:proglist}
+
+%\printglossaries[type=programs]
+%\printnoidxglossary[sort=case, type=programs]

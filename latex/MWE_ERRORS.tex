@@ -1,0 +1,76 @@
+\documentclass[11pt]{report} % use larger type; default would be 10pt
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=blue,
+    filecolor=blue,
+    linkcolor=blue,
+    urlcolor=red
+}
+
+%\usepackage[nomain]{glossaries}
+\usepackage[nopostdot,acronym,toc,section=chapter,style=indexgroup,nomain]{glossaries}
+
+\newglossary[tld]{type1}{pref1}{ntn}{Title One}
+\newglossary[tld]{type2}{pref2}{ntn}{Title Two}
+\newglossary[tld]{type3}{pref3}{ntn}{Title Three}
+\makeglossaries
+
+
+\newglossaryentry{pref1:testone}{
+                type=type1,
+                name={Testing One},
+                description={We are Testing One}
+}
+
+
+\newglossaryentry{pref1:testone2}{
+                type=type1,
+                name={Testing One Too},
+                description={We are Testing One as well}
+}
+
+
+\newglossaryentry{pref2:testtwo}{
+                type=type2,
+                name={Testing Two},
+                description={Now we are adding to Two}
+}
+
+\newglossaryentry{pref2:testtwo2}{
+                type=type2,
+                name={Testing Two Too},
+                description={Now we are adding to Two too}
+}
+
+\newglossaryentry{pref3:testthree}{
+                type=type3,
+                name={Testing Three},
+                description={Finally Three}
+}
+
+\newglossaryentry{pref3:testthree2}{
+                type=type3,
+                name={Testing Three Too},
+                description={Finally Three Too}
+}
+
+
+\begin{document}
+
+\gls{pref3:testthree2} and \hfill\\
+\gls{pref2:testtwo}
+
+\printglossary[type=type3]
+\printglossary[type=type1]
+\printglossary[type=type2]
+
+
+% I'm getting three  glossaries in the correct order
+% but: 
+%   1. only {pref3:testthree2} is being referenced
+%   2. {pref3:testthree2} is being referenced by ALL types
+
+
+\end{document}

@@ -1,11 +1,8 @@
 % Program Listing -- Seperate Glossary
 
-%\usepackage{glossaries}
-\newglossary[tlg]{programs}{tld}{tdn}{Program Listing}
-
 \newcommand{\addglossprog}[2]
 {
-        \newglossaryentry{#1}{
+        \newglossaryentry{prog:#1}{
                 type=programs,
                 name={#1},
                 description={#2}
@@ -14,7 +11,7 @@
 
 \newcommand{\addglossprogger}[3]
 {
-        \newglossaryentry{#1}{
+        \newglossaryentry{prog:#1}{
                 type=programs,
                 name={#2},
                 description={#3}
@@ -58,8 +55,6 @@
 \addglossprog{GNUplot}{}
 \addglossprog{ps2pdf}{}
 \addglossprog{mkhaplotypes.sh}{}
-\addglossprog{Cairo}{}
-\addglossprog{Tk}{}
 \addglossprog{collect.sh}{}
 \addglossprog{ldd}{}
 \addglossprog{git}{}
@@ -69,9 +64,9 @@
 \addglossprog{haploregion.py}{}
 \addglossprog{HaploPainterRFH}{}
 \addglossprog{messner}{}
-\addglossprog{Perl}{}
-\addglossprog{Python}{}
-\addglossprog{C++}{}
-\addglossprog{Bash}{}
 \addglossprog{notepad}{}
 \addglossprog{gedit}{}
+\addglossprog{zenity}{}
+\addglossprog{qmake}{}
+\addglossprog{CMake}{}
+\addglossprog{cygwin}{}
