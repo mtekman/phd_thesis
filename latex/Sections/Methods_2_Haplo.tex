@@ -587,7 +587,7 @@ Under this more complete model of haploblock sizes, we can then probe U against 
 In the unlikely event that after probing U with the available founder groups, a clear result still cannot be established, then a compatible haploblock group is picked at random (an operation dubbed "Event 3"), since it is impossible to distinguish between any one group.
 
 
-\subsubsection{Discussion}
+\subsubsection{Discussion}\label{ref:haplo:eventdiscuss}
 The handling of Event3 types may have serious ramifications in later descendants if the wrong haploblock is picked, wherein a complete recursive re-run of that particular individual (and descendants of) would need to be performed with a different random haploblock being assigned. If incompatible haploblocks are still detected in later descendants, then this process is repeated ad infinitum until there are no more blocks to choose from. 
 
 The iterative nature of this process can take quite some time to process, since though the method itself runs in approximately $O(n^2)$ time, it may repeat numerously for every Event3 encountered. Computational slowdowns not withstanding, the model cannot handle consanguineous pedigrees effectively, since much of the resolution involved in the Event2 process depends upon the assumption of non-repeating haploblocks, which may exist if there are multiple paths of descent a haploblock can take to reach an individual.
@@ -603,8 +603,7 @@ Path finding algorithms are search algorithms that find an optimal (usually shor
 
 A path-finding search is typically conducted by starting a given start node and exploring all adjacent nodes under some graph-traversal heuristic until the end node is reached. Multiple paths may be discovered leading from the start node to the end node, but each path is graded based upon the total weight of the edges that constitute it.
 
-\subsubsection{Graph Traversal}
-
+\subsubsection{Graph Traversal}\label{ref:haplo:graphtrav}
 Graph-traversal techniques are split into two types of (usually recursive) methods: \textit{Depth-first}, and \textit{Breadth-first} searches.
 
 \fignow{../writer/Methods/images/depthfirst.png}
@@ -747,7 +746,7 @@ e.g. pter\_array = [ [5] , [5], [5],  $\dots$ , [5] ]     (for the 5th founder a
 
 \begin{enumerate}
 \enumdesc{Empty Data Assignment}{Maternal and paternal genotypes with no data (i.e. have a marker allele index designation of 0) are assigned to a zero colour group (-1).}
-\enumdesc{Autosomal Inheritance Modelling}{For maternal alleles \textit{m1 m2}, paternal alleles \textit{p1 p2}, and child alleles \textit{c1 c2}; check for genotype equality such that \textit{\{c1,c2\}} exists within the four valid genotype designations \textit{\{ \{m1,p1\}, \{m1,p2\}, \{m2, p1\}, \{m2,p2\} \}}. If a match is found (or multiple) then the parental allele colour groups are pushed onto the child allele colour groups in a mutually-exclusive fashion such that \textit{c1 c2} would only share the same colour groups by chance.}
+\enumdesc{Autosomal Inheritance Modelling\label{ref:haplo:aim}}{For maternal alleles \textit{m1 m2}, paternal alleles \textit{p1 p2}, and child alleles \textit{c1 c2}; check for genotype equality such that \textit{\{c1,c2\}} exists within the four valid genotype designations \textit{\{ \{m1,p1\}, \{m1,p2\}, \{m2, p1\}, \{m2,p2\} \}}. If a match is found (or multiple) then the parental allele colour groups are pushed onto the child allele colour groups in a mutually-exclusive fashion such that \textit{c1 c2} would only share the same colour groups by chance.}
 \end{enumerate}
 }
 
@@ -920,44 +919,326 @@ It is arguable that the only savings being made are at the kilobyte level and ev
 
 \section{X-linked Inheritance}
 
-As shown in the Autosomal Inheritance implementation on page 43, parental alleles are represented as {p1 p2},{m1 m2} pointers which each represent a possible array or founder allele “colour” groups. The valid child allele {c1 c2} configurations are shown in Table 3 below.
+As shown in the Autosomal Inheritance implementation on page~\pageref{ref:haplo:aim}, parental alleles are represented as \textit{\{p1 p2\}},\textit{\{m1 m2\}} pointers which each represent a possible array or founder allele "colour" groups. The valid child allele \textit{\{c1 c2\}} configurations are shown in Table~\ref{table:haplo:methofinh} below.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{ l *4c } \toprule
+             & \multicolumn{2}{c}{\emph{Parental Alleles}} & \emph{Allowed Child} &              \\
+\emph{Model} & \emph{Maternal}  & \emph{Paternal}  &        \emph{Combinations}   & \emph{Total} \\
+             & \emph{\{p1 p2\}} & \emph{\{m1 m2\}} &        \emph{\{c1 c2\}}      &              \\
+\midrule
+Autosomal         & \{a1 a2\} & \{a3 a4\} & [a1 a3],[a1 a4],[a2 a3],[a2 a4] & 8 \\
+X-linked (Female) & \{x1 x2\} & \{x3 y1\} & [x1 x3],[x2 x3]                 & 4 \\
+X-linked (Male)   & \{x1 x2\} & \{x3 y1\} & [x1 y1],[x2 y1]                 & 4 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Three separate methods of inheritance. Parental alleles given in curly brackets denote ordered alleles. Child alleles are mutually exclusive of different parental types, and are given in square brackets to denote possible combinations ( e.g. [a b] = \{a b\},\{b a\} )}\label{table:haplo:methofinh}
+\end{table}
+
+It can be seen that the pedigree being dominant/recessive has no effect in the way that the alleles are inherited, the only deciding factor being X-linkage paired with gender-specific cases. Even if the pedigree is consanguineous, the model still holds because any founder blocks that find their way into both alleles of an individual, did so because their colour groups were contained in the separate maternal and paternal alleles through different paths of descent.
+
+Under the pointer model, X-linked inheritance is not a very involved process since it acts merely as a more constrained version of the autosomal model under different gender designations. The only unknown exists in the X-linked male model, where knowledge of which allele indicates the Y chromosome is required prior to evaluation.
+
+Initially it was a hard-coded requirement in the input file that the second male allele was the Y-chromosome, but this restraint was later removed and resolved in the software via the function \textit{detectYalleles} in \textit{filehandler.js}.
+
+At this current time of writing, Y-chromosome capable genotyping exists but is not utilized in most linkage software\footnote{Allegro, Genehunter, and Simwalk have not been updated since 2003. Genotyping chipsets have greatly increased in density and coverage since then.}, which ignores it altogether and designates the entire chromosome to an array of zeroes. The function simply detects these zero alleles in the males when parsing the pedigree, and stores the Y-chromosome as the second allele in the Pedigree class.
+
+In the event that Y-chromosome capable genotyping becomes more widely used, the \textit{detectYalleles} function will need to perform further probing. This will not preclude the rest of the analysis, since the Y-allele will still be assigned to the second allele in males.
 
 \subsection{Comparison with HaploPainter}
+
+One of the core reasons for HaploHTML5's conception was the lack of X-linked inheritance within the more commonly used tool HaploPainter, where haploblocks would be rendered improperly. This was at first thought to be due to the linkage software that performed the haplotype reconstruction assigning the wrong allele indexes to untyped individuals who were reconstituted in the program, but closer inspection revealed that allele indexes were in fact correctly assumed and that the problem lay in the haploblock resolution software.
+
+\fignow{../writer/Methods/images/xlinked_bad_inheritance.png}
+	{Minimum working example of an X-linked Dominant pedigree (source attached in Appendix). Inconsistent colouring within alleles depict HaploPainter's haploblock resolution failing in the case of X-linked pedigrees. Overlayed arrows depict true inheritance paths; black disease allele (green-dashed), correctly inherited alleles (blue-dashed), incorrectly inherited alleles (red-dashed).}
+	{fig:haplo:xlinkedbad}
+	{0.6}
+	
+Figure~\ref{fig:haplo:xlinkedbad} shows a typical X-linked dominant pedigree as rendered by HaploPainter. There are  several issues highlighted in this example:
+
 \begin{enumerate}
-\item[Non-zero Alleles Assigned Zero-Allele Blocks]{}
-\item[New Haploblock Group Assigned to Non-Founder]{}
-\item[Impossible Recombinations]{}
-\item[Non Parental-Offspring Inheritance]{}
+\enumdesc{Non-zero Alleles Assigned Zero-Allele Blocks}{This is shown in the left allele of individuals 206125 and 206127, which are represented as narrow blocks normally reserved for the zero-alleles.}
+\enumdesc{New Haploblock Group Assigned to Non-Founder}{206130 shows the appearance of a red block that is neither inherited from parents, grand-parents, or great-grandparents at the current locus. This is a misalignment because an inspection of the allele numbering shows that the block should be inherited from the maternal pink allele (as shown by the red-dashed arrow).}
+\enumdesc{Impossible Recombinations}{206121 and 206117 exhibit multiple recombinations over extremely small genetic distances. For reference, a distance of 1cM would expect 0.01 recombinations. The genetic distances here are on the order of 0.01 cM, which makes multiple recombinations very unlikely. The red-dashed arrows once again show the true path of inheritance, where both individuals inherit their mother's pink allele as confirmed by the allele numbering.}
+\enumdesc{Non Parental-Offspring Inheritance}{The appearance of the blue haploblock in 206121 and 206117 is troubling, since only the mother (206118) could inherit the allele from the founder (206126) and yet doesn't. Even more concerning is the apparent mixing of non-sister alleles in the offspring. Recombinations take place within the parent first before being transmitted, which creates clear maternal and paternal alleles in the offspring. 206121 and 206117 appear to show the green (paternal) allele recombining with the blue (maternally inherited) allele which should be impossible under any inheritance model.}
 \end{enumerate}
+
+It is likely that the method that HaploPainter uses to assign allele groups does not distinguish between bound and uncertain genotypes, very liberally pushing all possible founder allele groups onto both child alleles without any mutual-exclusivity, effectively resulting in a "mixed bag" of possible colours. Though this gives the algorithm more leeway to find any solution instead of terminating with errors, it does (in this instance) produce incorrect results.
+
 
 
 \section{Pedigree Rendering}
 
+A pedigree is populated by reading in a file in the standard \gls{comp:MAKEPED} linkage format and storing the data in a containing structure (Person class in this case). However this specifies information about each individual in the pedigree and not their relationships to one another.
+
+The function \textit{connectAllIndividuals} (\textit{pedigree.js}) iterates over all stored members and creates connections between each: parent is added to child, and child to parent, with parents being added as mates to each other. Each family is stored in its own separate map so that different families are segregated into their own pedigrees. 
+
+The process of actually drawing the pedigree is a complex process because as mentioned in Section~\ref{ref:haplo:graphtrav} traversing through a graph involves expanding nodes and all nodes that are connected to them.
+
+Consider now a graph where there is no longer a single root node, but instead several, as in the case of a pedigree with many founders. If node expansion was performed upon each of these individuals, we could descend through the graph by perform a breadth-first search upon all offspring. 
+
+A problem will quickly arise however where individuals who exist in the descent path of multiple founders will be evaluated more than once and lead to duplicity in the data if not carefully handled.
+
+The peeling method that Elston and Stewart devised (as mentioned in Background, page~\pageref{ref:back:els})  was considered as one solution; determining pivot individuals and treating them as special edge cases to be separately handled when drawing the pedigree. However, previous experiences in handling edge-cases (see page~\pageref{ref:haplo:eventdiscuss} ) had not been straightforward and so a more general solution was derived instead.
+
+The resulting function \textit{populateGrids\_and\_UniqueObjs} (\textit{init\_graph.js}) required iterating through all individuals and populating an array that stored each generation, as well as populating a map which stored unique nodes and vertices associated with pedigree members and their relationships as discussed below.
+
+
 \subsection{Populating and Structuring the Pedigree}
+
+The grid generation is contained within the class \textit{addFamMap} (\textit{init\_graph.js}), which asserts that each pedigree has a single randomly chosen individual to act as the root node. The sub-function \textit{addNodeArray(person, level)} descends through all relationships associated with that individual (mates, children, mother, father) recursively until there are no more relationships to expand upon.
+
+\subsubsection{Unique Graphics Map}
+Upon each recursion, a shape representing that individual’s gender and affectation is inserted into the graphics map with the individual’s identifier being the accessing key. If trio relationships are also detected, then the trio is added as the combination of two unique lines:
+\begin{description}
+\enumdesc{Mateline}{A straight line connecting two individuals who share offspring. Their unique key is paternal ID and the maternal ID in that order.
+
+e.g.  11 (father) and 12 (mother) $\rightarrow$ "m:11-12")}
+
+\enumdesc{Childline}{A right-angled line that connects an offspring to the centre of the Mateline of that offspring's parents. Siblings share the same centre (or 'anchor') but different childlines. Their unique key is the Mateline ID and the offspring's ID in that order.
+
+e.g 14 (offspring of 11 and 12) $\rightarrow$ "c:m:11-12-14"
+}
+\end{description}
+
+Under this format, even if individuals are evaluated twice the map will not contain duplicate data because the order of parental gender and offspring is preserved so that the same relationship is only recorded once.
+
 \subsubsection{Generational Grid Array}
-\subsubsection{The Seperation of Graphics and Data}
+
+Within the same recursion step that the graphics map is populated, the level parameter records the ascension/descent of the relationship being expanded.  With the parameter initially set to 0 for the root individual, parental relationships are expanded with \textit{level - 1} parameter, and offspring with a \textit{level + 1} parameter. This ensures is that not only are all siblings at the same "level", but first-cousins too.
+
+\fignow{../writer/Methods/images/pedigree_recurse.png}
+	{Example of pedigree levels and recursion}
+	{fig:haplo:pedrecurse}
+	{0.4}
+
+Consider Figure~\ref{fig:haplo:pedrecurse} which shows three levels for a group of individuals as determined by recursive function. If we pick 32 as the root individual with a level of 0, then we can trace a route first-cousin 31, via $32 \rightarrow 23 \rightarrow 11 \rightarrow 21 \rightarrow 31$:
+\begin{spacing}{0.8}
+\begin{enumerate}
+\enumdesc{}{\bf Start at Root: 32, $level = 0$}
+\enumdesc{}{\bf Expand to Parent ($level - 1): 23, level = -1$}
+\enumdesc{}{\bf Expand to Parent  ($level - 1): 11, level = -2$}
+\enumdesc{}{\bf Expand to Offspring ($level + 1): 21, level = -1$}
+\enumdesc{}{\bf Expand to Offspring  ($level + 1): 31, level = 0$}
+\end{enumerate}
+\end{spacing}
+
+Thus we have determined that 32 and 31 share the same level and can be drawn at the Y-position in the pedigree as shown in the figure.  By expanding upon all individuals, we can very easily deduce the individuals who should constitute a given generation and represent our pedigree accordingly.
+
+\subsubsection{The Separation of Graphics and Data}
+
+The information generated and stored at this stage follows a strict Model-View structure, with the graphical data to be drawn on screen being held entirely within the global graphics map \textit{unique\_graph\_objs} which is accessed solely through the static library class \textit{uniqueGraphOps} via \gls{comp:getters and setters} for adding/removing nodes and edges.
+
+This is divorced completely from the the pedigree data that pertains to individuals' information storage (name, gender, parents, offspring, mates) which is held entirely within the global data mappings \textit{family\_map} which is likewise accessed solely through its own static library class \textit{familyMapOps} via its own getters and setters for adding/removing individuals.
+
+It cannot be stressed enough that the Model (familyMapOps) and the View (uniqueGraphOps) do not overlap, i.e. one does not have pointers that reference entries in the other or vice versa. This ensures clean code management and simplifies tasks drawing tasks since the graphics should ultimately be a disposable representation of the pedigree data. The deletion of an individual's graphical node should not also prompt the deletion of that individual’s pedigree data.
+
 
 \subsection{Determining Pedigree and Penetrance Model}
-\subsubsection{Detecting X-linked}
-\subsubsection{Detecting Dominant}
+
+The right penetrance model is key to running the correct analysis upon the pedigree, and the function \textit{determinePedigreeType} (\textit{pedigree.js}) was written to determine whether the pedigree was X-linked/Autosomal, and Dominant/Recessive.
+
+Though Table 3 showed that the analysis does not depend on dominance/recessiveness, it is still useful in the context that it can be used for other programs that may require it without having to prompt the user.
+
+The function iterates through every member of the pedigree and operates as follows:
+\begin{enumerate}
+\enumdesc{Detecting X-linked}{
+
+\begin{enumerate}
+\enumdesc{}{Calls upon the \textit{detectYalleles} function repeatedly to count the number of males with either a single allele, or with an allele consisting entirely of zeroes. This lends some flexibility in the input format, where a single allele need only be specified for a male in a pedigree and the program will automatically detect that the pedigree is X-linked, and will generate a second Y-allele for that male (consisting of zeroes).}
+\enumdesc{}{The function asserts that the pedigree is X-linked if the all males in the pedigree are equal to either: the number of males with a single allele, or the number of males with an all zero allele, or any combination of the two.}
+\end{enumerate}
+}
+\enumdesc{Detecting Dominant}{\hfill\\Operates on a much simpler notion of descending through each generation and counting the number of affecteds. If the number of affecteds in each generation is non-zero, and the number of affected generations is the same as the number of generations; then the pedigree is dominant.}
+\end{enumerate}
+
+Note: Autosomal and Recessiveness are determined by inverting the results of these two methods.
+
 \subsubsection{Detecting Consanguinity}
 
+Couples who share either parents, grand-parents, or other immediate ancestors are said to be consanguineous and their mateline indicates this via a double line.  Detection of this is actually also implemented by a (much smaller) A* best-first search to find the highest common founder between two mates.
+
+The function \textit{hasConsanguinuity(person1, person2)} (\textit{init\_graph.js}) is outlined concisely in the pseudo-code given in Listing~\ref{code:consangastar}
+
+Essentially the search begins with the two individuals \textit{p1} and \textit{p2} who are mates. The search runs under the assumption that their ancestors are not related, and so recursively expands up their parents and their parents-parents, etc. until there are no more parents to evaluate.
+
+This populates a global list of founders as derived from separate "routes" starting at \textit{p1} and \textit{p2}. If \textit{p1} and \textit{p2} do not share any of the same founders then they are unrelated. However if they do share founders then there will be duplicates in the global list of founders, because shared founders will be discovered more than once from the two separate starting points.
+
+\begingroup
+\begin{spacing}{0.9}
+\begin{lstlisting}
+FUNCTION hasConsanguinuity( p1, p2 ):
+
+    complete_routes = []
+    routes_to_check = [ p1, p2]
+    
+    WHILE routes_to_check NOT EMPTY:
+        // get first person from active routes array and remove them
+        person = removeFirst( routes_to_check )
+
+        // No parents, terminate active route
+        IF NOT ( hasMother( person ) AND hasFather( person ) ):
+            complete_routes.add( person )
+            SKIP
+
+        // Otherwise add parents to search
+        routes_to_check.add( getMother( person ) )
+        routes_to_check.add( getFather( person ) )
+        
+    // Check for duplicates in complete routes
+    RETURN duplicatesExist( complete_routes )
+\end{lstlisting}
+\vspace{-10pt}
+\captionof{lstlisting}{Consanguinity test via path-finding approach}\label{code:consangastar}
+\end{spacing}
+\endgroup
+
+
 \subsection{Application Methods}
+
+The following methods are more focused upon the general appearance and graphics handling of the application.
+
 \subsubsection{Line Management and Node Position Handling}
-\subsubsection{Grid Snapping and Family Grouping}
-\subsubsection{Sibling Level Balancing and Mate Swapping}
-\subsubsection{Pedigree Creation (PedCreate View)}
-\subsubsection{Selection Mode (Selection View)}
-\subsubsection{Haplotype Navigation (Haploblock View)}
+
+The graphics map contains pointers to all the shapes and lines to be drawn on screen. As the user manipulates these node’s positions the relationship lines associated with them must also have their positions updated.
+
+As previously stated,  Matelines are bound to the nodes of two individuals whose relationship they represent, and Childlines are bound to the anchor points of Matelines and the node of the depicted offspring .
+KineticJS creates shape nodes easily enough (squares for males, circles for females, and diamonds for unknowns), and shapes are coloured to represent affection (red for affected, white for unaffected, and grey for unknown).
+
+KineticJS also has a Line class that can represent a straight line between two points, or a path through multiple points under a variety of different styles. However, it does not have a Connector class that can automatically update a line connected between two objects, such that the movement of one object automatically updates the position of the line.
+
+As a result, line management must be performed manually via graphics map. Essentially upon the detection of a single node being moved\footnote{Thankfully nodes can only be moved one at a time thanks to there being only a single mouse pointer. Multi-touch mobile devices may present problems in the future however.}:
+
 \begin{enumerate}
-\item[Scrolling the Mousewheel]{}
-\item[Dragging and Dropping]{}
-\item[Range Slider]{}
-\item[Marker Search]{}
+\enumdesc{}{All matelines associated with that node must have their positions updated.}
+\enumdesc{}{All childlines associated with each mateline moved in the previous step must also have their positions updated.}
+\enumdesc{}{If the individual that the node represents is not a founder, then their own childline must be updated.}
+\enumdesc{}{Draw updated positions onto screen.}
 \end{enumerate}
+
+Given that these steps are performed repeatedly in real time until the node is no longer being moved, it may be seen as a costly process. However, it is not recursive (i.e. the positions of grand-parents and grand-children do not need to be taken into consideration), so at most only two generations of childlines are being updated.
+
+\subsubsection{Grid Snapping and Family Grouping}
+
+In order to reduce some of the draw operations when moving nodes in real-time, a snapping grid was implemented so that nodes cannot be placed just anywhere but must fall in line with some hidden horizontal and vertical guideline intersections; essentially "a grid". 
+
+Dragging a node between the points in this grid will not prompt a redraw, where redraws will only occur when the node is locked into one of the points on the grid.  
+
+The grid itself is not global to the screen, but is family group specific, where the graphics of each pedigree are contained within their own separate group. These family groups (and their containing nodes and edges) can be moved freely without any snapping taking place. It is only the movement nodes within these groups that are subject to grid snapping, and the grid is relative to placement of the family group.
+
+\subsubsection{Sibling Level Balancing and Mate Swapping}
+
+Another advantage of the grid snapping feature is that it facilitates the user placement of first-cousins and siblings at the same level as shown in Figure~\ref{fig:haplo:pedrecurse} (Page~\pageref{fig:haplo:pedrecurse}). 
+To extend this functionality,  sibling level balancing was introduced to overcome the tedious task of having to individually move all siblings to the same level. 
+
+Siblings positioned at different levels does not makes sense in a generational context and looks unsightly, and it became clear that it would be beneficial to move all siblings automatically. The dragging of a single node prompts the vertical movement of all nodes sharing the same mateline anchors. 
+
+In a similar fashion, it also looks unnatural to have a mother and father at two different levels and so  parents are also locked vertically such that the movement of one also updates the other. Parents also have the added feature of being dragged as a single unit if they are brought together. This may seem as if it would prevent mates from moving past each other in a certain direction, but automatic mate-swapping occurs to prevent this, allowing the free ordering.
+
+\subsubsection{Pedigree Creation (PedCreate View)}
+
+Pedigrees can be created from scratch without having to load a pedigree file. When creation mode is  enabled individuals can be added to families, joined together as mates (with available choices highlighted in red circles), and joined as offspring (with available anchor points appearing within matelines) as depicted in the figure below.
+
+\fignow{../writer/Methods/images/pedcreate.png}
+	{The four stages of creating a pedigree: (1) Adding individuals, (2) Joining mates, (3) Joining Offspring, (4) Completing a trio.}
+	{fig:haplo:pedcreate}
+	{0.5}
+	
+Once complete, the pedigree can exported as standard MAKEPED file, as well as optional non-standard tags which contain metadata such as individual names (i.e. not just IDs), and position upon rendering which are interpreted by the application.
+
+\subsubsection{Selection Mode (Selection View)}
+
+Prior to HaploHTML5, analysing the haplotypes of individuals required repeatedly scrolling up and down the screen because individuals at different generations would be represented vertically as shown in Figure~\ref{fig:haplo:examplehaploanal}.
+
+This is not a problem for small loci, and is even beneficial when trying to see the path of descent. However, examining larger loci becomes difficult when trying to compare allele indexes because the user needs to mentally recount the position of a given marker at each generation.
+
+\fignow{../writer/Methods/images/example_haplotype_reconstruction_solved.png}
+	{Example haplotype analysis spanning three generations and 11 markers}
+	{fig:haplo:examplehaploanal}
+	{0.6}
+
+
+
+HaploHTML5 does away with this notion by allowing the user to freely select whichever individuals they want to analyse, whether from the same family or not, and then transitions the individuals onto a side-by-side level view so that haplotypes at a given locus can be be compared across all generations simultaneously as shown in Figure~\ref{fig:haplo:selectmode}.
+
+\fignow{../writer/Methods/images/selection_mode.png}
+	{Selection mode in three stages; (Top Left) User selection, (Bottom Left) Transitioning to side-by-side view, (Right) Comparison mode}
+	{fig:haplo:selectmode}
+	{0.9}
+
+
+\subsubsection{Haplotype Navigation (Haploblock View)}
+
+Haplotypes are initially displayed in a viewport restricted to a particular locus of interest for a default stretch of 30 markers. The user can then move through haplotypes using this viewport by one of:
+
+\begin{enumerate}
+\enumdesc{Scrolling the Mousewheel}{Haplotypes are moved up/down by a single marker for each mouse wheel increment.}
+\enumdesc{Dragging and Dropping}{Haplotypes can be grabbed directly by the mouse and the view can be shifted up/down by multiple marker stretches.}
+\enumdesc{Range Slider}{A slider can also be used to quickly navigate up and down the chromosome. This is by far the quickest method, and has the added bonus that the viewport size can be adjusted by changing the handles of the slider, as well as a quick overview for the scale of the chromosome being represented by the sliders boundaries (see Figure~\ref{fig:haplo:rangerslider}). Points of recombination are best viewed by this method since quick scrolling makes coloured block changes immediate.}
+\enumdesc{Marker Search}{This makes use of HTML5's \textit{datalist} element which populates a list of available markers and assists the user by allowing them to either choose from the entire list of markers via a dropdown menu, or an autocompleted sub-selection as they begin to type out a marker identifier. This method is the most effective when the locus of region is precisely known (e.g. due to linkage) and the user wants to quickly navigate to a region of interest without having to scroll for it.}
+\end{enumerate}
+
+\fignow{../writer/Methods/images/ranger_slider.png}
+	{(1) Range slider and (2) Marker search with region expansion via slider handles.}
+	{fig:haplo:rangerslider}
+	{0.8}
 
 \subsubsection{Analysis Resumeability}
 
+The application makes use of the \textit{localStorage} JavaScript implementation to cache the last used pedigree or haplotypes file, so that the user does not need to manually reselect it every time they want to rerun an analysis. The browser simply pulls the file from local storage, and meta flags in the file return to whichever view that the user was last on (PedCreate, Selection, or Haploblock).
 
 \subsection{Homology Tools}
+
+\fignow{../writer/Methods/images/homology_mode.png}
+	{Homology Mode activation; (1) Haploview mode, (2) Find homology button pressed where user can select which individuals should be compared for homology (in this case the affecteds), (3) Homology plotted across marker range (blue) and overlayed over haplotypes (red)}
+	{fig:haplo:homomode}
+	{0.95}
+
+
+One of the main reasons that haploblocks are analysed post-linkage is to find regions of homology pertaining to the linkage region(s). Where the Haploblock View allows the user to make side-by-side comparisons of cases and controls over multiple families, the Homology View further enables a sub-selection of those individuals to be checked for homology, as shown in Figure~\ref{fig:haplo:homomode} above.
+
+Upon sub-selection submission homology, individual alleles are sorted into groups of affecteds and unaffecteds; the idea being that affected alleles that match to some model contribute to a score and unaffected alleles that match to the same model subtract from the score. Thus for a scenario where all alleles (affecteds and unaffecteds) have the same homology, a total score of zero will be produced. 
+
+Scores are calculated for three scenarios:
+\begin{enumerate}
+\enumdesc{Homozygous}{Both alleles must be identical and must match all other affected alleles to contribute to the score. If only 1 allele of an individual matches, the score will not increase.}
+\enumdesc{Heterozygous}{One allele must match at least one allele in all other affected individual alleles to contribute to the score.}
+\enumdesc{Compound Heterozygous}{Both alleles must differ and must match all other affected alleles to contribute to the score.}
+\end{enumerate}
+
+All three scenarios are determined in the same pass, but cannot be represented simultaneously as an overlay, so it is up to the user to select which mode they wish to view, and a redraw is required upon mode change.  The user can also filter the data so that scores below a minimum score threshold are not shown, as well as a minimum extension limit so that only regions of homology spanning at minimum a certain amount are shown. This is especially useful when trying to constrain  a wide linkage peak to a more narrow region of interest. Recommended threshold values are Min Extension = 2, and Min Score $>$ 3
+
 \section{Code Minification and Obfuscation}
+
+Before the licensing of the application had been decided, attempts were made to scramble the source code such that it could be incorporated into more restricted models without privacy being a concern.
+
+Browsers do not run closed-source binaries, and deploying a JavaScript application as such through a toolchain that would compile it into a binary would not make sense over the internet, nor would it run in-browser.
+
+The only other option was to somehow encrypt the code itself in a manner that it could decrypted at runtime and run as a normal web application. This process was broken down into six stages:
+
+\begin{enumerate}
+\enumdesc{Minify the code}{Code minification is the act of taking a piece of code such as "var myVariable = 123; var myOther = myVariable" and condensing it into a smaller equally valid statement such as "var a=123, b=a";.  This was performed using Google's Closure compiler using the \textit{ADVANCED\_OPTIMIZATIONS} parameter which not only condensed the code by renaming symbols, but also performing compiler optimizations (see Appendix page~\ref{ref:app:compiler}) to reduce the code structure into a more CPU friendly format. All minified code is then consolidated into a single file for easier handling.}
+
+\enumdesc{Picture Encryption}{The Python script \textit{to\_image.py} takes in a string of text and converts it into a square image where image transformations are performed upon it. This is what the single consolidated minified code file is fed into. Two key steps occur:
+	\begin{enumerate}
+		\item{The code is stored as a long contiguous character array, which is then broken into 32-bit elements, each of which are then broken into four 8-bit elements that represent the four (8-bit) Red/Green/Blue/Alpha\footnote{The alpha channel is a requirement to prevent WebKit powered browsers (Chromium, Safari) from changing RGB values whenever the alpha is unset.} channels of an image (that supports transparency).}
+		\item{The image is encoded with a fairly simple cypher:
+			\begin{enumerate}
+				\item{The diagonal pixels undergo a XOR\footnote{A XOR operation is a reversible bitwise function that essentially transforms $0 \rightarrow 1$, and $1 \rightarrow 0$.} operation with a value of 247, and are then shifted diagonally 22 places.}
+				\item{All other pixels undergo another XOR operation with a value of 93.}
+				\item{Rows and columns are shuffled according to a shift map.}
+			\end{enumerate}
+		}
+		\item{The image is then saved as a lossless PNG file in order retain the pixel values determined in the previous steps.
+
+			\fignow{../writer/Methods/images/obfuscate_logo.png}
+				{Example resultant image from code minification, pixelisation, and encryption}
+				{fig:haplo:obfusclogo}
+				{0.4}
+		}	
+	\end{enumerate}
+}
+\end{enumerate}
+
