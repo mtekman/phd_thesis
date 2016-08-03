@@ -185,14 +185,10 @@ Gregor Mendel was a botanist monk who outlined the first basic principles of gen
 
 \subsubsection{Law of Segregation}
 
-\begin{figure}[h]
-	\begin{center}
-	\includegraphics[width=0.5\columnwidth]{../writer/Background/images/Mendelian_inheritance_3_1.png}
-	\caption{Image courtesy of Wikimedia Commons}
-	\label{fig:back1}
-	\end{center}
-\end{figure}
-
+\fignow{../writer/Background/images/Mendelian_inheritance_3_1.png}
+	{Image courtesy of Wikimedia Commons}
+	{fig:back1}
+	{0.5}
 
 Every diploid organism has two alleles that segregate during gamete formation to create diploid offspring that bears just one of the alleles from that parent (i.e. each offspring inherits one allele from their parents). As shown in Figure~\ref{fig:back1}, this has the interesting effect such that two homozygous parents with genotypes \textit{ww} and \textit{RR} respectively will \textit{always} have heterozygous offspring with \textit{wR} genotypes, yet these heterozygous offspring can further mate to reconstitute their parent's genotypes.
 
@@ -215,13 +211,10 @@ In relation to his third law, the concept of \gls{codominance} is missed; if the
 
 \subsection{Pedigrees}
 
-\begin{figure}[h]
-	\begin{center}
-	\includegraphics[width=0.5\columnwidth]{../writer/Background/images/simple_pedigree.png}
-	\caption{Typical pedigree, with females represented as circles and males as squares. Affectation is represented by a red colour fill.}
-	\label{fig:back2pedigree}
-	\end{center}
-\end{figure}
+\fignow{../writer/Background/images/simple_pedigree.png}
+	{Typical pedigree, with females represented as circles and males as squares. Affectation is represented by a red colour fill.}
+	{fig:back2pedigree}
+	{0.5}
 
 Individuals from the same family share a \gls{pedigree}, and each individual is grouped into two classes: \gls{founders} and \gls{non-founders}. 
 Founders are individuals who contribute unique \gls{founder alleles} to the pedigree, and the non-founders are the individuals who inherit them.
@@ -295,14 +288,10 @@ A founder allele stretching across \textit{m} markers and undergoing \textit{n} 
 
 In Figure~\ref{fig:back_inheritance} the offspring is recombinant at that particular locus due to a crossover in the maternal alleles. Note that at the level of a single marker it is not clear which way a genotype is phased, e.g. the sixth marker where the maternal alleles (2,2) and the paternal alleles (2,2) leave much ambiguity to which particular chromosome the offspring inherited their alleles (2,2).
 
-\begin{figure}[H]
-	\begin{center}
-	\includegraphics[width=0.5\columnwidth]{../writer/Background/images/simple_inheritance.png}
-	\caption2{Four complete haploblocks from two founders inherited by their non-founder offspring. The sixth marker is highlighted due to ambiguous genotypes.}
-	\label{fig:back_inheritance}
-	\end{center}
-\end{figure}
-
+\fignow{../writer/Background/images/simple_inheritance.png}
+	{Four complete haploblocks from two founders inherited by their non-founder offspring. The sixth marker is highlighted due to ambiguous genotypes.}
+	{fig:back_inheritance}
+	{0.5}
 
 Resolving ambiguous genotypes to specific chromosomes requires providing the genotype with some neighbouring context such that it knows whether it is in a recombination hotspot, or whether it lies within an existing block.  
 
@@ -331,7 +320,7 @@ LOD(\theta) = log_{10} (\frac{L(\hat{\theta})}{L(\theta = 0.5)}
 \end{equation}
 
 where:
-\begin{itemize}
+\begin{itemize}[labelsep=2em, align=right, labelwidth=3em, labelindent=4em, leftmargin=*]
 \listitem{\bf \( \theta = \frac{1}{2}(1 - e^{-2d}) \)}{
 The Haldane map function that estimates the recombination frequency given the genetic distance in centiMorgan (as defined in equation~ \ref{eqn:morgan} on page~\pageref{eqn:morgan}).
 }
@@ -348,15 +337,14 @@ The joint likelihood is main core of what the linkage analysis tries to solve, i
 L = \sum_{g1} \dots \sum_{gn} \prod P(Y_i|g_i) \prod_{k,l,m} P(g_m|g_k,g_l)
 \end{equation}
 
-\pagebreak
 where:
 \begin{spacing}{1}
-\begin{description}
-\listitem{\(g_n=\)}{genotypes of individual \textit{n}}
-\listitem{\(Y_n=\)}{phenotype of individual \textit{n}}
-\listitem{\(P(Y_i|g_i)=\)}{penetrance probability applied over all individuals. This is the probability of a phenotype given a genotype.}
-\listitem{\(P(g_j)=\)}{founder probability applied to founders only. Modelled under Hardy-Weinberg and assumes linkage equilibrium.}
-\listitem{\(P(g_m|g_k,g_l)=\)}{transmission probability. Probability of non-founder genotypes (m) given parental genotypes (k and l).}
+\begin{description}[labelsep=2em, align=right, labelwidth=3em, labelindent=4em, leftmargin=*]
+\item[\(g_n\)]{genotypes of individual \textit{n}}
+\item[\(Y_n\)]{phenotype of individual \textit{n}}
+\item[\(P(Y_i|g_i)\)]{penetrance probability applied over all individuals. This is the probability of a phenotype given a genotype.}
+\item[\(P(g_j)\)]{founder probability applied to founders only. Modelled under Hardy-Weinberg and assumes linkage equilibrium.}
+\item[\(P(g_m|g_k,g_l)\)]{transmission probability. Probability of non-founder genotypes (m) given parental genotypes (k and l).}
 \end{description}
 \end{spacing}
 
@@ -380,16 +368,125 @@ At each stage, the algorithm considers a simple nuclear family (mother, father, 
 
 This eventually resorts in a single node that contains the total LOD summation of the entire pedigree for a given marker.
 
-Over time, programs such as \textbf{Linkage} allowed multiple markers to be considered at the same time and gave rise to \gls{multi-point parametric} linkage analysis that became the standard for subsequent linkage packages.
+Over time, programs such as \gls{Linkage} allowed multiple markers to be considered at the same time and gave rise to \gls{multi-point parametric} linkage analysis that became the standard for subsequent linkage packages.
 
 The algorithm scales linearly with the number of individuals in a pedigree, but exponentially with the number of markers for a multi-point analysis; a severe limiting step in an age where the density of markers were on the increase.
 
-Generating fast and reasonable accurate LOD results became the main aim for a lot of programs, each performing a different approximation upon the LOD score calculations to generate a faster analysis. The program \textbf{Vitesse} was boasted as being able to analyse 8 markers jointly using "fuzzy inheritance".
+Generating fast and reasonable accurate LOD results became the main aim for a lot of programs, each performing a different approximation upon the LOD score calculations to generate a faster analysis. The program \gls{Vitesse} was boasted as being able to analyse 8 markers jointly using "fuzzy inheritance".
 
 Since haplotype reconstruction requires precise determination of a missing genotype, the Elston-Stewart algorithm was lacking in this regard.
 
 \subsubsection{Lander-Green}
+
+The era of haplotypes began with the Lander-Green algorithm, which aims to describe a probability distribution over all possible ways traits may segregate between individuals based on their genotypes for a given marker, whilst being dependent on adjacent markers.
+
+Under Lander-Green, a pedigree is represented using an \textit{inheritance vector}, which shows the transition of founder alleles to non-founders.
+
+\fignow{../writer/Background/images/inheritance_vector.png}
+	{A pedigree of phased individuals with inheritance vectors represented as arrows. Here the order of the genotypes are \{maternal,paternal\} indexed to \{0,1\}}
+	{fig:back_iv}
+	{0.5}
+
+
+The compact representation of the inheritance vector in Figure~\ref{fig:back_iv} would be 1000 since it is only the transition from the first generation mother \(\rightarrow\) child where the second allele (B\(\rightarrow\)1) is transmitted, whereas it is always the first allele(0) in all other cases.
+
+The importance of this for haplotype reconstruction is apparent, for it considers the complete inheritance probability distribution and any bisection of this set would capture a consistent set of genotypes as described by their vectors.
+
+This was the first linkage analysis that made use of a Hidden Markov Model (\gls{HMM}),  which denotes a dependent chain of unobserved hidden states with state probabilities, that transition between each other under transmission probabilities.  
+
+Kruglyak readily applied this to a a linkage model where the states mapped the possible inheritance vectors, and the transmission probabilities were the genotype likelihoods. The Elston-Stewart algorithm was then used to sum over the inheritance probability distribution at each locus.
+
+Over time, a few notable speedups were incorporated without the cost of accuracy incurred by approximation:
+
+\begin{description}
+\enumitem{Inheritance Reduction}{where potential inheritance vectors with incompatible genotypes between parent and offspring can be pruned from the analysis.}
+\enumitem{Founder Symmetry}{where inheritance vectors that differ only in a founder's phase are equal, which lends massive importance in the regard that most pedigrees do not set phase at all (Allegro).}
+\enumitem{Founder Couple Reduction}{where ungenotyped founder couples are equivalent to each other and need only be evaluated once (Allegro).}
+\end{description}
+
+Each of these cut the complexity of a pedigree in half, together producing a significant (~6x) reduction in bit-size.
+
+The Lander-Green algorithm scales linearly with the number of markers, a much better time complexity than the Elston-Stewart, however suffers drawbacks in the number of individuals in the pedigree where it scales exponentially with each meiosis.
+
+
 \subsubsection{Hidden Markov Models and Haplotype Reconstruction}
+
+The use of connected graphs in linkage analysis has the side benefit of being able to reconstruct haplotypes within the same run.
+
+In the HMMs, the linkage program transitions between a subset of inheritance vector states to determine the total likelihood by the time the last state in the chain is reached. The path taken by the linkage program is consistent; such that any paths that do not reach the last inheritance vector terminated early and were thus incompatible, but any paths that did make it through were conformed with the genotypes, and all the (now phased) genotypes that came before.
+
+That is not to say that there is only one true path\footnote{Though, at the molecular level there is only one true path, since the crossovers  occur at discrete loci.} in the HMM that is compatible with the observed genotypes; several may exist.  One way of finding the optimal path is to run an inference algorithm through the HMM chain to find the most likely sequence of states given a likelihood.
+
+
 \subsubsection{Viterbi Algorithm}
 
+One such algorithm is the forward-backward \textit{Viterbi} algorithm. A forward-backward algorithm works on the principle of performing two passes upon a HMM. Given a sequential set of observations:
+
+\begin{enumerate}[labelsep=2em, align=right, labelwidth=3em, labelindent=4em, leftmargin=*]
+\enumitem{Forward Pass}{Starts at the first state and steps forwards towards the end state, computing forward probabilities that set the probabilities of any given state ending at any other subsequent state. In linkage, this is essentially setting a weighted graph based on compatible inheritance vectors from the observed genotypes.}
+\enumitem{Backwards Pass}{After the forward pass, computes a set of backward probabilities that sets the probabilities of any given state observing any applicable previous state. This is essentially the same as the previous step}
+\end{enumerate}
+
+Once performed, a combined probability distribution is obtained to find the mostly likely state at any step in the chain.
+
+\fignow{../writer/Background/images/Viterbi-4.png}
+	{Fourth step of Viterbi}
+	{fig:backviterb}
+	{0.8}
+
+
+The Viterbi algorithm is an extension of this prototype that attempts to maximize the probabilities such that the optimal path can be traced by observing the most likely set of inheritance vectors upon the most likely set of founder alleles.
+
+This is still an approximation upon the data, since the most likely set of inheritance vectors only tells us how the alleles flow from generation to generation, but not necessarily the content of the alleles.
+
+
+
+
+
 \section{Summary}
+
+
+We have seen that there are two main limiting steps in linkage analysis algorithms that scale either with the number of meiosis or the number of markers. The Elston-Stewart algorithm's complexity scaled linearly with the number of meiosis by collapsing computations on pivot individuals, but scaled exponentially with the number of markers. 
+
+The Lander-Green-Kruglyak algorithm was the inverse of this; where  the number of meiosis caused an exponential increase in complexity due to the possible inheritance vector states doubling at each step.  The number of markers scaled linearly however, and this is what made it the most widely-adopted algorithm in linkage analysis programs, since the density of genotyping chips have only increased over the time.
+
+Hidden Markov Models lend their use to inheritance or descent diagrams that allow us to set phase at each genotype by following the most likely set of inheritance vectors.
+
+Haplotype reconstruction is by no means deterministic, as the optimal path as derived from the Viterbi algorithm may be just as likely as another path, especially for incomplete data where the potential alleles of untyped genotypes may have equal likelihood.
+
+
+The strength of the analysis ultimately lies in the observed genotypes, and some are more informative than others, as we explore in greater detail within the next chapter.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

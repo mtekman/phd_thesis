@@ -49,6 +49,11 @@
 %CODE LISTINGS
 \usepackage{color}
 \usepackage{listings}
+\usepackage{caption}
+
+% consistent listing spacing
+\usepackage{enumitem}
+\usepackage{lipsum}
 
 \lstset{
 	tabsize=4,
@@ -72,6 +77,19 @@
 	language=C++
 }
 
+\usepackage{footnote}
+%\makesavenoteenv{description}
+
+\usepackage{cancel} % i.e. cancel to zero in math mode
+
+%No indents
+%\setlength{\parindent}{15pt}
+
+%%% PAGE DIMENSIONS
+\usepackage[a4paper, total={5.5in,8in}]{geometry}
+\usepackage[T1]{fontenc} % set input encoding (not needed with XeLaTeX)
+
+
 
 %Verbatim in footnote
 \newsavebox\myVerb
@@ -79,11 +97,3 @@
 \newcommand*{\verbBox}{\usebox\myVerb}
 
 
-\usepackage{footnote}
-%\makesavenoteenv{description}
-
-\usepackage{cancel} % i.e. cancel to zero in math mode
-
-\usepackage[T1]{fontenc} % set input encoding (not needed with XeLaTeX)
-
-%%% PAGE DIMENSIONS

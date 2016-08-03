@@ -1,126 +1,154 @@
 %%% Glossary
 \usepackage{xifthen}
+\usepackage{glossaries}
 \glossarystyle{list}
 
 %% Script to grab italics from xhtml word file
 %grep -oP '(<span class="T6">)[^<]*(</span>)' Background.v1.html | awk -F ">" '{print "___"$2}' | awk -F '<' '{print $1"---"}' | sed 's/___/\\addgloss{/' | sed 's/---/}{FILL}/'
 
-\newcommand{\addgloss}[2]
+\newglossary[tlg]{bio}{tld}{tdn}{Biology}
+\newglossary[tlg]{comp}{tld}{tdn}{Computing}
+
+\newcommand{\addglossbio}[2]
 {
         \newglossaryentry{#1}{
+        		   type=bio,
+                name={#1},
+                description={#2}
+        }
+}
+
+\newcommand{\addglosscomp}[2]
+{
+        \newglossaryentry{#1}{
+        		   type=comp,
                 name={#1},
                 description={#2}
         }
 }
 
 
-\include{glossary}
+%\include{glossary}
 %%% Background
 % DNA
-\addgloss{nucleotides}{FILL}
-\addgloss{genome}{FILL}
-\addgloss{chromosomes}{FILL}
-\addgloss{nucleobase}{FILL}
-\addgloss{base pairs}{FILL}
-\addgloss{double helix}{FILL}
+\addglossbio{nucleotides}{FILL}
+\addglossbio{genome}{FILL}
+\addglossbio{chromosomes}{FILL}
+\addglossbio{nucleobase}{FILL}
+\addglossbio{base pairs}{FILL}
+\addglossbio{double helix}{FILL}
 %-    Polarity
-\addgloss{forward}{FILL}
-\addgloss{sense}{FILL}
-\addgloss{reverse}{FILL}
-\addgloss{antisense}{FILL}
+\addglossbio{forward}{FILL}
+\addglossbio{sense}{FILL}
+\addglossbio{reverse}{FILL}
+\addglossbio{antisense}{FILL}
 %-    Chromosomes
-\addgloss{chromatin}{FILL}
-\addgloss{haploid}{FILL}
-\addgloss{pairs}{FILL}
-\addgloss{diploid}{FILL}
-\addgloss{centromere}{FILL}
-\addgloss{telomeres}{FILL}
-\addgloss{homologs}{FILL}
-\addgloss{autosomal}{FILL}
-\addgloss{allosomal}{FILL}
-\addgloss{alleles}{FILL}
+\addglossbio{chromatin}{FILL}
+\addglossbio{haploid}{FILL}
+\addglossbio{pairs}{FILL}
+\addglossbio{diploid}{FILL}
+\addglossbio{centromere}{FILL}
+\addglossbio{telomeres}{FILL}
+\addglossbio{homologs}{FILL}
+\addglossbio{autosomal}{FILL}
+\addglossbio{allosomal}{FILL}
+\addglossbio{alleles}{FILL}
 %-     Genes and Function
-\addgloss{phenotype}{FILL}
-\addgloss{coding}{FILL}
-\addgloss{exons}{FILL}
-\addgloss{codons}{FILL}
-\addgloss{RNA polymerase}{FILL}
-\addgloss{ribosome}{FILL}
-\addgloss{open reading frame}{FILL}
-\addgloss{intergenic}{FILL}
-\addgloss{translated}{FILL}
-\addgloss{start codon}{FILL}
-\addgloss{stop codon}{FILL}
-\addgloss{mRNA}{FILL}
-\addgloss{uracil}{FILL}
-\addgloss{splicing}{FILL}
-\addgloss{transcription}{FILL}
-\addgloss{amino-acid}{FILL}
-\addgloss{meiosis}{FILL}
-\addgloss{UTR}{FILL}
+\addglossbio{phenotype}{FILL}
+\addglossbio{coding}{FILL}
+\addglossbio{exons}{FILL}
+\addglossbio{codons}{FILL}
+\addglossbio{RNA polymerase}{FILL}
+\addglossbio{ribosome}{FILL}
+\addglossbio{open reading frame}{FILL}
+\addglossbio{intergenic}{FILL}
+\addglossbio{translated}{FILL}
+\addglossbio{start codon}{FILL}
+\addglossbio{stop codon}{FILL}
+\addglossbio{mRNA}{FILL}
+\addglossbio{uracil}{FILL}
+\addglossbio{splicing}{FILL}
+\addglossbio{transcription}{FILL}
+\addglossbio{amino-acid}{FILL}
+\addglossbio{meiosis}{FILL}
+\addglossbio{UTR}{FILL}
 % Heredity
-\addgloss{zygote}{FILL}
-\addgloss{bivalent}{FILL}
-\addgloss{meiotic spindle}{FILL}
-\addgloss{metaphase plate}{FILL}
+\addglossbio{zygote}{FILL}
+\addglossbio{bivalent}{FILL}
+\addglossbio{meiotic spindle}{FILL}
+\addglossbio{metaphase plate}{FILL}
 %-     Recombination
-\addgloss{chiasmata}{FILL}
-\addgloss{crossover}{FILL}
-\addgloss{recombination frequency}{FILL}
-\addgloss{linkage disequilibrium}{FILL}
-\addgloss{Morgan}{FILL}
-\addgloss{crossover interference}{FILL}
+\addglossbio{chiasmata}{FILL}
+\addglossbio{crossover}{FILL}
+\addglossbio{recombination frequency}{FILL}
+\addglossbio{linkage disequilibrium}{FILL}
+\addglossbio{Morgan}{FILL}
+\addglossbio{crossover interference}{FILL}
 % Molecular Maps
-\addgloss{markers}{FILL}
-\addgloss{polymorphic}{FILL}
-\addgloss{biallelic}{FILL}
-\addgloss{co-dominance}{FILL}
-\addgloss{Hardy-Weinberg Equilibrium}{FILL}
+\addglossbio{markers}{FILL}
+\addglossbio{polymorphic}{FILL}
+\addglossbio{biallelic}{FILL}
+\addglossbio{co-dominance}{FILL}
+\addglossbio{Hardy-Weinberg Equilibrium}{FILL}
 %-       Markers
-\addgloss{minisatellite}{FILL}
-\addgloss{VNTR}{FILL}
-\addgloss{microsatellite}{FILL}
-\addgloss{STR}{See microsatellite}
-\addgloss{SNP}{FILL}
+\addglossbio{minisatellite}{FILL}
+\addglossbio{VNTR}{FILL}
+\addglossbio{microsatellite}{FILL}
+\addglossbio{STR}{See microsatellite}
+\addglossbio{SNP}{FILL}
 % Modes of Inheritance
-\addgloss{homozygous}{FILL}
-\addgloss{heterozygous}{FILL}
+\addglossbio{homozygous}{FILL}
+\addglossbio{heterozygous}{FILL}
 %-   Mendel's Lawss
-\addgloss{recombinant}{FILL}
-\addgloss{non-recombinant}{FILL}
-\addgloss{dominant}{FILL}
-\addgloss{recessive}{FILL}
+\addglossbio{recombinant}{FILL}
+\addglossbio{non-recombinant}{FILL}
+\addglossbio{dominant}{FILL}
+\addglossbio{recessive}{FILL}
 %-  Mendel's Laws Revised
-\addgloss{multi-allelic}{FILL}
-\addgloss{polygenic traits}{FILL}
-\addgloss{codominance}{FILL}
-\addgloss{HWE}{FILL}
-\addgloss{incomplete dominance}{FILL}
-\addgloss{pedigree}{FILL}
-\addgloss{founders}{FILL}
-\addgloss{non-founders}{FILL}
-\addgloss{founder alleles}{FILL}
-\addgloss{bit size}{FILL}
-\addgloss{consanguineous}{FILL}
-\addgloss{penetrance function}{FILL}
-\addgloss{carriers}{FILL}
-\addgloss{autozygous}{FILL}
+\addglossbio{multi-allelic}{FILL}
+\addglossbio{polygenic traits}{FILL}
+\addglossbio{codominance}{FILL}
+\addglossbio{HWE}{FILL}
+\addglossbio{incomplete dominance}{FILL}
+\addglossbio{pedigree}{FILL}
+\addglossbio{founders}{FILL}
+\addglossbio{non-founders}{FILL}
+\addglossbio{founder alleles}{FILL}
+\addglossbio{bit size}{FILL}
+\addglossbio{consanguineous}{FILL}
+\addglossbio{penetrance function}{FILL}
+\addglossbio{carriers}{FILL}
+\addglossbio{autozygous}{FILL}
 % Haploblocks
-\addgloss{unphased}{FILL}
-\addgloss{phased}{FILL}
-\addgloss{haplotype}{FILL}
-\addgloss{haploblock}{FILL}
+\addglossbio{unphased}{FILL}
+\addglossbio{phased}{FILL}
+\addglossbio{haplotype}{FILL}
+\addglossbio{haploblock}{FILL}
 %Linkage Analysis and Haplotype Generation
-\addgloss{co-segregate}{FILL}
-\addgloss{LOD}{FILL}
-\addgloss{peeling}{FILL}
-\addgloss{multi-point parametric}{FILL}
-\addgloss{inheritance vector}{FILL}
-\addgloss{forward probabilities}{FILL}
-\addgloss{backward probabilities}{FILL}
+\addglossbio{co-segregate}{FILL}
+\addglossbio{LOD}{FILL}
+\addglossbio{peeling}{FILL}
+\addglossbio{multi-point parametric}{FILL}
+\addglossbio{inheritance vector}{FILL}
+\addglossbio{forward probabilities}{FILL}
+\addglossbio{backward probabilities}{FILL}
+\addglossbio{HMM}{Hidden Markov Models}
+
+
+%METHODS
+\addglossbio{trio}{FILL}
+
+%LINKAGE
+\addglosscomp{journaling}{}
+\addglosscomp{SSD}{}
+\addglosscomp{paging}{}
+\addglosscomp{RAM}{}
+\addglosscomp{striping}{}
+\addglosscomp{parity}{}
+\addglosscomp{RAID}{}
+
 
 
 
 
 %% END
-\makeglossaries

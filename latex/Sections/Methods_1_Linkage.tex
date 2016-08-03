@@ -1,36 +1,203 @@
 \chapter{Methods - Pipeline}
 
+\fignow{../writer/Methods/images/pipeline_map.png}
+	{Pipeline overview}
+	{fig:methpipe}
+	{1.1}
+
 \section{Linkage Pipelines and Processing}
 
+
+
 \subsection{Input Data}
-\subsubsection{Pedigree}
-\subsubsection{Genotypes}
-\begin{description}
-\item[Varied Set]{}
-\item[High Quality]{}
-\item[Non-Zero Allele Frequencies (optional]{}
-\item[Known Inheritance Pattern (optional)]{}
+
+The strength behind any linkage analysis does not lie solely with the linkage program, but with the quality of the input data that the program processes. An input data set consisting of mostly uninformative markers will not yield any meaningful output data, since the linkage program will be processing ambiguous data and subsequent runs may produce wildly varying results. In order to preserve some consistency across subsequent runs, we must be more selective in our choice of input data such that we only include markers that have a high information content in relation to the sample data set.
+
+\subsubsection{Pedigree (pedfile.pro)}
+
+This file contains the information upon each family member, with every line denoting a single individual in standard LINKAGE\footnote{Also referred to as pre-MAKEPED format.} format. 
+
+An individual's line consists of data that numerically maps their sex ({male\(\rightarrow\)1, female\(\rightarrow\)2,  unknown\(\rightarrow\)0}) and their phenotypic status ({unaffected\(\rightarrow\)1, affected\(\rightarrow\)2,  unknown\(\rightarrow\)0}). Depending on the program used, an unknown sex may not be permitted. While it is not uncommon to see an unknown affectation, it is generally of no use to include it within a linkage run as it adds no power to the analysis. 
+
+Other fields record the relationship of that individual to other family members (mother, father). This mother-father-offspring grouping is referred to as a \gls{trio}. 
+
+\begingroup
+\begin{lstlisting}[label=verb:pedfile]
+FamilyID     PersonID     FatherID     MotherID     Sex     Affectation
+311          101           0            0           1       1
+311          102           0            0           2       2
+311          201           101          102         1       2
+311          202           101          102         2       1
+\end{lstlisting}
+\captionof{lstlisting}{An example pedigree file, showing members of family 311, with mother and father of 102 and 101 respectively, and their offspring 201 and 202.}
+\endgroup
+
+Siblings are not stated within a trio, as this would introduce a great deal of redundancy for individuals that share multiple siblings\footnote{who would then be stated multiple times at later points in the file}. Instead, these relationships are inferred under the rubric that trios who share the same set of parents must be siblings. Similarly, (great-)grandparents and (great-)grandchildren are inferred from recursing up through a parent's identifying record, or down through an offspring's.
+
+Individuals without parents are given a null pointer to refer to\footnote{usually a '0', where '0' is a protected identifier for a non-existent individual.}, but they are only of use to an analysis if they have offspring (and are founders).
+
+
+Extra fields are also permitted, but these are typically used to store genotype data which can be housed in a separate file.
+
+Individual IDs can be alphanumeric, but most linkage programs were written at a time where it was more efficient to use plain integers, and precautious measures have taught us to follow this convention. 
+
+Another convention of ours is to follow an individual identifier naming scheme of:
+
+$$ <generation><gender (odd/even)> $$
+
+Generation begins at 1 for the first generation, and becomes 2 for the second generation and so forth. The gender specifier is the lowest unused integer that is odd for males and even for females.
+
+e.g.  12 the first described female in the first generation, 45 the third described male in the fourth generation (where 41 and 43 have already been used).
+
+It is not a necessary rubric, but it facilitates in the creation of large (and often consanguineous) pedigrees.
+
+\subsubsection{Genotypes (genotypes.dat)}
+
+If the pedigree file does not contain genotypic data, then it is stored separately here. This is typically a truncated readout of the genotyping chip output file. 
+
+The full genotype output report is paired with map data that contains marker positions as well as the AB genotypic call for each individual that was genotyped under the same chipset. Calls include, but are not limited to, a combination of A and/or B
+
+The first type of calls (AA, AB, BB) relate to the actual binary allele that each individual is supposed to exhibit in an present/not-present manner. These are pure genotypes where phase is not present, and thus a call of BA would make no sense in this context.
+
+The second type of calls (NC, - -, ??) are error messages and attribute a misfire (or 'No Call') of the chip such that the allele could not be determined.
+Often the positional data relating to the markers are split into their own map file, leaving just a simple table of marker names and sample data.
+
+\begingroup
+\vspace{10pt}
+\begin{lstlisting}
+		12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28
+rs12345	AA	AA	AA	AA	AA	AA	AA	AA	AA	AA	AA	AA	AA	AA	AA	AA	AA
+rs12346	AB	AA	AA	AB	BB	BB	NC	BB	AA	BB	AB	NC	NC	AB	BB	AB	BB
+rs12456	BB	AB	AA	AB	AA	BB	AA	AA	AA	BB	AB	AB	AA	AA	AA	AB	AB
+\end{lstlisting}
+\vspace{-10pt}
+\captionof{lstlisting}{Sample genotyping output readout file, with marker identifiers (without positions) as row headers, and sample identifiers as column headers.}
+\endgroup
+
+In a given sample context, not all markers are as informative as each other.  Informative markers are those that satisfy the following criteria:\label{informativemarkers}
+
+\begin{description}[labelsep=4em, align=left, labelwidth=4em, labelindent=2em, leftmargin=*]
+
+\item[Varied Set]{\hfill \\There is enough variation in the genotypes for all samples that the marker covers. This ensures that the linkage algorithm can distinguish the descent of maternal and paternal alleles without too much ambiguity.}
+
+\item[High Quality]{\hfill \\A good proportion (approximately at least 80\%) of the calls are not misfires. One or two No Calls in a small set can be resolved by the linkage analysis to reconstitute the missing genotypes from incomplete data, but only within reasonable limits.}
+
+\item[Non-Zero Allele Frequencies (optional]{\hfill \\Each marker is host to meta-statistics based upon the pool of samples it was used upon, the most relevant statistic being the minor allele frequency, which alludes to the representation of the less-likely allele in the overall population. Markers with 0:1 or 1:0 proportions are effectively homozygous\footnote{Though the genotype may indeed be heterozygous} across the entire population and can be said to not contribute a varied enough set for linkage.}
+
+\item[Known Inheritance Pattern (optional)]{\hfill \\The HapMap project was the first international effort to create a haplotype map of the human genome. Markers within this database are extremely useful for linkage since the markers tend to be quite common under the criteria that each allele is present in at least 1\% of the population.}
 \end{description}
+
 
 \subsubsection{Minor Allele Frequency (maf.txt)}
 
+This file contains a map of markers and their associative minor allele frequencies in context to a super-population (European, African, Asian). 
+
+In the earlier days of linkage pipeline filtering, this was typically based upon historical HapMap data, but in more current renditions can be derived from a variety of different sources; the most recent being the calculated allele frequencies from the 1000 Genomes Project (Pilot 1 data) via the \textbf{bcftools} commandline utilities.
+
+The markers in this file are used as selection criteria for generating a map, such that any markers with extremely (un)prevalent frequencies can be filtered out due to lack of informativeness.
+
 \subsubsection{Genotype Map and Linkage Map Creation (map.txt)}
 
-\subsection{snpbutcher}
+The genotype map is the file that comes paired with the genotype call data, such that the markers described in the output point to a physical or genetic map. Where genetic map data is not present, the physical location is used in place under the well-grounded assumption that genetic distance scales with physical distance, and that the marker ordering remains the same.
 
+\begingroup
+\vspace{10pt}
+\begin{lstlisting}
+Chr     Name    0.000000        0       Name    x
+01      rs3094315       0.752565        752565  rs3094315       x
+01      rs2073813       0.753540        753540  rs2073813       x
+01      rs2905040       0.770215        770215  rs2905040       x
+01      rs12124819      0.776545        776545  rs12124819      x
+\end{lstlisting}
+\vspace{-10pt}
+\captionof{lstlisting}{Map file describing markers in a genotyping chipset. Headers denote: chromosome, marker identifier, genetic map distance (cM), and physical map distance.}
+\endgroup
+
+For a given genotype chipset there is an associated map file, and as the progression of chip-sequencing technology has rapidly developed, the map files have gotten significantly larger in accordance. As of 2012, Illumina's HumanOmni1S BeadChip kit boasts just over 1 million markers\footnote{\tiny\url{http://support.illumina.com/array/array_kits/humanomni1s-8_beadchip_kit/specifications.html}}.
+
+As stated before, Lander-Green based linkage analysis scales linearly with the number of markers, making it computationally impractical to use the entire map set. Instead we use a smaller sub-selection of informative SNPs under the same principles described on page~\pageref{informativemarkers}.
+
+Genotyping chipsets have fixed buffer sizes, and so if there are not enough members in a pedigree to satisfy the buffer, it is often economical to fill empty slots with individuals from unrelated pedigrees. As a result, this can lead to a very varied set of alleles across a given marker, artificially making it seem more informative (in context of the pedigree in question) than it actually is. 
+
+Though there is nothing wrong in including uninformative SNPs in a linkage analysis, it is up to the researcher whether they wish to trim the genotypes file so that it only contains members of the pedigree.
+
+The Python tool \gls{snpbutcher} was developed to facilitate in the creation of these maps under the aforementioned filtering precedents, with the added inclusion of spacing criterion as well as a number of other different optional parameters (see Appendix section <XXXREF> for full program functional disclosure), with all parameters saved to a log file. 
+
+Linkage analyses before dense genotyping chipsets allowed for a spacing requirement of 0.2 cM ($\sim$ 10,000 markers) between any two adjacent markers, but subsequent analyses in more modern times have iteratively led to a default spacing requirement of approximately 0.05 cM ($\sim$ 40,000 markers), keeping the marker count low for the linkage algorithm without compromising the power of the analysis.
+
+The "resolution" of a linkage analysis is heavily dependent upon the number of markers used in the analysis, since the spacing between the flanking markers that the disease locus co-segregates with has a centiMorgan precision equal to the minimum spacing parameter used to generate the map.
+
+
+%\subsection{snpbutcher}
 
 \section{Pre-Runtime Configuration}
+
 \subsection{Folder Conventions}
+
+All four input files (pedfile.pro, map.txt, maf.txt, genotypes.dat) are placed into their own folder, following a rigid folder naming convention of: 
+
+\begin{verbatim}
+/path/to/working/directory/<projectID>_<projectName>/<runNumber>[_runName]_<date>
+\end{verbatim}
+
+e.g. {\bf\footnotesize /scratch/Linkage/124\_boneitis/02\_correctedpedigree\_20120423},  where:
+\begin{description}
+\item{{\bf\footnotesize /scratch/Linkage/} is the folder of the working directory relative to the root file system
+124\_boneitis refers to a unique project identifier of 124, and the description of the project's phenotype\footnote{Boneitis is a dystrophic bone disorder that if left untreated can lead to comically accelerated TV references.}.}
+\item{{\bf\footnotesize 02\_correctedpedigree\_20120423} identifies that this is the second linkage run on the same input data set (corrected for minor pedigree changes) on the 23rd April 2012.}
+\end{description}
+
+This ensures that each linkage project is uniquely identified by a project identifier, such that subsequent analyses can be run in the same master folder to reduce the number of repeating run numbers in the parent folder.
+
+Once an analysis is fully complete (i.e. it is understood that there will be no more subsequent runs on the same input data set for at least a period of a month), then the project should be archived into allocated storage.
+
 \subsection{Effective Filesystem Management}
+
+<XXX Maybe this section should go in the discussion: Why Upgrading Disk Technology Wont Necessarily Lend a Performance Increase...>
+
+The working directory should be seen as a temporary file system at best, since many linkage programs generate a substantial amount of temporary files during processing. Though modern file systems are excellent at keeping track of and recovering files (a task known as \gls{journaling}), it is still good practice to "mount a scratch monkey" such that temporary working files are isolated away from archived ones in distinctly separate partitions. 
+
+It is preferable to isolate the two file systems on different disks altogether, such that a disk-wide read error on a given hard disk won't affect the operation of another. Most modern file systems have journaling enabled by default, which writes extra data to disk so that a recovery is possible in the event of a crash, but this becomes more problematic with Solid State Drives (\gls{SSD}s) which have a limited number of read/write operations, and are prone to seizing should an operating system over-breach those limits.
+
+This is not an improbable occurrence; operating systems routinely write temporary files to disk in order to manage RAM constraints in a process known as \gls{paging}, where not immediately required portions of system memory can be sequestered into slower disk storage to free up space in the RAM for more higher priority tasks. 
+
+When a system begins to run low on \gls{RAM} (as in the frequent case of extensive linkage analysis), a great deal of paging is performed to keep the linkage program in memory, leading to a substantial amount of disk writes on a journaled file-system. Mechanical (spin) drives can handle these read/write requests robustly, but they are an order of magnitude slower than SSDs and significant bottlenecks can occur where the system has to wait for the disk to be ready in order to perform a block\footnote{If multiple sequential operations are requested on same contiguous portion of a disk, then the operating system groups the individual requests under a large contiguous 'block' request, that performs one long read/write operation instead of several short ones.}    read/write to it.
+
+It is clear that SSDs offer no advantage at all in the use-case of frequent large temporary file activity, since though the operating system will rarely have to wait in order to perform a read/write, the limitations on the number of these operations shortens their lifetime considerably.
+
+The best long-term compromise is to use mechanical disks with a filesystem without journaling; either an older filesystem where journaling was never implemented (though file size constraints may be enacted), or a newer filesystem where journaling is disabled upon initialization. This reduces the total number of read/write operations whilst still ensuring disk longevity.
+
+Recoverability may be jeopardized, but the temporary nature of the files within the system imply that a re-run of the same analysis would not be resumable in any case; for it is the operating system that dispatches the temporary files to the linkage programs, and not the linkage program itself (with the  notable exception of \gls{Simwalk}).
+
+
 \subsubsection{RAID Configuration}
 
+One extra caveat to reduce the number of operations upon a single disk \textit{and} keep some level of redundancy is to distribute the load across several disk drives in a standard redundant array of independent disks (\gls{RAID}); specifically a RAID-5 level setup. RAID relies on the method of storing contiguous data across several mediums (a concept known as \gls{striping}), as well as ensuring the data is correct and error-checkable without having to scan the entire block of data (a concept known as \gls{parity}). The failure of one disk drive would not be enough to impede the setup and an ongoing analysis could be reconstituted from the other remaining disks, though a minimum of three identically sized disks is required.
+
+These features lend well to a large temporary filesystem, since the storage capacities of multiple disks can now be combined to store a great amount of data, as well as the number of operations on any one disk being reduced by a factor of \textit{n} (for \textit{n} disks in the setup). The setup will still have the same read/write speeds as an ordinary disk, but there will not be any added complexity since the operating system will detect it as a single volume.
+
 \subsection{User Confirmation and Setup}
-\begin{enumerate}
-\item[Encapsulation]{}
-\item[Display Detection]{}
-\item[Input Parsing]{}
-\item[Run Configuration]{}
-\end{enumerate}
+
+%Once the input files have been set, the \gls{linkage_pipeline.sh} script is called to perform a thorough assessment upon the input files to determine if they are indeed primed correctly for analysis, and then acts as as a pre-analysis screening for the user to set run parameters and perform a double-confirmation that the set parameters are indeed correct. In order, the tasks are performed are:
+
+%\begin{enumerate}
+%\item[Encapsulation]{The \gls{GNU}-based \gls{screen} session is initiated (if not already present); a program that allows the user to re-access an ongoing process†. Multiple linkage analyses can be run at the same time through different screen sessions without interfering with one another, though this is not encouraged for large projects since they would still be competing for the same system resources.}
+%
+%\item[Display Detection]{This portion of the script detects whether there is a user logged on remotely or locally, and forwards graphical applications accordingly so that they appear either on their machine, or locally on the host machine. This has the added benefit of the user being able to inspect the data remotely during the pre-filter stage described later.}
+%
+%\item[Input Parsing]{The input files are checked for consistency with one another, most of the work being delegated to the Python script \gls{prelim_check.py}, which asserts the following:
+
+%\begin{enumerate}
+%\item{Folder naming conventions are adhered to in the current working directory.}
+%\item{Genotype file has correct headers (i.e. are present and numeric), and that marker identifiers are also present.}
+%\item{Pedigree file specifies the correct project ID, contains all minimally required columns (family, id, father, mother, sex, and affectation), and has no duplicate individuals.}
+%\item{The genotype and pedigree file both contain the same set of IDs. Non-fatal error messages occur when the individuals specified in the pedigree are only a subset of all the individuals genotyped under the same chipset, likely because the user did not trim the genotypes beforehand. In this case, the user is prompted to visually evaluate the IDs that will not be assessed in the linkage and asked for confirmation, where a termination signal is sent upon refusal.}
+%
+%\end{enumerate}
+%
+%}
+%\item[Run Configuration]{}
+%\end{enumerate}
 
 
 
