@@ -89,11 +89,15 @@
 \usepackage[a4paper, total={5.5in,8in}]{geometry}
 \usepackage[T1]{fontenc} % set input encoding (not needed with XeLaTeX)
 
+%Numbering for subsubsub
+\setcounter{secnumdepth}{4}
+\renewcommand{\thesubsubsection}{\roman{subsubsection}}
 
 
 %Verbatim in footnote
 \newsavebox\myVerb
 \newenvironment{verbbox}{\lrbox\myVerb}{\endlrbox}
 \newcommand*{\verbBox}{\usebox\myVerb}
+
 
 

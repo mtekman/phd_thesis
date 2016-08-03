@@ -178,72 +178,323 @@ These features lend well to a large temporary filesystem, since the storage capa
 
 \subsection{User Confirmation and Setup}
 
-%Once the input files have been set, the \gls{linkage_pipeline.sh} script is called to perform a thorough assessment upon the input files to determine if they are indeed primed correctly for analysis, and then acts as as a pre-analysis screening for the user to set run parameters and perform a double-confirmation that the set parameters are indeed correct. In order, the tasks are performed are:
+Once the input files have been set, the \gls{linkagepipeline} script is called to perform a thorough assessment upon the input files to determine if they are indeed primed correctly for analysis, and then acts as as a pre-analysis screening for the user to set run parameters and perform a double-confirmation that the set parameters are indeed correct. In order, the tasks are performed are:
 
-%\begin{enumerate}
-%\item[Encapsulation]{The \gls{GNU}-based \gls{screen} session is initiated (if not already present); a program that allows the user to re-access an ongoing process†. Multiple linkage analyses can be run at the same time through different screen sessions without interfering with one another, though this is not encouraged for large projects since they would still be competing for the same system resources.}
-%
-%\item[Display Detection]{This portion of the script detects whether there is a user logged on remotely or locally, and forwards graphical applications accordingly so that they appear either on their machine, or locally on the host machine. This has the added benefit of the user being able to inspect the data remotely during the pre-filter stage described later.}
-%
-%\item[Input Parsing]{The input files are checked for consistency with one another, most of the work being delegated to the Python script \gls{prelim_check.py}, which asserts the following:
+\begin{enumerate}[labelsep=1em, align=left, labelwidth=4em, labelindent=2em, leftmargin=*]
+\lineitem{Encapsulation}{The \gls{GNU}-based \gls{screen} session is initiated (if not already present); a program that allows the user to re-access an ongoing process. Multiple linkage analyses can be run at the same time through different screen sessions without interfering with one another, though this is not encouraged for large projects since they would still be competing for the same system resources.}
 
-%\begin{enumerate}
-%\item{Folder naming conventions are adhered to in the current working directory.}
-%\item{Genotype file has correct headers (i.e. are present and numeric), and that marker identifiers are also present.}
-%\item{Pedigree file specifies the correct project ID, contains all minimally required columns (family, id, father, mother, sex, and affectation), and has no duplicate individuals.}
-%\item{The genotype and pedigree file both contain the same set of IDs. Non-fatal error messages occur when the individuals specified in the pedigree are only a subset of all the individuals genotyped under the same chipset, likely because the user did not trim the genotypes beforehand. In this case, the user is prompted to visually evaluate the IDs that will not be assessed in the linkage and asked for confirmation, where a termination signal is sent upon refusal.}
-%
-%\end{enumerate}
-%
-%}
-%\item[Run Configuration]{}
-%\end{enumerate}
+\lineitem{Display Detection}{This portion of the script detects whether there is a user logged on remotely or locally, and forwards graphical applications accordingly so that they appear either on their machine, or locally on the host machine. This has the added benefit of the user being able to inspect the data remotely during the pre-filter stage described later.}
+
+\lineitem{Input Parsing}{The input files are checked for consistency with one another, most of the work being delegated to the Python script \gls{prelimcheck}, which asserts the following:
+
+\begin{enumerate}
+\item{Folder naming conventions are adhered to in the current working directory.}
+\item{Genotype file has correct headers (i.e. are present and numeric), and that marker identifiers are also present.}
+\item{Pedigree file specifies the correct project ID, contains all minimally required columns (family, id, father, mother, sex, and affectation), and has no duplicate individuals.}
+\item{The genotype and pedigree file both contain the same set of IDs. Non-fatal error messages occur when the individuals specified in the pedigree are only a subset of all the individuals genotyped under the same chipset, likely because the user did not trim the genotypes beforehand. In this case, the user is prompted to visually evaluate the IDs that will not be assessed in the linkage and asked for confirmation, where a termination signal is sent upon refusal.}
+
+\end{enumerate}
+
+}
+\item[Run Configuration]{The user is prompted for analysis-specific options: dominant or recessive; autosomal\footnote{It should be noted that even if an autosomal analysis is specified, the genotypes must still contain chromosome X markers for accurate gender detection in the next section.} or X-linked; single-core or multi-core. Since chromosomes segregate independently, the multi-core option allows for multiple chromosomes to be evaluated simultaneously using the GNU \gls{parallel} framework. Once set, the user is presented with the options they just specified, and if all is correct, a log of what was just entered is stored in a hidden file to be used in readme generation later. At this stage, the appropriate pipeline script is started.}
+\end{enumerate}
 
 
 
 \section{Runtime Filtering}
 
+Filtering is the first and foremost important step in the entire pipeline. The genotypes, pedigrees, and markers are all checked for relational consistency and preliminary tests are run to better gauge the data. The filtering step is split into three main script components: \gls{autostage1}, \gls{autostage2}, and \gls{autostage3}.
+
 \subsection{auto\_stage1.sh}
+
+This script is split into four main components: pedigree checking, gender checking, relationship priming, relationship checking.
+
 \subsubsection{Pedigree Check}
+
+The first stage involves re-checking the pedigree for inconsistencies as before (duplicates, project IDs), but the \gls{Perl} program \gls{HaploPainter} goes deeper to also follow the relationship in all trios and check that each member is defined. If no errors are discovered, a PDF of the pedigree is generated and the pipeline resumes.
+
 \subsubsection{Gender Check}
+
+Here, the Perl program \gls{Alohomora} reads in the map file and the maf file, where the minor allele frequencies are mapped to the markers and then compared with the genotypes by counting the number of heterozygous SNPs in chromosome X. Gender detection relies on the ratio of the heterozygous alleles of females against the hemizygous alleles of males towards the q-arm of chromosome X, due to a shortened Y chromosome in the males. Errors at this stage are rare, but are often caused by sample mix up, and can be rectified by changing pedigree members to their correct genders in the input pedfile.
+
+The program outputs a relationship file containing a mixture of pedigree data and genotypes which is to be used in the next step.
+
 \subsubsection{Relationship Priming}
+
+This step is a correctional one, only coming into effect if the output relationship file from the previous step is empty. This occurs if the maf file contains allele frequencies for no more than six markers that are present in the map, showing poor overlap.
+
+The frequencies in the maf file apply directly to HapMap markers, but the HapMap project has not kept up with the increasingly dense genotyping chipsets, so modern allele frequencies need to be generated from new data (i.e. 1000 Genomes allele frequencies from sub-populations).
+
+This can be achieved by regenerating the maf file from new data sources, or creating a “dummy” allele frequencies by assuming that all alleles are equally represented across populations. This is a depreciated step that should never be used for a true analysis, but it exists in the case where the user merely wants to gauge the overall linkage before embarking on a more thorough study.
+
+In this case, a new maf file is generated and the previous step is re-run to generate a valid relationship input file.
+
 \subsubsection{Relationship Checking}
 
+The next step is the visual inspection of the genotypes through the genetics relationship representation program \gls{GRR}. GRR evaluates the genotype distribution of between related individuals and determines how much allele-sharing is occurring compared to how much is expected, classed by their respective levels of relation. Unrelated individuals will share fewer alleles than more related individuals, and this can be plotted in a graph with axes of standard error vs standard deviation. 
+
+\fignow{../writer/Methods/images/GRR.jpg}
+	{A simulated data set showing relationship clusters coloured by type and plotted by mean against standard deviation.}
+	{fig:methgrr}
+	{0.8}
+	
+GRR uses \textit{identity-by-state} (\gls{IBS}) allele sharing in its metrics, allowing it to identify monozygotic twins (who share identical alleles) without having trace haplotypes. 
+
+Each point is formed by querying the relationships between any two individuals, coloured by the type of relationship specified in the pedigree, and plotting the mean against the standard deviation of the allele's being shared.
+
+This forms distinct clusters, where each cluster is typically a representation of a single relationship type (siblings, half-siblings, parent-offspring, unrelated). This display is crucial, for if there is invalid clustering or mixing, then these are alarm signals for the user to terminate the pipeline.
+
+In Figure 1, we can see a single red dot in the bottom-lefthand corner. Red indicates that the pedigree states that they are siblings, but they are somehow skewed far from the main Sib-pair group. GRR allows you to click on the dot and examine the relationship, and in this case it becomes apparent that this sibling relation has identified a monozygotic twin pair who share identical alleles, giving them an extremely high IBS score.
+
+There are also two unrelated relationships with a near-perfect high mean score, indicating once more a duplicated set of alleles, but in this case likely a sample or pedigree mix up; either the same individual was genotyped twice, or the pedigree did not state they were related, or the pedigree specifies different individuals for the same set of genotypes.
+
+The green Half-sibs seem to be split into different groups of Unrelated and Sib-pairs, as well as a small cluster of Sib-pairs within the Unrelated. Both hint that a restructure of the pedigree may be required due to erroneous information specified in the pedigree, likely due to obfuscated parentage.
+
+Should the relationships cluster improperly, the user must terminate the pipeline and re-evaluate their input before continuing.
+
+
 \subsection{auto\_stage2.sh}
+
+This stage performs fast preliminary linkage that ultimately checks for Mendelian inheritance, and gives an approximate overview of what linkage scores we can expect.
+
 \subsubsection{Mendelian Inheritance Check}
+
+Mendelian errors are detected very quickly through the examination of trios, where a marker is flagged if a child's genotype contains an allele that could not have possibly been inheriting from their parents.  Such errors can be indicative of non-Mendellian inheritance models such as trinucleotide repeat disorders or genomic imprinting <XXXREF>, but are typically more associated with the low error rate (0.01\%) of genotyping chipsets <XXXREF>(Saunders et al., 2007)
+
+A list of markers with unlikely genotypes are generated from this checking step, and plotted in a chart of physical position against error frequency. For \textit{n} families, the maximum error count is \textit{n}, and markers with an error frequency greater than 1 are very indicative of poor quality.
+
+In a typical linkage analysis of 40,000 markers an average of 5 erroneous markers is expected, and this scales linearly with the number of markers.
+
+Higher numbers of erroneous markers are not uncommon ( 10 – 30 ) as long as they are sparsely distributed across the genome. Closely packed clusters of markers numbering greater than 50 usually suggest bad parentage in the pedigree, and several clusters totalling more than 150 are a clear sign that the entire pedigree requires re-verification.
+
+This is a user-evaluated step, with a PDF of the plot being displayed on the screen, so it is up to the user to terminate the pipeline if the situation requires it.
+
+
 \subsubsection{Preliminary Linkage Overview}
+
+Once the erroneous markers from the list of unlikely genotypes have been removed, the linkage analysis program \gls{Merlin} is started. The error detection  suite detects genotyping errors by inferring inconsistent haploblocks in otherwise consistent stretches of alleles between siblings. Such blocks are easily detectable by searching for double recombinations within small marker intervals where the likelihood of such an event occurring is extremely improbable.
+
+\fignow{../writer/Methods/images/merlin_error.png}
+	{Two siblings have identical genotypes over a given allele (left), compared to the same alleles but with one contradicting genotype (right), indicating an unlikely double recombination event and a likely genotyping error}
+	{fig:methmerl}
+	{0.5}
+
+Another output list of erroneous markers is generated from this analysis and passed into the next section. Merlin performs a rudimentary pass over a small subset of these markers ( $\sim$ 5,000 markers) to give a preliminary linkage plot that works to at least exclude regions of linkage.
 
 \subsection{auto\_stage3.sh}
 
+This stage does not perform any filtering, but uses Merlin to generate input files for the main three linkage programs in the pipeline: \gls{Allegro}, \gls{Simwalk}, and \gls{Genehunter}.
+
+Each program is given its own folder, and pre-existing folders (from a previous run where errors were flagged) are renamed with a timestamp suffix ( e.g. allegro \(\rightarrow\) allegro-2016-04-02\_10-58 ).
+
 
 \section{Runtime Linkage}
+
+Only Allegro and GeneHunter are run by default, and they are run sequentially so as not to impede the performances of one another. Though Simwalk input files are generated, they are not used unless further analysis is required.
+
+This is the longest stage of the entire pipeline, with the previous filtering (auto) stages taking no longer than 5 minutes. Here, the rest of the pipeline can take anything from 10 minutes for small pedigrees, and then any interval from 10 hours to over a 100 hours for pedigrees larger than 19 bits.
+
 \subsection{Preliminary LOD estimation}
+
+The first step is to produce a maximum estimated LOD (\gls{ELOD}) score, using a simulated data upon the pedigree.  This is produced by the \gls{Python} script \gls{clodhopper.py} which generates false linkage files for both Allegro and Genehunter using the shortest chromosome input files as templates (chromosome 21).
+
+The maximum ELOD score is parsed straight from the output files, storing largest result in a parent folder, and then all related files are deleted in preparation for the real linkage analysis. Scores between Allegro and GeneHunter tend to differ by only $\pm$ 0.2. Any larger discrepancies are suspect, and usually prompt a Simwalk run as a precautionary third control.
+
 \subsection{Simwalk}
+
+Though Simwalk is not run by default it is useful to talk about it before Allegro and Genehunter, since it is the more classically robust linkage program with a longer publication history. It is generally one order slower than more modern linkage programs and is not able to process X-linked inheritance models effectively, which is why it is not included by default.  Analysis on moderately sized 19-bit pedigrees can take several days to complete. There are methods we designed to increase its throughput, but these are discussed later (see page <XXXRef>). 
+
+
 \subsection{GeneHunter}
+
+GeneHunter is one of the core linkage programs, and is used as the main secondary control to Allegro. It is by far the most verbose of the linkage programs, and terminal multiplexers such as screen should take care not to enter a buffer mode (such as copy) should the buffer grow too large and unresponsive from the copious verbose output. It is wise to disconnect from a screen session to let this part of the pipeline run unmonitored, only checking in periodically from time to time if warranted.
+
 \subsection{Allegro}
+
+The fastest, memory compact, and consistently accurate linkage program in the entire runtime linkage suite. Allegro’s main strength comes from its ability to perform multi-point parametric linkage and haplotype reconstruction within the same pass. For a pedigree under 19-bits, it performs linkage upon the entire genome with an average time of 10 mins. The real bottleneck occurs for any pedigrees outside of this limit, but this is addressed in the next chapter (see the Large Pedigrees section on page~\pageref{ref:meth:largepeds} ).
+
 
 \section{Post-Linkage Processing}
 
+\begin{lrbox}\myVerb2\scriptsize
+    \verb!find ./ -type d -exec [ ls {} | grep \b[0-9]+\b ] && rm {} \;!
+\end{lrbox}%
+
+After each linkage step, clean up operations are performed to reclaim the disk space generated by the temporary files that were created at runtime. This largely involves recursively crawling through the directories within the parent folder, and removing any folders that match numeric-only filenames\footnote{The find command paired with a good regular expression is an excellent one-liner method of discovering these folders: \usebox\myVerb2}.
+
+Filtering is performed via the script \gls{messner} which parses the output the linkage files in each of the three linkage program folders (Allegro, GeneHunter, Simwalk) and extracts the any linkage regions with a score above 2, as well as the name of the flanking markers for each region. This result is stored in a messner\_<program>.txt file in the parent folder.
+
+Conversion operations are also performed at this step, with the \gls{chromosomes.sh} taking the output result files of the linkage program folder it is invoked within (Allegro, GeneHunter, Simwalk), and generating graphical plots with the data by using the graphing tool \gls{GNUplot} which outputs the graph in postscript format, later converted to \gls{PDF} via the \gls{ps2pdf} system utilities. The \gls{mkhaplotypes.sh} script converts the haplotype output files generated by Allegro (\textit{ihaplo.out}) and feeds them into \gls{HaploPainter}, which then renders them using the \gls{Cairo} library, and outputs them in the PDF format.
+
+This happens automatically, with the final message of the pipeline prompting the user to run \gls{readmegen}, which generates the readme file using the saved logs from snpbutcher and pre-linkage user criterion to fill in the core of the data such as: project ID, genotyping chipset, number of markers used, recessive/dominant, and autosomal/X-linked. It is up to the user to fill in other fields such as: original genotypes filename, name of user/technician, and any extra notes specific to the run.
+
+At the end of the pipeline, all files instrumental to the analysis of the data are extracted into a separate directory (outside of the parent folder) through the \gls{collect.sh} script. The files collected are the 4 input files (map, maf, genotypes, pedigree), the readme file, the mendelian errors plot, the GRR relationship plot, the messner file, the linkage plot PDFs, the haplotype PDFs, and the pedigree PDF.
+
+
 \section{Linkage Pipeline Limitations and Solutions}
+
+All that was described in the previous chapter was how the linkage program operates under normal input, the main dividing factor between normal and "unnormal" input being whether the pedigree size is above 19-bits, and/or is X-linked, and/or if the run is requested to be multicore.
+
 \subsection{Parallelization}
+
+The need for parallelization in linkage becomes apparent almost immediately after the first run; chromosomes are evaluated independently, and the program uses only a single core to perform the computation using a small percentage of the total RAM, whilst other cores lay idle.
+
+An ideal run would utilize all the cores/threads available on a system at any given time, by processing several chromosomes at the same time.  Such a process must first be \gls{thread safe}, meaning that any two instances of the same program either use independent output resources (temporary files, output files, blocks of memory) or any shared resources are accessed mutually exclusively such that they do not write to the same resource at the same time (see Appendix section <XXXRef> for a quick overview on semaphores).
+
+Three scripts were developed under the parallel framework to ease this process, by queuing up chromosomes (or 'jobs') in a waiting buffer, and dispatching from it whenever a core (or 'resource') became available. The script \gls{ghparallel} dispatched jobs from Genehunter, and the script \gls{allegroparallel} did the same from Allegro. The script \gls{simwalkmulticore} worked under the same principle, but operated differently because Simwalk splits its input not just into chromosomes, but smaller fixed-size loci. This has the benefit of being able to partially process an entire chromosome, since some of the sub-input files might have been  processed and others not. This also allows the script to be \textit{resumeable}, in the manner that the script can be terminated prematurely, and then re-run, but it would not start from scratch upon each chromosome, but would resume from the files it had not processed yet. The parallel description in the Program Listing (page ~\pageref{ref:meth:proglist}) goes into further detail about the nature of these scripts.
+
 \subsection{Distribution}
+
+The initial pipeline was built for a very specific platform in mind: Ubuntu 10.04. Ubuntu is a Linux operating system (OS) that is built pre-packaged with utilities, drivers, and codecs, that make it work for many general purposes without much prior configuration from the user. It is actively developed with two main major release models: Bleeding Edge (all updates, and support for a year until the next Bleeding Edge release), and Long Term Release (major updates only and supported for 3 years until the next LTR).  Its base is derived from a more stable Linux OS (Debian) which exists upstream and is the source of all its major core package and kernel updates.
+
+Linux OS's are structured under a tree schema, with all locations being derived from the root /\footnote{Not to be confused with '/root/' which is where the root user stores their files, the root user having full access to every part of the system. Other (less-privileged) users keep their personal files in '/home'} and most Linux subsystems exist off this root\footnote{See section Linux <XXXref> in the Appendix for an overview of the Linux filesystem structure.}, locations of note being: /usr/bin and /usr/local/bin, each being included in the systems PATH variable which allows all files within those locations\footnote{It should be noted that inclusion is not recursive; any items within sub-folders at a given location are not included.} to be seen by the entire system without having to type out the entire filename.
+
+e.g. If the binary \gls{echo} is placed in the location /usr/local/bin/, it now exists as /usr/local/bin/echo. It is cumbersome to have to type out /usr/local/bin/echo every time we wish to use the command, so if the path /usr/local/bin is included within our \gls{PATH} variable, we can use the command by simply calling 'echo'.
+
+The pipelines interconnecting scripts, program scripts, and binaries, were solely contained within the /usr/bin/ and /usr/local/bin locations, meaning that they were mixed amongst the operating systems binaries making it very hard to distinguish between the two. One of the first operations performed in the second iteration of the pipeline was extracting the binaries specific to the pipeline from these locations and storing them in separate locations. 
+
+The method required involved a brute-force approach of cloning the operating system and programatically deleting any scripts or programs not called by the pipeline. The \gls{ldd} utility was also employed in this regard to discover the locations of libraries, and library dependencies so that these could be extracted too. It was thought at the time that the pipeline was version specific to the utilities it depended upon.
+
+Once extracted, an installer script was developed and through trial-and-error and most of the vast library dependencies were removed as the pipeline became less Ubuntu/Debian based and more Linux-centric. The pipeline was then moved under the \gls{git} school of \gls{version control}, so that further development could be managed more effectively with a private backup on the code hosting site bitbucket.org. Changes to the pipeline could be performed upon separate feature branches without affecting the base code, and if the modifications were stable and successful they could be merged into base (or ‘main’) branch. 
+
+Under this new distribution model, the pipeline has since been ported onto more modern versions of Ubuntu (from version 12.04 to 15.04) as well as other Linux OS's such as Arch and Gentoo.
+
+
 \subsection{X-linkage}
 
-\subsection{Large Pedigrees}
+The first iteration of the pipeline was unable to generate the relevant input files required for X-linked analyses. Setting the Allegro and GeneHunter input flags to run chromosome X (as per their respective manuals) worked to no avail, instead resulting in numerous errors detailing inconsistent markers and penetrances; the main problem stemming from the two separate male and female penetrances required in X-linked inheritance models (see page~\pageref{ref:back:xlinkrec} in the Background for more details).
+
+There were several stages where this problem could originate, the most likely being the Alohomora input file generation stage, but closer inspection revealed that the program merely re-formats the data and makes no assumptions upon the genetic model. The real source of the error messages was from the separate linkage programs themselves.
+
+Upon painstakingly thorough cross-checking between the input formats of the Allegro and Genehunter, seperate male and female penetrances could be set \footnote{As per the GeneHunter Manual, found <XXXREF>}, and correct run configuration files could be generated for the setup. This process was automated via the script \gls{xmakedat} which modifies the chromosome X "datain" input files by setting the "use X" flag\footnote{(0 $\rightarrow$ 1, top line third column)}, and producing an extra line of male-specific penetrances\footnote{7th line denotes female penetrances (3 values). Male penetrances duplicate a line above this, modifying the second value 0 $\rightarrow$ 1 if dominant} specific to the dominant/recessive models within Genehunter.
+
+Another script (xallegroinhaploout) generates the correct the Allegro run parameters in an almost identical manner. The same script is also used after a linkage run to convert haplotype output files into a more consistent formatting scheme, where males which only have 1 allele haplotyped in the analysis, now have two (a Y-chromosome consisting of entirely zeroes), aiding in the haplotype visualization process when inspecting the results.
+
+
+\subsection{Large Pedigrees}\label{ref:meth:largepeds}
+
+Despite evidence pointing to the contrary (XXXref, XXXref), neither Allegro nor GeneHunter could handle large bit-size pedigrees very well during our pipeline runs. Even if the number of informative markers were reduced to a 1000 marker range, which was well below the recommended limit for precision linkage, the programs would either terminate early or throw an unhandled exception during runtime. 
+
+Such behaviour are typical of out-of-memory / insufficient-resource errors, but most linkage runs use below 500MB of memory, and our hardware was more than capable of handling any resource constraints. The problem was most likely occurring once again in the input files.
+
 \subsubsection{GeneHunter}
+
+Genehunter was relatively easy to fix , by simply changing its default MAXBITS size setting 19 to 30. This worked well for pedigrees within a range of 19 to 22 bits, but any larger and Genehunter would split the pedigree or truncate individuals altogether in order to spare the computation. Flags to prevent these processes were alternated in numerous runs, but Genehunter would either override them if it deemed that it could not or did not have the resources  to perform the computation. The flags modified were:
+
+\begin{description}
+\item[\footnotesize PENETRANCE RESTRICTION]{Heterozygous penetrances never drop out of a set range}
+\item[\footnotesize UNTYPED FOUNDERS <boolean>]{Use untyped founders in the analysis}
+\item[\footnotesize SIMULATE UNTYPED <boolean>]{Reconstruct missing genotypes, useful for haplotype reconstruction, but can be skipped for linkage}
+\item[\footnotesize DISCARD <boolean>]{Remove less informative individuals.}
+\item[\footnotesize MAXIMISATION (standard|dense|grid|small)]{Changes the way the disease model parameters are varied when calculating scores}
+\item[\footnotesize MAXBITS <integer>]{Increasing the default number of bits that the program deems as "large"}
+\item[\footnotesize SKIP LARGE <boolean>]{If set to false, it would attempt to process large pedigrees}
+\item[\footnotesize INCREMENT <integer>]{Increase distance at which program bisects markers to compute score. In order to reduce system resources it was thought that fewer markers may ease the complexity of the analysis}
+\end{description}
+
+Due to the unresolved splitting problem in large pedigrees for Genehunter, Allegro is the only linkage program used for large bit-sized pedigrees.
+
+
 \subsubsection{Allegro}
+
+Allegro required much more time and thought, resulting in a costly solution that involved patching a bug within the program binary itself.  
+
+The method in which Allegro spared itself extra computation was by making use of Multi Terminal Binary Decision Diagrams \gls{MTBDD}s (see section <XXXRef>) which provided a compact structure to access and store ongoing calculations without duplication or redundancy. The MTBDDs were implemented via the Colarado University Decision Diagrams (\gls{CUDD}) library <XXXREF>, which at the time of Allegro's conception was on version 2.4.1 and included within the program source.  Careful debugging of the errors thrown by Allegro led to this CUDD source, and it was assumed that the fault lay there.
+
+Updating the library to the (then) latest version of 2.6 yielded no success\footnote{As of 2015 there is now a version 3.0 of the CUDD library, but the changelog  reveals that only the overall packaging has changed, and the library code has not been modified since 2.6.}, and the program would not compile due to various inconsistent function calls between versions. Many of these had been depreciated in favour of new ones that no doubt simplified and/or merged several tasks under a single call within the library itself, but broke specific functionality in Allegro.
+
+The only other option left was to disable the CUDD library altogether, by forcing Allegro to skip the pre-existing computation checks, and attempt to keep all calculations within memory, caching to disk where possible.
+
+This worked somewhat, and pedigrees smaller than 19-bits had no significant change in their performance. Pedigrees larger than 21-bits was the limit where the system resources started to become more scarce. The analyses would run, but very slowly and at the cost of quickly diminishing RAM and disk space. Haplotype reconstruction required almost no disk space, but often over 10 TB\footnote{TeraBytes. Not MegaBytes, or GigaBytes. TeraBytes.} of memory to function, the most of which was implemented via \gls{VRAM} by using disk space as \gls{swap space}. The default Allegro binary could run both multi-point parametric linkage and haplotype reconstruction in the same pass, but the newly patched binary could only now do one at a time.
+
+Large pedigrees can now be run via the \gls{allegro21bitstart.sh} script, which calls  the newly compiled allegro binary over the input files, and takes an argument that allows it perform either haplotype reconstruction or multi-point parametric linkage (but not both). The user is greeted with a display detailing how much available swap space, memory, and cores/threads are available. If the scratch partition is not detected, the user is prevented from starting any processes. 
+
+The script also has the capability of parallelizing the process, but given the large memory demands of a single instance, this functionality goes largely unused unless the analysis is constrained to the higher (smaller) chromosomes. 
 
 
 \section{Graphical Tools and Post Analysis Software}
+
+Once the data has been collected, it is then available for interpretation to determine whether any linkage peaks were actually discovered, and how informative they are in regard to the regions they are discovered in.
+
 \subsection{Linkage Visualization}
+
+Previously, the output results were simply collated by the GNUplot program and plotted as is, without any modification. This may sound agreeable in theory, but there were several issues that were not being addressed; namely that the plots were using genetic distance, and that all adjacent points were joined together.
+
+Genetic distance, though an extremely  useful representation of the expected number of crossovers across a region, does not represent the structure of the chromosome very well. Though genetic distance does scale fairly linearly with physical distance, the position of markers varies largely between different versions of the human genome, leading to some confusion in the actual location of a linkage peak.
+
+The spread of markers are also not taken into account, since most SNPs do not fall within telomeric or centromeric regions, meaning that there should be a noticeable gap within the plot towards the head, tail, and off-middle section.
+
+To add some context to the plots, the overarching script \gls{physicallinkageplot} was developed with the intention of reading in the output files, and remapping the scores back to physical distance for a specified version of the human genome\footnote{Currently hg19 is used, but any build within the UCSC Genome Browser can be used.}. This is performed through the Python script \gls{readalllinkage}, which performs an additional quality check of splitting data over impossible regions, such as any linkage peaks spanning the centromere (possible due to the last informative marker on the p-arm having the same score as the first-informative marker on the q-arm). The script works under the principle of bisecting the data at fixed intervals, such that plots are not variably-spaced and prone to joining over long distances.
+
+The re-plotting involves reconstituting the data within a GNUplot  environment, and this is done through the script \gls{plotlinkagephysical} which not only takes in the remapped data, but also a map file of chromosomal regions that dictates the true length of each chromosome (rather than the length inferred from the first and last markers in the analysis), and another map file of chromosomal bands which contains the names and regions of each band and sub-band of every chromosomal band. These bands are then overlayed upon the linkage plot to provide instantly visible context to some of the more questionable peaks in an analysis by allowing the user to see the density of the band the linkage peak falls within.
+
+Genomewide and individual plots are generated under this method, with the individual plots being generated simultaneously using the parallel framework. The overarching script can handle output data from allegro, simwalk, and swiftlink; producing the same type of plots for each (though titled accordingly) so as to provide some consistency when comparing plots from two different program.
+
+Previously, visual comparison of different linkage results from different programs was impeded by the varying size of the axes due to spacing inconsistencies introduced by different header labels, and that the analysis was constrained to the size of the analysis and not the size of the chromosome.
+
+The consistent sizing provides a huge advantage when programatically comparing the data, since the points in all the remapped linkage output files all correspond to the same points, and comparing sets is a simple matter of addition/subtraction.
+
+
 \subsection{Haplotype Inspection and Rendering}
+
+Haplotype inspection is problematic. The allegro output haplotype file (ihaplo.out) follows the pre-MAKEPED structure which represents alleles horizontally. Worse, the marker headers are represented as column headers in a fixed-width text structure that types them out vertically across multiple lines. An example is given below
+
+\begingroup
+\begin{spacing}{1}
+\begin{lstlisting}[label=verb:inhaplo]
+						3	4	5	6	7	8	9 	1	2	3	4	5	6
+						2	2	2	2	2	2	2	3	3	3	3	3	3
+						1	1	1	1	1	1	1	1	1	1	1	1	1
+						s	s	s	s	s	s	s	s	s	s	s	s	s
+      					r	r	r	r	r	r	r	r	r	r	r	r	r
+41	11	0	0	1	2	1	2	1	1	1	1	2	1	1	1	1	1	1
+41	11	0	0	1	2	1	1	2	2	1	1	1	2	1	1	2	2	2
+41	12	0	0	2	1	2	2	1	1	2	2	1	1	2	1	1	1	1
+41	12	0	0	2	1	1	1	2	2	1	1	1	1	1	2	2	2	1
+\end{lstlisting}
+\vspace{-9pt}
+\captionof{lstlisting}{A small representation of an ihaplo.out file for two individuals (11 and 12, family 41). Headers are listed vertically as per convention.}
+\end{spacing}
+\endgroup
+
+Dealing with the actual file involves transposing and trimming the headers, and then inspecting the haplotypes with a text editor that uses window-space buffering such that the entire file is not evaluated upon opening (which introduces visible slowdowns in programs that do not have \gls{horizontal-buffering} such as \gls{gedit}, and \gls{notepad}).
+
+Of course, browsing haplotype data alone is not enough for a haplotype analysis, since the real interest in the analysis is the representation of the haplotype blocks which cannot be shown in a plain text format. An application capable of resolving and representing the data as distinct blocks under a genetics model is required for a true analysis.
+
+
 \subsubsection{HaploPainter}
+
+HaploPainter is the one of the most commonly used open source pedigree and haplotype rendering tools, built upon a framework of powerful and well-maintained Perl libraries such as Cairo and \gls{Tk}, it can produce a wide variety of output formats from the graphics that it renders. 
+It is primarily used by researchers for drawing pedigrees, but is also used in rendering haplotypes.
+
+Researchers can examine an allegro output haplotype file by loading it into the application, which then renders the pedigree and then the complete haplotypes trailing underneath each individual.
+
+Though seemingly sensible in relation to the pedigree structure, this ultimately leads to several problems:
+
+
 \begin{description}
-\item[Pan and Zoom Inspection]{}
-\item[Miniscule Fonts in Large Sets]{}
-\item[Out of Range in Large Sets]{}
-\item[Couple or sibling Analysis Only]{}
-\item[Unsupported X-linked Haplotypes]{}
+\item[Pan and Zoom Inspection]{In order to inspect the haplotypes, the user is forced to pan and zoom across the screen in haphazard manner; the sensitivity of movement is set by the program and not appropriately scaled for zoom level, meaning it is a frequent problem for the user to overshoot their region of interest. Distressingly, the arrow keys are bound to other functions, and so the user must navigate sections using the mouse alone.}
+\item[Miniscule Fonts in Large Sets]{Each haplotype representation alludes to a specific chromosome, which depending on which chromosome is being analysed can range greatly between 200 (e.g. chr21) to 2000 (e.g. chr1) for a typical 40k marker SNP analysis. Small marker sets can be easily rendered with normal fonts since the pedigree does not need to be shrunk to fit into working space of the application. Larger sets are more problematic, with minuscule fonts being required to fit everything into the working space. These fonts do not scale very well when being exported into other formats such as JPG or even lossless formats such as PNG or PDF.}
+\item[Out of Range in Large Sets]{The problem of minuscule fonts leads to another issue that becomes apparent as soon as the user attempts to zoom into a region of interest: the minuscule fonts rendered may be just outside of the reach of the maximum zoom level, making the marker names and genotypes unreadable. Exporting to an image format such as JPG or PNG will only make this problem more apparent, since fonts will be rasterized into the image canvas  at a fixed resolution, which even if set high will still not scale the fonts well.}
+\item[Couple or sibling Analysis Only]{Since haplotypes trail vertically with the pedigree, a given region of interest is not contained within a single viewport\footnote{Cousins in the same generation may be vertically aligned, but likely a great deal of horizontal scrolling back and forth would be required to compare genotypes between them.}, but appears once for each generation. For large complex pedigrees, the viewport quickly becomes localised to each set of offspring. This restricts the region of interest to a side-by-side comparison of either siblings or couples, which is somewhat limiting in dominant pedigrees when case and control individuals can appear in any generation}
+\item[Unsupported X-linked Haplotypes]{At the time of HaploPainter's release, X-linked analyses were not as common as autosomal, mainly due to the distribution of SNPs in earlier genotyping chipsets. As a result, the X chromosome was likely not extensively tested, and bugs were likely to manifest at some point.}
 \end{description}
 
+\subsubsection{haplo\_region.py}
+
+In order to address the minuscule fonts as well as the pan and zoom limitations, the extremely feature-rich script \gls{haploregion.py} was developed to produce a subset haplotypes file that would reduce the number of markers to just the region of interest. The region of interest is usually common regions of heterozygosity/homozygosity across cases which the script also produces. The script has many functions:
+
+\begin{description}
+\item[Producing Haplotype Subsets]{It does this by taking pairs of markers as argument as well as an optional flanking parameter. The script transposes the headers in the original file, and attempts to match the marker-pairs specified in the arguments to find consecutive non-overlapping regions within the file. The flanking parameter (by default set to 0) specifies the amount at which the region(s) of interest is expanded outwards, such that a flanking parameter of 10 would expand 10 markers left and 10 markers right of the region specified by the marker pair being evaluated. Due to the script usually preceding the modified HaploPainterRFH script, it requires not only the ihaplo.out file but also the map.N file (where N is a chromosome number) to be in the same directory.}
+
+\item[Detecting Regions of Homology]{The script can also parse a ihaplo.out file to look for regions of heterozygosity and/or homozygosity between cases, depending on the inclusion of the respective settings specified in the arguments. If control exclusion is desired, this can also be optionally specified such that only regions of homology that exist in cases and not in controls are produced. A flag to set the minimum size of a stretch of homology can also be set, with the default value set to 2 such that sparse regions of homology spanning a single marker are not included in the final result (though of course this can be overridden). The general output of this is a list of marker pairs, but a debug flag can be specified to show the step-by-step working of the entire process. The debug output consists of a table with marker identifiers as rows and individuals (with identifying case/control tags) as columns, the data depicting the genotype of a specific individual-marker, as well as a boolean true/false score at the end of each row to show evaluation of cases (vs controls (if specified)) and current size of the stretch of homology.}
+
+\item[Haplotype Extraction]{Haplotypes in the ihaplo.out file are depicted horizontally which is not the ideal format when trying to copy/paste haplotypes spanning a given region, since regions will need to be copied line-by-line manually by the user, which could introduce errors. The haplotype extraction mode works under the default assumption that all genotypes from all individuals are to be extracted, and it does so by transposing the headers and the data separately and then printing the data out into a table such that marker identifiers are rows, and individual identifiers are columns. It should be noted that this is the same format as the debug mode used in detecting regions of homology (outlined in the previous bullet point), but this mode does not perform any homology checks, and also takes optional parameters to specify a subset of individuals and/or a subset of markers. The resultant output file is then in a much more useable format, and copy/pasting haplotypes in a given region is facilitated via the conventional method of selecting a region of text that spans multiple lines.}
+\end{description}
+
+Using the script in precession with \gls{HaploPainterRFH} (a modified HaploPainter clone) produces a much more useable representation of the haplotypes that the user does not need to extensively pan/zoom through. 
+
+
+
 \section{Program List}
+\label{ref:meth:proglist}

@@ -1,54 +1,53 @@
-\glossaryentry{Linkage?\glossentry{Linkage}|setentrycounter[]{page}\glsnumberformat}{25}
-\glossaryentry{Vitesse?\glossentry{Vitesse}|setentrycounter[]{page}\glsnumberformat}{26}
-\glossaryentry{snpbutcher?\glossentry{snpbutcher}|setentrycounter[]{page}\glsnumberformat}{37}
-\glossaryentry{Simwalk?\glossentry{Simwalk}|setentrycounter[]{page}\glsnumberformat}{40}
-D?\glossentry{RAID}|setentrycounter[]{page}\glsnumberformat}{40}
+\glossaryentry{journaling?\glossentry{journaling}|setentrycounter[]{page}\glsnumberformat}{38}
+\glossaryentry{SSD?\glossentry{SSD}|setentrycounter[]{page}\glsnumberformat}{39}
+\glossaryentry{paging?\glossentry{paging}|setentrycounter[]{page}\glsnumberformat}{39}
+\glossaryentry{RAM?\glossentry{RAM}|setentrycounter[]{page}\glsnumberformat}{39}
+\glossaryentry{RAID?\glossentry{RAID}|setentrycounter[]{page}\glsnumberformat}{40}
 \glossaryentry{striping?\glossentry{striping}|setentrycounter[]{page}\glsnumberformat}{40}
 \glossaryentry{parity?\glossentry{parity}|setentrycounter[]{page}\glsnumberformat}{40}
-d}|setentrycounter[]{page}\glsnumberformat}{5}
-\glossaryentry{sense?\glossentry{sense}|setentrycounter[]{page}\glsnumberformat}{5}
-\glossaryentry{reverse?\glossentry{reverse}|setentrycounter[]{page}\glsnumberformat}{5}
-\glossaryentry{antisense?\glossentry{antisense}|setentrycounter[]{page}\glsnumberformat}{5}
-\glossaryentry{chromatin?\glossentry{chromatin}|setentrycounter[]{page}\glsnumberformat}{5}
-\glossaryentry{haploid?\glossentry{haploid}|setentrycounter[]{page}\glsnumberformat}{5}
-\glossaryentry{diploid?\glossentry{diploid}|setentrycounter[]{page}\glsnumberformat}{5}
-\glossaryentry{centromere?\glossentry{centromere}|setentrycounter[]{page}\glsnumberformat}{6}
-\glossaryentry{telomeres?\glossentry{telomeres}|setentrycounter[]{page}\glsnumberformat}{6}
-\glossaryentry{homologs?\glossentry{homologs}|setentrycounter[]{page}\glsnumberformat}{6}
-\glossaryentry{autosomal?\glossentry{autosomal}|setentrycounter[]{page}\glsnumberformat}{6}
-\glossaryentry{allosomal?\glossentry{allosomal}|setentrycounter[]{page}\glsnumberformat}{6}
-\glossaryentry{alleles?\glossentry{alleles}|setentrycounter[]{page}\glsnumberformat}{6}
-\glossaryentry{phenotype?\glossentry{phenotype}|setentrycounter[]{page}\glsnumberformat}{6}
-\glossaryentry{coding?\glossentry{coding}|setentrycounter[]{page}\glsnumberformat}{6}
-\glossaryentry{exons?\glossentry{exons}|setentrycounter[]{page}\glsnumberformat}{6}
-\glossaryentry{codons?\glossentry{codons}|setentrycounter[]{page}\glsnumberformat}{6}
-\glossaryentry{RNA polymerase?\glossentry{RNA polymerase}|setentrycounter[]{page}\glsnumberformat}{6}
-\glossaryentry{ribosome?\glossentry{ribosome}|setentrycounter[]{page}\glsnumberformat}{6}
-\glossaryentry{open reading frame?\glossentry{open reading frame}|setentrycounter[]{page}\glsnumberformat}{6}
-\glossaryentry{intergenic?\glossentry{intergenic}|setentrycounter[]{page}\glsnumberformat}{7}
-\glossaryentry{UTR?\glossentry{UTR}|setentrycounter[]{page}\glsnumberformat}{7}
-\glossaryentry{transcription?\glossentry{transcription}|setentrycounter[]{page}\glsnumberformat}{7}
-\glossaryentry{start codon?\glossentry{start codon}|setentrycounter[]{page}\glsnumberformat}{7}
-\glossaryentry{stop codon?\glossentry{stop codon}|setentrycounter[]{page}\glsnumberformat}{7}
-\glossaryentry{mRNA?\glossentry{mRNA}|setentrycounter[]{page}\glsnumberformat}{7}
-\glossaryentry{uracil?\glossentry{uracil}|setentrycounter[]{page}\glsnumberformat}{7}
-\glossaryentry{splicing?\glossentry{splicing}|setentrycounter[]{page}\glsnumberformat}{7}
-\glossaryentry{translated?\glossentry{translated}|setentrycounter[]{page}\glsnumberformat}{7}
-\glossaryentry{amino-acid?\glossentry{amino-acid}|setentrycounter[]{page}\glsnumberformat}{7}
-\glossaryentry{amino-acid?\glossentry{amino-acid}|setentrycounter[]{page}\glsnumberformat}{7}
-\glossaryentry{meiosis?\glossentry{meiosis}|setentrycounter[]{page}\glsnumberformat}{8}
-\glossaryentry{zygote?\glossentry{zygote}|setentrycounter[]{page}\glsnumberformat}{8}
-\glossaryentry{bivalent?\glossentry{bivalent}|setentrycounter[]{page}\glsnumberformat}{8}
-\glossaryentry{meiotic spindle?\glossentry{meiotic spindle}|setentrycounter[]{page}\glsnumberformat}{8}
-\glossaryentry{metaphase plate?\glossentry{metaphase plate}|setentrycounter[]{page}\glsnumberformat}{9}
-\glossaryentry{chiasmata?\glossentry{chiasmata}|setentrycounter[]{page}\glsnumberformat}{9}
-\glossaryentry{crossover?\glossentry{crossover}|setentrycounter[]{page}\glsnumberformat}{9}
-\glossaryentry{recombination frequency?\glossentry{recombination frequency}|setentrycounter[]{page}\glsnumberformat}{10}
-\glossaryentry{linkage disequilibrium?\glossentry{linkage disequilibrium}|setentrycounter[]{page}\glsnumberformat}{10}
-\glossaryentry{Morgan?\glossentry{Morgan}|setentrycounter[]{page}\glsnumberformat}{10}
-\glossaryentry{crossover interference?\glossentry{crossover interference}|setentrycounter[]{page}\glsnumberformat}{10}
-\glossaryentry{markers?\glossentry{markers}|setentrycounter[]{page}\glsnumberformat}{11}
-\glossaryentry{biallelic?\glossentry{biallelic}|setentrycounter[]{page}\glsnumberformat}{11}
+\glossaryentry{PDF?\glossentry{PDF}|setentrycounter[]{page}\glsnumberformat}{50}
+\glossaryentry{thread safe?\glossentry{thread safe}|setentrycounter[]{page}\glsnumberformat}{51}
+\glossaryentry{PATH?\glossentry{PATH}|setentrycounter[]{page}\glsnumberformat}{52}
+\glossaryentry{MTBDD?\glossentry{MTBDD}|setentrycounter[]{page}\glsnumberformat}{55}
+\glossaryentry{CUDD?\glossentry{CUDD}|setentrycounter[]{page}\glsnumberformat}{55}
+\glossaryentry{VRAM?\glossentry{VRAM}|setentrycounter[]{page}\glsnumberformat}{56}
+\glossaryentry{swap space?\glossentry{swap space}|setentrycounter[]{page}\glsnumberformat}{56}
+\glossaryentry{horizontal-buffering?\glossentry{horizontal-buffering}|setentrycounter[]{page}\glsnumberformat}{59}
+ry{Alohomora?\glossentry{Alohomora}|setentrycounter[]{page}\glsnumberformat}{43}
+\glossaryentry{GRR?\glossentry{GRR}|setentrycounter[]{page}\glsnumberformat}{44}
+\glossaryentry{Merlin?\glossentry{Merlin}|setentrycounter[]{page}\glsnumberformat}{46}
+\glossaryentry{Allegro?\glossentry{Allegro}|setentrycounter[]{page}\glsnumberformat}{47}
+\glossaryentry{Simwalk?\glossentry{Simwalk}|setentrycounter[]{page}\glsnumberformat}{47}
+\glossaryentry{Genehunter?\glossentry{Genehunter}|setentrycounter[]{page}\glsnumberformat}{47}
+\glossaryentry{Python?\glossentry{Python}|setentrycounter[]{page}\glsnumberformat}{48}
+\glossaryentry{clodhopper.py?\glossentry{clodhopper.py}|setentrycounter[]{page}\glsnumberformat}{48}
+\glossaryentry{messner?\glossentry{messner}|setentrycounter[]{page}\glsnumberformat}{49}
+\glossaryentry{chromosomes.sh?\glossentry{chromosomes.sh}|setentrycounter[]{page}\glsnumberformat}{49}
+\glossaryentry{GNUplot?\glossentry{GNUplot}|setentrycounter[]{page}\glsnumberformat}{49}
+\glossaryentry{ps2pdf?\glossentry{ps2pdf}|setentrycounter[]{page}\glsnumberformat}{50}
+\glossaryentry{mkhaplotypes.sh?\glossentry{mkhaplotypes.sh}|setentrycounter[]{page}\glsnumberformat}{50}
+\glossaryentry{HaploPainter?\glossentry{HaploPainter}|setentrycounter[]{page}\glsnumberformat}{50}
+\glossaryentry{Cairo?\glossentry{Cairo}|setentrycounter[]{page}\glsnumberformat}{50}
+\glossaryentry{readme\_gen.py?\glossentry{readmegen}|setentrycounter[]{page}\glsnumberformat}{50}
+\glossaryentry{collect.sh?\glossentry{collect.sh}|setentrycounter[]{page}\glsnumberformat}{50}
+\glossaryentry{gh\_parallel.sh?\glossentry{ghparallel}|setentrycounter[]{page}\glsnumberformat}{51}
+\glossaryentry{allegro\_parallel.sh?\glossentry{allegroparallel}|setentrycounter[]{page}\glsnumberformat}{51}
+\glossaryentry{simwalk\_multicore.sh?\glossentry{simwalkmulticore}|setentrycounter[]{page}\glsnumberformat}{51}
+\glossaryentry{echo?\glossentry{echo}|setentrycounter[]{page}\glsnumberformat}{52}
+\glossaryentry{ldd?\glossentry{ldd}|setentrycounter[]{page}\glsnumberformat}{52}
+\glossaryentry{git?\glossentry{git}|setentrycounter[]{page}\glsnumberformat}{53}
+\glossaryentry{version control?\glossentry{version control}|setentrycounter[]{page}\glsnumberformat}{53}
+\glossaryentry{x\_makedat.py?\glossentry{xmakedat}|setentrycounter[]{page}\glsnumberformat}{53}
+\glossaryentry{allegro21bitstart.sh?\glossentry{allegro21bitstart.sh}|setentrycounter[]{page}\glsnumberformat}{56}
+\glossaryentry{physical\_linkage\_plot.sh?\glossentry{physicallinkageplot}|setentrycounter[]{page}\glsnumberformat}{57}
+\glossaryentry{read\_all\_linkage.py?\glossentry{readalllinkage}|setentrycounter[]{page}\glsnumberformat}{57}
+\glossaryentry{plot\_linkage\_physical.py?\glossentry{plotlinkagephysical}|setentrycounter[]{page}\glsnumberformat}{58}
+\glossaryentry{gedit?\glossentry{gedit}|setentrycounter[]{page}\glsnumberformat}{59}
+\glossaryentry{notepad?\glossentry{notepad}|setentrycounter[]{page}\glsnumberformat}{59}
+\glossaryentry{Tk?\glossentry{Tk}|setentrycounter[]{page}\glsnumberformat}{59}
+\glossaryentry{haploregion.py?\glossentry{haploregion.py}|setentrycounter[]{page}\glsnumberformat}{61}
+\glossaryentry{HaploPainterRFH?\glossentry{HaploPainterRFH}|setentrycounter[]{page}\glsnumberformat}{63}
+ssaryentry{biallelic?\glossentry{biallelic}|setentrycounter[]{page}\glsnumberformat}{11}
 \glossaryentry{polymorphic?\glossentry{polymorphic}|setentrycounter[]{page}\glsnumberformat}{11}
 \glossaryentry{co-dominance?\glossentry{co-dominance}|setentrycounter[]{page}\glsnumberformat}{12}
 \glossaryentry{HWE?\glossentry{HWE}|setentrycounter[]{page}\glsnumberformat}{12}
@@ -84,3 +83,5 @@ d}|setentrycounter[]{page}\glsnumberformat}{5}
 \glossaryentry{multi-point parametric?\glossentry{multi-point parametric}|setentrycounter[]{page}\glsnumberformat}{25}
 \glossaryentry{HMM?\glossentry{HMM}|setentrycounter[]{page}\glsnumberformat}{27}
 \glossaryentry{trio?\glossentry{trio}|setentrycounter[]{page}\glsnumberformat}{32}
+\glossaryentry{IBS?\glossentry{IBS}|setentrycounter[]{page}\glsnumberformat}{44}
+\glossaryentry{ELOD?\glossentry{ELOD}|setentrycounter[]{page}\glsnumberformat}{48}
