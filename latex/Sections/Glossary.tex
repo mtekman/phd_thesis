@@ -15,17 +15,17 @@
 }
 
 %\usepackage[nomain]{glossaries}
-\usepackage[nopostdot,acronym,toc,section=chapter,style=indexgroup]{glossaries}
+\usepackage[nopostdot,acronym,toc,section=section,style=indexgroup]{glossaries}
 
-\newglossary{biology}{bio}{logy}{Biology}
-\newglossary{computer}{comp}{uter}{Computing}
-\newglossary{programs}{prog}{rams}{Program Listing}
+\newglossary*{biol}{Glossary of Biology Terms}
+\newglossary*{comp}{Glossary of Computing Terms}
+\newglossary*{prog}{Program Listing}
 \makeglossaries
 
 \newcommand{\addglossbio}[2]
 {
         \newglossaryentry{bio:#1}{
-                type=biology,
+                type=biol,
                 name={#1},
                 description={#2}
         }
@@ -34,7 +34,7 @@
 \newcommand{\addglosscomp}[2]
 {
         \newglossaryentry{comp:#1}{
-                type=computer,
+                type=comp,
                 name={#1},
                 description={#2}
         }

@@ -4,45 +4,45 @@
 \section{Semaphores}\label{ref:app:semaphores}
 \citep{downey_little_2005}
 
-
 \section{Hardware Specification}\label{ref:app:hwspec}
 
-\section{Linux Filesystem}\label{ref:app:linuxfs}
+\section{Hardware Concepts}
+\subsection{Compiler}\label{ref:app:compiler}
+\subsection{Linux Filesystem}\label{ref:app:linuxfs}
 
-\section{Compiler}\label{ref:app:compiler}
 
-\section{Primitives}\label{ref:app:primitives}
+
+\section{Software Concepts}
+\subsection{Primitives}\label{ref:app:primitives}
 
 Data generally comes in two forms:
 
-%\begin{enumerate}
-%\item{numeric
-%	\begin{enumerate}
-%	\item{\textbf{decimal}, the integer value of a number represented in base-2 (or 'binary') number format, (e.g. 8 = 1000 (4-bits), 7 = 111 (3-bits), 652 = 101000110 (9-bits)). For n bits, the decimal range is [0,$2^n - 1$]\footnote{This is only in case of positive unsigned integers. To include negative integers too, the first bit is sacrificed as an indicator of polarity. This produces signed integers and follows a more involved schema known as \textit{two's-complement} in order to only have a single representation of the number zero. The numeric range for n bits is then [-2n-1, 2n-1 – 1].}.Decimals tend to come in fixed bit-sizes\footnote{byte (8-bit), short/char (16-bit), int (32-bit), long (64-bit), and (in some languages) long long (128-bit).} so there can be some redundancy in representing a small number with a large decimal type.}
-%	\item{\textit{floating-point} numbers are a compact approximation of a number as deemed by the specification\citep{floats}. Numbers are represented as powers of exponents such that $5 \sim= e^{1.61}$ (where 1.61 would be the stored number in this loose example). The precision of the representation is determined by how many bits the number has. Floats have a much larger range than decimals, albeit with less accuracy}
-%	\end{enumerate}
-%}
-%\item{textual}{See Strings section}
-%\end{enumerate}
+\begin{enumerate}
+\item{numeric
+	\begin{enumerate}
+	\item{\textbf{decimal}, the integer value of a number represented in base-2 (or 'binary') number format, (e.g. 8 = 1000 (4-bits), 7 = 111 (3-bits), 652 = 101000110 (9-bits)). For n bits, the decimal range is [0,$2^n - 1$]\footnote{This is only in case of positive unsigned integers. To include negative integers too, the first bit is sacrificed as an indicator of polarity. This produces signed integers and follows a more involved schema known as \textit{two's-complement} in order to only have a single representation of the number zero. The numeric range for n bits is then [-2n-1, 2n-1 – 1].}.Decimals tend to come in fixed bit-sizes\footnote{byte (8-bit), short/char (16-bit), int (32-bit), long (64-bit), and (in some languages) long long (128-bit).} so there can be some redundancy in representing a small number with a large decimal type.}
+	\item{\textit{floating-point} numbers are a compact approximation of a number as deemed by the specification\citep{floats}. Numbers are represented as powers of exponents such that $5 \sim= e^{1.61}$ (where 1.61 would be the stored number in this loose example). The precision of the representation is determined by how many bits the number has. Floats have a much larger range than decimals, albeit with less accuracy}
+	\end{enumerate}
+}
+\item{textual}{See Strings section}
+\end{enumerate}
 
 
-\section{Strings}\label{ref:app:strings}
+\subsection{Strings}\label{ref:app:strings}
 Strings are a type of data that is defined as any block of text surrounded by single or double quotation marks. Strings compared to other data types are very memory intensive since it is usually unclear exactly how much memory a string is going to take.
 
 Numbers can be assigned specific memory sizes to contain their values such as char(8-bit) , short(16-bit), int(32-bit), and long(64-bit) for decimal numbers, and float(32-bit) and double(64-bit) for floating point numbers, each with their specific range of values.
 
 Strings are essentially an array of characters, and so if each character is 8-bit, then the phrase "Hello World!" has a size of 96 bits (12 characters x 8 bits) . When strings are created they are assigned initial sizes to contain a specific text, but they are essentially immutable past this point since concactenating two strings together requires re-computing their sizes and copying the text into a new block of memory (i.e. you cannot directly shorten or extend a string since it creates memory leaks).
 
-\subsection{String Interning}
+\subsubsection{String Interning}
 
 Because of the costly processes of manipulating strings during program runtime, some string-processing tasks take place to reduce the redundancy in duplicate strings. A list of all unique strings declared in the code are "pooled" into static addresses at compile-time, and then are referenced every time a string variable is assigned one of their values. 
 
 When an entirely new string is required, the "new" keyword is used to tell the environment that it will not be referencing a previously pooled-string and that extra memory must be allocated.
 
 
-
-
-\section{RegEx}\label{ref:app:regex}
+\subsection{RegEx}\label{ref:app:regex}
 
 Regular Expressions (also known as RegEx or RegExp) are character patterns that are used to match text or `strings' in a flexible manner. A relevant example would be trying to match a [chromosome,position] tuple:
 
@@ -91,6 +91,8 @@ Figure~\ref{fig:fsa} shows how such a pattern is first converted into character-
 
 DFSA's can be further compacted and optimized to create fast pattern matching systems with little overhead, making them the ideal tool to deal with strings flexibly. Multiple genetic sequences can be extracted this way by using the same regular expression undoubtedly making RegEx a very powerful tool for programmers and geneticists alike.
 
+\section{Poisson Distribution}\label{ref:app:poisson}
+\section{Colour Spaces}\label{ref:app:colour}
 \section{Licensing}\label{ref:app:licensing}
 
 Software licences are typically split into two groups: \textit{CopyLeft} and \textit{Permissive}.
@@ -122,16 +124,14 @@ A license that lets anyone do whatever they want without any restrictions on mod
 \end{description}
 
 
-\section{Poisson Distribution}\label{ref:app:poisson}
 
-\section{Colour Spaces}\label{ref:app:colour}
 
-\section{Scores for 21-bit Linkage}\label{ref:app:21bitscores}
-
-\section{Chromosome plots for 21-bit Linkage}\label{ref:app:21bitplots}
+\section{Results Data}
+\subsection{Scores for 21-bit Linkage}\label{ref:app:21bitscores}
+\subsection{Chromosome plots for 21-bit Linkage}\label{ref:app:21bitplots}
 
 \pagebreak
-\section{Allegro Single-Core Individual Runtimes}\label{ref:app:singlecoreindiv}
+\subsection{Allegro Single-Core Individual Runtimes}\label{ref:app:singlecoreindiv}
 
 \begin{table}[h!]
 %\vspace{-40pt}
