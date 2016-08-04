@@ -1,0 +1,61 @@
+\chapter{Discussion}
+
+The results 
+
+\section{Pipeline Evaluation}
+
+The linkage analysis pipeline seems to 
+
+\subsection{Quality Filtering}
+\subsection{Linkage Control}
+\subsection{Haplotype Reconstruction}
+\subsection{Deployment and Dsitribution}
+\subsection{Performance}
+
+
+\section{HaploHTML5 Evaluation}
+\subsection{X-linked performance}
+\subsection{UI and Ease of use}
+\subsection{Performance}
+
+
+\section{Future Research}
+
+The pipeline
+
+pipeline web interface
+
+concrete.js, anottations, NodeJS implements
+
+
+
+\subsection{Effective Filesystem Management}
+
+Why Upgrading Disk Technology Wont Necessarily Lend a Performance Increase...
+
+The working directory should be seen as a temporary file system at best, since many linkage programs generate a substantial amount of temporary files during processing. Though modern file systems are excellent at keeping track of and recovering files (a task known as \gls{comp:journaling}), it is still good practice to "mount a scratch monkey" such that temporary working files are isolated away from archived ones in distinctly separate partitions. 
+
+It is preferable to isolate the two file systems on different disks altogether, such that a disk-wide read error on a given hard disk won't affect the operation of another. Most modern file systems have journaling enabled by default, which writes extra data to disk so that a recovery is possible in the event of a crash, but this becomes more problematic with Solid State Drives (\gls{comp:SSD}s) which have a limited number of read/write operations, and are prone to seizing should an operating system over-breach those limits.
+
+This is not an improbable occurrence; operating systems routinely write temporary files to disk in order to manage RAM constraints in a process known as \gls{comp:paging}, where not immediately required portions of system memory can be sequestered into slower disk storage to free up space in the RAM for more higher priority tasks. 
+
+When a system begins to run low on \gls{comp:RAM} (as in the frequent case of extensive linkage analysis), a great deal of paging is performed to keep the linkage program in memory, leading to a substantial amount of disk writes on a journaled file-system. Mechanical (spin) drives can handle these read/write requests robustly, but they are an order of magnitude slower than SSDs and significant bottlenecks can occur where the system has to wait for the disk to be ready in order to perform a block\footnote{If multiple sequential operations are requested on same contiguous portion of a disk, then the operating system groups the individual requests under a large contiguous 'block' request, that performs one long read/write operation instead of several short ones.}    read/write to it.
+
+It is clear that SSDs offer no advantage at all in the use-case of frequent large temporary file activity, since though the operating system will rarely have to wait in order to perform a read/write, the limitations on the number of these operations shortens their lifetime considerably.
+
+The best long-term compromise is to use mechanical disks with a filesystem without journaling; either an older filesystem where journaling was never implemented (though file size constraints may be enacted), or a newer filesystem where journaling is disabled upon initialization. This reduces the total number of read/write operations whilst still ensuring disk longevity.
+
+Recoverability may be jeopardized, but the temporary nature of the files within the system imply that a re-run of the same analysis would not be resumable in any case; for it is the operating system that dispatches the temporary files to the linkage programs, and not the linkage program itself (with the  notable exception of \gls{prog:Simwalk}).
+
+
+\subsubsection{RAID Configuration}
+
+One extra caveat to reduce the number of operations upon a single disk \textit{and} keep some level of redundancy is to distribute the load across several disk drives in a standard redundant array of independent disks (\gls{comp:RAID}); specifically a RAID-5 level setup. RAID relies on the method of storing contiguous data across several mediums (a concept known as \gls{comp:striping}), as well as ensuring the data is correct and error-checkable without having to scan the entire block of data (a concept known as \gls{comp:parity}). The failure of one disk drive would not be enough to impede the setup and an ongoing analysis could be reconstituted from the other remaining disks, though a minimum of three identically sized disks is required.
+
+These features lend well to a large temporary filesystem, since the storage capacities of multiple disks can now be combined to store a great amount of data, as well as the number of operations on any one disk being reduced by a factor of \textit{n} (for \textit{n} disks in the setup). The setup will still have the same read/write speeds as an ordinary disk, but there will not be any added complexity since the operating system will detect it as a single volume.
+
+
+
+
+
+Scores between Allegro and GeneHunter tend to differ by only $\pm$ 0.2. Any larger discrepancies are suspect, and usually prompt a Simwalk run as a precautionary third control.

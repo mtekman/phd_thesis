@@ -7,8 +7,14 @@
 
 % Bibliotecque
 \usepackage[square,sort,comma,numbers]{natbib}
+\usepackage{bibentry}
 \bibliographystyle{IEEEtran}
 
+\newcommand{\ignore}[1]{}
+\newcommand{\nobibentry}[1]{{\let\nocite\ignore\bibentry{#1}}}
+%% apsrev entries in the text need definitions of these commands
+%\newcommand{\bibfnamefont}[1]{#1}
+%\newcommand{\bibnamefont}[1]{#1}
 
 
 

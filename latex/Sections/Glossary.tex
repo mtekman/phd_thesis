@@ -15,12 +15,11 @@
 }
 
 %\usepackage[nomain]{glossaries}
-\usepackage[nopostdot,acronym,toc,section=chapter,style=indexgroup,sanitize={name=false,description=false,symbol=true}]{glossaries}
-\glossarystyle{list}
+\usepackage[nopostdot,acronym,toc,section=chapter,style=indexgroup]{glossaries}
 
-\newglossary[nlg]{biology}{bio}{ntn1}{Biology}
-\newglossary[nlg]{computer}{comp}{ntn2}{Computing}
-\newglossary[nlg]{programs}{prog}{ntn3}{Program Listing}
+\newglossary{biology}{bio}{logy}{Biology}
+\newglossary{computer}{comp}{uter}{Computing}
+\newglossary{programs}{prog}{rams}{Program Listing}
 \makeglossaries
 
 \newcommand{\addglossbio}[2]
@@ -98,6 +97,7 @@
 \addglossbio{linkage disequilibrium}{FILL}
 \addglossbio{Morgan}{FILL}
 \addglossbio{crossover interference}{FILL}
+\addglossbio{Informative marker}{FILL}
 % Molecular Maps
 \addglossbio{markers}{FILL}
 \addglossbio{polymorphic}{FILL}
@@ -215,7 +215,11 @@
 \addglosscomp{compilation}{}
 \addglosscomp{HSV}{}
 \addglosscomp{MAKEPED}{}
+\addglosscomp{ihaplo.out}{}
 \addglosscomp{getters and setters}{}
-
+\addglosscomp{Ubuntu}{}
+\addglosscomp{Debian}{}
+\addglosscomp{Arch}{}
+\addglosscomp{Gentoo}{}
 
 %% END

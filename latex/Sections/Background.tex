@@ -17,8 +17,12 @@ The sugar and phosphate groups alternate in a chain along the side of DNA, lendi
 
 Every strand of DNA has a defined polarity, for the sake of a consistent reading orientation. The two strands of the double helix lie in opposite directions of one another, such that the starting end of one strand is the finishing end of the other.
 The starting end is referred to as 5' (five prime), and the finishing end is known as a 3'. These numbers are named in accordance to the clockwise ordering of the carbon atoms in the deoxyribose molecule. 
-<Diagram of the molecule showing 1' to 5'>
-Caption: The 5' end is terminated with a phosphate, and the 3' end with a hydroxyl sugar group.
+
+\fignow{./Sections/images/DeoxyriboseLabeled.png}
+{The 5' end is terminated with a phosphate, and the 3' end with a hydroxyl sugar group (\textit{Image courtesy of Wikimedia Commons})}
+{}
+{0.3}
+{Deoxyribose with numbered Carbon atoms}
 
 For consistency, biologists follow the convention of defining the 5' to 3' orientation as the \gls{bio:forward} (or '\gls{bio:sense}') strand. The 3' to 5' orientation is the \gls{bio:reverse} (or '\gls{bio:antisense}') strand.
 
@@ -47,7 +51,7 @@ Genes are made up of four main components: 5'UTR, exons, introns, splice sites, 
 
 \gls{bio:UTR} (or 'untranslated regions') cap the gene extremes with a 5' upstream end containing binding sites to initiate \gls{bio:transcription} via a \gls{bio:start codon}, and a 3' downstream end with sites to terminate the process via a \gls{bio:stop codon}. The transcription process essentially clones a given DNA segment into a precursor RNA molecule called messenger RNA (or \gls{bio:mRNA}), which is similar to the DNA molecule except that the sugar is a ribose instead of a deoxyribose, and thymine is replaced with a base called \gls{bio:uracil} (U).
 
-Exons constitute the coding regions of the gene, alternated by introns which are non-coding. Splice sites flank the exon-intron boundaries and are responsible for the \gls{bio:splicing} process which binds coding (exon) regions together during transcription for the open reading frame into spliced mRNA.  The splice mRNA is then \gls{bio:translated} into a protein by a ribosome, with several different proteins being made from the same DNA template due to splice variations. For reference, there are currently approximately 60,000 genes in the human genome\footnote{As of Human Genome version GRCh38, reference Gene database.}  that give rise to 45 million proteins\footnote{As of UniProtKB database release  version June 2016, 75\% of which are predicted.}.
+Exons constitute the coding regions of the gene, alternated by introns which are non-coding. Splice sites flank the exon-intron boundaries and are responsible for the \gls{bio:splicing} process which binds coding (exon) regions together during transcription for the open reading frame into spliced mRNA.  The splice mRNA is then \gls{bio:translated} into a protein by a ribosome, with several different proteins being made from the same DNA template due to splice variations. For reference, there are currently approximately 60,000 genes in the human genome\footnote{As of Human Genome version GRCh38, reference Gene database.}  that give rise to 45 million proteins\footnote{As of UniProtKB database release  version June 2016, 75\% of which are predicted\citep{uniprot2008universal}.}.
 
 Proteins are a product of their \gls{bio:amino-acid} sequence derived from DNA codons, as well as the emergent properties from the contorted three dimensional structure they exhibit due to their folded arrangement.  There are 20 different \gls{bio:amino-acid} bases that are one-to-many mapped from 64 different DNA codons. This redundancy has some interesting caveats, the most notable being that there is only one start codon (ATG) and three stop codons (TAA, TGA, TAG).
 
@@ -94,18 +98,18 @@ The chance of a crossover event occurring is based on can be determined between 
 
 For example,  two adjacent loci in close proximity to one another will have a near zero chance of a recombination event occurring. However, if the loci were on different chromosomes, then it's safe to assume that the two loci will segregate independently, with a probability tending towards 0.5.
 
-Any higher would assume that there was \gls{bio:linkage disequilibrium} between the two locations and that the chance of a recombination is biased. (XXX: Robert: - is this statement correct?)
+Any deviation from the expectation inferred from the recombination frequency would assume that there was \gls{bio:linkage disequilibrium} between the two locations and that the chance of a recombination is biased.
 
 Recombination frequencies are not uniform throughout a chromosome, as the nature and density of the underlying chromatin influences the chance across a given band. The frequencies are also sex-specific, since women are more prone to crossover events than men.
 
-Haldane's model of recombination modelled crossovers as a Poisson\footnote{See Appendix section XXX.} distribution, defining the \gls{bio:Morgan}, a unit of genetic distance, that details the expected number of crossovers between two loci. The Morgan is defined such that there is (on average) 1 expected crossover event occurring at a distance 1 Morgan.  In practical circumstances, the centiMorgan sub-unit is used to refer to 0.01 expected crossovers occurring at a distance of 1cM. 
+Haldane's model of recombination modelled crossovers as a Poisson\footnote{See Appendix page~\pageref{ref:app:poisson}.} distribution, defining the \gls{bio:Morgan}, a unit of genetic distance, that details the expected number of crossovers between two loci\citep{haldane1919combination}. The Morgan is defined such that there is (on average) 1 expected crossover event occurring at a distance 1 Morgan.  In practical circumstances, the centiMorgan sub-unit is used to refer to 0.01 expected crossovers occurring at a distance of 1cM. 
 
 \begin{equation}
-\theta = \frac{1}{2} (1 –  e^{-2d})
+\theta = \frac{1}{2} (1 -  e^{-2d})
 \label{eqn:morgan}
 \end{equation}
 
-Note that Haldane’s model does not model \gls{bio:crossover interference}, where the act of a crossover prevents the nearby act of another crossover from happening. 
+Note that Haldane's model does not model \gls{bio:crossover interference}, where the act of a crossover prevents the nearby act of another crossover from happening. 
 
 It is clear that recombination events are instrumental to our understanding of how offspring inherit traits from their parents, specifically where the crossovers occur so that we can trace the flow of data throughout the generations.
 
@@ -127,7 +131,7 @@ Advances in the field now make use of numerous flags or \gls{bio:markers}, evenl
 }
 \item[Polymorphic]
 {
-	The marker must denote some point of variability within a population. The human genome consists of many variations between individuals, as many as 150 million\footnote{As of dbSNP version 146}, but this only comprises 1\% of the genome\footnote{As verified by a cursory scan over raw FASTA output files, via: \usebox\myVerb}. Each distinct variation in a marker is referred to as an allele, and the marker is said to be \gls{bio:biallelic} if it has two possible states (and triallelic for three, quadrillelic for four, etc). Bialellic markers are typically referred to as 'binary' markers, with higher-indexed markers being the \gls{bio:polymorphic} ones.
+	The marker must denote some point of variability within a population. The human genome consists of many variations between individuals, as many as 150 million\footnote{As of dbSNP version 146\citep{sherry2001dbsnp}}, but this only comprises 1\% of the genome\footnote{As verified by a cursory scan over raw FASTA output files, via: \usebox\myVerb}. Each distinct variation in a marker is referred to as an allele, and the marker is said to be \gls{bio:biallelic} if it has two possible states (and triallelic for three, quadrillelic for four, etc). Bialellic markers are typically referred to as 'binary' markers, with higher-indexed markers being the \gls{bio:polymorphic} ones.
 }
 \item[Co-dominance]{If a marker is not polymorphic in a unique way, then no information can be inferred between individuals and all modes of inheritance would be equally likely.  \gls{bio:co-dominance} asserts that all possible states of a marker are distinct from one another.}
 \item[Hardy-Weinberg Equilibrium]{The \gls{bio:HWE} is the model that assumes that allele and genotype frequencies remain constant in the absence of external interference. A biallelic marker with a minor allele frequency of p and a major allele frequency of \(q = (1-p)\) will distribute genotypes with a \(p^2 : 2pq : q^2\) ratio.}
@@ -153,7 +157,7 @@ The low level of polymorphism does indeed pose a problem when trying to trace wh
 
 \subsubsection{dbSNP}
 
-Classically the minor allele frequencies of SNPs was said to be no less than 1\% to have useable information content, but the most current SNP database (dbSNPv142) also caters for SNPs with much lower frequencies due to typically large sample sizes used in the genotyping process. The general format for SNP IDs is the reference SNP (or ‘rs’) identifier followed by a unique number that distinguishes it from other SNPs (e.g. rs1234567).  Due to the large number of SNPs being registered into dbSNP from several different sources, it is not uncommon to see two different SNPs specifying the same variant, or for a SNP with such a low minor allele frequency (<0.0001\%) that it should hardly be called a SNP at all. Indeed, dbSNP rigorously strives to resolve these problematic SNPs with every release, but this leads to inconsistencies between versions and binds the informative of any SNP study to a specific dbSNP release version.
+Classically the minor allele frequencies of SNPs was said to be no less than 1\% to have useable information content, but the most current SNP database (dbSNPv142) also caters for SNPs with much lower frequencies due to typically large sample sizes used in the genotyping process. The general format for SNP IDs is the reference SNP (or 'rs') identifier followed by a unique number that distinguishes it from other SNPs (e.g. rs1234567).  Due to the large number of SNPs being registered into dbSNP from several different sources, it is not uncommon to see two different SNPs specifying the same variant, or for a SNP with such a low minor allele frequency (<0.0001\%) that it should hardly be called a SNP at all. Indeed, dbSNP rigorously strives to resolve these problematic SNPs with every release, but this leads to inconsistencies between versions and binds the informative of any SNP study to a specific dbSNP release version.
 
 
 \subsection{Linkage Maps}
@@ -181,7 +185,7 @@ Inheritance models dictate the pathways that alleles segregate across generation
 
 \subsection{Mendel's Laws}
 
-Gregor Mendel was a botanist monk who outlined the first basic principles of genetics through his breeding experiments with peas. Though some of his observations have not stood incontestable through the passages of time, they are still of great import and he is said to be the father of genetics:
+Gregor Mendel was a botanist monk who outlined the first basic principles of genetics through his breeding experiments with peas. Though some of his observations have not stood incontestable through the passages of time, they are still of great import and he is still heralded as the "the father of genetics":
 
 \subsubsection{Law of Segregation}
 
@@ -189,6 +193,7 @@ Gregor Mendel was a botanist monk who outlined the first basic principles of gen
 	{Image courtesy of Wikimedia Commons}
 	{fig:back1}
 	{0.5}
+	{Segregation Diagram}
 
 Every diploid organism has two alleles that segregate during gamete formation to create diploid offspring that bears just one of the alleles from that parent (i.e. each offspring inherits one allele from their parents). As shown in Figure~\ref{fig:back1}, this has the interesting effect such that two homozygous parents with genotypes \textit{ww} and \textit{RR} respectively will \textit{always} have heterozygous offspring with \textit{wR} genotypes, yet these heterozygous offspring can further mate to reconstitute their parent's genotypes.
 
@@ -215,6 +220,7 @@ In relation to his third law, the concept of \gls{bio:codominance} is missed; if
 	{Typical pedigree, with females represented as circles and males as squares. Affectation is represented by a red colour fill.}
 	{fig:back2pedigree}
 	{0.5}
+	{Simple Pedigree}
 
 Individuals from the same family share a \gls{bio:pedigree}, and each individual is grouped into two classes: \gls{bio:founders} and \gls{bio:non-founders}. 
 Founders are individuals who contribute unique \gls{bio:founder alleles} to the pedigree, and the non-founders are the individuals who inherit them.
@@ -262,7 +268,7 @@ Here, affected individuals appear to skip generations since parents carrying a h
 
 \subsubsection{X-linked Dominant}
 
-The disease trait rests solely on chromosome X.  Due to males having only one X-chromosome and one Y-chromosome, this simplifies the inheritance pattern such that males can only inherit the single Y-chromosome from their father, and females can only inherit the single  X-chromosome from their father – removing much ambiguity. The male's X-chromosome can still be one of the two maternal X-chromosomes, and likewise the female's maternal X-chromosome can be one of the two as well.  X-linked dominant pedigrees can be identified by a distinct lack of father-to-son transmission, since that would imply that the Y-chromosome is the disease allele. Due to dominant nature of the trait, the penetrance function is identical to that of autosomal dominant.
+The disease trait rests solely on chromosome X.  Due to males having only one X-chromosome and one Y-chromosome, this simplifies the inheritance pattern such that males can only inherit the single Y-chromosome from their father, and females can only inherit the single  X-chromosome from their father - removing much ambiguity. The male's X-chromosome can still be one of the two maternal X-chromosomes, and likewise the female's maternal X-chromosome can be one of the two as well.  X-linked dominant pedigrees can be identified by a distinct lack of father-to-son transmission, since that would imply that the Y-chromosome is the disease allele. Due to dominant nature of the trait, the penetrance function is identical to that of autosomal dominant.
 
 \subsubsection{X-linked Recessive}
 
@@ -273,8 +279,8 @@ Typically the pedigree exhibits more affected males than females, with skipped g
 The penetrance function is gender-specific, taking on the same rules for females as autosomal recessive, but differing for males:
 
 \begin{description}
-\item[If Female:]{\(P(D|GG)=1, P(D|Gg) = P(D|gg)=0\)}
-\item[If Male:]{\(P(D|GG)=N/A,   P(D|Gg)=1, and P(D|gg)=0\)}
+\item{\hfill \(P(D|GG)=1, P(D|Gg) = P(D|gg)=0\) \hfill(if Female) }
+\item{\hfill \(P(D|GG)=N/A, P(D|Gg)=1\), and \(P(D|gg)=0\) \hfill (if Male)}
 \end{description}
 
 
@@ -293,7 +299,8 @@ In Figure~\ref{fig:back_inheritance} the offspring is recombinant at that partic
 \fignow{../writer/Background/images/simple_inheritance.png}
 	{Four complete haploblocks from two founders inherited by their non-founder offspring. The sixth marker is highlighted due to ambiguous genotypes.}
 	{fig:back_inheritance}
-	{0.5}
+	{0.4}
+	{Simple Inheritance}
 
 Resolving ambiguous genotypes to specific chromosomes requires providing the genotype with some neighbouring context such that it knows whether it is in a recombination hotspot, or whether it lies within an existing block.  
 
@@ -364,7 +371,7 @@ Though the methodology between algorithms varies somewhat, all work under the sa
 
 The very first linkage algorithm first computed upon paper, by performing a task known as peeling upon a \gls{bio:pedigree}.
 
-A connected graph of individuals (as nodes) and relationships (as edges) would be recursively peeled in a depth-first manner, by collapsing LOD score calculations onto members of a pedigree known as \textit{pivots}, who are key to the pedigree such that their removal would create two detached pedigrees. 
+A connected graph of individuals (as nodes) and relationships (as edges) would be recursively peeled in a depth-first manner, by collapsing LOD score calculations onto members of a pedigree known as \textit{pivots}, who are key to the pedigree such that their removal would create two detached pedigrees\citep{elston}. 
 
 At each stage, the algorithm considers a simple nuclear family (mother, father, offspring(s)) and performs a LOD score computation of the offspring inheriting their founder parents genotypes, then flattening the score up a generation into that founder parent.
 
@@ -374,7 +381,7 @@ Over time, programs such as \gls{prog:Linkage} allowed multiple markers to be co
 
 The algorithm scales linearly with the number of individuals in a pedigree, but exponentially with the number of markers for a multi-point analysis; a severe limiting step in an age where the density of markers were on the increase.
 
-Generating fast and reasonable accurate LOD results became the main aim for a lot of programs, each performing a different approximation upon the LOD score calculations to generate a faster analysis. The program \gls{prog:Vitesse} was boasted as being able to analyse 8 markers jointly using "fuzzy inheritance".
+Generating fast and reasonable accurate LOD results became the main aim for a lot of programs, each performing a different approximation upon the LOD score calculations to generate a faster analysis. The program \gls{prog:Vitesse} was boasted as being able to analyse 8 markers jointly using "fuzzy inheritance"\citep{o1995vitesse}.
 
 Since haplotype reconstruction requires precise determination of a missing genotype, the Elston-Stewart algorithm was lacking in this regard.
 
@@ -382,12 +389,13 @@ Since haplotype reconstruction requires precise determination of a missing genot
 
 The era of haplotypes began with the Lander-Green algorithm, which aims to describe a probability distribution over all possible ways traits may segregate between individuals based on their genotypes for a given marker, whilst being dependent on adjacent markers.
 
-Under Lander-Green, a pedigree is represented using an \textit{inheritance vector}, which shows the transition of founder alleles to non-founders.
+Under Lander-Green, a pedigree is represented using an \textit{inheritance vector}, which shows the transition of founder alleles to non-founders\citep{landergreen}.
 
 \fignow{../writer/Background/images/inheritance_vector.png}
 	{A pedigree of phased individuals with inheritance vectors represented as arrows. Here the order of the genotypes are \{maternal,paternal\} indexed to \{0,1\}}
 	{fig:back_iv}
 	{0.5}
+	{Inheritance Vector}
 
 
 The compact representation of the inheritance vector in Figure~\ref{fig:back_iv} would be 1000 since it is only the transition from the first generation mother \(\rightarrow\) child where the second allele (B\(\rightarrow\)1) is transmitted, whereas it is always the first allele(0) in all other cases.
@@ -396,7 +404,7 @@ The importance of this for haplotype reconstruction is apparent, for it consider
 
 This was the first linkage analysis that made use of a Hidden Markov Model (\gls{bio:HMM}),  which denotes a dependent chain of unobserved hidden states with state probabilities, that transition between each other under transmission probabilities.  
 
-Kruglyak readily applied this to a a linkage model where the states mapped the possible inheritance vectors, and the transmission probabilities were the genotype likelihoods. The Elston-Stewart algorithm was then used to sum over the inheritance probability distribution at each locus.
+Kruglyak readily applied this to a a linkage model where the states mapped the possible inheritance vectors, and the transmission probabilities were the genotype likelihoods\citep{kruglyak_parametric_1996}. The Elston-Stewart algorithm was then used to sum over the inheritance probability distribution at each locus.
 
 Over time, a few notable speedups were incorporated without the cost of accuracy incurred by approximation:
 
@@ -429,12 +437,13 @@ One such algorithm is the forward-backward \textit{Viterbi} algorithm. A forward
 \enumitem{Backwards Pass}{After the forward pass, computes a set of backward probabilities that sets the probabilities of any given state observing any applicable previous state. This is essentially the same as the previous step}
 \end{enumerate}
 
-Once performed, a combined probability distribution is obtained to find the mostly likely state at any step in the chain.
+Once performed, a combined probability distribution is obtained to find the mostly likely state at any step in the chain\citep{viterbi1967error}.
 
 \fignow{../writer/Background/images/Viterbi-4.png}
 	{Fourth step of Viterbi}
 	{fig:backviterb}
 	{0.8}
+	{}
 
 
 The Viterbi algorithm is an extension of this prototype that attempts to maximize the probabilities such that the optimal path can be traced by observing the most likely set of inheritance vectors upon the most likely set of founder alleles.
@@ -448,11 +457,11 @@ This is still an approximation upon the data, since the most likely set of inher
 \section{Summary}
 
 
-We have seen that there are two main limiting steps in linkage analysis algorithms that scale either with the number of meiosis or the number of markers. The Elston-Stewart algorithm's complexity scaled linearly with the number of meiosis by collapsing computations on pivot individuals, but scaled exponentially with the number of markers. 
+We have seen that there are two main limiting steps in linkage analysis algorithms that scale either with the \textbf{number of meiosis} or the \textbf{number of markers}. The Elston-Stewart algorithm's complexity scaled linearly with the number of meiosis by collapsing computations on pivot individuals, but scaled exponentially with the number of markers. 
 
 The Lander-Green-Kruglyak algorithm was the inverse of this; where  the number of meiosis caused an exponential increase in complexity due to the possible inheritance vector states doubling at each step.  The number of markers scaled linearly however, and this is what made it the most widely-adopted algorithm in linkage analysis programs, since the density of genotyping chips have only increased over the time.
 
-Hidden Markov Models lend their use to inheritance or descent diagrams that allow us to set phase at each genotype by following the most likely set of inheritance vectors.
+Hidden Markov Models lend their use to inheritance or descent diagrams that allow us to set phase at each genotype by following the most likely set of inheritance vectors\citep{sobel1996descent}.
 
 Haplotype reconstruction is by no means deterministic, as the optimal path as derived from the Viterbi algorithm may be just as likely as another path, especially for incomplete data where the potential alleles of untyped genotypes may have equal likelihood.
 

@@ -21,7 +21,7 @@ In this section we examine the output of seven linkage projects; five small stra
 \hline
 \end{tabular}
 \end{center}
-\caption{Summary table of the pedigrees evaluated in ascending order of bit-size}\label{table:haplo:trioalleles}
+\caption[Pedigrees by Bit-Size]{Summary table of the pedigrees evaluated in ascending order of bit-size}\label{table:res:evaluated}
 \end{table}
 
 Timings of each pipeline run are considered later in the section, and haplotypes are compared using HaploPainter and HaploHTML5.
@@ -52,6 +52,7 @@ The number of markers used for this analysis was 35,155 of which only 9 exhibite
 {3-bit Autosomal Recessive Pedigree. (Top) Family Tree and GRR, (Middle) Mendelian errors, (Bottom) Genomewide linkage plot.}
 {fig:res:3bit}
 {0.94}
+{3-bit Automal Recessive Pedigree}
 
 Due to the low bit-size, the estimated lod score for the pedigree gave a maximum score of 0.2499 (Allegro and Genehunter), which is reflected in the genome-wide plot. Unfortunately most regions of the genome reached this score ( $\sim>$ 80\%) likely due to there not being enough lack of homology between the affected and unaffected siblings. The score is also far below the minimum LOD score for informative linkage (LOD $>$ 2) meaning that the analysis was likely not very useful in identifying or excluding regions of interest for a causative disease locus.
 
@@ -69,6 +70,7 @@ We can also see a few distinct types of peaks: the nicely squared "flat" plateau
 {5-bit Autosomal Recessive Pedigree (119).}
 {fig:res:5bit}
 {1}
+{}
 
 Rounded peaks show discord or a lack of resolution within the linkage region. The small peak at chromosome 7 (LOD=-0.1) shows that at maximum there there are three markers constituting the peak with the left and right walls in rough agreement LOD-score wise, but that a single marker in-between them is significantly higher, forcing the plotting program (GNUplot) to smooth the peak into a rounded shape. These types of peaks are extremely common in low-marker analyses ($<$ 5000 SNPs) and are rare in high-marker analyses ( $>$ 50,000 SNPs). Shards convey the same level of information, with the further disadvantage of only being constituted by two markers, both with unequal LOD scores.
 
@@ -85,6 +87,7 @@ The second scenario (run 02) assumed that the majority of errors stemmed from th
 {Autosomal Dominant Pedigree split into 10 scenarios. The base scenario (Top) exists without any red-line modifications. Individuals with a diagonal red line crossing through them denote a scenario (numbered in red) where that individual was removed from the pedigree. Individuals filled in red denote analyses where only that individual was considered in relation to their parents with all other offspring omitted. Red underlined groups denote parent-sibling analyses where siblings are grouped and evaluated separately. The bottom pedigree is the same as the top base scenario, but with alternate mother and father  for individual 2016 making it half-sib with other offspring.}
 {fig:res:7bitped}
 {1}
+{}
 
 \pagebreak
 To pinpoint the offspring individual at fault with a reasonably small number of re-runs, offspring were split into pairs and run with their original parents in independent analyses: (run 03) 16 and 13, (run 04) 12 and 19, (run 05) 18 and 15. The analyses were terminated prematurely before the linkage stage in order to compare their relative errors without bias.
@@ -101,19 +104,22 @@ Reconfirmation upon the sample data prompted a two more genotype sets to be intr
 This created some disarray in the GRR plots for run 09 and 10, and even some relation mixing for run 10. The number of Mendelian errors also rose to significant levels (1849 and 2978 SNPs respectively) though the linkage peaks remained relatively unchanged.
 
 \fignow{../writer/Results/images/interesting_cases/117_FSGS/genotype_scenarios_fixed.png}
-{Mendelian errors for the ten scenarios depicted in Figure~\ref{ref:7bitped}. Each of the scenarios represent the following number of errors: 01 (all base) 8000 SNPs, 02 (father excluded) 3433 SNPs, 03 (16+13 only) 7991 SNPs, 04 (12+19 only) 24 SNPs, 05 (18+15 only) 26 SNPs, 06 (16 only) 7980 SNPs, 07 (13 only) 18 SNPs, 08 (16 out) 37 SNPs, 09 (new mother for 16) 1849 SNPs, 10 (new father for 16) 2978 SNPs}
+{Mendelian errors for the ten scenarios depicted in Figure~\ref{res:7bitped}. Each of the scenarios represent the following number of errors: 01 (all base) 8000 SNPs, 02 (father excluded) 3433 SNPs, 03 (16+13 only) 7991 SNPs, 04 (12+19 only) 24 SNPs, 05 (18+15 only) 26 SNPs, 06 (16 only) 7980 SNPs, 07 (13 only) 18 SNPs, 08 (16 out) 37 SNPs, 09 (new mother for 16) 1849 SNPs, 10 (new father for 16) 2978 SNPs}
 {fig:res:7bitgenotypes}
 {1}
+{Ten scenarios, Mendelian errors, 7-bit}
 
 \fignow{../writer/Results/images/interesting_cases/117_FSGS/grr_montage_fixed.png}
 {GRR plots for the ten scenarios. Identity-by-State (\gls{bio:IBS}) is plotted as a function of Mean against Standard Deviation and bound within an arced range of possible values}
 {fig:res:7bitgrr}
 {1}
+{Ten scenarios, GRR plots, 7-bit}
 
 \fignow{../writer/Results/images/interesting_cases/117_FSGS/allegro_lod_genomewide_zrun3_16out_zrun4mother_zrun4father.png}
 {Genomewide linkage plots for three of the ten scenarios that did not produce Mendelian errors: (08) with individual 16 omitted, (09) with a new genotyped mother for individual 16, and (10) with a new genotyped father for individual 16}
 {fig:res:7bitallegro}
 {1}
+{Ten scenarios, Linkage plots, 7-bit}
 
 
 \subsubsection*{15-bit X-Linked Dominant}
@@ -140,6 +146,7 @@ The size and frequency of the peaks indicate at least one of four issues:
 {X-linked Dominant pedigree, with three individuals of unknown affectation marked in grey (54406, 54403, 54410)}
 {fig:res:15summary}
 {1}
+{X-linked Dominant Pedigree}
 
 Many of the recombinations occur within extremely small proximity of one another, and since physical distance scales linearly with centiMorgans, a large number of meioses in those regions are extremely unlikely. Similarly,  the family could not have been badly genotyped nor could the pedigree structure be incorrect, since the number of Mendelian errors are relatively low.
 
@@ -156,9 +163,9 @@ Occasionally members of consanguineous families have a tendency of obscuring suc
 Of the 50,110 SNPs in the input marker set, 22 negligible Mendelian errors were reported (0.439\%). The preliminary  LOD-score estimates provided a score of 2.9, which was met accordingly in the actual linkage output with peaks at chromosome 2, 5, and 7. Figure~\ref{fig:res:18chrom7} shows the zoomed in plot of chromosome 7, with chromosomal bands (and sub-bands) overlayed with a centromere. 
 
 \fignow{../writer/Results/images/standard_cases/111_summary.png}
-	{18-bit Autosomal Recessive pedigree}
+	{18-bit Autosomal Recessive Pedigree}
 	{fig:res:18summary}
-	{1}
+	{1}{}
 	
 The darkness of the band is indicative of the density of the chromatin, hinting at regions of heterochromatin (dark) and euchromatin (light) which provide cues about gene expression. A single characteristic flat peak spans a region of 30 Mbp along the q-arm, followed by sharp recombination peak artefacts.
 
@@ -167,7 +174,7 @@ The peaks at the other chromosomes also display valid linkage, and it is up to t
 \fignow{../writer/Results/images/standard_cases/111_chrom7.png}
 	{18-bit Autosomal Recessive Pedigree, chromosome 7 (allegro)}
 	{fig:res:18chrom7}
-	{1}
+	{1}{}
 
 
 \subsection{Large Pedigrees}
@@ -179,7 +186,7 @@ The pedigrees evaluated here required the big data patching scripts mentioned pr
 \fignow{../writer/Results/images/interesting_cases/109_5k_scenarios/family_109.png}
 	{23 bit pedigree with red-lines indicating the individuals omitted from a given analysis.}
 	{fig:res:21bitped}
-	{0.9}
+	{0.9}{}
 
 Here we examine another large consanguineous pedigree with two inbreeding loops occurring both within the second generation (7621 and 7622, 7623 and 7624) from the two founder couples (7611 and 7612, 7613 and 7614) with seven variations upon the inclusion of unaffected individuals spawned from a base analysis where only affected individuals were included. The base analysis has a 21-bit pedigree complexity, and as per equation~\ref{eqn:bitsize} on page~\pageref{eqn:bitsize}, each non-founder contributes 2-bits which places all subsequent analyses at 23-bits.
 
@@ -188,12 +195,12 @@ Each of the 8 total scenarios contributed negligible Mendelian errors (in total 
 \fignow{../writer/Results/images/interesting_cases/109_5k_scenarios/genotype_errors.png}
 	{Mendelian error for the base scenario (21-bit). All other analyses gave either 0 or at maximum 3 erroneous SNPs.}
 	{fig:res:21bitgenotypingerrors}
-	{0.7}
+	{0.7}{21-bit pedigree, Mendelian errors}
 
 \fignow{../writer/Results/images/interesting_cases/109_5k_scenarios/grr_screenshot_2_5K_markers-family-109_2.png}
 	{GRR relationship chart of a 23-bit pedigree for scenario 02 (individual 327019 omitted).}
 	{fig:res:21bitgrr}
-	{0.7}
+	{0.7}{23-bit pedigree, GRR}
 
 The maximum LOD score for the base scenario (21-bit) was estimated to 3.31, and the estimate LODs for the other (23-bit) analyses gave an average of 3.62\footnote{see footnote ~\ref{footnote:scores}}. 
 
@@ -211,13 +218,13 @@ The width of the chromosome 4 peak (26.8 Mbp) does not narrow with the addition 
 \fignow{../writer/Results/images/interesting_cases/109_5k_scenarios/Summary_scenarios_genomewide.jpg}
 	{Genomewide linkage plots for each of the eight scenarios for the 21 to 23-bit autosomal dominant pedigree.}
 	{fig:res:21bitallegrogenomewide}
-	{1}
+	{1}{Eight scenarios, 21 to 23 bit, Genomewide}
 	
 	
 \fignow{../writer/Results/images/interesting_cases/109_5k_scenarios/Summary_scenarios_chr4.jpg}
 	{Linkage plots of chromosome 4 for each of the eight analyses}
 	{fig:res:21bitallegrochr4}
-	{1}
+	{1}{Eight scenarios, 21 to 23 bit, chr8}
 
 
 \subsubsection{29-bit Autosomal Recessive}
@@ -228,19 +235,19 @@ Three pedigrees were used in this analysis, the first being the 29-bit pedigree 
 \fignow{../writer/Results/images/standard_cases/931_pedigree.png}
 	{29-bit Autosomal Recessive Pedigree, 4 affecteds in the last generation.}
 	{fig:res:29bitped}
-	{1}
+	{1}{}
 
 \fignow{../writer/Results/images/standard_cases/931_other_peds.png}
 	{Two completely uninformative pedigrees for linkage (bit-size of -1).}
 	{fig:res:29bitpedother}
-	{0.30}
+	{0.30}{}
 
 The combined Mendelian errors across the three pedigrees amounted to no more than 175 SNPs out of the total 47,595 selected for linkage (0.368\%) , with 3 SNPs encountered more than once as shown in Figure~\ref{fig:res:29bitmendelian}.
 
 \fignow{../writer/Results/images/standard_cases/931_unlikely.png}
 	{Mendelian errors for the three families considered under the 21-bit Autosomal Recessive analysis. The three peaks relate to an overlap of an erroneous marker in two of the three families.}
 	{fig:res:29bitmendelian}
-	{0.9}
+	{0.9}{21-bit Autosomal Recessive, Mendelian errors}
 
 The GRR plot of the first family (Figure 18) showed good distinct relational grouping with some potential border overlap between the sib-pair and parent-offspring relations, but no actual outliers in either group. The GRR plots of the other two families were normal (Figure 19).
 
@@ -248,12 +255,12 @@ The GRR plot of the first family (Figure 18) showed good distinct relational gro
 \fignow{../writer/Results/images/standard_cases/931_grr.png}
 	{GRR plot of 29-bit family}
 	{fig:res:29bitgrr}
-	{0.6}
+	{0.6}{}
 
 \fignow{../writer/Results/images/standard_cases/931_other_2and3grr.png}
 	{GRR plots of the smaller two families that contributed to the 29-bit analysis.}
 	{fig:res:29bitgrrother}
-	{1}
+	{1}{}
 
 Due to the complexity of the analysis, genome-wide analysis had to be performed via Simwalk due to the big data errors mentioned previously (see page~\pageref{ref:meth:allegrobigdata} of Methods).  An estimated maximum LOD score could also not be computed because of this reason since the calculation relied upon GeneHunter and Allegro, both of which were not able to process the analysis in any reasonable timeframe.
 
@@ -264,17 +271,17 @@ The Simwalk run produced a single peak on the p-arm (p13.3 to p13.2) of chromoso
 \fignow{../writer/Results/images/standard_cases/931_simwalk_genomewide.jpg}
 	{Simwalk plot of 29-bit family (Genomewide)}
 	{fig:res:29bitsimwalkgenomewide}
-	{0.9}
+	{0.9}{}
 
 \fignow{../writer/Results/images/standard_cases/931_simwalk_chr16.jpg}
 	{Simwalk plot of 29-bit family (chr16)}
 	{fig:res:29bitsimwalkchr16}
-	{0.9}
+	{0.9}{}
 	
 \fignow{../writer/Results/images/standard_cases/931_allegro.png}
 	{Allegro plot of 29-bit families (chr16), combined analysis but only first family contributes to the peak score.}
 	{fig:res:29bitallegrochr16}
-	{0.9}
+	{0.9}{}
 
 
 \section{Linkage Run Times}
@@ -304,7 +311,7 @@ For all projects with pedigree complexities less than 19-bits, the main limiting
 \end{tabular}
 \end{center}
 \vspace{-15pt}
-\caption{GRR run times over 4 trials, ordered by ascending bit-size. The number of genotyped individuals and the number of genotypes per individuals are also listed.}\label{table:res:grrtimes}
+\caption[GRR run times, 4 trials, ascending bit-size]{GRR run times over 4 trials, ordered by ascending bit-size. The number of genotyped individuals and the number of genotypes per individuals are also listed.}\label{table:res:grrtimes}
 \end{table}
 
 A plot of Table~\ref{table:res:grrtimes} shows GRR mean run times against normalized bit-size, number of genotyped individuals, number of markers and total genotypes. The total genotypes, bit-size, and number of genotypes appear to follow an upwards sloping power trend, whereas the run time appears to be more independent of the number of markers.
@@ -312,7 +319,7 @@ A plot of Table~\ref{table:res:grrtimes} shows GRR mean run times against normal
 \fignow{../writer/Results/images/GRR_chart.jpg}
 	{GRR run times. (Normalized) Genotypes, Markers, Total Genotypes, and Bitsize against Run Time.}
 	{fig:res:grrtimes}
-	{0.8}
+	{0.8}{}
 
 
 The GRR runtimes appear to be constant at approximately 122 seconds within the established 19 bit limit with a small increase to 123 seconds at 18-bits. Larger pedigrees begin to scale more linearly, rising to 180 by the 29-bit stage, at which stage the contribution of the GRR window polling script runtime becomes negligible in contrast to the Allegro runtimes outlined in Table~\ref{table:res:allegrosingleruntimes} below.
@@ -378,7 +385,7 @@ The following table contains the average chromosome-specific\footnote{For a full
 \end{tabular}
 \end{center}
 \vspace{-15pt}
-\caption{Average Single-Core Allegro Run Times for Multi-point Parametric Linkage and Haplotype Reconstruction; Bit-Size (columns) against Chromosome (rows). All analyses are the result of 4 trials, except the 23-bit analysis which was only able to run for 2 trials and the 29-bit analysis which only run on chromosome 16, both analyses without haplotypes.}\label{table:res:allegrosinglechroms}
+\caption[Average Single-Core Allegro Run Times for MPT and Haplotype Reconstruction]{Average Single-Core Allegro Run Times for Multi-point Parametric Linkage and Haplotype Reconstruction; Bit-Size (columns) against Chromosome (rows). All analyses are the result of 4 trials, except the 23-bit analysis which was only able to run for 2 trials and the 29-bit analysis which only run on chromosome 16, both analyses without haplotypes.}\label{table:res:allegrosinglechroms}
 \end{table}
 
 
@@ -387,7 +394,7 @@ The following table contains the average chromosome-specific\footnote{For a full
 \fignow{../writer/Results/tables/combined_runtimes.jpg}
 	{Single-core Allegro run times for each chromosome. Small pedigrees from 3-bit to 18-bit with runtimes within [0,400] range (Top), larger pedigrees from 18-bit to 23-bit shown with runtimes as powers of 10 (Bottom).}
 	{fig:res:singleplots}
-	{0.9}
+	{0.9}{Single-core Allegro runtimes}
 
 Figure~\ref{fig:res:singleplots} shows the plot of Table~\ref{table:res:allegrosinglechroms} at different scales. 
 
@@ -412,13 +419,13 @@ The bottom image represents a zoomed out Y-axis scale of the same data by 5 orde
 \end{tabular}
 \end{center}
 \vspace{-15pt}
-\caption{Total Genome-wide Allegro Multi-core Run Times for MPT and Haplotypes. Multicore timings for 21-bit and 23-bit analyses were not processed..}\label{table:res:allegromultiruntimes}
+\caption[Total Genome-wide Allegro Multi-core Run Times for MPT and Haplotype Reconstruction]{Total Genome-wide Allegro Multi-core Run Times for MPT and Haplotypes. Multicore timings for 21-bit and 23-bit analyses were not processed..}\label{table:res:allegromultiruntimes}
 \end{table}
 
 \fignow{../writer/Results/tables/runtimes_multicore.jpg}
 	{Multi-core Allegro runtimes displayed as a function of bit-size against run time fitted with a power curve. Individual chromosome runtimes were not recorded due to parallel evaluation.}
 	{fig:res:multitimes}
-	{0.8}
+	{0.8}{Multi-core Allegro runtimes plot}
 
 The multi-core run-times shown in Table~\ref{table:res:allegromultiruntimes} are plotted above in Figure~\ref{fig:res:multitimes}, where individual chromosome-runtimes were ommitted for simplicity.   Runtimes remain reasonably linear from 3-bit to 15-bits where a sharp rise in runtime occurs 18-bits where the system resources requested by active Allegro instances begin to compete for memory.
 <TODO: XXX change this to exp curve, and backdrop max RAM usage  for both single and multicore>
@@ -429,7 +436,7 @@ For the 29-bit pedigree, Simwalk performed the genomewide analysis and then Alle
 
 
 
-\section{Haplotype Resolution Comparisons}
+\section{Haplotype Resolution Comparisons}\label{ref:res:hapcomp}
 
 We will look at the haplotypes of three large pedigrees with the following penetrance models: Autosomal Dominant, Autosomal Recessive, X-Dominant.
 
@@ -442,7 +449,7 @@ Family 109 in the figure below consists of many members and so it was prudent to
 \fignow{../writer/Results/images/haplotypes/109_ped.jpg}
 	{HaploHTML5 default rendering of pedigree 109 from Allegro haplotype input file. This is the 23-bit pedigree shown earlier in Figure~\ref{fig:res:21bitped} or page~\pageref{fig:res:21bitped}. Since both founder couples (7611 and 7612, 7613 and 7614) were at the same grid 'level', a line overlap was inevitable and so 7611 and 7612 were raised to better distinguish childlines.}
 	{fig:res:haplo23ped}
-	{0.6}
+	{0.6}{HaploHTML5 21-bit pedigree render}
 
 
 Figure~\ref{fig:res:haplo23compare} shows a side-by-side comparison of the pedigree given in Figure~\ref{fig:res:haplo23ped}. The top image shows the HaploPainter rendition\footnote{manually modified to be horizontally aligned since it normally only produces generation-based vertical plots}, and the bottom the HaploHTML5 render.
@@ -453,7 +460,7 @@ The first red arrow marks a point between rs7693827 and rs11735648  which refers
 \fignow{../writer/Results/images/haplotypes/109_haplo_comparison_full.jpg}
 	{Haplotypes of family 109. HaploPainter modified to display affecteds inline (Top). HaploHTML5 default comparison view showing affecteds only (Bottom). Four noteable points of comparison points are highlighted with red arrows.}
 	{fig:res:haplo23compare}
-	{0.9}
+	{0.9}{HaploHTML5 21-bit haplotypes comparison}
 
 The red arrow at point 4 shows a genotyping error that is correctly picked up upon by both programs and assigned the first available group outside of the block it resides in.
 
@@ -468,12 +475,12 @@ Here we have the three inbreeding loops that we encountered previously in the se
 \fignow{../writer/Results/images/haplotypes/104_ped.jpg}
 	{HaploHTML5 rendering of family 104, of the 29-bit pedigree originally shown in Figure~\ref{fig:res:29bitped} on page~\ref{fig:res:29bitped}.}
 	{fig:res:haplo29ped}
-	{0.8}
+	{0.8}{HaploHTML5 rendering of 29-bit pedigree}
 	
 \fignow{../writer/Results/images/haplotypes/104_haplo_comparison.jpg}
 	{Family 104 rendered in HaploPainter and then modified for horizontal alignment (Top) and HaploHTML5 (Bottom)}
 	{fig:res:haplo29compare}
-	{0.65}
+	{0.65}{HaploHTML5 comparison of 29-bit pedigree}
 
 \begin{spacing}{1.38}
 There are only 4 affected individuals in this pedigree, so we can now include some unaffecteds too (the last  generation in this case). Here we once again see good accordance between HaploPainter and HaploHTML5 for the genotyping error at point 3, and the recombination at point 1. 
@@ -489,14 +496,14 @@ Figure~\ref{fig:res:haplo29comparehomology} below compares the homology tools us
 \fignow{../writer/Results/images/haplotypes/104_homology_compare.jpg}
 	{Homology Tool comparison of HaploPainter via HaploPainterRFH modification script (Top), and HaploHTML5 Homology Mode (Bottom)}
 	{fig:res:haplo29comparehomology}
-	{0.72}
+	{0.72}{29-bit homology comparison}
 
 \subsection{15-bit X-Linked Dominant}
 
 \fignow{../writer/Results/images/haplotypes/20_ped.jpg}
 	{X-Linked Pedigree, 17 members of which 8 are affected individuals}
-	{fig:res:haplo29ped}
-	{0.8}
+	{fig:res:haplo20ped}
+	{0.8}{}
 
 We once again take a look at our X-linked Dominant pedigree mentioned previously on page~\pageref{fig:res:15summary}, where we can examine the haplotypes of all individuals in the pedigree.
 
@@ -506,19 +513,19 @@ The figures below provide three ranges of which to examine the X chromosome wher
 \fignow{../writer/Results/images/haplotypes/20_compare_topbox.jpg}
 	{Starting telomeric P-arm region of chrX spanning 60 markers. (Top) HaploPainter recombination errors caused by bad X-inheritance. (Bottom) HaploHTML5 complete haploblocks due to correctly parsing the genotypes.}
 	{fig:res:haplo20comparetop}
-	{1.1}
+	{1.1}{Haplotypes comparison chrX p-arm}
 
 
 \fignow{../writer/Results/images/haplotypes/20_compare_midbox.jpg}
 	{Middle region of chrX spanning 72 markers. HaploPainter (Top) and HaploHTML5 (Bottom).}
 	{fig:res:haplo20comparemid}
-	{1.1}
+	{1.1}{Haplotypes comparison chrX centromeric}
 
 
 \fignow{../writer/Results/images/haplotypes/20_compare_botbox.jpg}
 	{Finishing telomeric Q-arm region of chrX spanning 56 markers. HaploPainter (Top) and HaploHTML5 (Bottom).}
 	{fig:res:haplo20comparebot}
-	{1.1}
+	{1.1}{Haplotypes comparison chrX q-arm}
 
 
 

@@ -2,12 +2,29 @@
 \chapter{Appendix}
 
 \section{Semaphores}\label{ref:app:semaphores}
+\citep{downey_little_2005}
 
 
+\section{Hardware Specification}\label{ref:app:hwspec}
+
+\section{Linux Filesystem}\label{ref:app:linuxfs}
 
 \section{Compiler}\label{ref:app:compiler}
 
 \section{Primitives}\label{ref:app:primitives}
+
+Data generally comes in two forms:
+
+%\begin{enumerate}
+%\item{numeric
+%	\begin{enumerate}
+%	\item{\textbf{decimal}, the integer value of a number represented in base-2 (or 'binary') number format, (e.g. 8 = 1000 (4-bits), 7 = 111 (3-bits), 652 = 101000110 (9-bits)). For n bits, the decimal range is [0,$2^n - 1$]\footnote{This is only in case of positive unsigned integers. To include negative integers too, the first bit is sacrificed as an indicator of polarity. This produces signed integers and follows a more involved schema known as \textit{two's-complement} in order to only have a single representation of the number zero. The numeric range for n bits is then [-2n-1, 2n-1 – 1].}.Decimals tend to come in fixed bit-sizes\footnote{byte (8-bit), short/char (16-bit), int (32-bit), long (64-bit), and (in some languages) long long (128-bit).} so there can be some redundancy in representing a small number with a large decimal type.}
+%	\item{\textit{floating-point} numbers are a compact approximation of a number as deemed by the specification\citep{floats}. Numbers are represented as powers of exponents such that $5 \sim= e^{1.61}$ (where 1.61 would be the stored number in this loose example). The precision of the representation is determined by how many bits the number has. Floats have a much larger range than decimals, albeit with less accuracy}
+%	\end{enumerate}
+%}
+%\item{textual}{See Strings section}
+%\end{enumerate}
+
 
 \section{Strings}\label{ref:app:strings}
 Strings are a type of data that is defined as any block of text surrounded by single or double quotation marks. Strings compared to other data types are very memory intensive since it is usually unclear exactly how much memory a string is going to take.
@@ -55,6 +72,7 @@ Figure~\ref{fig:fsa} shows how such a pattern is first converted into character-
 {}
 {fig:fsa}
 {0.6}
+{Finite State Automaton}
 
 \begin{center}
 \begin{tabular}{|r|l|}
@@ -81,7 +99,7 @@ Software licences are typically split into two groups: \textit{CopyLeft} and \te
 \item[CopyLeft]{
 A CopyLeft license is a protective license that allows anyone to modify and/or redistribute copies of their work under the condition that they must distribute their source code and that the receiver must also be bound under the same agreement. This ensures that software remains free and open source throughout all works that incorporate the license.
 
-Free Software Movement guru Richard Stallman was the first to create a Copyleft license, the GNU General Public License (GPL), which has gone on to make two more versions:
+Free Software Movement guru Richard Stallman was the first to create a Copyleft license, the GNU \citep{stallman1998gnu} General Public License (GPL), which has gone on to make two more versions:
 	\begin{enumerate}
 	\item{\textbf{GPLv2}
 		\begin{enumerate}
@@ -104,7 +122,7 @@ A license that lets anyone do whatever they want without any restrictions on mod
 \end{description}
 
 
-
+\section{Poisson Distribution}\label{ref:app:poisson}
 
 \section{Colour Spaces}\label{ref:app:colour}
 
@@ -189,6 +207,6 @@ A license that lets anyone do whatever they want without any restrictions on mod
 \textbf{29} & \textbf{1}                     &                                  &                                  &                                  & 315615                           &                                  &                                  &                                  &                                  &                                  &                                  &                                 &                                   
 \end{tabular}
 }
-\caption{Allegro Single-Core Runtimes (4 trials per bit-size per chromosome). B is bit-size, and T is trial number.}
+\caption[Allegro Single-Core runtimes, 4 trials per chromosome, per bit-size]{Allegro Single-Core Runtimes (4 trials per bit-size per chromosome). B is bit-size, and T is trial number.}
 \end{table}
 \thispagestyle{empty}
