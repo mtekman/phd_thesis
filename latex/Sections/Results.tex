@@ -1,17 +1,260 @@
 \chapter{Results}
 
+In this section we examine the output of seven linkage projects; five small straightforward of which three are non-problematic, and two with larger more complex pedigrees. Due to the focus of the Nephrology group at the Royal Free Hospital, all linkage projects follow rare disease models, with a primary aim in determining a single disease locus indicative of a causative variant.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{ c c r l } \toprule
+              & \textbf{No. of}      & \textbf{No. of}  &                  \\
+\textbf{Bit-size} & \textbf{Genotyped}   & \textbf{Markers} & \textbf{Model} \\
+              & \textbf{Individuals} &                  &                  \\
+\midrule
+3 & 5 & 35,155 & Autosomal Recessive \\
+5 & 6 & 41,479 & Autosomal Recessive \\
+7 & 9 & 43,421 & Autosomal Dominant \\
+9 & 8 & 43,421 & Autosomal Dominant \\
+15 & 11 & 41,480 & X-Linked Dominant \\
+18 & 7 & 50,110 & Autosomal Recessive \\
+21 & 10 & 15,914 & Autosomal Dominant \\
+23 & 11 & 15,914 & Autosomal Dominant \\
+29 & 14 & 47,595 & Autosomal Recessive \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Summary table of the pedigrees evaluated in ascending order of bit-size}\label{table:haplo:trioalleles}
+\end{table}
+
+Timings of each pipeline run are considered later in the section, and haplotypes are compared using HaploPainter and HaploHTML5.
+
+
 \section{Linkage Projects}
 
+The small pedigrees underwent two types of runs: single-core and multi-core. Due to the speed at which both types operate on small pedigrees, each type performed 10 trials each. The larger pedigrees were for the most part single-core due to resource limitations, but parallelizations were undertaken where possible. 
+
+We will examine the pipeline by looking at the four main visual components of each analysis: the pedigree, the GRR relationship charts, the Mendelian error plots, and finally the linkage plots. Run times will be displayed at the end of the section.
+
 \subsection{Small Pedigrees}
-\subsubsection{3-bit Autosomal Recessive}
-\subsubsection{5-bit Autosomal Recessive}
-\subsubsection{7-bit and 9-bit Autosomal Dominant}
-\subsubsection{15-bit X-Linked Dominant}
-\subsubsection{18-bit Autosomal Recessive}
+
+Here we look at a variety of pedigrees, each with an increasingly larger bit-size within the 19-bit limit that defines the threshold for large "big data" pedigrees. Small pedigrees are run through the pipeline without any runtime modifications required, resulting in a complete set of plots from all linkage programs.
+
+\subsubsection*{3-bit Autosomal Recessive}
+
+
+Figure~\ref{fig:res:3bit} shows a very simple pedigree; depicting one affected male (2053) amongst unaffected male (2052) and female (2054) siblings from two parents (2056 and 2055). All individuals are genotyped; the parents  and the affected offspring being the main targets of informative meiosis, and the siblings acting as controls.  
+
+The GRR relationship chart shows normal bunching of sib-pairs (red), two close clusters of parent-offspring relations (yellow), and one single unrelated connection (cyan) between the two parents. For small non-consanguineous pedigrees, parents typically exhibit separate clusters of relation to their offspring since allele inheritance is never perfectly even and some offspring will share more alleles with one parent than another. 
+
+In larger (usually inbred) pedigrees, these two parental clusters either bunch together due to the parents being more related, or the gap between two outlying parent clusters are filled with other more-related parental clusters to form one large group that is still distinct from other sib-pair and half-sib groups.
+
+The number of markers used for this analysis was 35,155 of which only 9 exhibited Mendelian errors and were filtered out from subsequent analysis. This constitutes 0.025\% of the number of markers and is of no cause for concern, allowing the rest of the analysis to progress.
+
+\fignow{../writer/Results/images/standard_cases/115_summary.png}
+{3-bit Autosomal Recessive Pedigree. (Top) Family Tree and GRR, (Middle) Mendelian errors, (Bottom) Genomewide linkage plot.}
+{fig:res:3bit}
+{0.94}
+
+Due to the low bit-size, the estimated lod score for the pedigree gave a maximum score of 0.2499 (Allegro and Genehunter), which is reflected in the genome-wide plot. Unfortunately most regions of the genome reached this score ( $\sim>$ 80\%) likely due to there not being enough lack of homology between the affected and unaffected siblings. The score is also far below the minimum LOD score for informative linkage (LOD $>$ 2) meaning that the analysis was likely not very useful in identifying or excluding regions of interest for a causative disease locus.
+
+\subsubsection*{5-bit Autosomal Recessive}
+
+This pedigree is very similar to the 3-bit pedigree above, but the bit-size increases by 2-bits for each non-founder added, and here we have one extra affected offspring. The GRR relationship diagram in Figure~\ref{fig:res:5bit} also shows a similar pattern of groups as before, but this time there are more parental clusters which exhibit the faint beginnings of a larger parental cluster. 
+
+55 SNPs (of 41,479 markers) were identified having Mendelian errors, with a cluster of 6 towards the telomeric p-arm of chromosome 8. Removing these from the analysis also had negligible impact (0.133\%).
+
+The estimated LOD score was 0.8519 (Allegro and Genehunter) which was once again reached by the linkage with a smaller number of peaks to indicate locus of interest. Though a single causative peak could not be determined, wide regions of exclusion defined chromosomes 2, 3, 6, and 7, as well much narrower peaks genome-wide.
+
+We can also see a few distinct types of peaks: the nicely squared "flat" plateau peaks, the "rounded" bullet-like peaks, and the sharp "shard" peaks. Flat peaks tend to be of more worth to the analysis because they indicate that there are at minimum three markers exhibiting the same LOD score to constitute a left-wall, a right-wall and a point in-between. 
+
+\fignow{../writer/Results/images/standard_cases/119_AR_summary.png}
+{5-bit Autosomal Recessive Pedigree (119).}
+{fig:res:5bit}
+{1}
+
+Rounded peaks show discord or a lack of resolution within the linkage region. The small peak at chromosome 7 (LOD=-0.1) shows that at maximum there there are three markers constituting the peak with the left and right walls in rough agreement LOD-score wise, but that a single marker in-between them is significantly higher, forcing the plotting program (GNUplot) to smooth the peak into a rounded shape. These types of peaks are extremely common in low-marker analyses ($<$ 5000 SNPs) and are rare in high-marker analyses ( $>$ 50,000 SNPs). Shards convey the same level of information, with the further disadvantage of only being constituted by two markers, both with unequal LOD scores.
+
+\subsubsection*{7-bit and 9-bit Autosomal Dominant}
+
+In this analysis we see examples of excessive Mendelian errors, as well as the trial-and-error process of trying to determine the ‘true’ model of a given data set through successive run iterations.
+
+Figure~\ref{fig:res:7bitped} shows ten pedigree variants from the same initial base, each constructed to pinpoint the source of the high Mendelian errors shown in Figure~\ref{fig:res:7bitgenotypes} for the base scenario; 8000 out of 43,421 SNPs (18.4\%) . The GRR plot for the run (Figure~\ref{fig:res:7bitgrr}, 01) shows inconsistent bunching between sib-pair and parent-offspring groups with some mixing, clearly showing that something was indeed wrong with the pedigree.
+
+The second scenario (run 02) assumed that the majority of errors stemmed from the father (2017) since genetic testing often reveals bad paternity 10\% of the time <XXXREF>. The father was truncated from the analysis to be replaced by an ungenotyped placeholder parent, which halved the number of errors to 3433 SNPs but also proved that the father was not the main source of the errors, hinting that one of the offspring was responsible. The GRR plot for the scenario (02) reflects this, for there is no longer any mixing between sib-pair and parent-offspring clusters, though the two extremely disparate groups for each relation still remains.
+
+
+\fignow{../writer/Results/images/interesting_cases/117_FSGS/pedigree_montage.png}
+{Autosomal Dominant Pedigree split into 10 scenarios. The base scenario (Top) exists without any red-line modifications. Individuals with a diagonal red line crossing through them denote a scenario (numbered in red) where that individual was removed from the pedigree. Individuals filled in red denote analyses where only that individual was considered in relation to their parents with all other offspring omitted. Red underlined groups denote parent-sibling analyses where siblings are grouped and evaluated separately. The bottom pedigree is the same as the top base scenario, but with alternate mother and father  for individual 2016 making it half-sib with other offspring.}
+{fig:res:7bitped}
+{1}
+
+\pagebreak
+To pinpoint the offspring individual at fault with a reasonably small number of re-runs, offspring were split into pairs and run with their original parents in independent analyses: (run 03) 16 and 13, (run 04) 12 and 19, (run 05) 18 and 15. The analyses were terminated prematurely before the linkage stage in order to compare their relative errors without bias.
+
+Run 03 reproduced over 99\% of the original base errors with 7991 SNPs with Mendelian errors, with run 04 and run 05 producing 55 erroneous SNPs between them. The GRR plots also represented this grouping, with the runs 04 and runs 05 showing the classic close groupings of parent-offspring relations orbiting around the main sib-pair cluster, compared to run 03 which spread the parent-offspring relations in a more diverse fashion\footnote{Indeed, the relation between mother (14) and child (16) was scored to be the same as the unrelated relationship between the two parents (14 and 17)}.
+
+This clearly implicated 16 and 13 as the source of the errors, and the next two runs attempted to resolve this by splitting the pair and examining them separately: (run 06) 16 only, and (run 07) 13 only. Figure~\ref{fig:res:7bitgenotypes} shows that the errors between runs 06 and 07 clearly implicate individual 16 as the source of the errors, since the Mendelian errors once again rises to a high number of 7980 SNPs.  GRR confirmed this by producing a cleaner parent-offspring grouping cluster for individual 13.
+
+The next analysis (run 08) omitted 16 from the base analysis, preserving the original parents and offspring. This resulted in only 37 SNPs (0.0852\%) with Mendelian errors across the entire analysis. GRR also showed better group clustering for sib-pair and parent-offspring relations, with much less disparity within each group, and no mixing.
+
+Due to the more complete nature of this run, a genomewide linkage plot was also produced (Figure 6 (top)) showing distinct peaks in chromosomes 4, 7, 8, 9, 12, 13, and 17, 20, and 22 each with a LOD score of 1.25. The estimated LOD gave an expected maximum of 1.52 (Allegro and Genehunter) which was not reached, and even upon success would not have been informative for linkage.
+
+Reconfirmation upon the sample data prompted a two more genotype sets to be introduced for a mother and a father of individual 16. Runs 09 and 10 denote alternate testing of each new parent in conjunction with an existing parent in order keep a half-sib relation between 16 and the other offspring.
+This created some disarray in the GRR plots for run 09 and 10, and even some relation mixing for run 10. The number of Mendelian errors also rose to significant levels (1849 and 2978 SNPs respectively) though the linkage peaks remained relatively unchanged.
+
+\fignow{../writer/Results/images/interesting_cases/117_FSGS/genotype_scenarios_fixed.png}
+{Mendelian errors for the ten scenarios depicted in Figure~\ref{ref:7bitped}. Each of the scenarios represent the following number of errors: 01 (all base) 8000 SNPs, 02 (father excluded) 3433 SNPs, 03 (16+13 only) 7991 SNPs, 04 (12+19 only) 24 SNPs, 05 (18+15 only) 26 SNPs, 06 (16 only) 7980 SNPs, 07 (13 only) 18 SNPs, 08 (16 out) 37 SNPs, 09 (new mother for 16) 1849 SNPs, 10 (new father for 16) 2978 SNPs}
+{fig:res:7bitgenotypes}
+{1}
+
+\fignow{../writer/Results/images/interesting_cases/117_FSGS/grr_montage_fixed.png}
+{GRR plots for the ten scenarios. Identity-by-State (\gls{bio:IBS}) is plotted as a function of Mean against Standard Deviation and bound within an arced range of possible values}
+{fig:res:7bitgrr}
+{1}
+
+\fignow{../writer/Results/images/interesting_cases/117_FSGS/allegro_lod_genomewide_zrun3_16out_zrun4mother_zrun4father.png}
+{Genomewide linkage plots for three of the ten scenarios that did not produce Mendelian errors: (08) with individual 16 omitted, (09) with a new genotyped mother for individual 16, and (10) with a new genotyped father for individual 16}
+{fig:res:7bitallegro}
+{1}
+
+
+\subsubsection*{15-bit X-Linked Dominant}
+
+Figure~\ref{fig:res:15summary} below shows a larger pedigree, with three individuals of unknown affectation status.  The penetrance model is dominant because an affected individual resides at each generation, and it is suspected to be X-linked because of the absence of male-male transmission though that is not to say that it is not autosomal.
+
+Normally when a penetrance model is fully described in a pedigree, then individuals of unknown affectation are pre-emptively set to either affected or unaffected in order to better accommodate the model.  Here the phenotype is not fully penetrant, so ambiguity was purposefully left for the linkage  pipeline to interpret.
+
+Despite autosomal dominant and X-linked dominant not being biologically compatible models, computationally they are processed in the same run because each chromosome is treated as fully independent of each other. The linkage pipeline treats X-linked models as “special cases” in conjunction with the standard dominant and recessive runs. It is for this reason that the X chromosome is included with autosomal chromosomes in the genome-wide plots.
+
+The low 162 Mendelian errors are usually negligible for marker set of 41,480 SNPs (0.391\%), but the close bunching of 52 SNPs in the q-arm of chromosome X raises some concern on possible genotyping errors. This is later reflected in the genome-wide linkage plot which consists of extremely "noisy" peaks: sharp and intermittent, consisting of no more than two markers before the signal is lost and drops below significance, only to resurrect again within close proximity of the previous signal.
+
+The size and frequency of the peaks indicate at least one of four issues:
+\begin{spacing}{1.2}
+\begin{enumerate}
+\item{Large numbers of recombinations exist within the three generations of the pedigree.}
+\item{The family was badly genotyped with errors stemming from the genotyping process.}
+\item{The pedigree structure is not correct and the family model is more complex.}
+\item{The penetrance model is incorrect}
+\end{enumerate}
+\end{spacing}
+
+\fignow{../writer/Results/images/standard_cases/120_summary.png}
+{X-linked Dominant pedigree, with three individuals of unknown affectation marked in grey (54406, 54403, 54410)}
+{fig:res:15summary}
+{1}
+
+Many of the recombinations occur within extremely small proximity of one another, and since physical distance scales linearly with centiMorgans, a large number of meioses in those regions are extremely unlikely. Similarly,  the family could not have been badly genotyped nor could the pedigree structure be incorrect, since the number of Mendelian errors are relatively low.
+
+This defers us to the conclusion that the penetrance model is incorrect, with the affectation of certain individuals (specifically those not already set to 'unknown') not being correctly determined by the physician, possibly due to a late-onset phenotype.
+
+Further probing of the pedigree under different models (autosomal/X-linked recessive)  would be required under various combinations of individual affectation in order to stabilize the linkage peaks and determine the true model behind the data.
+
+\subsubsection*{18-bit Autosomal Recessive}
+
+Figure~\ref{fig:res:18summary} shows a family with an inbreeding loop stemming primarily from the founders on the right (101 and 102) that results in a second-cousin consanguineous pairing (401 and 402).
+
+Occasionally members of consanguineous families have a tendency of obscuring such relations, but the members of this family are fully described with their GRR relationship plot clustering in a good distinct groupings. The lack of extra relations in the plot is due to the only 7 of the individuals being genotyped (401, 402, 404, 403, 501, 502, 503).
+
+Of the 50,110 SNPs in the input marker set, 22 negligible Mendelian errors were reported (0.439\%). The preliminary  LOD-score estimates provided a score of 2.9, which was met accordingly in the actual linkage output with peaks at chromosome 2, 5, and 7. Figure~\ref{fig:res:18chrom7} shows the zoomed in plot of chromosome 7, with chromosomal bands (and sub-bands) overlayed with a centromere. 
+
+\fignow{../writer/Results/images/standard_cases/111_summary.png}
+	{18-bit Autosomal Recessive pedigree}
+	{fig:res:18summary}
+	{1}
+	
+The darkness of the band is indicative of the density of the chromatin, hinting at regions of heterochromatin (dark) and euchromatin (light) which provide cues about gene expression. A single characteristic flat peak spans a region of 30 Mbp along the q-arm, followed by sharp recombination peak artefacts.
+
+The peaks at the other chromosomes also display valid linkage, and it is up to the researcher to examine all valid regions through further experimental sequencing analysis in order to truly pinpoint the causative gene/mutation.
+
+\fignow{../writer/Results/images/standard_cases/111_chrom7.png}
+	{18-bit Autosomal Recessive Pedigree, chromosome 7 (allegro)}
+	{fig:res:18chrom7}
+	{1}
+
 
 \subsection{Large Pedigrees}
-\subsubsection{21-bit and 23-bit Autosomal Recessive Pedigree}
+
+The pedigrees evaluated here required the big data patching scripts mentioned previously in the Methods to operate; the default Allegro and GeneHunter binaries failed due to the combined size of the marker set and the pedigree complexity, requiring the modified Allegro binary to operate as well as some trials with Simwalk.
+
+\subsubsection*{21-bit and 23-bit Autosomal Recessive Pedigree}
+
+\fignow{../writer/Results/images/interesting_cases/109_5k_scenarios/family_109.png}
+	{23 bit pedigree with red-lines indicating the individuals omitted from a given analysis.}
+	{fig:res:21bitped}
+	{0.9}
+
+Here we examine another large consanguineous pedigree with two inbreeding loops occurring both within the second generation (7621 and 7622, 7623 and 7624) from the two founder couples (7611 and 7612, 7613 and 7614) with seven variations upon the inclusion of unaffected individuals spawned from a base analysis where only affected individuals were included. The base analysis has a 21-bit pedigree complexity, and as per equation~\ref{eqn:bitsize} on page~\pageref{eqn:bitsize}, each non-founder contributes 2-bits which places all subsequent analyses at 23-bits.
+
+Each of the 8 total scenarios contributed negligible Mendelian errors (in total less than 10 SNPs of the 15,914 in the marker set), with an example chart shown in Figure~\ref{fig:res:21bitgenotypingerrors} for completion\footnote{ \label{footnote:scores} Full scores and charts for all 8 scenarios are provided in the Appendix (page~\pageref{ref:app:21bitscores})}. A total of 18 genotyped individuals contributed to the pedigree (25 individuals) providing a sizeable cluster of 'other' relationships in the GRR plot (Figure 12) for scenario 02 (individual 19\footnote{Individual 19 = 327019, but we have removed the '3270' prefix for readability.} omitted). No significant changes in the GRR plots for the other scenarios were observed.
+
+\fignow{../writer/Results/images/interesting_cases/109_5k_scenarios/genotype_errors.png}
+	{Mendelian error for the base scenario (21-bit). All other analyses gave either 0 or at maximum 3 erroneous SNPs.}
+	{fig:res:21bitgenotypingerrors}
+	{0.7}
+
+\fignow{../writer/Results/images/interesting_cases/109_5k_scenarios/grr_screenshot_2_5K_markers-family-109_2.png}
+	{GRR relationship chart of a 23-bit pedigree for scenario 02 (individual 327019 omitted).}
+	{fig:res:21bitgrr}
+	{0.7}
+
+The maximum LOD score for the base scenario (21-bit) was estimated to 3.31, and the estimate LODs for the other (23-bit) analyses gave an average of 3.62\footnote{see footnote ~\ref{footnote:scores}}. 
+
+The independent addition of each of the unaffected individuals for the seven non-base scenarios (individuals: 13, 19, 20, 21, 22, 23, and 12) created small but noticeable differences in linkage plots (Figure~\ref{fig:res:21bitallegrogenomewide}). The base analysis (scenario 0) shows peaks at chromosomes 3, 4 and 11 all reaching the maximum estimated LOD score (3.35) with the peak at chromosome 4 being the broadest. A zoomed in plot of chromosome 4 for that analysis reveals a slight drop in the peak at 45 Mbp (Figure~\ref{fig:res:21bitallegrochr4}, top-left). The peaks at chromosomes 3 and 11 are equally viable linkage peaks at this point\footnote{Plots for all chromosomes can be found in the Appendix (page~\pageref{ref:app:21bitplots})}.
+
+By looking at each linkage result evaluated, we can groups the plots into three result types:
+\begin{enumerate}
+\item{With the independent additions of individuals 13 (scenario 1),  22 (scenario 5), and 12 (scenario 7),  the peak at chromosome 4 increases to the new maximum (3.62) whilst the slight drop disappears, and the peaks at chromosomes 3 and 11 decrease.}
+\item{The independent addition of individuals 19 (scenario 2), 20 (scenario 3) cause the chromosome 4 peak to drop as well as the chromosome 11 peak, leaving a fractured peak at chromosome 3 that raises doubt on the informativeness of the peak.}
+\item{Individuals 21 (scenario 4) and 23 (scenario 6) preserve the peaks at chromosomes 3 and 4, but greatly fractures them both too, hinting at an incompatibility.}
+\end{enumerate}
+
+The width of the chromosome 4 peak (26.8 Mbp) does not narrow with the addition of individuals 13, 22, and 22 as in the first result type, suggesting that the disease locus is within a reasonably conserved locus across the pedigree. A higher resolution trial would likely be required to narrow the region.
+
+\fignow{../writer/Results/images/interesting_cases/109_5k_scenarios/Summary_scenarios_genomewide.jpg}
+	{Genomewide linkage plots for each of the eight scenarios for the 21 to 23-bit autosomal dominant pedigree.}
+	{fig:res:21bitallegrogenomewide}
+	{1}
+	
+	
+\fignow{../writer/Results/images/interesting_cases/109_5k_scenarios/Summary_scenarios_chr4.jpg}
+	{Linkage plots of chromosome 4 for each of the eight analyses}
+	{fig:res:21bitallegrochr4}
+	{1}
+
+
 \subsubsection{29-bit Autosomal Recessive}
+This is the largest family ever considered by the pipeline. Figure~\ref{fig:res:29bitped}  shows  Consisting of three inbreeding loops  that span four generations stemming from the same founder couple, where all individuals in the last generation were genotyped along with their parents. Parent-offspring genotyping is always more favoured than grandparent-offspring genotyping because it leaves little ambiguity in tracing the path of inheritance of the disease locus, and makes detecting Mendelian errors much more effective. 
+
+Three pedigrees were used in this analysis, the first being the 29-bit pedigree used to lend power to the linkage study and the latter two (Figure~\ref{fig:res:29bitpedother}) not being informative for linkage at all but aided in the haplotype reconstruction process to reconstitute the genotypes of grandparents and great-grandparents.
+
+\fignow{../writer/Results/images/standard_cases/931_pedigree.png}
+	{29-bit Autosomal Recessive Pedigree, 4 affecteds in the last generation.}
+	{fig:res:29bitped}
+	{1}
+
+\fignow{../writer/Results/images/standard_cases/931_other_peds.png}
+	{Two completely uninformative pedigrees for linkage (bit-size of -1).}
+	{fig:res:29bitpedother}
+	{0.30}
+
+The combined Mendelian errors across the three pedigrees amounted to no more than 175 SNPs out of the total 47,595 selected for linkage (0.368\%) , with 3 SNPs encountered more than once as shown in Figure~\ref{fig:res:29bitmendelian}.
+
+\fignow{../writer/Results/images/standard_cases/931_unlikely.png}
+	{Mendelian errors for the three families considered under the 21-bit Autosomal Recessive analysis. The three peaks relate to an overlap of an erroneous marker in two of the three families.}
+	{fig:res:29bitmendelian}
+	{0.9}
+
+The GRR plot of the first family (Figure 18) showed good distinct relational grouping with some potential border overlap between the sib-pair and parent-offspring relations, but no actual outliers in either group. The GRR plots of the other two families were normal (Figure 19).
+
+\vfill
+\fignow{../writer/Results/images/standard_cases/931_grr.png}
+	{GRR plot of 29-bit family}
+	{fig:res:29bitgrr}
+	{0.6}
+
+\fignow{../writer/Results/images/standard_cases/931_other_2and3grr.png}
+	{GRR plots of the smaller two families that contributed to the 29-bit analysis.}
+	{fig:res:29bitgrrother}
+	{1}
+
 
 
 \section{Linkage Run Times}
