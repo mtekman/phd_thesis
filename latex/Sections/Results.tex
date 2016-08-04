@@ -255,17 +255,264 @@ The GRR plot of the first family (Figure 18) showed good distinct relational gro
 	{fig:res:29bitgrrother}
 	{1}
 
+Due to the complexity of the analysis, genome-wide analysis had to be performed via Simwalk due to the big data errors mentioned previously (see page~\pageref{ref:meth:allegrobigdata} of Methods).  An estimated maximum LOD score could also not be computed because of this reason since the calculation relied upon GeneHunter and Allegro, both of which were not able to process the analysis in any reasonable timeframe.
+
+The sliding-window approach of Simwalk allowed the parallelization techniques employed by the \textit{simwalk\_multicore.sh} script to fully utilize all threads available on platform without throttling the RAM. Timings of these runs are discussed later in the next section.
+
+The Simwalk run produced a single peak on the p-arm (p13.3 to p13.2) of chromosome 16 with a LOD score of 5.21 (Figures~\ref{fig:res:29bitsimwalkgenomewide} and ~\ref{fig:res:29bitsimwalkchr16}) . In order to confirm the Simwalk result and to gain haplotype reconstruction, Allegro was required. A single chromosomal analysis was performed on chromosome 16, reproducing the peak at the same locus  with a LOD score of 5.23 (Figure~\ref{fig:res:29bitallegrochr16}).
+
+\fignow{../writer/Results/images/standard_cases/931_simwalk_genomewide.jpg}
+	{Simwalk plot of 29-bit family (Genomewide)}
+	{fig:res:29bitsimwalkgenomewide}
+	{0.9}
+
+\fignow{../writer/Results/images/standard_cases/931_simwalk_chr16.jpg}
+	{Simwalk plot of 29-bit family (chr16)}
+	{fig:res:29bitsimwalkchr16}
+	{0.9}
+	
+\fignow{../writer/Results/images/standard_cases/931_allegro.png}
+	{Allegro plot of 29-bit families (chr16), combined analysis but only first family contributes to the peak score.}
+	{fig:res:29bitallegrochr16}
+	{0.9}
 
 
 \section{Linkage Run Times}
+
+All analyses were timed using the GNU time utility in order to get the "wall clock" runtimes from the calling (bash) script.
+
+\subsection{GRR}
+For all projects with pedigree complexities less than 19-bits, the main limiting factor in their runtimes was the graphical GRR Xautomation script. Table~\ref{table:res:grrtimes} below shows how the mean runtime  remains at a reasonably constant 122 seconds up to the 19-bit limit, where GRR window polling then begins to take precedence and longer wait times are required for the genotypes to fully load.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{ccrrrrrrr} \toprule
+\textbf{Bit-} & \textbf{No. of}     &  \textbf{No. of}  & \textbf{Total}      & \multicolumn{5}{c}{\textbf{Trials}}              \\
+\textbf{size} & \textbf{Genotyped} & \textbf{Markers} & \textbf{Genotypes} & \textbf{1}&\textbf{2}&\textbf{3}&\textbf{4}& \textbf{Mean}\\
+              & \textbf{Individuals}                  &               &                  &         &       &        &        &        \\
+\midrule
+3        & 5                            & 35,155         & 75,775          & 121.91 & 122.08 & 121.87 & 121.62 & 121.87 \\
+5        & 6                            & 41,479         & 248,874         & 121.85 & 121.52 & 121.62 & 121.81 & 121.70 \\
+7        & 9                            & 43,421         & 390,789         & 121.96 & 121.50 & 122.29 & 122.34 & 122.02 \\
+9        & 8                            & 43,421         & 347,368         & 122.18 & 121.98 & 122.28 & 122.33 & 122.19 \\
+15       & 11                           & 41,480         & 456,280         & 122.14 & 121.51 & 122.31 & 122.03 & 121.99 \\
+18       & 7                            & 50,110         & 350,770         & 123.21 & 122.75 & 122.59 & 122.23 & 122.69 \\
+21       & 10                           & 15,914         & 159,140         & 129.82 & 130.11 & 130.20 & 129.15 & 129.82 \\
+23       & 11                           & 15,914         & 175,054         & 152.81 & 151.11 & 151.64 & 152.37 & 151.99 \\
+29       & 14                           & 47,595         & 666,330         & 178.66 & 180.42 & 179.31 & 183.75 & 180.54 \\
+\hline
+\end{tabular}
+\end{center}
+\vspace{-15pt}
+\caption{GRR run times over 4 trials, ordered by ascending bit-size. The number of genotyped individuals and the number of genotypes per individuals are also listed.}\label{table:res:grrtimes}
+\end{table}
+
+A plot of Table~\ref{table:res:grrtimes} shows GRR mean run times against normalized bit-size, number of genotyped individuals, number of markers and total genotypes. The total genotypes, bit-size, and number of genotypes appear to follow an upwards sloping power trend, whereas the run time appears to be more independent of the number of markers.
+
+\fignow{../writer/Results/images/GRR_chart.jpg}
+	{GRR run times. (Normalized) Genotypes, Markers, Total Genotypes, and Bitsize against Run Time.}
+	{fig:res:grrtimes}
+	{0.8}
+
+
+The GRR runtimes appear to be constant at approximately 122 seconds within the established 19 bit limit with a small increase to 123 seconds at 18-bits. Larger pedigrees begin to scale more linearly, rising to 180 by the 29-bit stage, at which stage the contribution of the GRR window polling script runtime becomes negligible in contrast to the Allegro runtimes outlined in Table~\ref{table:res:allegrosingleruntimes} below.
+
+
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{crrrrr}\toprule
+\textbf{Bit}  & \multicolumn{5}{c}{\textbf{SingleCore}}                                                                                                                                       \\
+\textbf{Size} & \multicolumn{1}{c}{\textbf{\#1}} & \multicolumn{1}{c}{\textbf{\#2}} & \multicolumn{1}{c}{\textbf{\#3}} & \multicolumn{1}{c}{\textbf{\#4}} & \multicolumn{1}{c}{\textbf{Mean}} \\
+\midrule
+3             & 81.63                            & 80                               & 83                               & 84.1                             & 82.13                             \\
+5             & 86.84                            & 84                               & 84                               & 87.07                            & 85.26                             \\
+7             & 146.72                           & 148                              & 148                              & 150.77                           & 148.29                            \\
+9             & 378.72                           & 380                              & 379                              & 377.17                           & 378.63                            \\
+15            & 775.54                           & 735                              & 742                              & 768.11                           & 755.11                            \\
+18            & 2779.57                          & 2,810                            & 2,795                            & 2758.11                          & 2785.59                           \\
+21            & 943891.22                        & 940,985                          & 948,115                          & 946515.6                         & 944876.54                         \\
+23            & 6531019.41                       & 6780937.4                        &                                  &                                  & 6655978.41                       \\
+\hline
+\end{tabular}
+\end{center}
+\vspace{-15pt}
+\caption{Total Genome-wide Allegro Single-core Run Times for MPT and Haplotypes. Singlecore timings for 23-bit pedigree underwent two trials only.}\label{table:res:allegrosingleruntimes}
+\end{table}
+
+
 \subsection{Chromosome-Specific}
+
+The following table contains the average chromosome-specific\footnote{For a full disclosure of all trials run, please see Appendix page~\pageref{ref:app:singlecoreindiv}.} runtimes that comprise the single-core components of Table~\ref{table:res:allegrosingleruntimes}.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{crrrrrrrrr}\toprule
+\multicolumn{1}{l}{}               & \multicolumn{9}{c}{\textbf{Bit-size}}                                                                                                                                                                                                                                                                         \\
+\multicolumn{1}{l}{\textbf{Chrom}} & \multicolumn{1}{c}{\textbf{3}} & \multicolumn{1}{c}{\textbf{5}} & \multicolumn{1}{c}{\textbf{7}} & \multicolumn{1}{c}{\textbf{9}} & \multicolumn{1}{c}{\textbf{15}} & \multicolumn{1}{c}{\textbf{18}} & \multicolumn{1}{c}{\textbf{21}} & \multicolumn{1}{c}{\textbf{23*}} & \multicolumn{1}{c}{\textbf{29*}} \\
+\midrule
+\textbf{1}                         & 3.97                           & 4.02                           & 12.88                          & 50.67                          & 138.89                          & 595.14                          & 87849.27                        & 730875.58                        & -                                \\
+\textbf{2}                         & 4.51                           & 4.02                           & 10.27                      & 40.16                          & 99.07                           & 433.59                          & 83949.84                        & 635076.98                        & -                                \\
+\textbf{3}                         & 4.14                           & 3.63                          & 8.84                       & 29.94                          & 68.51                           & 322.9                           & 76173.28                        & 665699.06                        & -                                \\
+\textbf{4}                         & 3.69                           & 3.78                           & 7.93                        & 24.66                          & 48.83                           & 232.71                          & 70044.33                        & 600316.88                        & -                                \\
+\textbf{5}                         & 3.39                           & 3.75                         & 7.31                       & 19.69                          & 35.43                           & 177.24                          & 64033.08                        & 493473.21                        & -                                \\
+\textbf{6}                         & 3.94                           & 4.72                          & 6.63                         & 16.78                          & 28.98                           & 128.61                          & 59448.95                        & 461203.36                        & -                                \\
+\textbf{7}                         & 4.01                           & 3.91                          & 6.19                        & 14.36                          & 23.52                           & 99.59                           & 53240.12                        & 409079.04                        & -                                \\
+\textbf{8}                         & 3.68                           & 3.62                           & 5.83                        & 12.47                          & 21.52                           & 74.21                           & 48531.97                        & 378953.42                        & -                                \\
+\textbf{9}                         & 2.86                           & 3.39                          & 5.64                        & 11.52                          & 18.19                           & 59.1                            & 44332.31                        & 280859.56                        & -                                \\
+\textbf{10}                        & 3.91                           & 3.45                           & 5.51                           & 10.68                          & 16.42                           & 47.62                           & 39859.1                         & 275189.27                        & -                                \\
+\textbf{11}                        & 3.63                           & 4.02                           & 5.36                           & 10.35                           & 14.96                           & 38.11                           & 35716.5                         & 259160.94                        & -                                \\
+\textbf{12}                        & 3.6                            & 4.56                           & 5.29                           & 9.82                           & 15.22                           & 30.9                            & 32045.8                         & 217073.37                        & -                                \\
+\textbf{13}                        & 3.49                           & 3.37                           & 5.17                           & 9.62                            & 15.14                           & 26.25                           & 28290.74                        & 167115.23                        & -                                \\
+\textbf{14}                        & 3.09                           & 3.21                           & 5.16                           & 9.57                           & 14.12                           & 23.5                            & 24899.32                        & 148455.32                        & -                                \\
+\textbf{15}                        & 2.38                           & 3.09                           & 5.13                           & 9.43                           & 15.16                           & 19.08                           & 21915.39                        & 110163.35                        & -                                \\
+\textbf{16}                        & 3.19                           & 3.42                           & 5.06                           & 9.17                           & 13.22                           & 17.93                           & 19353.51                        & 76464.53                         & 315615.2                         \\
+\textbf{17}                        & 3.77                           & 4.32                           & 5.09                           & 9.07                           & 14.46                           & 17.95                           & 16933.29                        & 81678.43                         & -                                \\
+\textbf{18}                        & 3.73                           & 3.69                           & 5.02                           & 9.04                           & 14.43                           & 15.91                           & 14746.18                        & 66359.72                         & -                                \\
+\textbf{19}                        & 3.07                           & 3.44                           & 5.08                           & 9.26                           & 13.77                           & 16.14                           & 12955.06                        & 33812.14                         & -                                \\
+\textbf{20}                        & 3.31                           & 3.23                           & 5.00                           & 9.01                           & 14.27                           & 15.33                           & 11266.49                        & 19439.38                         & -                                \\
+\textbf{21}                        & 3.71                           & 2.91                           & 5.06                           & 9.11                           & 14.18                           & 16.13                           & 10049.32                        & 15547.82                         & -                                \\
+\textbf{22}                        & 3.54                           & 3.55                           & 4.99                           & 9.02                             & 13.71                           & 14.22                           & 9065.98                         & 35267.98                         & -                                \\
+\textbf{X}                         & 3.52                           & 4.28                            & 9.87                           & 35.33                          & 83.09                           & 363.44                          & 80176.73                        & 494713.86                        & -                               \\
+\hline
+\end{tabular}
+\end{center}
+\vspace{-15pt}
+\caption{Average Single-Core Allegro Run Times for Multi-point Parametric Linkage and Haplotype Reconstruction; Bit-Size (columns) against Chromosome (rows). All analyses are the result of 4 trials, except the 23-bit analysis which was only able to run for 2 trials and the 29-bit analysis which only run on chromosome 16, both analyses without haplotypes.}\label{table:res:allegrosinglechroms}
+\end{table}
+
+
 \subsection{Total Genomewide Singlecore vs Multicore}
 
+\fignow{../writer/Results/tables/combined_runtimes.jpg}
+	{Single-core Allegro run times for each chromosome. Small pedigrees from 3-bit to 18-bit with runtimes within [0,400] range (Top), larger pedigrees from 18-bit to 23-bit shown with runtimes as powers of 10 (Bottom).}
+	{fig:res:singleplots}
+	{0.9}
+
+Figure~\ref{fig:res:singleplots} shows the plot of Table~\ref{table:res:allegrosinglechroms} at different scales. 
+
+The top image showing the general logarithmic decrease in runtime with increasing chromosome number (1 to 22). The sharp rise at the end is due to the inclusion of chromosome X which in terms of size is more similar to chromosomes 1 and 2 than chromosome 22. For 3-bit, 5-bit, and 7-bit pedigrees, the time required to process each chromosome is almost constant; the main contributing factor to the timing being the overhead in the system calls related to the loading and unloading the Allegro binary. Should the Allegro binary remain in memory throughout the duration of a genomewide run, the plots may reflect the size of the chromosomes they process more accurately. 9-bit, 15-bit, and 18-bit pedigrees begin to take on the logarithmic shape that better exemplifies the size of the chromosome, where the overhead in system calls becomes more negligible.
+
+The bottom image represents a zoomed out Y-axis scale of the same data by 5 orders of magnitude. The smaller (\{3,5,7,15,18\}-bit) pedigrees appear grouped as a flat plot towards the bottom, whilst the 21-bit and 23-bit rise up above it. The difference in runtimes between 21-bit and 23-bit greatly deviates for the lower-number chromosomes, with chromosome 1 taking approximately 8 times longer to process for the latter analysis.
+
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{crrrrr}\toprule
+\textbf{Bit}  & \multicolumn{5}{c}{\textbf{Multicore}}  \\
+\textbf{Size} & \multicolumn{1}{c}{\textbf{\#1}} & \multicolumn{1}{c}{\textbf{\#2}} & \multicolumn{1}{c}{\textbf{\#3}} & \multicolumn{1}{c}{\textbf{\#4}} & \multicolumn{1}{c}{\textbf{Mean}} \\
+\midrule
+3             & 55.79                            & 55.88                            & 54                               & 50.37                            & 54.01                             \\
+5             & 57.53                            & 60.07                            & 57.24                            & 60.24                            & 58.77                             \\
+7             & 62.13                            & 56.32                            & 58.51                            & 60.09                            & 59.26                             \\
+9             & 81.7                             & 80.74                            & 86.99                            & 81.97                            & 82.85                             \\
+15            & 116.62                           & 108.27                           & 103.63                           & 112.82                           & 110.34                            \\
+18            & 389.55                           & 415.02                           & 400.36                           & 404.79                           & 402.43                            \\
+\hline
+\end{tabular}
+\end{center}
+\vspace{-15pt}
+\caption{Total Genome-wide Allegro Multi-core Run Times for MPT and Haplotypes. Multicore timings for 21-bit and 23-bit analyses were not processed..}\label{table:res:allegromultiruntimes}
+\end{table}
+
+\fignow{../writer/Results/tables/runtimes_multicore.jpg}
+	{Multi-core Allegro runtimes displayed as a function of bit-size against run time fitted with a power curve. Individual chromosome runtimes were not recorded due to parallel evaluation.}
+	{fig:res:multitimes}
+	{0.8}
+
+The multi-core run-times shown in Table~\ref{table:res:allegromultiruntimes} are plotted above in Figure~\ref{fig:res:multitimes}, where individual chromosome-runtimes were ommitted for simplicity.   Runtimes remain reasonably linear from 3-bit to 15-bits where a sharp rise in runtime occurs 18-bits where the system resources requested by active Allegro instances begin to compete for memory.
+<TODO: XXX change this to exp curve, and backdrop max RAM usage  for both single and multicore>
+
+Due to RAM constraints, the pedigrees larger than 18-bits were not able utilize parallelization effectively, only being able to process a single chromosome at a time (i.e. single-core) and so they were removed from the analysis.
+
+For the 29-bit pedigree, Simwalk performed the genomewide analysis and then Allegro reconfirmed the chromosome 16 peak. Allegro took 315615.20 seconds (3.7 days) to process chromosome 16 alone. Table <XXXREF not invented> shows how all 256GB of physical memory was used within the first 4 hours of processing, and the 16TB swap memory was then used. A large portion of the processing at that point was memory paging in order to preserve all the LOD calculations being made.  Simwalk writes straight to disk and has an extremely small RAM usage globally, so despite being the traditionally slower program (due to the sliding-window approach creating numerous overlaps), it did not suffer from paging bottlenecks. Due to the Simwalk parallelization script not being chromosome-specific (i.e. it executes any window-processing job it is dispatched), only the genome-wide runtime was recorded at 682117.03 seconds ( $\sim$ 7.9 days).
+
+
+
 \section{Haplotype Resolution Comparisons}
+
+We will look at the haplotypes of three large pedigrees with the following penetrance models: Autosomal Dominant, Autosomal Recessive, X-Dominant.
+
+All the pedigrees viewed in the Results so far were produced by HaploPainter, and here we will examine some of the same pedigrees now rendered by HaploHTML5. Haplotype rendering and resolution between the two programs will also be compared.
+
 \subsection{23-bit Autosomal Dominant}
+
+Family 109 in the figure below consists of many members and so it was prudent to compare only the affecteds at a given locus in order to prioritize the haplotypes on screen. The colouring of the haploblocks is always semi-random so it is the position and lengths of the blocks themselves that we are most concerned with.
+
+\fignow{../writer/Results/images/haplotypes/109_ped.jpg}
+	{HaploHTML5 default rendering of pedigree 109 from Allegro haplotype input file. This is the 23-bit pedigree shown earlier in Figure~\ref{fig:res:21bitped} or page~\pageref{fig:res:21bitped}. Since both founder couples (7611 and 7612, 7613 and 7614) were at the same grid 'level', a line overlap was inevitable and so 7611 and 7612 were raised to better distinguish childlines.}
+	{fig:res:haplo23ped}
+	{0.6}
+
+
+Figure~\ref{fig:res:haplo23compare} shows a side-by-side comparison of the pedigree given in Figure~\ref{fig:res:haplo23ped}. The top image shows the HaploPainter rendition\footnote{manually modified to be horizontally aligned since it normally only produces generation-based vertical plots}, and the bottom the HaploHTML5 render.
+
+The first red arrow marks a point between rs7693827 and rs11735648  which refers to a recombination in both haploblock renditions where the founder allele switches to a red block HaploPainter which is equivalent to the green block in HaploHTML5. Both blocks persist fully in the right allele of 32707, 32709, 7610, and 327011. The red arrow at point 3 shows agreability too between the applications, though HaploHTML5 appears to have selected two very similar looking colors for the pink block just above point 3, which looks identical to the right allele of 32704 but has a different set of genotypes. Debugging the allele shows that HaploHTML5 does assign them different color groups, but the groups themselves have high colour homology due to an over abundance of founder alleles (9 founders, 18 alleles) and a limited selection of colors. 
+
+\pagebreak
+\fignow{../writer/Results/images/haplotypes/109_haplo_comparison_full.jpg}
+	{Haplotypes of family 109. HaploPainter modified to display affecteds inline (Top). HaploHTML5 default comparison view showing affecteds only (Bottom). Four noteable points of comparison points are highlighted with red arrows.}
+	{fig:res:haplo23compare}
+	{0.9}
+
+The red arrow at point 4 shows a genotyping error that is correctly picked up upon by both programs and assigned the first available group outside of the block it resides in.
+
+In terms of design and presentation, HaploPainter prefers to present its haplotypes in a family-tree structure resorting in more manual methods of aligning the individuals of the pedigree for haplotype inspection. HaploPainter also places the text of the haplotype outside of the coloured block. HaploHTML5 presents the text within the block itself in order to preserve horizontal space, and as a result must use lighter shades of colours to improve the readability of the black text.
+
+
+
 \subsection{29-bit Autosomal Recessive}
+
+Here we have the three inbreeding loops that we encountered previously in the section, with consanguinity correctly detected for all the couples in the second to last generation.  There is only one founder couple, but there is inter-generational marrying that makes it impossible for lines to not overlap (7612 and 7611 for example).
+
+\fignow{../writer/Results/images/haplotypes/104_ped.jpg}
+	{HaploHTML5 rendering of family 104, of the 29-bit pedigree originally shown in Figure~\ref{fig:res:29bitped} on page~\ref{fig:res:29bitped}.}
+	{fig:res:haplo29ped}
+	{0.8}
+	
+\fignow{../writer/Results/images/haplotypes/104_haplo_comparison.jpg}
+	{Family 104 rendered in HaploPainter and then modified for horizontal alignment (Top) and HaploHTML5 (Bottom)}
+	{fig:res:haplo29compare}
+	{0.65}
+
+\begin{spacing}{1.38}
+There are only 4 affected individuals in this pedigree, so we can now include some unaffecteds too (the last  generation in this case). Here we once again see good accordance between HaploPainter and HaploHTML5 for the genotyping error at point 3, and the recombination at point 1. 
+
+However there is a slight difference at the point 2 location(s) where HaploHTML5 extends the small block at kgp12267963 to two marker loci and not the single locus given by HaploPainter. Both configurations are valid because the purple and green block (in the case of HaploHTML5)  both  share a '2' allele index at that locus. However, HaploPainter does not maximise the block and makes it appear more as a genotyping error or artefact instead of the small haploblock as HaploHTML5 does. This can be easily rectified by adjusting the \textit{minimum stretch} parameter for the A* path finding algorithm such that it does not consider blocks less spanning less than or equal to two markers to be actual blocks (and thus does not try to maximise it), but this places an unfair constraint on the data because single-locus haploblocks may be valid for many-generational pedigrees with sparse markers.  
+
+A better compromise would be to allow the inclusion of marker map data (such as is read in by HaploPainter) so that the algorithm can determine whether the inter-marker distances surrounding a marker is great enough to warrant a haploblock on its own.
+
+Figure~\ref{fig:res:haplo29comparehomology} below compares the homology tools used by the two applications. HaploPainter was adapatedto take in messner files and marker pairs, where regions of homology could be detected using our haploregion.py script. Messner regions are boxed in a blue regions, and regions of homology are surrounded by red boxes where in this case the affecteds are all homozygous for the regions shown, with the extra condition that the unaffecteds are not also similarly homozygous.
+ HaploHTML5 performs all homology detection within the browser, but uses a different approach where it assumes that homology detection is not so binary and assigns a "homology score" at each locus which is overlayed against the haplotypes and marker slider. Haplopainter is much clearer in showing homology in this instance, but HaploHTML5 allows forr some leeway for erroneous genotypes that might otherwise obstruct a binary homology detection.
+\end{spacing}
+
+\fignow{../writer/Results/images/haplotypes/104_homology_compare.jpg}
+	{Homology Tool comparison of HaploPainter via HaploPainterRFH modification script (Top), and HaploHTML5 Homology Mode (Bottom)}
+	{fig:res:haplo29comparehomology}
+	{0.72}
+
 \subsection{15-bit X-Linked Dominant}
+
+\fignow{../writer/Results/images/haplotypes/20_ped.jpg}
+	{X-Linked Pedigree, 17 members of which 8 are affected individuals}
+	{fig:res:haplo29ped}
+	{0.8}
+
+We once again take a look at our X-linked Dominant pedigree mentioned previously on page~\pageref{fig:res:15summary}, where we can examine the haplotypes of all individuals in the pedigree.
+
+The figures below provide three ranges of which to examine the X chromosome where recombination errors were observed within HaploPainter. HaploHTML5 sets the correct penetrance model and provides no such recombinations, often providing complete non-recombinants for the loci considered.
+
+
+\fignow{../writer/Results/images/haplotypes/20_compare_topbox.jpg}
+	{Starting telomeric P-arm region of chrX spanning 60 markers. (Top) HaploPainter recombination errors caused by bad X-inheritance. (Bottom) HaploHTML5 complete haploblocks due to correctly parsing the genotypes.}
+	{fig:res:haplo20comparetop}
+	{1.1}
+
+
+
+
 
 
 
 % Talk about Hardware somewhere!
+% Also mention bitbucket
