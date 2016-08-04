@@ -3,15 +3,108 @@
 
 \section{Semaphores}\label{ref:app:semaphores}
 
+
+
 \section{Compiler}\label{ref:app:compiler}
 
 \section{Primitives}\label{ref:app:primitives}
 
 \section{Strings}\label{ref:app:strings}
+Strings are a type of data that is defined as any block of text surrounded by single or double quotation marks. Strings compared to other data types are very memory intensive since it is usually unclear exactly how much memory a string is going to take.
+
+Numbers can be assigned specific memory sizes to contain their values such as char(8-bit) , short(16-bit), int(32-bit), and long(64-bit) for decimal numbers, and float(32-bit) and double(64-bit) for floating point numbers, each with their specific range of values.
+
+Strings are essentially an array of characters, and so if each character is 8-bit, then the phrase "Hello World!" has a size of 96 bits (12 characters x 8 bits) . When strings are created they are assigned initial sizes to contain a specific text, but they are essentially immutable past this point since concactenating two strings together requires re-computing their sizes and copying the text into a new block of memory (i.e. you cannot directly shorten or extend a string since it creates memory leaks).
+
+\subsection{String Interning}
+
+Because of the costly processes of manipulating strings during program runtime, some string-processing tasks take place to reduce the redundancy in duplicate strings. A list of all unique strings declared in the code are "pooled" into static addresses at compile-time, and then are referenced every time a string variable is assigned one of their values. 
+
+When an entirely new string is required, the "new" keyword is used to tell the environment that it will not be referencing a previously pooled-string and that extra memory must be allocated.
+
+
+
 
 \section{RegEx}\label{ref:app:regex}
 
+Regular Expressions (also known as RegEx or RegExp) are character patterns that are used to match text or `strings' in a flexible manner. A relevant example would be trying to match a [chromosome,position] tuple:
+
+\begin{lstlisting}
+chr01  87654321  [DETAILS] // <--file1
+    1:87654321   [DETAILS] // <--file2
+  01  87654321   [DETAILS] // <--file3
+\end{lstlisting}
+
+Here, all files reference the same variant (chromosome 1, position 87654321) but due to the flexibility of the VCF specification and the non-standardization of recording conventions between biologists, there is much disparity between the way they are referenced. However a good regex to match the same variant in all these files would be simply:
+
+\begin{lstlisting}
+^(chr){0,1}(0){0,1}1(:|\s+)(87654321)
+\end{lstlisting}
+which, in pseudo-code translates to "at the beginning of the line, look for 0 to 1 mentions of 'chr' followed by 0 to 1 mentions of '0', followed by a '1', followed by either a ':' character OR('$\vert$')  1 or more ('+') mentions of a white-space ('\\s') character (e.g. a tab, a space), followed by '87654321'.
+
+
+\subsubsection{Regex String Component}
+
+Parsing strings for specific phrases is another feat as it requires tokenizing the data into characters and performing character matching upon a reference string. This is not hard if you have a specific string in mind to compare (e.g matching "Hello" in "Hello World" would complete its search after comparing only the first 5 characters), but becomes much more complex when dealing with more abstract search criteria (e.g. extracting all lines in a text file that contain full stops but NOT commas).
+
+This is where regex takes precedence as it converts a reference string into what is known as a Finite State Automaton (FSA) which links together characters in such a way that one character can lead to the next but only in a specific pattern. For example to match any sequence that has an 'X' followed  by 0 or more 'Y's followed by an 'X' again is specified by pattern:  XY*X
+
+Figure~\ref{fig:fsa} shows how such a pattern is first converted into character-specific states of 'X', 'Y' and blank intermediaries which allow a specific sequence of letters occur by taking either one of paths 'a' or 'b'. This state diagram can be further compacted and optimized into a Deterministic Finite State Automaton (DFSA) which is a simple non-character specific two-state system which allows transitions between states via 'X' and 'Y' input paths. The table below shows possible string matching scenarios using such a system and it shoud be noted that the last string input is not valid for the RegEx given hence why it ends prematurely.
+
+\fignow{./Sections/images/FSA.png}
+{}
+{fig:fsa}
+{0.6}
+
+\begin{center}
+\begin{tabular}{|r|l|}
+  \hline
+  \multicolumn{2}{ | c | }{RegExp :XY*X} \\
+   \hline
+  String & Path Taken \\
+  \hline
+  XX & a(b)a \\
+  XYX & a(aa)a \\
+  XYYYX & a(aa)b(aa) \\
+  XYXYX & a(a?END) \\
+  \hline
+\end{tabular}
+\end{center}
+
+DFSA's can be further compacted and optimized to create fast pattern matching systems with little overhead, making them the ideal tool to deal with strings flexibly. Multiple genetic sequences can be extracted this way by using the same regular expression undoubtedly making RegEx a very powerful tool for programmers and geneticists alike.
+
 \section{Licensing}\label{ref:app:licensing}
+
+Software licences are typically split into two groups: \textit{CopyLeft} and \textit{Permissive}.
+
+\begin{description}
+\item[CopyLeft]{
+A CopyLeft license is a protective license that allows anyone to modify and/or redistribute copies of their work under the condition that they must distribute their source code and that the receiver must also be bound under the same agreement. This ensures that software remains free and open source throughout all works that incorporate the license.
+
+Free Software Movement guru Richard Stallman was the first to create a Copyleft license, the GNU General Public License (GPL), which has gone on to make two more versions:
+	\begin{enumerate}
+	\item{\textbf{GPLv2}
+		\begin{enumerate}
+		\item{\textbf{GPLv2.1}, Enforces the copyleft obligation of the license in all works that incorporate it.}
+		\item{\textbf{Lesser GPL (LGPL)}, Weakens the obligation so that it can be incorporated into proprietary software, where the LGPL portions of the code must still be free and open source to the end-user. Has the extra caveat that LGPL can be relicensed under any GPL}
+		\end{enumerate}
+	}
+	\item{\textbf{GPLv3}, Better relicensing, protection from DRM (in theory), and no source code redistribution requirement as long as no software if redistributed either \citep{gplv3}}
+	\item{\textbf{Affero GPL (AGPL)}, Same as GPLv2 except it fixes a loophole caused by Application Service Providers (ASPs) who allowed users to use software, but did not distribute it themselves and thus were protected from copyleft jurisdiction. The fix involves making the source code available to any network user on an AGPL network. In the case of the a scripting web language like Javascript, this is now default behaviour\citep{agplv3}}
+	\end{enumerate}
+	}
+\item[Permissive]{
+A license that lets anyone do whatever they want without any restrictions on modification and redistribution, but they must credit the original author who is not held liable for any problems that occur later on.
+	\begin{enumerate}
+	\item{\textbf{BSD}, Based upon the original licensing of FreeBSD (Berkeley Software Distribution) Operating System. Distributors are not allowed to use the original author's name in an unwanted way.\citep{bsd}}
+	\item{\textbf{MIT}, Same as BSD but without endorsement restrictions, freer.\citep{mit}}
+	\item{\textbf{Apache}, Same as MIT, but any modifications made must be announced and the project name/trademark must differ from original unless name use is desired from original author.}
+	\end{enumerate}
+}
+\end{description}
+
+
+
 
 \section{Colour Spaces}\label{ref:app:colour}
 
@@ -19,4 +112,83 @@
 
 \section{Chromosome plots for 21-bit Linkage}\label{ref:app:21bitplots}
 
+\pagebreak
 \section{Allegro Single-Core Individual Runtimes}\label{ref:app:singlecoreindiv}
+
+\begin{table}[h!]
+%\vspace{-40pt}
+%\hspace{-70pt}
+\scalebox{0.55}{
+\begin{tabular}{@{} ccrrrrrrrrrrrr}\toprule
+\textbf{B}  & \textbf{T} & \textbf{c1        }& \textbf{c2        }& \textbf{c3        }& \textbf{c4        }& \textbf{c5        }& \textbf{c6        }& \textbf{c7        }& \textbf{c8        }& \textbf{c9        }& \textbf{c10       }& \textbf{c11       }& \textbf{c12       }\\
+\hline
+\textbf{3}  & 1 & 2.85      & 4.24      & 3.76      & 5.40      & 3.93      & 5.14      & 2.46      & 4.43      & 2.81      & 3.94      & 3.41      & 2.31      \\
+   & 2 & 2.86      & 4.24      & 3.61      & 3.66      & 3.07      & 4.77      & 3.76      & 3.21      & 3.12      & 3.25      & 3.23      & 4.57      \\
+   & 3 & 5.05      & 5.10      & 3.95      & 2.97      & 2.64      & 2.87      & 4.59      & 3.93      & 2.86      & 3.23      & 3.66      & 5.19      \\
+   & 4 & 5.11      & 4.44      & 5.23      & 2.73      & 3.91      & 2.98      & 5.25      & 3.16      & 2.66      & 5.20      & 4.23      & 2.33      \\
+\textbf{5}  & 1 & 4.57      & 2.57      & 3.71      & 2.61      & 2.76      & 4.66      & 3.24      & 4.53      & 3.26      & 5.25      & 4.41      & 4.57      \\
+   & 2 & 3.26      & 4.15      & 3.17      & 5.26      & 2.68      & 4.67      & 3.93      & 2.40      & 2.91      & 2.54      & 5.22      & 4.81      \\
+   & 3 & 4.42      & 5.22      & 2.73      & 2.97      & 4.28      & 4.92      & 4.46      & 3.41      & 4.30      & 2.33      & 2.38      & 5.22      \\
+   & 4 & 3.82      & 4.12      & 4.92      & 4.28      & 5.29      & 4.64      & 4.03      & 4.14      & 3.09      & 3.68      & 4.08      & 3.63      \\
+\textbf{7}  & 1 & 11.93     & 10.09     & 8.63      & 8.05      & 7.34      & 6.87      & 6.13      & 5.85      & 5.56      & 5.46      & 5.25      & 5.18      \\
+   & 2 & 13.68     & 9.96      & 8.87      & 7.70      & 6.93      & 6.52      & 6.32      & 5.81      & 5.70      & 5.54      & 5.48      & 5.37      \\
+   & 3 & 12.12     & 9.90      & 8.70      & 8.13      & 7.49      & 6.54      & 6.02      & 5.81      & 5.78      & 5.57      & 5.29      & 5.38      \\
+   & 4 & 13.79     & 11.11     & 9.18      & 7.85      & 7.48      & 6.59      & 6.30      & 5.83      & 5.52      & 5.46      & 5.40      & 5.24      \\
+\textbf{9}  & 1 & 48.27     & 39.97     & 30.97     & 25.45     & 20.35     & 16.73     & 14.16     & 12.62     & 12.16     & 10.50     & 10.33     & 10.00     \\
+   & 2 & 50.70     & 39.54     & 29.32     & 24.52     & 20.09     & 17.19     & 14.55     & 12.39     & 11.42     & 10.45     & 10.38     & 9.65      \\
+   & 3 & 53.85     & 39.36     & 29.54     & 24.94     & 19.29     & 16.30     & 14.64     & 12.45     & 11.22     & 10.78     & 9.95      & 9.78      \\
+   & 4 & 49.85     & 41.79     & 29.92     & 23.71     & 19.04     & 16.89     & 14.08     & 12.43     & 11.26     & 10.98     & 10.54     & 9.84      \\
+\textbf{15} & 1 & 148.34    & 105.13    & 68.43     & 47.95     & 36.78     & 30.35     & 23.75     & 20.61     & 16.81     & 17.53     & 14.23     & 16.52     \\
+   & 2 & 122.82    & 104.02    & 69.36     & 45.25     & 33.41     & 26.57     & 22.20     & 22.77     & 18.15     & 14.90     & 14.02     & 15.68     \\
+   & 3 & 135.25    & 92.53     & 68.35     & 50.32     & 35.27     & 28.39     & 25.73     & 20.84     & 18.92     & 18.05     & 15.54     & 14.17     \\
+   & 4 & 149.16    & 94.61     & 67.91     & 51.79     & 36.27     & 30.59     & 22.39     & 21.87     & 18.88     & 15.21     & 16.07     & 14.51     \\
+\textbf{18} & 1 & 560.07    & 431.28    & 329.35    & 241.50    & 176.33    & 121.75    & 102.94    & 71.74     & 57.31     & 48.92     & 36.20     & 29.11     \\
+   & 2 & 627.89    & 446.07    & 321.99    & 224.61    & 178.18    & 131.22    & 102.54    & 71.22     & 61.32     & 50.90     & 40.56     & 26.92     \\
+   & 3 & 615.53    & 423.45    & 312.42    & 234.67    & 175.54    & 133.25    & 97.77     & 79.71     & 63.03     & 45.70     & 34.87     & 34.10     \\
+   & 4 & 577.05    & 433.55    & 327.85    & 230.07    & 178.88    & 128.23    & 95.09     & 74.16     & 54.74     & 44.97     & 40.81     & 33.48     \\
+\textbf{21} & 1 & 85836.90  & 85398.51  & 75700.43  & 68761.02  & 64279.13  & 59391.45  & 53158.33  & 48071.74  & 44633.30  & 40062.11  & 36070.67  & 32189.62  \\
+   & 2 & 88900.95  & 80324.77  & 77500.61  & 71111.27  & 63622.33  & 59746.89  & 52943.02  & 48547.76  & 43530.08  & 39342.43  & 35462.19  & 31780.26  \\
+   & 3 & 88373.64  & 85133.93  & 76832.29  & 70567.49  & 64006.13  & 59564.23  & 53673.61  & 48310.10  & 44602.27  & 40304.06  & 35896.18  & 32041.00  \\
+   & 4 & 88285.59  & 84942.15  & 74659.81  & 69737.53  & 64224.72  & 59093.24  & 53185.51  & 49198.28  & 44563.57  & 39727.78  & 35436.96  & 32172.32  \\
+\textbf{23} & 1 & 827976.09 & 695959.31 & 589773.77 & 559135.45 & 413385.45 & 479936.78 & 363794.64 & 369337.23 & 280110.95 & 264597.30 & 258115.68 & 200159.73 \\
+   & 2 & 633775.06 & 574194.65 & 741624.34 & 641498.31 & 573560.96 & 442469.95 & 454363.44 & 388569.60 & 281608.17 & 285781.24 & 260206.20 & 233987.01 \\
+\textbf{29} & 1 &           &           &           &           &           &           &           &           &           &           &           &          \\
+\midrule
+\textbf{B}  & \textbf{T}  & \multicolumn{1}{c}{\textbf{c13}} & \multicolumn{1}{c}{\textbf{c14}} & \multicolumn{1}{c}{\textbf{c15}} & \multicolumn{1}{c}{\textbf{c16}} & \multicolumn{1}{c}{\textbf{c17}} & \multicolumn{1}{c}{\textbf{c18}} & \multicolumn{1}{c}{\textbf{c19}} & \multicolumn{1}{c}{\textbf{c20}} & \multicolumn{1}{c}{\textbf{c21}} & \multicolumn{1}{c}{\textbf{c22}} & \multicolumn{1}{c}{\textbf{cX}} & \multicolumn{1}{c}{\textbf{TOTAL}} \\
+\hline
+\textbf{3}  & \textbf{1}                     & 2.76                             & 2.78                             & 2.71                             & 2.82                             & 4.07                             & 4.24                             & 3.11                             & 4.78                             & 3.68                             & 3.36                             & 2.63                            & 81.63                              \\
+\textbf{}   & \textbf{2}                     & 4.56                             & 3.20                             & 2.20                             & 3.28                             & 2.65                             & 3.05                             & 2.63                             & 2.59                             & 4.06                             & 3.53                             & 5.03                            & 80.12                              \\
+\textbf{}   & \textbf{3}                     & 4.18                             & 4.02                             & 2.26                             & 2.52                             & 4.99                             & 3.04                             & 3.18                             & 3.70                             & 2.11                             & 3.05                             & 3.57                            & 82.66                              \\
+\textbf{}   & \textbf{4}                     & 2.44                             & 2.34                             & 2.36                             & 4.15                             & 3.36                             & 4.60                             & 3.36                             & 2.17                             & 4.99                             & 4.23                             & 2.87                            & 84.10                              \\
+\textbf{5}  & \textbf{1}                     & 3.01                             & 3.42                             & 2.79                             & 3.79                             & 4.99                             & 3.49                             & 3.77                             & 2.80                             & 2.83                             & 4.35                             & 5.43                            & 86.84                              \\
+\textbf{}   & \textbf{2}                     & 3.63                             & 3.06                             & 2.79                             & 3.60                             & 4.23                             & 4.79                             & 3.39                             & 2.97                             & 2.60                             & 3.02                             & 4.47                            & 83.55                              \\
+\textbf{}   & \textbf{3}                     & 2.44                             & 3.83                             & 4.56                             & 3.22                             & 4.60                             & 2.85                             & 2.21                             & 2.67                             & 3.60                             & 3.27                             & 3.67                            & 83.57                              \\
+\textbf{}   & \textbf{4}                     & 4.38                             & 2.53                             & 2.22                             & 3.09                             & 3.45                             & 3.64                             & 4.38                             & 4.46                             & 2.60                             & 3.38                             & 3.24                            & 87.07                              \\
+\textbf{7}  & \textbf{1}                     & 5.25                             & 5.18                             & 5.13                             & 5.13                             & 5.04                             & 5.01                             & 5.09                             & 5.04                             & 5.08                             & 4.97                             & 9.45                            & 146.72                             \\
+\textbf{}   & \textbf{2}                     & 5.16                             & 5.05                             & 5.05                             & 5.03                             & 5.12                             & 5.05                             & 5.11                             & 4.96                             & 5.09                             & 4.98                             & 9.68                            & 148.15                             \\
+\textbf{}   & \textbf{3}                     & 5.10                             & 5.16                             & 5.18                             & 5.02                             & 5.15                             & 5.05                             & 5.01                             & 5.00                             & 5.08                             & 4.97                             & 10.07                           & 147.51                             \\
+\textbf{}   & \textbf{4}                     & 5.16                             & 5.25                             & 5.15                             & 5.07                             & 5.03                             & 4.97                             & 5.10                             & 4.99                             & 4.99                             & 5.05                             & 10.27                           & 150.77                             \\
+\textbf{9}  & \textbf{1}                     & 9.42                             & 9.51                             & 9.51                             & 9.01                             & 8.94                             & 8.87                             & 9.15                             & 8.89                             & 9.08                             & 8.89                             & 35.91                           & 378.72                             \\
+\textbf{}   & \textbf{2}                     & 9.40                             & 9.51                             & 9.53                             & 9.41                             & 9.21                             & 9.06                             & 9.33                             & 9.22                             & 8.95                             & 9.04                             & 37.11                           & 379.96                             \\
+\textbf{}   & \textbf{3}                     & 9.57                             & 9.51                             & 9.51                             & 8.92                             & 8.91                             & 8.99                             & 9.26                             & 8.95                             & 9.16                             & 8.93                             & 34.87                           & 378.67                             \\
+\textbf{}   & \textbf{4}                     & 10.02                            & 9.74                             & 9.18                             & 9.35                             & 9.20                             & 9.22                             & 9.30                             & 8.98                             & 9.26                             & 9.14                             & 33.44                           & 377.17                             \\
+\textbf{15} & \textbf{1}                     & 15.57                            & 13.42                            & 14.54                            & 13.32                            & 15.23                            & 15.04                            & 14.17                            & 13.43                            & 14.63                            & 13.39                            & 86.36                           & 775.54                             \\
+\textbf{}   & \textbf{2}                     & 13.53                            & 13.66                            & 15.55                            & 13.04                            & 14.24                            & 14.98                            & 13.10                            & 14.86                            & 13.47                            & 14.09                            & 85.42                           & 735.08                             \\
+\textbf{}   & \textbf{3}                     & 15.52                            & 14.56                            & 15.56                            & 13.35                            & 13.71                            & 14.54                            & 14.33                            & 14.52                            & 13.66                            & 13.32                            & 75.28                           & 741.71                             \\
+\textbf{}   & \textbf{4}                     & 15.93                            & 14.85                            & 14.99                            & 13.19                            & 14.65                            & 13.16                            & 13.47                            & 14.28                            & 14.97                            & 14.04                            & 85.31                           & 768.11                             \\
+\textbf{18} & \textbf{1}                     & 23.65                            & 26.15                            & 17.29                            & 20.31                            & 19.03                            & 16.03                            & 16.89                            & 15.35                            & 16.08                            & 15.43                            & 386.86                          & 2779.57                            \\
+\textbf{}   & \textbf{2}                     & 25.87                            & 21.45                            & 22.21                            & 15.73                            & 17.73                            & 15.18                            & 15.64                            & 15.45                            & 14.32                            & 12.92                            & 349.63                          & 2809.55                            \\
+\textbf{}   & \textbf{3}                     & 28.62                            & 20.45                            & 19.68                            & 16.09                            & 15.83                            & 14.19                            & 17.27                            & 15.66                            & 17.13                            & 12.98                            & 367.17                          & 2795.13                            \\
+\textbf{}   & \textbf{4}                     & 26.86                            & 25.95                            & 17.15                            & 19.59                            & 19.23                            & 18.23                            & 14.74                            & 14.87                            & 16.98                            & 15.53                            & 350.11                          & 2758.11                            \\
+\textbf{21} & \textbf{1}                     & 28166.11                         & 24758.90                         & 21924.95                         & 19496.51                         & 16871.08                         & 14691.65                         & 12995.20                         & 11064.64                         & 9794.76                          & 8952.61                          & 81621.62                        & 943891.22                          \\
+\textbf{}   & \textbf{2}                     & 28158.18                         & 25376.88                         & 21855.75                         & 19653.58                         & 16835.85                         & 14560.69                         & 12993.42                         & 11369.10                         & 10253.55                         & 9291.82                          & 77823.25                        & 940984.64                          \\
+\textbf{}   & \textbf{3}                     & 28343.88                         & 24658.88                         & 21936.36                         & 19119.59                         & 16844.67                         & 14678.22                         & 12900.36                         & 11165.43                         & 10099.20                         & 9248.76                          & 79814.43                        & 948114.72                          \\
+\textbf{}   & \textbf{4}                     & 28494.78                         & 24802.63                         & 21944.49                         & 19144.36                         & 17181.57                         & 15054.14                         & 12931.26                         & 11466.80                         & 10049.77                         & 8770.75                          & 81447.60                        & 946515.60                          \\
+\textbf{23} & \textbf{1}                     & 169701.00                        & 142038.72                        & 105292.00                        & 78758.72                         & 75864.94                         & 76461.72                         & 27940.45                         & 18866.21                         & 17671.06                         & 37634.77                         & 478507.45                       & 6531019.41                         \\
+\textbf{}   & \textbf{2}                     & 164529.46                        & 154871.93                        & 115034.70                        & 74170.34                         & 87491.93                         & 56257.71                         & 39683.83                         & 20012.55                         & 13424.57                         & 32901.19                         & 510920.27                       & 6780937.40                         \\
+\textbf{29} & \textbf{1}                     &                                  &                                  &                                  & 315615                           &                                  &                                  &                                  &                                  &                                  &                                  &                                 &                                   
+\end{tabular}
+}
+\caption{Allegro Single-Core Runtimes (4 trials per bit-size per chromosome). B is bit-size, and T is trial number.}
+\end{table}
+\thispagestyle{empty}
