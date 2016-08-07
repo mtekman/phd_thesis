@@ -1,0 +1,15 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Comparison of different programming styles}}{83}{table.caption.17}
+\contentsline {table}{\numberline {3.2}{\ignorespaces Trio Allele Cases}}{98}{table.caption.18}
+\contentsline {table}{\numberline {3.3}{\ignorespaces Three means of allele inheritance}}{125}{table.caption.26}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Pedigrees by Bit-Size}}{147}{table.caption.35}
+\contentsline {table}{\numberline {4.2}{\ignorespaces GRR run times, 4 trials, ascending bit-size}}{173}{table.caption.58}
+\contentsline {table}{\numberline {4.3}{\ignorespaces Total Genome-wide Allegro Single-core Run Times for MPT and Haplotypes. Singlecore timings for 23-bit pedigree underwent two trials only.\relax }}{174}{table.caption.60}
+\contentsline {table}{\numberline {4.4}{\ignorespaces Average Single-Core Allegro Run Times for MPT and Haplotype Reconstruction}}{175}{table.caption.61}
+\contentsline {table}{\numberline {4.5}{\ignorespaces Total Genome-wide Allegro Multi-core Run Times for MPT and Haplotype Reconstruction}}{177}{table.caption.63}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {6.1}{\ignorespaces Allegro Single-Core runtimes, 4 trials per chromosome, per bit-size}}{208}{table.caption.77}

@@ -1,0 +1,7 @@
+This is makeindex, version 2.15 [TeX Live 2016] (kpathsea + Thai support).
+Scanning style file ./Main.ist.............................done (29 attributes redefined, 0 ignored).
+Scanning input file Main.prog-glo....done (57 entries accepted, 0 rejected).
+Sorting entries....done (329 comparisons).
+Generating output file Main.prog-gls....done (126 lines written, 0 warnings).
+Output written in Main.prog-gls.
+Transcript written in Main.prog-glg.
