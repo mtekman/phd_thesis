@@ -204,7 +204,7 @@ However the closed-source nature of Flash\footnote{Created by Macromedia and lat
 
 This created a noticeable gap in trusted content, and the need for a new specification that could provide media support without the need for insecure/proprietary plugins prompted the conception of the HTML5 schema that all modern browsers strive to follow.
 
-Javascript previously was just a language to manage the various background tasks in webpages, but the arrival of the HTML5 schema as well as developments in \gls{comp:ECMAScript6} have made the language more graphics-centric, and multiple visual libraries exist to cater for the various 3D and 2D contexts that the new canvas element can cater for\citep{ecmascript2011ecmascript}. 
+Javascript previously was just a language to manage the various background tasks in webpages, but the arrival of the HTML5 schema as well as developments in \gls{comp:ECMAScript6} have made the language more graphics-centric within browsers, and multiple visual libraries exist to cater for the various 3D and 2D contexts that the new canvas element can cater for\citep{ecmascript2011ecmascript}. 
 
 
 \subsection{Javascript Overview}\label{ref:haplo:javaover}
@@ -241,6 +241,17 @@ With the need for graphics on the web coming into fruition, a new initiative was
 All graphics card vendors cater to both \gls{comp:OpenGL} and \gls{comp:DirectX} API standards\citep{directx}, but it is only the former which has open-source implementations (\gls{comp:MESA}) and generally better cross-platform support. 
 
 The canvas element not only allows for graphics via the 2D and 3D WebGL API, but also has accelerated 2D graphics of its own. In somewhat of a misnomer, canvas-accelerated graphics are commonly generalised under the WebGL banner, despite using very different APIs to render graphics. However for the purpose of conciseness we will also adopt this convention, and silently note that there are three contexts that the canvas element supports: 3D and 2D (WebGL API, hardware-accelerated), and another 2D (Canvas API, hardware or software accelerated).
+
+\subsection{General Runtime Performance}
+
+Javascript is incorporated differently into the web-engines of different web-browsers, each with comparable levels of performance and ECMAScript compliance. There are two main competing open-source web-engines in active development:
+
+\begin{description}
+\enumdesc{Gecko}{Incorporated by Firefox and Netscape, using the \gls{comp:SpiderMonkey} Javascript engine.}
+\enumdesc{WebKit}{Exists within Safari and Chromium derivatives (e.g. Google Chrome), which uses either the \gls{comp:JavascriptCore} or \gls{comp:V8} engine}
+\end{description}
+
+It is hard to objectively benchmark the ECMCAScript engines in a graphical application by themselves without taking the web-engine into consideration. They all approximately have the same performance (even on mobile)\cite{charland2011mobile}, but differences can arise depending on external contributing factors such as OS and browser, as we will see later in the Results (Section \ref{ref:res:jsperf}).
 
 
 \subsection{WebGL Frameworks}
@@ -708,7 +719,19 @@ To bring this back to more a genomic context, for \textit{f} founders in a pedig
 
 Of course, haplotype resolution has wall constraints of its own; sealed and bound genotypes  collectively reducing the amount of available founder allele groups at specific markers, which work to remove whole path varieties altogether.
 
-Nonetheless, for \textit{i} individuals in a pedigree with \textit{2i} chromosomes\footnote{There are of course 23 pairs of chromosomes in an individual, but analyses are chromosome specific so only the current pair is considered.}, where each path \textit{p} explored in the chromosome took 0.05 seconds, there would be a delay of $2i \times p \times 0.05  =$ ) $0.1 ip$ seconds. If there are over 20 active paths being explored, then this is over 2 seconds of processing per individual, and over 20 seconds of delay for a pedigree with 10 members in it.
+Nonetheless, for \textit{i} individuals in a pedigree with \textit{2i} chromosomes\footnote{There are of course 23 pairs of chromosomes in an individual, but analyses are chromosome specific so only the current pair is considered.}, the delay in processing would be:
+
+\begin{equation}\label{eqn:time2proc}
+2i \times p \times d = 2ipd
+\end{equation}
+
+where:
+\begin{description}
+\listitem{p}{number of active paths}
+\listitem{d}{time takes to process a chromosome}
+\end{description}
+
+If there are over 20 active paths being explored and each chromosome took 0.05 seconds to precess, then this would result in over 2 seconds of processing per individual, and over 20 seconds of delay for a pedigree with 10 members in it.
 
 \subsubsection{Active Queue}
 

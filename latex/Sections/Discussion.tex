@@ -6,9 +6,40 @@ The results section was once again
 
 Small analyses such as the 3-bit and 5-bit pedigrees examined in the previous chapter are generally not very informative for linkage by themselves. For the 3-bit pedigree we observed multiple low LOD score flat peaks that did not exclude many regions, and for the 5-bit pedigree we saw fewer flat peaks with slightly higher LOD scores and still not that many regions of exclusion.
 
-That is not to say small pedigrees are unusable; weak studies can lend strength to larger analyses where the linkage region is one of a multitude of peaks which can be narrowed down by the extra regions of exclusion given by a smaller analysis.
+That is not to say small pedigrees are unusable; weak studies can lend strength to larger analyses where the linkage region is one of a multitude of peaks which can be narrowed down by the extra regions of exclusion given by a smaller analysis. Similarly, large analyses are of great assistance to smaller ones, where we witnessed a 29-bit pedigree reconstitute the parental genotypes of two 3-bit pedigrees in Figure~\pref{fig:res:29bitpedother}.
 
-Similarly, large analyses are of great assistance to smaller ones, where we witnessed a 29-bit pedigree 
+Filtering errors such as those indicated by GRR, gender, or Mendelian errors are typically not hindered by the size of analysis\footnote{except for GRR runtimes, where window polling increases with the number of total genotypes} and problems are detected at the trio level. Often, small pedigrees are later expanded into larger ones by genotyping the rest of the family in order to improve the LOD score. By catching these small trio errors early on, a researcher can make a more informed decision on whether to pursue the family for further linkage. As we saw in the pedigree in Figure~\pref{fig:res:7bitgenotypes}, parents sometimes have to falsify their children's genealogy for personal and legal reasons, and this can be cause for many a headache for the technician who has to reconcile the true pedigree.
+
+Medium size analyses (7-bit to 18-bit) are usually in the vicinity where such scenarios occur because the linkage peaks are reasonably high ($>$ 1) and few in number ($<$ 6), meaning that there is more room for a researcher to "play" with analysis by running more variations upon the input sets to maximize the analysis. Again, it should be stated that maximizing an analysis by small modifications to the pedigree and penetrance model are not necessarily a true representation of the phenotype, but only what is expected or allowed according to the classical ideals of genetics (e.g. parent-offspring genotype variance and Mendelian inheritance).
+
+For large analyses ($\geq$ 19-bit) fewer analyses are possible due to time constraints, where Table~\pref{table:res:allegrosinglechroms} shows that the timeframe shifts from a under an hour ($\sim$ 2800 seconds $\sim 47$ minutes) to a few days ($\sim$ 945000 seconds $\sim 11$ days). 
+
+Hardware limitations (namely RAM) also make Allegro largely unuseable on a genome-wide scale because the over 19-bit modification switches off the \gls{comp:CUDD} capability which would otherwise minimize the number of repeated calculations employed in the linkage. It is better suited to analysing individual chromosomes, preferably higher numbered chromosomes since the lower chromosomes begin to scale exponentially with runtime as shown in Figure~\pref{fig:res:singleplots}.  Simwalk is of more use on the genome-wide level, but risks not being able to accurately determine X-linked analyses.
+
+
+\subsection{Pipeline Summary}
+
+The filtering portion of the pipeline seems to work extremely well for all types of pedigrees and penetrances, and is the main strength of the pipeline. The combination of Mendelian errors, GRR relations, gender validation, and unlikely genotypes form easily understandable plots of the quality of the data. Errors are pinpointed to specific families and specific individual(-trios), and the quick runtime of the filtering core ($<$ 5 minutes) means that changes to the pedigree can be tested and evaluated very easily. 
+
+In relation to the rest of the pipeline, analyses are typically brute-force driven in order to maximize the LOD score as permitted by the reasonable runtimes for all pedigrees under the 19-bit limit. Over the limit requires more thought before an analysis is run, often requiring a pedigree to be split into smaller families\footnote{especially for consanguinous pedigrees}  to form a smaller-bit combined analysis that may provide more visual cues on which specific chromosomes to explore when running the larger pedigree, rather than risk the time cost of running a full genome analysis via Simwalk\footnote{Or Allegro, if the pedigree is X-linked and time is not a crucial issue.}.
+
+
+\section{HaploHTML5 Evaluation}
+
+As shown in Figure~\ref{fig:res:haplo29compare} and Figure~\ref{fig:res:haplo23compare} in Section~\prefstar{ref:res:hapcomp} HaploHTML5 resolves autosomal haplotypes just as well as HaploPainter, with the added benefit of comparing haplotypes of any selected individuals in a side-by-side view. 
+
+The 15-bit X-linked pedigree shown in Figures \{~\ref{fig:res:haplo20comparetop},~\ref{fig:res:haplo20comparemid},~\ref{fig:res:haplo20comparebot}\} on pages~\pageref*{fig:res:haplo20comparetop} to ~\pageref*{fig:res:haplo20comparebot} shows how the chromosome X limitation inherent in HaploPainter is overcome in HaploHTML5, where the highly improbably blocks shown in HaploPainter are resolved correctly using the appropriate penetrance model.
+
+Performance testing was 
+
+
+
+
+
+
+
+
+
 
 
 \subsection{Quality Filtering}
@@ -26,12 +57,9 @@ Similarly, large analyses are of great assistance to smaller ones, where we witn
 
 \section{Future Research}
 
-The pipeline
 
-pipeline web interface
-
-concrete.js, anotatations, NodeJS implements
-
+\subsection{Pipeline improvements}
+Quick retesting usually involves modifying the main pipeline script to some degree, in order to prematurely terminate the analysis after the filtering stage. This is trivial for any technician familiar with Bash or Unix, but may prove more difficult for those used to graphical interfaces. Each run also comes equipped with an automatic readme generator in order to facilitate user logging webUI easier.
 
 
 \subsection{Effective Filesystem Management}
@@ -58,6 +86,13 @@ Recoverability may be jeopardized, but the temporary nature of the files within 
 One extra caveat to reduce the number of operations upon a single disk \textit{and} keep some level of redundancy is to distribute the load across several disk drives in a standard redundant array of independent disks (\gls{comp:RAID}); specifically a RAID-5 level setup. RAID relies on the method of storing contiguous data across several mediums (a concept known as \gls{comp:striping}), as well as ensuring the data is correct and error-checkable without having to scan the entire block of data (a concept known as \gls{comp:parity}). The failure of one disk drive would not be enough to impede the setup and an ongoing analysis could be reconstituted from the other remaining disks, though a minimum of three identically sized disks is required.
 
 These features lend well to a large temporary filesystem, since the storage capacities of multiple disks can now be combined to store a great amount of data, as well as the number of operations on any one disk being reduced by a factor of \textit{n} (for \textit{n} disks in the setup). The setup will still have the same read/write speeds as an ordinary disk, but there will not be any added complexity since the operating system will detect it as a single volume.
+
+
+The pipeline
+
+pipeline web interface
+
+concrete.js, anotatations, NodeJS implements
 
 
 
