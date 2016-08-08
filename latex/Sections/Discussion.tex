@@ -34,41 +34,18 @@ The 15-bit X-linked pedigree shown in Figures \{~\ref{fig:res:haplo20comparetop}
 \subsection{UI Operability}
 The PedCreate view is intuitive and simple, with two types of relations of possible (mate-mate, and parent-offspring) with valid connections being highlighted to the user via red or white anchor points\footnote{See Figure\pref{fig:haplo:pedcreate} as an example}. Individuals are trivially added, modified, deleted, and can be moved around with their various relationship lines updating their positions (and their siblings and/or mates lines) accordingly. The resultant pedigree can be exported to pedfile, with optional positional meta tags which can be reread back into the application either by manually selecting the exported file, or by saving the pedigree into local storage and reloading it upon startup.
 
-The SelectionView mode as shown in Figure\pref{fig:haplo:selectmode} allows for multi-family selection which simplifies 
+The SelectionView mode as shown in Figure\pref{fig:haplo:selectmode} allows for multi-family selection which simplifies the comparison process, especially when comparing the disease locus (found via linkage) within combined analyses. The \gls{comp:DOS} view outlined in page~\pageref{ref:haplo:dos} is in intriguing concept that aims to simplify generational representation upon the selected indivduals under analysis, but ultimately complicates it. It may be better to simply represent the pedigrees of all selected individuals via a small \gls{comp:mipmap} thumbnail in the corner of the screen.
+
+The Homology tools mode is a useful tool for scoring regions of sequence homology under heterozygous, homozygous, and compound heterozygous models. These scores are plotted vertically against the marker scale (see Figure\pref{fig:haplo:homomode}) for quick scrolling, and can also be output to a text file for later inspection. However, the mode can be confusing to interpret due to the non-binary nature in which it scores homology (see page~\pageref{ref:haplo:homologyscoredet}) and the modified HaploPainterRFH script is better in highlighting regions of homology as shown in Figure\pref{fig:res:haplo29comparehomology}. It would be more beneficial for the end-user if the homology tools merely outlined the regions that met that maximum homology score for the scenario (as in the case of HaploPainterRFH) instead of trying to overlay all the data at once.
+
+\subsection{Performance}
 
 Performance testing of the A* best-first algorithm upon a single set of test data gave negligible runtimes on Desktop (0.041 s) and Laptop (0.302 s). Mobile (1.523 s) produced a minor noticeable delay, but still produced the correct haplotypes, which was unexpected given the lightweight nature of its Javascript engine (EmbedLite) not necessarily incorporating all the features of ECMCAScript6 specification. The overall differences seem to be a factor of 10 from Mobile $\rightarrow$ Laptop $\rightarrow$ Desktop, but the differences between OS and browser upon the same hardware appears to be function specific as expected \cite{ratanaworabhan2010jsmeter}, with minor speed increases in Chromium over Firefox.
 
-HaploPainter runs on Perl and relies upon \gls{comp:Tk}, \gls{comp:Cairo}, \gls{comp:Sort Naturally}, and \gls{comp:DBI} Perl dependencies to be present in the system. The more dependencies a program has, the less likely it is to be ported to other platforms successfully since it's dependencies must be ported first. Perl itself also is not very common on \gls{comp:ARM} devices\footnote{The Jolla mobile device used in the Results runs a OS aimed at Linux and shell enthusiasts, so Perl did exist upon it. None of the Perl dependencies had been ported to it however, and so HaploPainter could not run on it.}. However, the only dependency that HaploHTML5 requires is a web-browser with Javascript capability, immediately making it much more portable than HaploPainter.
+HaploPainter runs on Perl and relies upon \gls{comp:Tk}, \gls{comp:Cairo}, \gls{comp:Sort Naturally}, and \gls{comp:DBI} Perl dependencies to be present in the system. The more dependencies a program has, the less likely it is to be ported to other platforms successfully since it's dependencies must be ported first. Perl itself also is not very common on \gls{comp:ARM} devices\footnote{The Jolla mobile device used in the Results chapter runs an OS aimed at Linux and shell enthusiasts; Perl did exist upon it, however none of the Perl dependencies had been ported to it and so HaploPainter could not run on it.}. However, the only dependency that HaploHTML5 requires is a web-browser with Javascript capability, immediately making it much more portable than HaploPainter.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\subsection{Quality Filtering}
-\subsection{Linkage Control}
-\subsection{Haplotype Reconstruction}
-\subsection{Deployment and Dsitribution}
-\subsection{Performance}
-
-
-\section{HaploHTML5 Evaluation}
-\subsection{X-linked performance}
-\subsection{UI and Ease of use}
-\subsection{Performance}
-
-
-\section{Future Research}
+\section{Future Work}
 
 
 \subsection{Pipeline improvements}
@@ -109,6 +86,32 @@ concrete.js, anotatations, NodeJS implements
 
 
 
-
-
 Scores between Allegro and GeneHunter tend to differ by only $\pm$ 0.2. Any larger discrepancies are suspect, and usually prompt a Simwalk run as a precautionary third control.
+
+
+
+
+\subsection{HaploHTML5 Improvements}
+
+\subsubsection{Founder Colour Group Representation}
+One current problem with the application is the limited colour space for the founder allele groups to be allocated to. Under the \gls{comp:HSV} model with a hue scored from 0\% to 100\% differences in colour become harder to distinguish below the 15\% range as shown in Figure~\ref{fig:disc:huescale}. For $f$ founders, there are $2f$ unique colours that must be assigned to their respective alleles, meaning that as soon as the pedigree begins to have more than 3 founders\footnote{$ \frac{100}{15} \sim 7 $ unique colour groups for all founder alleles $ \sim 3$ founders.}, the colour groups become more ambiguous.
+
+One solution would be to change the the Value component of the HSV model to take on darker and/or lighter components, which would double and/or triple the number of available colours, but would require changing the colour of the genotypes text which reside on top of the coloured block. 
+
+\fignow{Sections/images/hue_scale.png}
+{Hue Scale (\%). Distinct colours are more visible at 15\% increments.}
+{fig:disc:huescale}
+{0.7}{}
+
+It is possible to move the genotype text out next to the block as represented in HaploPainter, but this would reduce the amount of available horizontal space since more width would have to allocated per individual.
+
+Another solution would be to regenerate the founder allele colour groups to only those currently under selection, but introduces the issue of inconsistent colouring across multiple runs on the same data.
+
+
+\subsubsection{Annotation and Sharing}
+
+
+\subsubsection{Framework overhaul}
+Concrete.js \cite{concretejs}
+
+

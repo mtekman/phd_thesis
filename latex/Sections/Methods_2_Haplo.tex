@@ -1244,7 +1244,7 @@ One of the main reasons that haploblocks are analysed post-linkage is to find re
 Upon sub-selection submission homology, individual alleles are sorted into groups of affecteds and unaffecteds; the idea being that affected alleles that match to some model contribute to a score and unaffected alleles that match to the same model subtract from the score. Thus for a scenario where all alleles (affecteds and unaffecteds) have the same homology, a total score of zero will be produced. 
 
 Scores are calculated for three scenarios:
-\begin{enumerate}
+\begin{enumerate}\label{ref:haplo:homologyscoredet}
 \enumdesc{Homozygous}{Both alleles must be identical and must match all other affected alleles to contribute to the score. If only 1 allele of an individual matches, the score will not increase.}
 \enumdesc{Heterozygous}{One allele must match at least one allele in all other affected individual alleles to contribute to the score.}
 \enumdesc{Compound Heterozygous}{Both alleles must differ and must match all other affected alleles to contribute to the score.}
