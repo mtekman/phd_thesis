@@ -1192,6 +1192,23 @@ HaploHTML5 does away with this notion by allowing the user to freely select whic
 	{0.9}{Three stages of Selection Mode}
 
 
+\subsubsection{Degrees of Separation (Selection View)}\label{ref:haplo:dos}
+
+When individuals are selected within the Selection View and transferred into the Haploblock View, generational information is generally hidden. In order to give some context to individuals selected in relation to one another, a Degree-Of-Separation (\gls{comp:DOS}) function was implemented to show by how many generations one related individual was to another.
+
+The function \textit{findDOSinSelection} in file \textit{dos.js} works by grouping siblings under the same node, where only non-founders can be within the same group in order to allow founders to extend their own DOS to other non-founders. Founders are their own sib groups, and for each sibgroup defined, relations are recursed upwards through mates and parents in order to find selected individuals at grouped by level.
+
+The method works well for simple relations, but grows computationally complex for more involved selections which can lead to bad line rendering. Figure~\ref{fig:haplo:dos} represents this below, with a clear DOS for the four selected individuals in the left pedigree selection, and inconsistent or missing line renders in the right pedigree selection
+
+\fignow{../writer/Methods/images/haplo_dos.png}
+	{Degrees of Seperation (DOS) for two subselections of the same family. (Left) Simple and correct representation of three degrees of seperation between founders and great grandchilden. (Right) Complex and erroneous representation of larger selection spanning more generations. The top image of each column shows the subselection of the pedigree, the middle image shows the DOS view, and the bottom shows the aligned view.}
+	{fig:haplo:dos}
+	{0.9}{Degrees of Seperation (DOS) for two subselections of the same family}
+	
+Due to the incompleteness of the method, it was dropped from the release version of the application, and the Haploblock View aligns the pedigrees by default.
+
+
+
 \subsubsection{Haplotype Navigation (Haploblock View)}
 
 Haplotypes are initially displayed in a viewport restricted to a particular locus of interest for a default stretch of 30 markers. The user can then move through haplotypes using this viewport by one of:
@@ -1211,6 +1228,8 @@ Haplotypes are initially displayed in a viewport restricted to a particular locu
 \subsubsection{Analysis Resumeability}
 
 The application makes use of the \textit{localStorage} JavaScript implementation to cache the last used pedigree or haplotypes file, so that the user does not need to manually reselect it every time they want to rerun an analysis. The browser simply pulls the file from local storage, and meta flags in the file return to whichever view that the user was last on (PedCreate, Selection, or Haploblock).
+
+%\let\cleardoublepage\clearpage
 
 \subsection{Homology Tools}
 

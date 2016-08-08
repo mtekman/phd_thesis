@@ -26,11 +26,24 @@ In relation to the rest of the pipeline, analyses are typically brute-force driv
 
 \section{HaploHTML5 Evaluation}
 
+\subsection{HaploBlock Resolution}
 As shown in Figure~\ref{fig:res:haplo29compare} and Figure~\ref{fig:res:haplo23compare} in Section~\prefstar{ref:res:hapcomp} HaploHTML5 resolves autosomal haplotypes just as well as HaploPainter, with the added benefit of comparing haplotypes of any selected individuals in a side-by-side view. 
 
 The 15-bit X-linked pedigree shown in Figures \{~\ref{fig:res:haplo20comparetop},~\ref{fig:res:haplo20comparemid},~\ref{fig:res:haplo20comparebot}\} on pages~\pageref*{fig:res:haplo20comparetop} to ~\pageref*{fig:res:haplo20comparebot} shows how the chromosome X limitation inherent in HaploPainter is overcome in HaploHTML5, where the highly improbably blocks shown in HaploPainter are resolved correctly using the appropriate penetrance model.
 
-Performance testing was 
+\subsection{UI Operability}
+The PedCreate view is intuitive and simple, with two types of relations of possible (mate-mate, and parent-offspring) with valid connections being highlighted to the user via red or white anchor points\footnote{See Figure\pref{fig:haplo:pedcreate} as an example}. Individuals are trivially added, modified, deleted, and can be moved around with their various relationship lines updating their positions (and their siblings and/or mates lines) accordingly. The resultant pedigree can be exported to pedfile, with optional positional meta tags which can be reread back into the application either by manually selecting the exported file, or by saving the pedigree into local storage and reloading it upon startup.
+
+The SelectionView mode as shown in Figure\pref{fig:haplo:selectmode} allows for multi-family selection which simplifies 
+
+Performance testing of the A* best-first algorithm upon a single set of test data gave negligible runtimes on Desktop (0.041 s) and Laptop (0.302 s). Mobile (1.523 s) produced a minor noticeable delay, but still produced the correct haplotypes, which was unexpected given the lightweight nature of its Javascript engine (EmbedLite) not necessarily incorporating all the features of ECMCAScript6 specification. The overall differences seem to be a factor of 10 from Mobile $\rightarrow$ Laptop $\rightarrow$ Desktop, but the differences between OS and browser upon the same hardware appears to be function specific as expected \cite{ratanaworabhan2010jsmeter}, with minor speed increases in Chromium over Firefox.
+
+HaploPainter runs on Perl and relies upon \gls{comp:Tk}, \gls{comp:Cairo}, \gls{comp:Sort Naturally}, and \gls{comp:DBI} Perl dependencies to be present in the system. The more dependencies a program has, the less likely it is to be ported to other platforms successfully since it's dependencies must be ported first. Perl itself also is not very common on \gls{comp:ARM} devices\footnote{The Jolla mobile device used in the Results runs a OS aimed at Linux and shell enthusiasts, so Perl did exist upon it. None of the Perl dependencies had been ported to it however, and so HaploPainter could not run on it.}. However, the only dependency that HaploHTML5 requires is a web-browser with Javascript capability, immediately making it much more portable than HaploPainter.
+
+
+
+
+
 
 
 

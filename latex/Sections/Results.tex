@@ -544,13 +544,10 @@ function loadPedFromStorage(){
 	var ped_data = localStorage.getItem( localStor.data_save ),
 		ped_type = localStorage.getItem( localStor.data_type );
 
-
 	var pi = new ProcessInput(ped_data, ped_type);
 	init();
 	delete pi;
 }
-
-
 
 function init(){
 	connectAllIndividuals();
@@ -584,7 +581,6 @@ loadPedFromStorage();
 var end_time = performance.now()
 
 alert("Time :", end_time - start_time);
-
 \end{lstlisting}
 \vspace{-10pt}
 \captionof{lstlisting}{Javascript initialization to automatically load pedigree from storage, select all members, and view their haplotypes.}
@@ -592,11 +588,11 @@ alert("Time :", end_time - start_time);
 \endgroup
 
 
-This performs the standard HaplotHTML5 functions in the order given below:
+This performs the standard HaploHTML5 functions in the order given below:
 
-\begin{spacing}{1.2}
+\begin{spacing}{1.1}
 \begin{enumerate}
-\item{\textit{loadPedFromStorage} loads a single family pedigree of 10 members for a 3,561 marker analysis (chromosome 3).}
+\item{\textit{loadPedFromStorage} loads a single 9-bit pedigree of 9 members\footnote{Scenario 10 of the family shown in Figure\pref{fig:res:7bitped}} for a 3,561 marker analysis (chromosome 3).}
 \item{\textit{connectAllIndividuals} connects the pedigree.}
 \item{\textit{populateGrids\_and\_UniqueObjs} populates all drawable objects.}
 \item{\textit{determinePedigreeType} determines penetrance and X-linkage.}
@@ -609,10 +605,34 @@ This performs the standard HaplotHTML5 functions in the order given below:
 \end{enumerate}
 \end{spacing}
 
-The \textit{alert} function was used instead of the standard \textit{console.log} logging tool because many mobile browsers do not show logging output. Table~\ref{} below shows the runtimes of the above script for each of the two main ECMAScript engines (JavascriptCore, SpiderMonkey) on three different hardware platforms: Desktop (x64, dedicated graphics), Laptop (x86, embedded graphics), and Mobile (armv7, embedded graphics).
+The \textit{alert} function was used instead of the standard \textit{console.log} logging tool because many mobile browsers do not show logging output. 
+
+Table~\ref{table:res:haploastarperf} below shows the runtimes of the above script for each of the two main ECMAScript engines (JavascriptCore, SpiderMonkey) on three different hardware platforms: Desktop (x64, 4GB \gls{comp:dedicated graphics}, 3.2GHz x 2 CPU, 8GB RAM), Laptop (x86, \gls{comp:embedded graphics}, 1.67GHz x 2, 8GB RAM ), and Mobile (armv7, embedded graphics, 1.16GHz x 2, 1GB RAM).
 
 
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{ c c | c c c c | c }\hline
+   \multicolumn{2}{c}{\textbf{Hardware and Browser(OS, Engine)}}  & \textbf{1}  & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{Mean}   \\\hline
+\textbf{Desktop}  & Chromium  & 0.051      & 0.042      & 0.014      & 0.047      & 0.038           \\
+\textbf{Laptop}   &  (Windows 8.1, WebKit, V8)   & 0.185      & 0.252      & 0.214      & 0.210      & 0.215           \\\hline
+\textbf{Desktop} &  Firefox   & 0.023      & 0.019      & 0.080      & 0.063      & 0.046          \\
+\textbf{Laptop}  &  (Windows 8.1, Gecko, SpiderMonkey)  & 0.371      & 0.482      & 0.472      & 0.268      & 0.398          \\\hline
+\textbf{Desktop} & Chromium  & 0.055      & 0.013      & 0.025      & 0.032      & 0.031           \\
+\textbf{Laptop}  & (Arch Linux, WebKit, V8)  & 0.157      & 0.224      & 0.229      & 0.243      & 0.213           \\\hline
+\textbf{Desktop} & Firefox   & 0.060      & 0.039      & 0.059      & 0.042      & 0.050          \\
+\textbf{Laptop}  & (Arch Linux, Gecko, SpiderMonkey)   & 0.333      & 0.456      & 0.508      & 0.231      & 0.382          \\\hline
+\textbf{Mobile}  & WebPirate (Jolla, WebKit, V8) & 0.816      & 1.233      & 1.095      & 1.136      & 1.070        \\\hline
+\textbf{Mobile}  & Sailfish (Jolla, Gecko, EmbedLite) & 1.941      & 2.014      & 1.724      & 2.277      & 1.989       \\
+\hline
+\end{tabular}
+\end{center}
+\vspace{-15pt}
+\caption[HaploHTML5 A* Performance Table]{Four time trials (seconds) upon Desktop, Laptop, and Mobile hardware, with different ECMAScript engines (V8, SpiderMonkey, EmbedLite)}\label{table:res:haploastarperf}
+\end{table}
 
+
+Due to the various different hardware components each specialized to different tasks, it makes no sense to chart the data in Table~\ref{table:res:haploastarperf} since the difference between each platform is not measureably distinct enough to form a Y-axis. We can however summarize each hardware device in terms of runtime: Desktop (0.041 s), Laptop (0.302 s), and Mobile (1.523 s).
 
 
 
