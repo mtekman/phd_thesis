@@ -10,6 +10,13 @@
 \usepackage{bibentry}
 \bibliographystyle{IEEEtran}
 
+
+% Global footnote numbering
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
+
+
+
 \newcommand{\ignore}[1]{}
 \newcommand{\nobibentry}[1]{{\let\nocite\ignore\bibentry{#1}}}
 %% apsrev entries in the text need definitions of these commands
@@ -29,7 +36,7 @@
 \usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
 \usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
 \usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
-\usepackage{url}
+\usepackage[hyphens]{url}
 \usepackage{enumerate}
 
 \usepackage{booktabs} % Better looking tables

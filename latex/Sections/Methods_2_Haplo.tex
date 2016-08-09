@@ -1,5 +1,6 @@
-\chapter{Methods - HaploHTML5: A Comprehensive Pedigree and Haplotype Analysis Suite for the Web}
+\chapter{Methods - HaploHTML5:\\A Comprehensive Pedigree and\\Haplotype Analysis Suite}
 
+\vspace{10pt}
 The problems with current haplotype visualization tools highlighted in the previous section prompted the need for a new tool that would meet the shortcomings of its predecessors. Such a tool would have to be developed with a more modern perspective on the needs of both the geneticists and the data they deal with.
 
 \section{Application Requirements}
@@ -27,24 +28,24 @@ Before development can begin to address the requirements set out in this schema,
 
 The first step in any development process is to choose a basis that would allow us to program more efficiently without having to "reinvent the wheel". There are many ways to perform the same task, but some ways are more geared towards certain types of tasks than others, with each method having their own respective advantages and disadvantages.  
 
-E.g. A data-mining task that requires some mathematical capabilities as well as the ability to read/write to file. If hardware constraints are not an issue, then a large encompassing framework that provides a vast array of utilities such as file operations, operating system non-specifics, and even its own filtering functions may suit the task well, albeit at the cost of high memory and CPU resources. However if the focus is more upon optimization, then maybe a smaller underlying framework that provides only basic file utilities may be sufficient for the task.
+E.g. a data-mining task that requires some mathematical capabilities as well as the ability to read/write to file. If hardware constraints are not an issue, then a large encompassing framework that provides a vast array of utilities such as file operations, operating system non-specifics, and even its own filtering functions may suit the task well, albeit at the cost of high memory and CPU resources. However if the focus is more upon optimization, then maybe a smaller underlying framework that provides only basic file utilities may be sufficient for the task.
 
 The problem, of course, is the constant balance between defining just the right amount of specificity in the task at hand without compromising the ability to implement further features at a later time. A constant mantra spoken to generations of university undergraduates in computer science: "Never optimize too early".
 
 
 \subsection{Programming Frameworks}
 
-Programming is a transferable skill; practice in one will aid in the practice of another, and most imperative languages share a great deal of similarity between each other in terms of structure and syntax. Here we will compare a wide range of popular programming languages: Bash, C++, Java, Javascript, Perl, and Python. There are many concepts that a developer must consider when choosing the appropriate language to program in. Different languages offer a different selection of the features and concepts outlined below
+Programming is a transferable skill; practice in one will aid in the practice of another, and most imperative languages share a great deal of similarity between each other in terms of structure and syntax. Here we will compare a wide range of popular programming languages: Bash, C++, Java, Javascript, Perl, and Python. There are many concepts that a developer must consider when choosing the appropriate language to program in. Different languages offer a different selection of the features and concepts outlined below.
 
 \subsubsection{Licensing and Access}
 
 The applications produced by different languages are typically split into two groups; scripts and programs, each with their own forms of accession and distribution.
 
-Scripting languages such as Bash, Javascript, Perl, and Python\citep{vanrossum2010python} are high-level runtime dependent languages written in plain-text into files that can be directly executed by their respective interpreters. Scripts are said to be open-source, where to share or distribute the script is to openly share the code source with all users.
+Scripting languages such as Bash, Javascript, Perl, and Python \cite{vanrossum2010python} are high-level runtime dependent languages written in plain-text into files that can be directly executed by their respective interpreters. Scripts are said to be open-source, where to share or distribute the script is to openly share the code source with all users.
 
 Programs allude to languages where all the files containing the code are used to generate a binary that contains a reduction of all the files related to the application parsed into machine code; namely C++ and Java. These binaries are distributed to end-users but the users cannot see the code source used to create the binary\footnote{here are however numerous methods to reverse-engineer the code source from a binary.}. It is then up to developer to share their code (making the program open-source) so that the user can compile the binary themselves, or the developer can choose not to share their code at all (making the program closed-source) and it is then up to the user to decide whether the binary is trustworthy or not\footnote{The problem with closed-source development is the room for abuse in which code can be written with malicious intent without the end-user knowing about it.}.
 
-Open-source applications are also avenues for the misuse of the developers original intention to the distribution and modification of their code. For an overview of the various types of licensing in digital media, please see section Licensing in the Appendix.
+Open-source applications are also avenues for the misuse of the developers original intention to the distribution and modification of their code\footnote{For an overview of the various types of licensing in digital media, please see the Licensing section on page~\pageref{ref:app:licensing} in the Appendix.}.
 
 \subsubsection{Multi-Threading}
 
@@ -54,11 +55,11 @@ Threading is mainly implemented via three methods:
 
 \begin{enumerate}
 \enumline{Run and Wait}{A thread is bound to a function and executed immediately in parallel to the normal flow of code execution (a method known as \gls{comp:forking}). The rest of the code execution resumes normally until it reaches a portion in the code where it is specified that it must wait and block all further execution until the thread finishes, where control is then handed back to the main process. Numerous threads can be spawned, and numerous block calls can be made. Bash implements this behaviour by default using the '\&' modifier to fork off a process and the 'wait' command to block. \gls{comp:C++}, \gls{comp:Java}, and \gls{comp:Perl} incorporate this basic forking methodology too in their respective \gls{comp:standard template libraries}.}
-\enumline{Queue and Dispatch}{Threads are not executed straight away but are treated as jobs that are added to a queue. Jobs are then dispatched from this queue on a first-come first-serve basis to any available threads. If there are no available threads, then the jobs wait in the queue until there are. This method is used primarily in batch processing where the job types are similar and the code is parallelizing data would otherwise have been iterated through via a standard for loop. Not many languages incorporate this natively, with Bash relying on the parallel framework\footnote{See \gls{prog:parallel} specification within the Program Listings (page~\pageref{ref:meth:proglist})}, and other languages dependent on external implementations.}
+\enumline{Queue and Dispatch}{Threads are not executed straight away but are treated as jobs that are added to a queue. Jobs are then dispatched from this queue on a first-come first-serve basis to any available threads. If there are no available threads, then the jobs wait in the queue until there are. This method is used primarily in batch processing where the job types are similar and the code is parallelizing data would otherwise have been iterated through via a standard for loop. Not many languages incorporate this natively, with Bash relying on the parallel framework\footnote{See \gls{prog:parallel} specification within the Program Listings (page~\pageref{ref:meth:proglist}).}, and other languages dependent on external implementations.}
 \enumline{Asynchronous Callback}{This structure does not follow the traditional sequential flow of control; rather that there is no "main" flow of control, and all code blocks instead inhabit separate realms which are all assumed to be independent of each other and can be executed concurrently, unless a dependency between a group of blocks is detected in which case blocks within the group are executed sequentially.
 
 \begin{description}
-\item{e.g. A,B,C,D,E,F are six separate functions, some sharing inter related variables. C is spawned from D, and E is also spawned from D, but variables in E depend upon the outcome of C. F is spawned from B but depends upon the outcome of E. A representation of this scenario can be seen in figure~\ref{fig:haplo:async}.}
+\item{E.g. A,B,C,D,E,F are six separate functions, some sharing inter related variables. C is spawned from D, and E is also spawned from D, but variables in E depend upon the outcome of C. F is spawned from B but depends upon the outcome of E. A representation of this scenario can be seen in figure~\ref{fig:haplo:async}.}
 \item{\fignow{../writer/Methods/images/asynch_example.png}
 	{Horizontal lines depicting the number of active threads with the respect to a horizontal time axis. Vertical down lines depict spawned processes, and up lines indicate the return of code control to another process. Dashed lines represent a process waiting for another. Arrows highlight callbacks where the functions are executed upon the termination of another. At t0 there are 3 concurrent processes; t1 there are 4; t2 and t3 there is 1.}
 	{fig:haplo:async}
@@ -70,7 +71,7 @@ Threading is mainly implemented via three methods:
 
 This asynchronous callback structure is native to Javascript, where there is no guarantee to the order in which two separate lines of code will execute; the interpreter decides what load order is best based upon a dependency model it creates. The Qt framework which has bindings in both C++, Python, and Java, also incorporates this model using a "signals-and-slots" architecture where functions are bound to 'slots' (code blocks) which emit 'signals' that prompt other slots into action, where a termination signal is a holder for a callback function.
 
-Each type of multi-threading process is suited to different tasks, but the asynchronous callback architecture removes a lot of the user-imposed blocking processes and automatically derives the most efficient method to handle concurrent tasks. In order for a developer to effectively wield the other two methods, they must have at least a general understanding of mutual exclusive variables and semaphores\footnote{See relevant section in Appendix (page~\pageref{ref:app:semaphores}}. 
+Each type of multi-threading process is suited to different tasks, but the asynchronous callback architecture removes a lot of the user-imposed blocking processes and automatically derives the most efficient method to handle concurrent tasks. In order for a developer to effectively wield the other two methods, they must have at least a general understanding of mutual exclusive variables and semaphores\footnote{See Semaphores section in Appendix on page~\pageref{ref:app:semaphores}.}. 
 
 
 \subsubsection{Graphical Libraries}
@@ -81,7 +82,7 @@ A common application paradigm is the Model-View-Controller (\gls{comp:MVC}) prin
 
 Most languages have libraries that incorporate this popular model in some way, the exception being Bash which is not suited for graphical applications but has graphical input helper utilities such as \gls{prog:zenity}, which can be used to sequentially prompt the user for input.
 
-The Qt framework has a graphical interface in which a developer can actually draw the input form by dragging and dropping buttons and other display fields into horizontal/vertical/grid-like layouts to automatically space components\footnote{Or the developer can ignore tiling altogether and manually specify their own dimensions.}. Javascript under a browser context has the entirety of the HTML5 specification to play with; the most relevant item being the canvas specifier, which allows for direct drawing to a webpage without any layout constraints at all\citep{html5}.
+The Qt framework has a graphical interface in which a developer can actually draw the input form by dragging and dropping buttons and other display fields into horizontal/vertical/grid-like layouts to automatically space components\footnote{Or the developer can ignore tiling altogether and manually specify their own dimensions.}. Javascript under a browser context has the entirety of the HTML5 specification to play with; the most relevant item being the canvas specifier, which allows for direct drawing to a webpage without any layout constraints at all \cite{html5}.
 
 \subsubsection{Application Programming Interface (API)}
 
@@ -95,11 +96,11 @@ Perl and Bash are not as modern in terms of active development then Python, C++,
 
 Some languages can be ported more readily between different systems than others. If the developer already knows what specific system(s) their application will run in, then portability may not be a problem. The cost of portability is the resource cost of the language interpreter (or runtime environment) required to run the application. If the language is compiled, then depending upon whether it has been translated into byte-code (for an optimized interpreter to process), or machine-code (for the CPU to process), then this resource cost is greatly reduced.
 
-Languages that are very feature-rich often experience slowdowns associated with the bloated libraries and background daemons required to run them. This is often the case with high-level languages that provide a level of abstraction from the developer in order to simplify the development process as much as possible. Advances in compiler and toolchain  technologies <XXXREF, LLVM1> have reduced the performance cost of these high-level languages by providing optimization techniques that can reduce the code into a platform-independent intermediate representation which can be converted directly into machine code. Programming now exists in an age where there is greater emphasis in producing clean and readable code with the intention of modularity and team collaboration, rather than needlessly efficient code from conception; all the optimization is done by the interpreter or compiler\footnote{See relevant section in Appendix on page~\pageref{ref:app:compiler}}. To go further, it is even said that there is no such thing as a "true" low-level language anymore, since even sequential assembly code fed straight to the CPU still undergoes optimization by categorizing related variables into separate dependency trees which are then executed in parallel to speed up computation. The advent of multi-core CPUs has given rise to advanced instruction sets, allowing for data to be channelled into hardware CPU parallelisms such as: Single Instruction Multiple Data (\gls{comp:SIMD}), Multiple Instruction Multiple Data (\gls{comp:MIMD}), and Multiple Instruction Single Data (\gls{comp:MISD}).
+Languages that are very feature-rich often experience slowdowns associated with the bloated libraries and background daemons required to run them. This is often the case with high-level languages that provide a level of abstraction from the developer in order to simplify the development process as much as possible. Advances in compiler and toolchain  technologies \cite{lattner2004llvm} have reduced the performance cost of these high-level languages by providing optimization techniques that can reduce the code into a platform-independent intermediate representation which can be converted directly into machine code. Programming now exists in an age where there is greater emphasis in producing clean and readable code with the intention of modularity and team collaboration, rather than needlessly efficient code from conception; all the optimization is done by the interpreter or compiler\footnote{See Compilers section in Appendix on page~\pageref{ref:app:compiler}.}. To go further, it is even said that there is no such thing as a "true" low-level language anymore, since even sequential assembly code fed straight to the CPU still undergoes optimization by categorizing related variables into separate dependency trees which are then executed in parallel to speed up computation. The advent of multi-core CPUs has given rise to advanced instruction sets, allowing for data to be channelled into hardware CPU parallelisms such as: Single Instruction Multiple Data (\gls{comp:SIMD}), Multiple Instruction Multiple Data (\gls{comp:MIMD}), and Multiple Instruction Single Data (\gls{comp:MISD}).
 
 C++ is compiled straight to machine-code but is historically not a  very portable language; code written for one platform will likely not translate well to another. \gls{comp:Cross-platform} frameworks and compilers have been created to address this such as \gls{comp:Qt} (via \gls{prog:qmake}), and \gls{prog:CMake}, but the process requires much prior configuration and often \gls{comp:OS}-specific \gls{comp:macros} need to be included to get an application running.
 
-Python, Java, and Javascript are interpreted languages that require their respective runtime environments to work, but – as stated previously – massive advancements have been made with compiler targets that provide speedups such as just-in-time (\gls{comp:JIT}) temporary binaries for portions of code known to otherwise create slowdowns. 
+Python, Java, and Javascript are interpreted languages that require their respective runtime environments to work, but as stated previously massive advancements have been made with compiler targets that provide speedups such as just-in-time (\gls{comp:JIT}) temporary binaries for portions of code known to otherwise create slowdowns. 
 
 Bash exists solely on UNIX and UNIX-like systems, and has only been ported to Windows systems via compatibility environments such as \gls{prog:cygwin}. 
 
@@ -132,21 +133,21 @@ Table~\ref{table:haplo:complang} outlines and compares the differences between t
 \hline
 \end{tabular}
 \end{center}
-\caption[Comparison of different programming styles]{Comparison of different programming styles. Notes:$^1$variables must be unset, $^2$C++11 specification does support this but not widely used, $^3$however smart pointers  perform their own\citep{embedded1999embedded}}\label{table:haplo:complang}
+\caption[Comparison of different programming styles]{Comparison of different programming styles. Notes:$^1$variables must be unset, $^2$C++11 specification does support this but not widely used, $^3$however smart pointers  perform their own \cite{embedded1999embedded}}\label{table:haplo:complang}
 \end{table}
 
 
 \subsubsection{Type and String Handling}
 
-The aim of a data type is to capture the information within an item of data using the fewest amounts of bits possible. Snippets of text containing numeric data could be more efficiently used if the numeric data was stored in a numeric type.  Most programming languages are built upon a foundation of  well-established data types called \gls{comp:primitives}\footnote{See Appendix page~\pageref{ref:app:primitives}}, which are known for their efficient handling of information. Primitives allow the developer to store the data in set compact representations of their own volition. However, some languages perform automatic typing such that the type of variable is never explicitly stated but inferred from the context in which it is used. This has the advantage of freeing the developer from hardware constraints and \gls{comp:overflow/underflow} errors, but may represent large amounts of data inefficiently. Some languages do not even use primitives, but treat all data as an \gls{comp:object}, a concept borrowed from \gls{comp:object-oriented} languages  that allows a variable to have functions and properties attached to it.
+The aim of a data type is to capture the information within an item of data using the fewest amounts of bits possible. Snippets of text containing numeric data could be more efficiently used if the numeric data was stored in a numeric type.  Most programming languages are built upon a foundation of  well-established data types called \gls{comp:primitives}\footnote{See Appendix page~\pageref{ref:app:primitives}.}, which are known for their efficient handling of information. Primitives allow the developer to store the data in set compact representations of their own volition. However, some languages perform automatic typing such that the type of variable is never explicitly stated but inferred from the context in which it is used. This has the advantage of freeing the developer from hardware constraints and \gls{comp:overflow/underflow} errors, but may represent large amounts of data inefficiently. Some languages do not even use primitives, but treat all data as an \gls{comp:object}, a concept borrowed from \gls{comp:object-oriented} languages  that allows a variable to have functions and properties attached to it.
 
-String data is harder to quantify, since a string is essentially just an array of characters, and depending upon what character encoding is used (ASCII, Unicode-16, Unicode-32)  string can take up an arbitrary amount of data. \gls{comp:Strings}\footnote{See Appendix page~\pageref{ref:app:strings}} are immutable, meaning that they are not editable at runtime and require powerful libraries to workaround this behaviour.
+String data is harder to quantify, since a string is essentially just an array of characters, and depending upon what character encoding is used (ASCII, Unicode-16, Unicode-32)  string can take up an arbitrary amount of data. \gls{comp:Strings}\footnote{See Appendix page~\pageref{ref:app:strings}.} are immutable, meaning that they are not editable at runtime and require powerful libraries to workaround this behaviour.
 
 C++ and Java classically follow the primitives directive, but newer versions also allow the inclusion of automatic type specifiers. Python distinguishes between decimals and floating-point numbers, but automatically scales the number of bits required to represent both.  Javascript treats all numeric data as floats, but has devices to remove redundancy over number arrays. 
 
 C++ has poor native runtime string handling, with modifications on strings requiring unintuitive function calls to C methods. Java, Javascript, Python, and Perl have excellent string handling, with string being a class with basic methods that allow a string to be split, copied, and appended/concatenated. 
 
-Bash takes a different approach altogether and treats everything as a string, with numeric operations requiring the string to be fed to an external program for processing (where upon return it is converted back to a string). It is not without consequence that string manipulation in Bash is unparalleled, with native concatenation and many methods to perform variable substitutions as well as in-built regular expression (\gls{comp:regex}\footnote{See Appendix page~\pageref{ref:app:regex}}) matching.
+Bash takes a different approach altogether and treats everything as a string, with numeric operations requiring the string to be fed to an external program for processing (where upon return it is converted back to a string). It is not without consequence that string manipulation in Bash is unparalleled, with native concatenation and many methods to perform variable substitutions as well as in-built regular expression (\gls{comp:regex}\footnote{See Appendix page~\pageref{ref:app:regex}.}) matching.
 
 %There is also It should further be noted that my ability to waffle about the various contrivances derived from the destitute dregs of my half-remembered pompously-bloated understanding of the subject in question is somewhat dampened by the realisation that these seemingly detailed machinations so elaborately described upon these pages may be none other than mad destitute ramblings of man too far gone to grasp the true gravity of the increasing severity of the deadline that lies so openly before him. Indeed it is as the others say; he is a verifiable cunt. In other news wordswords
 
@@ -177,34 +178,34 @@ Before we go any further, the need of open source software within academia shoul
 
 The scientific principle works under the notion of iterating towards a consistent truth model through the use of reproducible peer-reviewed experiments and analyses.  In order for this to be the case, other scientists must be able to assess these experiments by accessing the same data sets and the same tools or methods to reproduce the same results. The whole process must be transparent; with no ambiguity at any stage that could cast doubt on the experiment in question.
 
-With open-source software, an inquisitive scientist has the freedom to take an existing method or tool and tailor it better to their experiment\footnote{Depending on licensing. See Appendix page~\pageref{ref:app:licensing}}. With open-source software, a reviewer can go through the source code and understand the method in which data was analysed.
+With open-source software, an inquisitive scientist has the freedom to take an existing method or tool and tailor it better to their experiment\footnote{Depending on licensing. See Appendix page~\pageref{ref:app:licensing}.}. With open-source software, a reviewer can go through the source code and understand the method in which data was analysed.
 
 The transparency of this process becomes somewhat clouded as soon as more black-box methods are employed; software binaries or proprietary owned cloud-computing models.
 
 Binaries can offer more clarity if their source code is available, since the code can be compiled and tested against an input data set to make sure the result between two binaries of the same stated source is actually the case.
 
-Closed source binaries are more untrustworthy. They may employ known methods which can be evidenced by the input set and the processed output set, but there is no actual guarantee that the program performed the method correctly (e.g it may have seen that input set before and produced the output from a stored source, the method employed might be badly implemented and only works in a few use-cases, etc.)
+Closed source binaries are more untrustworthy. They may employ known methods which can be evidenced by the input set and the processed output set, but there is no actual guarantee that the program performed the method correctly (e.g it may have seen that input set before and produced the output from a stored source, the method employed might be badly implemented and only works in a few use-cases, etc.).
 
 Proprietary cloud-computing solutions are even worse in this regard; essentially forcing the researcher to surrender their data to another location so that they can perform all their tests offsite within the platform itself. The researcher may then be at the mercy of the platform when it comes to releasing their results and showing their methods.
 
 The issue of privacy and ease-of-use is another factor. The ongoing battle to keep free information access as open as possible has been met with many pitfalls; net neutrality, \gls{comp:IP} blocking, \gls{comp:DNS} ownership, purposefully weakened encryption, and untrustworthy proprietary security protocols. 
 
-However, client security remains a boundary that not many are willing to compromise upon, mostly because of the privacy issues related to client data. As a result only an open-source language could be trusted to run on the client machines, and a large-scale effort has been undertaken to ensure that this is the case with Javascript\footnote{Even corporate institutions such as Google, Apple, and Microsoft have aided and given support to this initative<XXXREF>.}.
+However, client security remains a boundary that not many are willing to compromise upon, mostly because of the privacy issues related to client data. As a result only an open-source language could be trusted to run on the client machines, and a large-scale effort has been undertaken to ensure that this is the case with Javascript\footnote{Even corporate institutions such as Google, Apple, and Microsoft have aided and given support to this initative \cite{o2004open}.}.
 
 
 \section{HTML5 and Javascript}
 
-Before HTML5, media support for web browsers was managed by extensive (insecure) plugins that each browser handled in their own different ways (ActiveX\footnote{Traditionally supported by Microsoft, though no longer in their current Edge browser.}, and NPAPI\footnote{Used by Java, Silverlight, Unity, and others. Chromium based browsers no longer support it and use their own PPAPI (Pepper API plugin API).}).
+Before HTML5, media support for web browsers was managed by extensive (insecure) plugins that each browser handled in their own different ways (ActiveX\footnote{Traditionally supported by Microsoft, though no longer in their current Edge browser.}, and NPAPI\footnote{Used by Java, Silverlight, Unity, and others. Chromium based browsers no longer support it and use their own PPAPI (Pepper API plugin API) \cite{eriksson2012migrating}.}).
 
 Flash used to be the main plugin that covered all the media requirements that browsers would not; video/audio, and graphics. Other plugins also existed (Shockwave, Silverlight, media player extensions) but these suffered from cross-platform incompatibility issues and licensing disagreements.
 
 Flash is scripted in a language called Actionscript which is also ECMAScript based, and developed a very longstanding loyal following with the new generation of game developers and web advert designers because of the ease-of-use it provided for dealing with vector graphics.
 
-However the closed-source nature of Flash\footnote{Created by Macromedia and later acquired by Adobe.}, paired with continuous security risks and update requests, the non-free proprietary nature of its IDE, and its reluctant uptake of hardware acceleration made its approval wane over time. The final nail in coffin was sealed however, when Adobe dropped Flash support for Linux altogether in 2012\footnote{<XXXREF>\url{http://www.adobe.com/devnet/flashplatform/whitepapers/roadmap.html}} and effectively managed to distance itself from a large portion of its fanbase. 
+However the closed-source nature of Flash\footnote{Created by Macromedia and later acquired by Adobe.}, paired with continuous security risks and update requests, the non-free proprietary nature of its IDE, and its reluctant uptake of hardware acceleration made its approval wane over time. The final nail in coffin was sealed however, when Adobe dropped Flash support for Linux altogether in 2012\footnote{See: \url{http://www.adobe.com/devnet/flashplatform/whitepapers/roadmap.html}} and effectively managed to distance itself from a large portion of its fanbase. 
 
 This created a noticeable gap in trusted content, and the need for a new specification that could provide media support without the need for insecure/proprietary plugins prompted the conception of the HTML5 schema that all modern browsers strive to follow.
 
-Javascript previously was just a language to manage the various background tasks in webpages, but the arrival of the HTML5 schema as well as developments in \gls{comp:ECMAScript6} have made the language more graphics-centric within browsers, and multiple visual libraries exist to cater for the various 3D and 2D contexts that the new canvas element can cater for\citep{ecmascript2011ecmascript}. 
+Javascript previously was just a language to manage the various background tasks in webpages, but the arrival of the HTML5 schema as well as developments in \gls{comp:ECMAScript6} have made the language more graphics-centric within browsers, and multiple visual libraries exist to cater for the various 3D and 2D contexts that the new canvas element can cater for \cite{ecmascript2011ecmascript}. 
 
 
 \subsection{Javascript Overview}\label{ref:haplo:javaover}
@@ -215,9 +216,10 @@ Javascript in the context of general web page management makes use of the Docume
 
 Javascript follows this Object model to an almost religious extent, by treating all variables as Objects that can be extended by methods. Primitives do exist, but they are interchangeable depending on context. Indeed, a long running joke amongst developers is how the '=' operator takes on multiple meanings depending on context\footnote{
 
-e.g.1.		a = [] ? 1 : 2, is a standard \gls{comp:terniary} operator which in most languages would ask, "is array true ? If so return value 1, otherwise return value 2".\\
-e.g.2.		a = [] == true ? 1: 2,  is the same statement this time directly asking the question of whether the array is true, however Javascript is now forced to treat the array as a primitive in order to perform the comparison, but converts the array into a string in order for the statement to make sense, essentially evaluating to ' "" == true ' which is false.
-}
+\noindent
+E.g.1.		a = [] ? 1 : 2, is a standard \gls{comp:terniary} operator which in most languages would ask, "is array true ? If so return value 1, otherwise return value 2".\\\noindent
+E.g.2.		a = [] == true ? 1: 2,  is the same statement this time directly asking the question of whether the array is true, however Javascript is now forced to treat the array as a primitive in order to perform the comparison, but converts the array into a string in order for the statement to make sense, essentially evaluating to ' "" == true ' which is false.
+}.
 
 Numeric data used to be a problem in Javascript prior to ECMAScript version 6, since the numbers would be converted into a floating-point type that would take 32 or 64 bits of memory depending on the platform. 
 
@@ -227,7 +229,7 @@ However, large collections of numbers (or number arrays) quickly begin to eat at
 
 Consider haplotype data which in the case of SNPs represents exactly 3 values: 1 (first allele), 2 (not first allele), and 0 (error). This can be captured very easily by 2-bits ($2^2 = 4$ unique addresses), but under the old array model each haplotype would be contained under 32-bits on a 32-bit platform.
 
-Assuming 1,000 markers for a given chromosome, this translates to 32,000 bits to capture the haplotypes with 30,000 of those bits being padded with nothing but zeros.  An 8-bit Typed Array saves a lot of this redundancy and uses at most 8,000 bits to represent the data which is a memory saving multiplier of 4 – 8 times depending on platform. 8-bit arrays allow for each element to have ($2^8 =$) 256 possible values which very easily covers the number of alleles represented by polymorphic markers.
+Assuming 1,000 markers for a given chromosome, this translates to 32,000 bits to capture the haplotypes with 30,000 of those bits being padded with nothing but zeros.  An 8-bit Typed Array saves a lot of this redundancy and uses at most 8,000 bits to represent the data which is a memory saving multiplier of 4 to 8 times depending on platform. 8-bit arrays allow for each element to have ($2^8 =$) 256 possible values which very easily covers the number of alleles represented by polymorphic markers.
 
 With the ECMAScript6 specification came class and inheritance models, which already existed under the Object model but now provided bindings for the more familiar syntax that object-oriented developers were used to.
 
@@ -236,9 +238,9 @@ With the ECMAScript6 specification came class and inheritance models, which alre
 
 The graphical contexts now supplied by the HTML5 schema provided a canvas for 3D or 2D graphics to be drawn into by either software or hardware.
 
-With the need for graphics on the web coming into fruition, a new initiative was developed to provide Javascript bindings to the OpenGL API\citep{opengl}, aptly named \gls{comp:WebGL}\citep{webgl}, which provides syntactic-sugar to the low-level graphics API specification OpenGL.
+With the need for graphics on the web coming into fruition, a new initiative was developed to provide Javascript bindings to the \gls{comp:OpenGL} API \cite{opengl}, aptly named \gls{comp:WebGL} \cite{webgl}, which provides syntactic-sugar to the low-level graphics API specification OpenGL.
 
-All graphics card vendors cater to both \gls{comp:OpenGL} and \gls{comp:DirectX} API standards\citep{directx}, but it is only the former which has open-source implementations (\gls{comp:MESA}) and generally better cross-platform support. 
+All graphics card vendors cater to both OpenGL and \gls{comp:DirectX} API standards \cite{directx}, but it is only the former which has open-source implementations (\gls{comp:MESA}) and generally better cross-platform support. 
 
 The canvas element not only allows for graphics via the 2D and 3D WebGL API, but also has accelerated 2D graphics of its own. In somewhat of a misnomer, canvas-accelerated graphics are commonly generalised under the WebGL banner, despite using very different APIs to render graphics. However for the purpose of conciseness we will also adopt this convention, and silently note that there are three contexts that the canvas element supports: 3D and 2D (WebGL API, hardware-accelerated), and another 2D (Canvas API, hardware or software accelerated).
 
@@ -264,9 +266,9 @@ There is a multitude of these fast-growing graphical frameworks, each divided in
 
 A more commonly used syntactically pleasant framework that is built upon \textit{Three.js} is \textit{Babylon.js}, which provides basic functionality without the complex calls related to exhibiting finer control over a 3D scene.
 
-At the early stages of development for our applications, a 3D framework was considered  with the intention of representing haplotypes via a zoomable interface which would focus individuals under inspection into the foreground, and move the remainder into a background using 3D transitions; but this is would require a “2.5D” library at best, since the same functionality could be performed via a simple layering structure. Using a 3D framework would only increase the system requirements for the application without providing that much advantage in usage.
+At the early stages of development for our applications, a 3D framework was considered  with the intention of representing haplotypes via a zoomable interface which would focus individuals under inspection into the foreground, and move the remainder into a background using 3D transitions; but this is would require a "2.5D" library at best, since the same functionality could be performed via a simple layering structure. Using a 3D framework would only increase the system requirements for the application without providing that much advantage in usage.
 
-The application was programmed with transitions and other graphical methods in mind (e.g. creating shapes, text, colours), but these would be implemented via an interface library so that the underlying library could be swappable if required\footnote{e.g. To create a red square, the function "drawSquare(10, red)" from my interface library would suffice, without having to worry about the underlying graphics framework used. If direct Canvas was used, the function would bind to "Canvas.drawRect(\{width:10, height:10, fill: 'red'\})". If another framework was used, it may bind to "Other.drawSquare(10,red)"}. This is useful if the framework loses functionality in future browsers, and another one can be quickly implemented without needing a fine rewrite of the full code, since all changes required would be contained in a single interface.
+The application was programmed with transitions and other graphical methods in mind (e.g. creating shapes, text, colours), but these would be implemented via an interface library so that the underlying library could be swappable if required\footnote{e.g. To create a red square, the function "drawSquare(10, red)" from my interface library would suffice, without having to worry about the underlying graphics framework used. If direct Canvas was used, the function would bind to "Canvas.drawRect(\{width:10, height:10, fill: 'red'\})". If another framework was used, it may bind to "Other.drawSquare(10,red)".}. This is useful if the framework loses functionality in future browsers, and another one can be quickly implemented without needing a fine rewrite of the full code, since all changes required would be contained in a single interface.
 
 The remainder of this section will focus on the 2D frameworks considered to aid in this process.
 
@@ -277,6 +279,7 @@ This is essentially the raw Canvas without supporting frameworks whatsoever.
 
 At code conception, graphics were drawn straight onto the canvas context itself. Drawing functions all follow the same schema of grabbing a context, initialising a 'path' (a group that contains points), and then manipulating that path via primitive Canvas API calls such as 'rect' (rectangle), 'arc' (arcs and circles), and 'lineTo'/'moveTo' for more complex shapes such as diamonds and zigzags. 
 
+\pagebreak
 \begingroup
 \begin{spacing}{1}
 \begin{lstlisting}[label=code:canvasapi]
@@ -304,7 +307,7 @@ This grew cumbersome over time and the need for more useful features such as lay
 
 \subsubsection{PIXI}
 
-PIXI can render graphics via both the Canvas and WebGL(2D) APIs, but it is extremely tailored to delivering fast graphics and is more suitable in a game development environment, likely paired with a physics engine.\citep{pixi}
+PIXI can render graphics via both the Canvas and WebGL(2D) APIs, but it is extremely tailored to delivering fast graphics and is more suitable in a game development environment, likely paired with a physics engine \cite{pixi}.
 
 Under such a model, the physics engine would pre-compute the locations of all the shapes and objects within a simulation, and the PIXI renderer would then draw the final positions to screen. 
 
@@ -315,7 +318,7 @@ It is mentioned here since this is the first framework that was attempted after 
 
 \subsubsection{jCanvas}
 
-This library provides layers, animations, and also makes use of Javascript's asynchronous callback structure through the extension of \gls{comp:event listeners}, where functions are bound to specific events such as mouse clicks or keyboard presses, or even more complex events such as object collision detection\citep{jcanvas}.
+This library provides layers, animations, and also makes use of Javascript's asynchronous callback structure through the extension of \gls{comp:event listeners}, where functions are bound to specific events such as mouse clicks or keyboard presses, or even more complex events such as object collision detection \cite{jcanvas}.
 
 It provides its own complete shape library for drawing nice primitive shapes such as rectangles, circles, lines, and custom shapes.
 
@@ -371,7 +374,7 @@ function drawDiamond([c_x,c_y], color, size){
 \end{spacing}
 \endgroup
 
-KineticJS makes use of layers and groups. Groups are shapes that move together when one of them is transformed in terms of position, rotation, or scale\citep{kineticjs}. 
+KineticJS makes use of layers and groups. Groups are shapes that move together when one of them is transformed in terms of position, rotation, or scale \cite{kineticjs}. 
 
 Layers are interestingly separate canvas elements altogether: that is, elements in two different layers are animated separately onto separate canvases, and then overlayed upon one another to create the illusion of layering.
 This may seem needlessly contrived, but it enables the developer to manage their elements efficiently by restricting more repeatedly updated shapes into a more 'active' layer, so that a full scene redraw is not being called for the otherwise more static elements which would exist on another layer.
@@ -380,13 +383,13 @@ There is a limit to this speedup, and any performance gains begin to falter if t
 
 The framework comes with its own transition library, custom event listeners and handlers. It does not rely on any other framework, and can render graphics using both canvas and WebGL (2D) contexts.
 
-In terms of optimization, the library has stopped being actively developed and has remained stable since 2014\footnote{<XXXREF> \url{https://github.com/ericdrowell/KineticJS}}, meaning the API will not change during application development. Documentation is clear, and ample examples are provided, as well as a strong community and fanbase to offer insight and advice.
+In terms of optimization, the library has stopped being actively developed and has remained stable since 2014\footnote{See: \url{https://github.com/ericdrowell/KineticJS}.}, meaning the API will not change during application development. Documentation is clear, and ample examples are provided, as well as a strong community and fanbase to offer insight and advice.
 
 KineticJS seems to provide the relevant WebGL canvas extensions required to create a web application without over breaching the application requirements and retaining an optimized minimality in its features, and it was for this reason why it was used as the main underlying framework in the thesis.
 
 \section{Application Development}
 
-The application was developed at first using small terminal text editors such as \gls{prog:nano} and \gls{prog:vi}, but as the need for multiple buffers to be open at the same time became apparent, \gls{prog:emacs} was adopted. Emacs is a terminal text editor, but has modules that allow for word \gls{comp:autocompletion}, \gls{comp:compilation}, command testing, and many more via the (M)EPLA\footnote{(Milkypostman's) Emacs Lisp Package Archive, a large collection of script extensions for Emacs \url{https://github.com/melpa/melpa}} repository\citep{stallman1981emacs}.
+The application was developed at first using small terminal text editors such as \gls{prog:nano} and \gls{prog:vi}, but as the need for multiple buffers to be open at the same time became apparent, \gls{prog:emacs} was adopted. Emacs is a terminal text editor, but has modules that allow for word \gls{comp:autocompletion}, \gls{comp:compilation}, command testing, and many more via the (M)EPLA\footnote{(Milkypostman's) Emacs Lisp Package Archive, a large collection of script extensions for Emacs \url{https://github.com/melpa/melpa}.} repository \cite{stallman1981emacs}.
 
 In later stages of development the graphical \gls{prog:SublimeText} editor was used, providing the standard IDE features such as split views, multiple renaming, function usage, and code syntax highlighting (with support for the \gls{comp:ECMAScript6} schema).
 
@@ -448,7 +451,7 @@ Here we will discuss the three main implementations attempted within the applica
 
 The neighbouring states approach follows a very straightforward methodology: upon finding an ambiguous trio of genotypes at a given marker locus, find the nearest set of flanking markers that contain unambiguous trios.
 
-This enables the ambiguous trio to 'orient' itself relative to the flanking unambiguous trios.  This is a fairly common technique used in many problems of a similar nature, and Illumina actually employ a variant of this technique in their Top-Bottom encoding for representing the direction of ambiguous SNPs\citep{illuminatopbot}.
+This enables the ambiguous trio to 'orient' itself relative to the flanking unambiguous trios.  This is a fairly common technique used in many problems of a similar nature, and Illumina actually employ a variant of this technique in their Top-Bottom encoding for representing the direction of ambiguous SNPs \cite{illuminatopbot}.
 
 \subsubsection{Theory}
 
@@ -459,7 +462,7 @@ This enables the ambiguous trio to 'orient' itself relative to the flanking unam
 
 
 
-As highlighted in Figure~\ref{fig:haplo:fags}, the approach operates by crawling up and down a genotype of interest to find flanking unambiguous neighbouring alleles. If the neighbouring haplogroups are the same, they are absorbed into the group. If they differ, an informed choice on the point of recombination must be made
+As highlighted in Figure~\ref{fig:haplo:fags}, the approach operates by crawling up and down a genotype of interest to find flanking unambiguous neighbouring alleles. If the neighbouring haplogroups are the same, they are absorbed into the group. If they differ, an informed choice on the point of recombination must be made.
 
 Genotypes are reduced into two simple cases; one where flanking sealed genotypes are of the same founder allele group, and one where the flanking alleles differ as shown in Figure~\ref{fig:haplo:neighbouring}. In the former case, the uncertain genotype is encompassed totally by the group, but the latter case requires more thought.
 
@@ -533,9 +536,9 @@ Actual implementation first mapped out unambiguous markers in an initial pass, a
 
 One more variant of this method that provided 2x speedup in the process was to use the newly resolved genotype trio states within the ongoing analysis. This means that the unambiguous back marker in subsequent iterations will always be the directly adjacent previous marker because it would have been resolved in the previous iteration; essentially meaning that only a forward search is required.
 
-\subsubsection{Discussion}
+\subsubsection{Discussion of Approach}
 
-The 2x speedup variant method raises the concern that the search may be greedily optimistic; with uncertain genotypes towards the end of analysis being too dependent upon the uncertain genotypes analysed just prior. This could effectively "box" the later uncertain genotype trios into more restricted groups, since the former iterations aggressively remove potential groups from the back-selection; creating the tendency of resisting crossover events in favour of maximising the current haploblock. Though not necessarily wrong\footnote{A solution will always be reached since a crossover event will be prompted eventually (at maximum) just before the last flanking sealed genotype}, it may create a noticeable disparity in the distribution of haploblock sizes in later generations.
+The 2x speedup variant method raises the concern that the search may be greedily optimistic; with uncertain genotypes towards the end of analysis being too dependent upon the uncertain genotypes analysed just prior. This could effectively "box" the later uncertain genotype trios into more restricted groups, since the former iterations aggressively remove potential groups from the back-selection; creating the tendency of resisting crossover events in favour of maximising the current haploblock. Though not necessarily wrong\footnote{A solution will always be reached since a crossover event will be prompted eventually (at maximum) just before the last flanking sealed genotype.}, it may create a noticeable disparity in the distribution of haploblock sizes in later generations.
 
 The real core of the neighbouring states approach lies within the \textit{resolvePhase()} function referenced (but not defined) in the pseudocode. The reason for this is due to the the numerous ways that the function was implemented, and ultimately abandoned.
 
@@ -543,9 +546,9 @@ The first approach of Offspring Validation seemed to have a sound basis, where u
 
 The second approach of Random Assignment also quickly ran into complications, where two directly adjacent uncertain genotypes within the same A-B locus were (randomly) assigned to different groups creating an $A-AABBABAB-B$ populated region that suggested an unreasonable amount of crossovers have taken place.
 
-A considered solution to this problem would be to expand the region uncertain genotypes into one general “uncertain block” and then to assign the entire block to either A or B, creating either an $A-AAAAAAAA-B$ or $A-BBBBBBBB-B$ assignment. This is, of course, a terrible idea, since the point of recombination can occur anywhere within the A-B locus and large block assignments will likely create problems with offspring dependent upon the individual under inspection.
+A considered solution to this problem would be to expand the region uncertain genotypes into one general "uncertain block" and then to assign the entire block to either A or B, creating either an $A-AAAAAAAA-B$ or $A-BBBBBBBB-B$ assignment. This is, of course, a terrible idea, since the point of recombination can occur anywhere within the A-B locus and large block assignments will likely create problems with offspring dependent upon the individual under inspection.
 
-The main problem with the neighbouring states approaches evaluated so far are that they are subject to the local maximization\footnote{A common problem in "hill-climbing" algorithms, where the heuristic to find the "maximum peak" of some search involves climbing upwards and determining the discovery of a peak based upon reaching a plateau. Of course, there could many hills and many varied uphill walks with different starting positions would be required to actually find the global maximum peak, and not just the local one.} pitfalls. In order to find a more global solution, more attention would need to be given to the global size and ranges of the haploblocks being analysed.
+The main problem with the neighbouring states approaches evaluated so far are that they are subject to the local maximization\footnote{A common problem in "hill-climbing" algorithms, where the heuristic to find the "maximum peak" of some search involves climbing upwards and determining the discovery of a peak based upon reaching a plateau. Of course, there could many hills which would require many varied uphill walks with different starting positions to actually find the \textit{global} maximum peak, and not just the \textit{local} one.} pitfalls. In order to find a more global solution, more attention would need to be given to the global size and ranges of the haploblocks being analysed.
 
 The not yet mentioned third strategy (Iterative Block Estimation) works on this principle, but requires a section of its own to be properly assessed.
 
@@ -593,12 +596,12 @@ The medium case is more involved, where an Event1 is confirmed upon the success 
 
 The large case is seemingly complex, but large cases (Event 2 types) are only evaluated after all Event1 processing has taken place, allowing the large cases to be evaluated with a more defined model of haploblock ranges and sizes.
 
-Under this more complete model of haploblock sizes, we can then probe U against each of the available founder allele groups and test whether the model still holds. For example, if the founder allele group S is identified in a region much further downstream than U, where the region spans a locus of sealed genotypes that is consistent with its expected size, then it is unlikely that a whole S  haploblock would also exist within the A-B locus\footnote{See footnote \ref{footnote:consang}}.
+Under this more complete model of haploblock sizes, we can then probe U against each of the available founder allele groups and test whether the model still holds. For example, if the founder allele group S is identified in a region much further downstream than U, where the region spans a locus of sealed genotypes that is consistent with its expected size, then it is unlikely that a whole S haploblock would also exist within the A-B locus\footnote{See footnote \ref{footnote:consang}.}.
 
 In the unlikely event that after probing U with the available founder groups, a clear result still cannot be established, then a compatible haploblock group is picked at random (an operation dubbed "Event 3"), since it is impossible to distinguish between any one group.
 
 
-\subsubsection{Discussion}\label{ref:haplo:eventdiscuss}
+\subsubsection{Discussion of Approach}\label{ref:haplo:eventdiscuss}
 The handling of Event3 types may have serious ramifications in later descendants if the wrong haploblock is picked, wherein a complete recursive re-run of that particular individual (and descendants of) would need to be performed with a different random haploblock being assigned. If incompatible haploblocks are still detected in later descendants, then this process is repeated ad infinitum until there are no more blocks to choose from. 
 
 The iterative nature of this process can take quite some time to process, since though the method itself runs in approximately $O(n^2)$ time, it may repeat numerously for every Event3 encountered. Computational slowdowns not withstanding, the model cannot handle consanguineous pedigrees effectively, since much of the resolution involved in the Event2 process depends upon the assumption of non-repeating haploblocks, which may exist if there are multiple paths of descent a haploblock can take to reach an individual.
@@ -622,9 +625,9 @@ Graph-traversal techniques are split into two types of (usually recursive) metho
 	{fig:haplo:recurdepthfirst}
 	{0.6}{Recursive Depth-First}
 
-Depth-first searches run under the simplistic notion that each node encountered is immediately expanded upon (until there are no more nodes to expand), and only later exploring adjacent nodes at the same point in the path. It is implemented in a trivial recursive fashion outlined in Figure~\ref{fig:haplo:recurdepthfirst}, where the order of nodes traversed would be: ${0,1,3,4,9,13,15,16,10,5,2,6,7,11,14,12,8}$
+Depth-first searches run under the simplistic notion that each node encountered is immediately expanded upon (until there are no more nodes to expand), and only later exploring adjacent nodes at the same point in the path. It is implemented in a trivial recursive fashion outlined in Figure~\ref{fig:haplo:recurdepthfirst}, where the order of nodes traversed would be: ${0,1,3,4,9,13,15,16,10,5,2,6,7,11,14,12,8}$.
 
-Breadth-first searches on the other hand iterate through all nodes available before expanding into another node, where the order of nodes would follow a more standard ${0,1,2,3,4,5,6,7,8,9,10,11,12,13,14}$
+Breadth-first searches on the other hand iterate through all nodes available before expanding into another node, where the order of nodes would follow a more standard ${0,1,2,3,4,5,6,7,8,9,10,11,12,13,14}$.
 
 If the aim of the search is to find a specific node, then the advantages each search strategy can be seen with respect to nodes 8 and 15; where node 15 is found after only six iterations in the depth-first approach (15th in the bread-first search), and node 8 is found after fifteen iterations in the depth-first approach (8th in the bread-first).
 
@@ -660,7 +663,7 @@ The algorithm works under the heuristic of minimizing the cost of unvisited neig
 }
 
 \enumdesc{}{Remove n from the search and move to the adjacent node with the lowest assigned cost.}
-\enumdesc{}{Go to\footnote{Dijkstra would be spinning in his grave at this careless use of the $GOTO$ statement that he so famously campaigned against in favour of the now well precedented $FOR$ loop\citep{Dijkstra1968}.} step 1.}
+\enumdesc{}{Go to\footnote{Dijkstra would be spinning in his grave at this careless use of the $GOTO$ statement that he so famously campaigned against in favour of the now well precedented $FOR$ loop \cite{Dijkstra1968}.} step 1.}
 \end{enumerate}
 \end{spacing}
 \endgroup
@@ -691,7 +694,7 @@ The problem with Dijkstra's algorithm is that it explores all routes. This is no
 % Broad topic, needs its own section
 \section{A* Best-First}
 
-The A* ("A-star")  search algorithm is the most widely used path-finding algorithm due to its efficiency and accuracy. Being an extension of Dijkstra’s algorithm, it is just as admissible, yet it only considers a small subset of the total nodes in the graph. This is because A* performs optimistic estimates on the cost of an active path without over-breaching the true cost of that path\citep{astar}.
+The A* ("A-star")  search algorithm is the most widely used path-finding algorithm due to its efficiency and accuracy. Being an extension of Dijkstra's algorithm, it is just as admissible, yet it only considers a small subset of the total nodes in the graph. This is because A* performs optimistic estimates on the cost of an active path without over-breaching the true cost of that path \cite{astar}.
 
 The algorithm works on the principle of expanding a "frontier" of paths under a simple heuristic of:
 
@@ -702,12 +705,12 @@ f(n) = g(n) + h(n)
 
 where for the last node \textit{n} on the current path, \textit{g(n)} is the cumulative cost of the path so far, and \textit{h(n)} is the heuristic that estimates the cost of the smallest path to the target node.
 
-All the search algorithms visited so far can be implemented by the A* search algorithm; Dijkstra’s being the special case where $h(n)= 0$ (i.e. no estimation is made), as with all Breadth-first searches; Depth-first being $h(n)=X$, where \textit{X} is a large number greater than the total cost of the search where upon inspection of each node, it is decremented by 1 such that nodes are evaluated in the order they are discovered.
+All the search algorithms visited so far can be implemented by the A* search algorithm; Dijkstra's being the special case where $h(n)= 0$ (i.e. no estimation is made), as with all Breadth-first searches; Depth-first being $h(n)=X$, where \textit{X} is a large number greater than the total cost of the search where upon inspection of each node, it is decremented by 1 such that nodes are evaluated in the order they are discovered.
 
 To understand what is meant by the frontier of the search path, consider the state-space grid shown in Figure~\ref{fig:haplo:statespace}. This can be viewed as a network graph where each square represents a node, and each adjacent square/node is connected to it via an edge with a uniform edge weight cost.
 
 \fignow{../writer/Methods/images/astar.png}
-	{State-space diagram showing the optimal path as discovered by an A* best-first search: 1st iteration (Top-Left), 2nd iteration (Bottom-Left), 3rd iteration (Top-Right), 22nd iteration (Bottom-Right)}
+	{State-space diagram showing the optimal path as discovered by an A* best-first search: 1st iteration (Top-Left), 2nd iteration (Bottom-Left), 3rd iteration (Top-Right), 22nd iteration (Bottom-Right).}
 	{fig:haplo:statespace}
 	{0.9}{State-space diagram, A*}
 	
@@ -761,9 +764,9 @@ When pedigree data is first parsed, genotypes for each chromosome are structured
 The usage of these constructs is carried out in the \textit{haploblock\_backend.js} file, and performs the first pass procedure as follows:
 
 \begin{enumerate}
-\enumdesc{Founder Initialization}{All founder chromosomes are assigned unique colour groups\footnote{Unique colours that will be used to represent these groups are also assigned, evenly distributed across the colour spectrum as designated under a \gls{comp:HSV} colour space (see Appendix section on page~\ref{ref:app:colour} for more information).} via the function \textit{initFounderAlleles()}. The entire stretch of the pointer array for a founder Allele class is populated with the same colour.
+\enumdesc{Founder Initialization}{All founder chromosomes are assigned unique colour groups\footnote{Unique colours that will be used to represent these groups are also assigned, evenly distributed across the colour spectrum as designated under a \gls{comp:HSV} colour space (see Colour Space section in Appendix on page~\pageref{ref:app:colour} for more information).} via the function \textit{initFounderAlleles()}. The entire stretch of the pointer array for a founder Allele class is populated with the same colour.
 
-e.g. pter\_array = [ [5] , [5], [5],  $\dots$ , [5] ]     (for the 5th founder allele being processed)}
+E.g. pter\_array = [ [5] , [5], [5],  $\dots$ , [5] ]     (for the 5th founder allele being processed.)}
 
 \enumdesc{Non-Founder to Founder Group Assignment}{The function \textit{assignHgroups()} performs a top-down sweep over the pedigree and processes each parent-offspring trio by descending down until there is no more offspring to process.  For each trio encountered, a length check is performed on their data to assert that the number of genotypes in the analysis is the same. Then the function \textit{child2parent\_link(child, mother, father, family)} performs the brunt of operation, where at each marker locus:
 
@@ -777,7 +780,7 @@ e.g. pter\_array = [ [5] , [5], [5],  $\dots$ , [5] ]     (for the 5th founder a
 
 To counter this, we populate exclusion groups where all the unique colour groups from both maternal alleles across the entire chromosome comprise a maternal exclusion array, and likewise for paternal alleles into a paternal exclusion array. This arrays assist in the A* search later on.}
 
-\enumdesc{Consanguineous Check}{If the maternal/paternal relationship has been labelled consanguineous, then we must slacked the parental exclusion somewhat since having duplicate haploblock groups in both child alleles is now not impossible. To do so, we first find the the intersection of  the maternal and paternal unique colour groups, and then remove the colors identified from both groups. At this stage, the pter\_array is now fully primed for the A* search algorithm to process.}
+\enumdesc{Consanguineous Check}{If the maternal/paternal relationship has been labelled consanguineous, then we must slacken the parental exclusion somewhat since having duplicate haploblock groups in both child alleles is now not impossible. To do so, we first find the the intersection of  the maternal and paternal unique colour groups, and then remove the colors identified from both groups. At this stage, the pter\_array is now fully primed for the A* search algorithm to process.}
 \end{enumerate}
 
 \subsubsection{Second Pass: Path-finding Algorithm}
@@ -786,7 +789,7 @@ The algorithm is contained within the function \textit{a\_star\_bestfirst()} whi
 
 First, a function to define whether an item exists within the exclusion list is determined based upon whether the list itself is:
 \begin{enumerate}[label=(\alph*)]
-\enumdesc{Undefined / Non-existent}{where upon the function simply returns false}
+\enumdesc{Undefined / Non-existent}{where upon the function simply returns false.}
 \enumdesc{A single index/number}{where a simple equality check is performed.}
 \enumdesc{A list}{where the exclusion list is mapped and items are checked against the map.}
 \end{enumerate}
@@ -957,7 +960,7 @@ X-linked (Male)   & \{x1 x2\} & \{x3 y1\} & [x1 y1],[x2 y1]                 & 4 
 \hline
 \end{tabular}
 \end{center}
-\caption[Three means of allele inheritance]{Three separate methods of inheritance. Parental alleles given in curly brackets denote ordered alleles. Child alleles are mutually exclusive of different parental types, and are given in square brackets to denote possible combinations ( e.g. [a b] = \{a b\},\{b a\} )}\label{table:haplo:methofinh}
+\caption[Three means of allele inheritance]{Three separate methods of inheritance. Parental alleles given in curly brackets denote ordered alleles. Child alleles are mutually exclusive of different parental types, and are given in square brackets to denote possible combinations ( e.g. [a b] = \{a b\},\{b a\} ).}\label{table:haplo:methofinh}
 \end{table}
 
 It can be seen that the pedigree being dominant/recessive has no effect in the way that the alleles are inherited, the only deciding factor being X-linkage paired with gender-specific cases. Even if the pedigree is consanguineous, the model still holds because any founder blocks that find their way into both alleles of an individual, did so because their colour groups were contained in the separate maternal and paternal alleles through different paths of descent.
@@ -975,7 +978,7 @@ In the event that Y-chromosome capable genotyping becomes more widely used, the 
 One of the core reasons for HaploHTML5's conception was the lack of X-linked inheritance within the more commonly used tool HaploPainter, where haploblocks would be rendered improperly. This was at first thought to be due to the linkage software that performed the haplotype reconstruction assigning the wrong allele indexes to untyped individuals who were reconstituted in the program, but closer inspection revealed that allele indexes were in fact correctly assumed and that the problem lay in the haploblock resolution software.
 
 \fignow{../writer/Methods/images/xlinked_bad_inheritance.png}
-	{Minimum working example of an X-linked Dominant pedigree (source attached in Appendix). Inconsistent colouring within alleles depict HaploPainter's haploblock resolution failing in the case of X-linked pedigrees. Overlayed arrows depict true inheritance paths; black disease allele (green-dashed), correctly inherited alleles (blue-dashed), incorrectly inherited alleles (red-dashed).}
+	{Minimum working example of an X-linked Dominant pedigree. Inconsistent colouring within alleles depict HaploPainter's haploblock resolution failing in the case of X-linked pedigrees. Overlayed arrows depict true inheritance paths; black disease allele (green-dashed), correctly inherited alleles (blue-dashed), incorrectly inherited alleles (red-dashed).}
 	{fig:haplo:xlinkedbad}
 	{0.6}{Minimal X-linked Dominant Pedigree}
 	
@@ -984,7 +987,7 @@ Figure~\ref{fig:haplo:xlinkedbad} shows a typical X-linked dominant pedigree as 
 \begin{enumerate}
 \enumdesc{Non-zero Alleles Assigned Zero-Allele Blocks}{This is shown in the left allele of individuals 206125 and 206127, which are represented as narrow blocks normally reserved for the zero-alleles.}
 \enumdesc{New Haploblock Group Assigned to Non-Founder}{206130 shows the appearance of a red block that is neither inherited from parents, grand-parents, or great-grandparents at the current locus. This is a misalignment because an inspection of the allele numbering shows that the block should be inherited from the maternal pink allele (as shown by the red-dashed arrow).}
-\enumdesc{Impossible Recombinations}{206121 and 206117 exhibit multiple recombinations over extremely small genetic distances. For reference, a distance of 1cM would expect 0.01 recombinations. The genetic distances here are on the order of 0.01 cM, which makes multiple recombinations very unlikely. The red-dashed arrows once again show the true path of inheritance, where both individuals inherit their mother's pink allele as confirmed by the allele numbering.}
+\enumdesc{Impossible Recombinations}{206121 and 206117 exhibit multiple recombinations over extremely small genetic distances. For reference, a distance of 1 cM would expect 0.01 recombinations. The genetic distances here are on the order of 0.01 cM, which makes multiple recombinations very unlikely. The red-dashed arrows once again show the true path of inheritance, where both individuals inherit their mother's pink allele as confirmed by the allele numbering.}
 \enumdesc{Non Parental-Offspring Inheritance}{The appearance of the blue haploblock in 206121 and 206117 is troubling, since only the mother (206118) could inherit the allele from the founder (206126) and yet doesn't. Even more concerning is the apparent mixing of non-sister alleles in the offspring. Recombinations take place within the parent first before being transmitted, which creates clear maternal and paternal alleles in the offspring. 206121 and 206117 appear to show the green (paternal) allele recombining with the blue (maternally inherited) allele which should be impossible under any inheritance model.}
 \end{enumerate}
 
@@ -998,13 +1001,13 @@ A pedigree is populated by reading in a file in the standard \gls{comp:MAKEPED} 
 
 The function \textit{connectAllIndividuals} (\textit{pedigree.js}) iterates over all stored members and creates connections between each: parent is added to child, and child to parent, with parents being added as mates to each other. Each family is stored in its own separate map so that different families are segregated into their own pedigrees. 
 
-The process of actually drawing the pedigree is a complex process because as mentioned in Section~\ref{ref:haplo:graphtrav} traversing through a graph involves expanding nodes and all nodes that are connected to them.
+The process of actually drawing the pedigree is a complex process because as mentioned on page~\pageref{ref:haplo:graphtrav} traversing through a graph involves expanding nodes and all nodes that are connected to them.
 
 Consider now a graph where there is no longer a single root node, but instead several, as in the case of a pedigree with many founders. If node expansion was performed upon each of these individuals, we could descend through the graph by perform a breadth-first search upon all offspring. 
 
 A problem will quickly arise however where individuals who exist in the descent path of multiple founders will be evaluated more than once and lead to duplicity in the data if not carefully handled.
 
-The peeling method that Elston and Stewart devised (as mentioned in Background, page~\pageref{ref:back:els})  was considered as one solution; determining pivot individuals and treating them as special edge cases to be separately handled when drawing the pedigree. However, previous experiences in handling edge-cases (see page~\pageref{ref:haplo:eventdiscuss} ) had not been straightforward and so a more general solution was derived instead.
+The peeling method that Elston and Stewart devised (as mentioned in Background, page~\pageref{ref:back:els})  was considered as one solution; determining pivot individuals and treating them as special edge cases to be separately handled when drawing the pedigree. However, previous experiences in handling edge-cases (see page~\pageref{ref:haplo:eventdiscuss}) had not been straightforward and so a more general solution was derived instead.
 
 The resulting function \textit{populateGrids\_and\_UniqueObjs} (\textit{init\_graph.js}) required iterating through all individuals and populating an array that stored each generation, as well as populating a map which stored unique nodes and vertices associated with pedigree members and their relationships as discussed below.
 
@@ -1014,11 +1017,11 @@ The resulting function \textit{populateGrids\_and\_UniqueObjs} (\textit{init\_gr
 The grid generation is contained within the class \textit{addFamMap} (\textit{init\_graph.js}), which asserts that each pedigree has a single randomly chosen individual to act as the root node. The sub-function \textit{addNodeArray(person, level)} descends through all relationships associated with that individual (mates, children, mother, father) recursively until there are no more relationships to expand upon.
 
 \subsubsection{Unique Graphics Map}
-Upon each recursion, a shape representing that individual’s gender and affectation is inserted into the graphics map with the individual’s identifier being the accessing key. If trio relationships are also detected, then the trio is added as the combination of two unique lines:
+Upon each recursion, a shape representing that individual's gender and affectation is inserted into the graphics map with the individual's identifier being the accessing key. If trio relationships are also detected, then the trio is added as the combination of two unique lines:
 \begin{description}
 \enumdesc{Mateline}{A straight line connecting two individuals who share offspring. Their unique key is paternal ID and the maternal ID in that order.
 
-e.g.  11 (father) and 12 (mother) $\rightarrow$ "m:11-12")}
+e.g.  11 (father) and 12 (mother) $\rightarrow$ "m:11-12"}
 
 \enumdesc{Childline}{A right-angled line that connects an offspring to the centre of the Mateline of that offspring's parents. Siblings share the same centre (or 'anchor') but different childlines. Their unique key is the Mateline ID and the offspring's ID in that order.
 
@@ -1056,7 +1059,7 @@ The information generated and stored at this stage follows a strict Model-View s
 
 This is divorced completely from the the pedigree data that pertains to individuals' information storage (name, gender, parents, offspring, mates) which is held entirely within the global data mappings \textit{family\_map} which is likewise accessed solely through its own static library class \textit{familyMapOps} via its own getters and setters for adding/removing individuals.
 
-It cannot be stressed enough that the Model (familyMapOps) and the View (uniqueGraphOps) do not overlap, i.e. one does not have pointers that reference entries in the other or vice versa. This ensures clean code management and simplifies tasks drawing tasks since the graphics should ultimately be a disposable representation of the pedigree data. The deletion of an individual's graphical node should not also prompt the deletion of that individual’s pedigree data.
+It cannot be stressed enough that the Model (familyMapOps) and the View (uniqueGraphOps) do not overlap, i.e. one does not have pointers that reference entries in the other or vice versa. This ensures clean code management and simplifies tasks drawing tasks since the graphics should ultimately be a disposable representation of the pedigree data. The deletion of an individual's graphical node should not also prompt the deletion of that individual's pedigree data.
 
 
 \subsection{Determining Pedigree and Penetrance Model}
@@ -1083,7 +1086,7 @@ Note: Autosomal and Recessiveness are determined by inverting the results of the
 
 Couples who share either parents, grand-parents, or other immediate ancestors are said to be consanguineous and their mateline indicates this via a double line.  Detection of this is actually also implemented by a (much smaller) A* best-first search to find the highest common founder between two mates.
 
-The function \textit{hasConsanguinuity(person1, person2)} (\textit{init\_graph.js}) is outlined concisely in the pseudo-code given in Listing~\ref{code:consangastar}
+The function \textit{hasConsanguinuity(person1, person2)} (\textit{init\_graph.js}) is outlined concisely in the pseudo-code given in Listing~\ref{code:consangastar}.
 
 Essentially the search begins with the two individuals \textit{p1} and \textit{p2} who are mates. The search runs under the assumption that their ancestors are not related, and so recursively expands up their parents and their parents-parents, etc. until there are no more parents to evaluate.
 
@@ -1114,7 +1117,7 @@ FUNCTION hasConsanguinuity( p1, p2 ):
     RETURN duplicatesExist( complete_routes )
 \end{lstlisting}
 \vspace{-10pt}
-\captionof{lstlisting}{Consanguinity test via path-finding approach}\label{code:consangastar}
+\captionof{lstlisting}{Consanguinity test via path-finding approach.}\label{code:consangastar}
 \end{spacing}
 \endgroup
 
@@ -1125,14 +1128,14 @@ The following methods are more focused upon the general appearance and graphics 
 
 \subsubsection{Line Management and Node Position Handling}
 
-The graphics map contains pointers to all the shapes and lines to be drawn on screen. As the user manipulates these node’s positions the relationship lines associated with them must also have their positions updated.
+The graphics map contains pointers to all the shapes and lines to be drawn on screen. As the user manipulates these node's positions the relationship lines associated with them must also have their positions updated.
 
-As previously stated,  Matelines are bound to the nodes of two individuals whose relationship they represent, and Childlines are bound to the anchor points of Matelines and the node of the depicted offspring .
+As previously stated,  Matelines are bound to the nodes of two individuals whose relationship they represent, and Childlines are bound to the anchor points of Matelines and the node of the depicted offspring.
 KineticJS creates shape nodes easily enough (squares for males, circles for females, and diamonds for unknowns), and shapes are coloured to represent affection (red for affected, white for unaffected, and grey for unknown).
 
 KineticJS also has a Line class that can represent a straight line between two points, or a path through multiple points under a variety of different styles. However, it does not have a Connector class that can automatically update a line connected between two objects, such that the movement of one object automatically updates the position of the line.
 
-As a result, line management must be performed manually via graphics map. Essentially upon the detection of a single node being moved\footnote{Thankfully nodes can only be moved one at a time thanks to there being only a single mouse pointer. Multi-touch mobile devices may present problems in the future however.}:
+As a result, line management must be performed manually via graphics map. Essentially upon the detection of a single node being moved\footnote{Thankfully, nodes can only be moved one at a time thanks to there being only a single mouse pointer. Multi-touch mobile devices may present problems in the future however.}:
 
 \begin{enumerate}
 \enumdesc{}{All matelines associated with that node must have their positions updated.}
@@ -1153,7 +1156,7 @@ The grid itself is not global to the screen, but is family group specific, where
 
 \subsubsection{Sibling Level Balancing and Mate Swapping}
 
-Another advantage of the grid snapping feature is that it facilitates the user placement of first-cousins and siblings at the same level as shown in Figure~\ref{fig:haplo:pedrecurse} (Page~\pageref{fig:haplo:pedrecurse}). 
+Another advantage of the grid snapping feature is that it facilitates the user placement of first-cousins and siblings at the same level as shown in Figure~\ref{fig:haplo:pedrecurse} (page~\pageref{fig:haplo:pedrecurse}). 
 To extend this functionality,  sibling level balancing was introduced to overcome the tedious task of having to individually move all siblings to the same level. 
 
 Siblings positioned at different levels does not makes sense in a generational context and looks unsightly, and it became clear that it would be beneficial to move all siblings automatically. The dragging of a single node prompts the vertical movement of all nodes sharing the same mateline anchors. 
@@ -1178,7 +1181,7 @@ Prior to HaploHTML5, analysing the haplotypes of individuals required repeatedly
 This is not a problem for small loci, and is even beneficial when trying to see the path of descent. However, examining larger loci becomes difficult when trying to compare allele indexes because the user needs to mentally recount the position of a given marker at each generation.
 
 \fignow{../writer/Methods/images/example_haplotype_reconstruction_solved.png}
-	{Example haplotype analysis spanning three generations and 11 markers}
+	{Example haplotype analysis spanning three generations and 11 markers.}
 	{fig:haplo:examplehaploanal}
 	{0.6}{}
 
@@ -1229,15 +1232,14 @@ Haplotypes are initially displayed in a viewport restricted to a particular locu
 
 The application makes use of the \textit{localStorage} JavaScript implementation to cache the last used pedigree or haplotypes file, so that the user does not need to manually reselect it every time they want to rerun an analysis. The browser simply pulls the file from local storage, and meta flags in the file return to whichever view that the user was last on (PedCreate, Selection, or Haploblock).
 
-%\let\cleardoublepage\clearpage
-
 \subsection{Homology Tools}
 
 \fignow{../writer/Methods/images/homology_mode.png}
-	{Homology Mode activation; (1) Haploview mode, (2) Find homology button pressed where user can select which individuals should be compared for homology (in this case the affecteds), (3) Homology plotted across marker range (blue) and overlayed over haplotypes (red)}
+	{Homology Mode activation; (1) Haploview mode, (2) Find homology button pressed where user can select which individuals should be compared for homology (in this case the affecteds), (3) Homology plotted across marker range (blue) and overlayed over haplotypes (red).}
 	{fig:haplo:homomode}
-	{0.95}{Homology Mode Activation}
+	{0.89}{Homology Mode Activation}
 
+%has to be .89 and not .9 due to page formatting  reasons
 
 One of the main reasons that haploblocks are analysed post-linkage is to find regions of homology pertaining to the linkage region(s). Where the Haploblock View allows the user to make side-by-side comparisons of cases and controls over multiple families, the Homology View further enables a sub-selection of those individuals to be checked for homology, as shown in Figure~\ref{fig:haplo:homomode} above.
 
@@ -1250,7 +1252,7 @@ Scores are calculated for three scenarios:
 \enumdesc{Compound Heterozygous}{Both alleles must differ and must match all other affected alleles to contribute to the score.}
 \end{enumerate}
 
-All three scenarios are determined in the same pass, but cannot be represented simultaneously as an overlay, so it is up to the user to select which mode they wish to view, and a redraw is required upon mode change.  The user can also filter the data so that scores below a minimum score threshold are not shown, as well as a minimum extension limit so that only regions of homology spanning at minimum a certain amount are shown. This is especially useful when trying to constrain  a wide linkage peak to a more narrow region of interest. Recommended threshold values are Min Extension = 2, and Min Score $>$ 3
+All three scenarios are determined in the same pass, but cannot be represented simultaneously as an overlay, so it is up to the user to select which mode they wish to view, and a redraw is required upon mode change.  The user can also filter the data so that scores below a minimum score threshold are not shown, as well as a minimum extension limit so that only regions of homology spanning at minimum a certain amount are shown. This is especially useful when trying to constrain  a wide linkage peak to a more narrow region of interest. Recommended threshold values are Min Extension = 2, and Min Score $>$ 3.
 
 \section{Code Minification and Obfuscation}
 
@@ -1261,7 +1263,7 @@ Browsers do not run closed-source binaries, and deploying a JavaScript applicati
 The only other option was to somehow encrypt the code itself in a manner that it could decrypted at runtime and run as a normal web application. This process was broken down into six stages:
 
 \begin{enumerate}
-\enumdesc{Minify the code}{Code minification is the act of taking a piece of code such as "var myVariable = 123; var myOther = myVariable" and condensing it into a smaller equally valid statement such as "var a=123, b=a";.  This was performed using Google's Closure compiler using the \textit{ADVANCED\_OPTIMIZATIONS} parameter which not only condensed the code by renaming symbols, but also performing compiler optimizations (see Appendix page~\ref{ref:app:compiler}) to reduce the code structure into a more CPU friendly format. All minified code is then consolidated into a single file for easier handling.}
+\enumdesc{Minify the code}{Code minification is the act of taking a piece of code such as "var myVariable = 123; var myOther = myVariable" and condensing it into a smaller equally valid statement such as "var a=123, b=a";.  This was performed using Google's Closure compiler using the \textit{ADVANCED\_OPTIMIZATIONS} parameter which not only condensed the code by renaming symbols, but also performing compiler optimizations\footnote{see Appendix page~\pageref{ref:app:compiler}} to reduce the code structure into a more CPU friendly format. All minified code is then consolidated into a single file for easier handling.}
 
 \enumdesc{Picture Encryption}{The Python script \textit{to\_image.py} takes in a string of text and converts it into a square image where image transformations are performed upon it. This is what the single consolidated minified code file is fed into. Two key steps occur:
 	\begin{enumerate}
@@ -1276,7 +1278,7 @@ The only other option was to somehow encrypt the code itself in a manner that it
 		\item{The image is then saved as a lossless PNG file in order retain the pixel values determined in the previous steps.
 
 			\fignow{../writer/Methods/images/obfuscate_logo.png}
-				{Example resultant image from code minification, pixelisation, and encryption}
+				{Example resultant image from code minification, pixelisation, and encryption.}
 				{fig:haplo:obfusclogo}
 				{0.4}{}
 		}	

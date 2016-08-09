@@ -6,7 +6,7 @@ Here we define some fundamental molecular biology from a genetics standpoint, bu
 
 \section{DNA}
 
-Each organism is defined by the data encoded within DNA(deoxyribonucleic acid), a long molecule made of up sub-units of \gls{bio:nucleotides} that constitutes the \gls{bio:genome} of the organism. The order of these nucleotides form an ordered sequence specific to that individual, and ultimately encoded the genetic information that makes that individual unique.
+Each organism is defined by the data encoded within \gls{bio:DNA}, a long molecule made of up sub-units of \gls{bio:nucleotides} that constitutes the \gls{bio:genome} of the organism. The order of these nucleotides form an ordered sequence specific to that individual, and ultimately encoded the genetic information that makes that individual unique.
 
 DNA is packed into \gls{bio:chromosomes}, two long strands of chained nucleotides bound together by hydrogen bonds between nucleotide pairs on opposing strands. Nucleotides consist of a molecule made up of a phosphate group, 2-deoxyribose, and a \gls{bio:nucleobase} (or base). There are four possible bases: adenine, cytosine, guanine, or thymine (or A, C, T, G).  All adenine bases are paired with thymine, and all cytosine bases are paired with guanine. 
 These form AT and GC pairs across the two strands forming what are known as \gls{bio:base pairs} (or bp).
@@ -30,7 +30,7 @@ For consistency, biologists follow the convention of defining the 5' to 3' orien
 
 Chromosomes hold packaged DNA in the form of \gls{bio:chromatin}, as well as specialised proteins that perform chromosome-specific tasks such as a reading, replicating, and repairing the DNA. There are many chromosomes within a cell; in a human there are 23 distinct chromosomes within a \gls{bio:haploid} cell such as gametes (sperm and unfertilized eggs), and 23 distinct pairs of chromosomes in a \gls{bio:diploid} cell which contain  an individual's entire genome.
 
-Chromosomes the end stages of cell division the structure of chromosomes can be clearly seen, with two arms extending out from each strand, with the chromosomes bound together in the middle. The p and the q arm of each chromosome denotes the small and larger arm respectively. These arms are split into bands as defined by the density of the chromatin in the region, and a specific locus can be specified by, e.g. 16p5.2, which denotes that the locus of interest lies on chromosome 16, on the p-arm, in band 5, sub-band 2.
+At the end stages of cell division the structure of chromosomes can be clearly seen, with two arms extending out from each strand, with the chromosomes bound together in the middle. The p and the q arm of each chromosome denotes the small and larger arm respectively. These arms are split into bands as defined by the density of the chromatin in the region, and a specific locus can be specified by, e.g. 16p5.2, which denotes that the locus of interest lies on chromosome 16, on the p-arm, in band 5, sub-band 2.
 
 The middle section of the chromosome in known as the \gls{bio:centromere} and is purely structural; it does not encode any data, but holds pairs of chromosomes together. The ends are capped with \gls{bio:telomeres} which act as disposable buffers, and are repeatedly truncated during cell division.
 
@@ -64,7 +64,7 @@ Chromosomes are assorted during the process of \gls{bio:meiosis}, where during r
 
 \subsection{Meiosis}
 
-Meiosis is split into three phases: \textit{meiotic S}, \textit{meiosis I}, and \textit{meiosis II}. 
+Meiosis is split into three phases: \textit{meiosis S}, \textit{meiosis I}, and \textit{meiosis II}. 
 
 In the S-phase, homologs from the chromosomes of each parent are replicated. This results in a cell that has twice the number of chromosomes.
 
@@ -102,7 +102,7 @@ Any deviation from the expectation inferred from the recombination frequency wou
 
 Recombination frequencies are not uniform throughout a chromosome, as the nature and density of the underlying chromatin influences the chance across a given band. The frequencies are also sex-specific, since women are more prone to crossover events than men.
 
-Haldane's model of recombination modelled crossovers as a Poisson\footnote{See Appendix page~\pageref{ref:app:poisson}.} distribution, defining the \gls{bio:Morgan}, a unit of genetic distance, that details the expected number of crossovers between two loci\citep{haldane1919combination}. The Morgan is defined such that there is (on average) 1 expected crossover event occurring at a distance 1 Morgan.  In practical circumstances, the centiMorgan sub-unit is used to refer to 0.01 expected crossovers occurring at a distance of 1cM. 
+Haldane's model of recombination modelled crossovers as a Poisson\footnote{See Appendix page~\pageref{ref:app:poisson}.} distribution, defining the \gls{bio:Morgan}, a unit of genetic distance, that details the expected number of crossovers between two loci \cite{haldane1919combination}. The Morgan is defined such that there is (on average) 1 expected crossover event occurring at a distance 1 Morgan.  In practical circumstances, the centiMorgan sub-unit is used to refer to 0.01 expected crossovers occurring at a distance of 1 cM. 
 
 \begin{equation}
 \theta = \frac{1}{2} (1 -  e^{-2d})
@@ -122,7 +122,7 @@ Historically, mapping traits to a locus was performed through extensive breeding
 Advances in the field now make use of numerous flags or \gls{bio:markers}, evenly-spaced across the chromosome such that the phenotype can be located by any two flanking markers that surround the region of interest. The effectiveness of their usage  is determined by how well they conform to following principles:
 
 \begin{lrbox}\myVerb\scriptsize
-    \verb!echo `grep -c -oP "[ACTGactg]{1}" chr*.fa | awk -F:'{print $2}' | sed 's/\n/\+/g'` | bc!
+    \verb!echo `grep -c -oP "[ACTGactg]{1}" chr*.fa | awk -F:'{s+=$2} END {print s}'!
 \end{lrbox}%
 
 \begin{description}
@@ -131,9 +131,9 @@ Advances in the field now make use of numerous flags or \gls{bio:markers}, evenl
 }
 \item[Polymorphic]
 {
-	The marker must denote some point of variability within a population. The human genome consists of many variations between individuals, as many as 150 million\footnote{As of dbSNP version 146\citep{sherry2001dbsnp}}, but this only comprises 1\% of the genome\footnote{As verified by a cursory scan over raw FASTA output files, via: \usebox\myVerb}. Each distinct variation in a marker is referred to as an allele, and the marker is said to be \gls{bio:biallelic} if it has two possible states (and triallelic for three, quadrillelic for four, etc). Bialellic markers are typically referred to as 'binary' markers, with higher-indexed markers being the \gls{bio:polymorphic} ones.
+	The marker must denote some point of variability within a population. The human genome consists of many variations between individuals, as many as 150 million\footnote{As of dbSNP version 146 \cite{sherry2001dbsnp}.}, but this only comprises 1\% of the genome\footnote{As verified by a cursory scan over raw FASTA output files, via: \usebox\myVerb}. Each distinct variation in a marker is referred to as an allele, and the marker is said to be \gls{bio:biallelic} if it has two possible states (and triallelic for three, quadrillelic for four, etc). Bialellic markers are typically referred to as 'binary' markers, with higher-indexed markers being the \gls{bio:polymorphic} ones.
 }
-\item[Co-dominance]{If a marker is not polymorphic in a unique way, then no information can be inferred between individuals and all modes of inheritance would be equally likely.  \gls{bio:co-dominance} asserts that all possible states of a marker are distinct from one another.}
+\item[Co-dominance]{If a marker is not polymorphic in a unique way, then no information can be inferred between individuals and all modes of inheritance would be equally likely. The principle of \gls{bio:co-dominance} asserts that all possible states of a marker are distinct from one another.}
 \item[Hardy-Weinberg Equilibrium]{The \gls{bio:HWE} is the model that assumes that allele and genotype frequencies remain constant in the absence of external interference. A biallelic marker with a minor allele frequency of p and a major allele frequency of \(q = (1-p)\) will distribute genotypes with a \(p^2 : 2pq : q^2\) ratio.}
 \item[Low mutation Rate]{In order to be  certain that the marker found in an individual was inherited from a parent, the marker must have a low rate of mutation in the general population.}
 \end{description}
@@ -145,7 +145,7 @@ Molecular markers are based upon the type of variation within the DNA they are r
 
 \subsubsection{Tandem Repeats}
 
-These are sections of the genome where one or more nucleotides are repeated in succession an unspecified amount of times\footnote{Though we should assume a minimum of at least three repeats for a pattern to be detected.}. The nature of these repeats is unknown, but they are thought to be a historical remnant of viruses inserting their genetic material into our ancestor's genomes in aeons past <XXXREF>.   Nonetheless, they serve as useful markers since they are an inheritable and observable, and thus informative for linkage.
+These are sections of the genome where one or more nucleotides are repeated in succession an unspecified amount of times\footnote{Though we should assume a minimum of at least three repeats for a pattern to be detected.}. The nature of these repeats is unknown, but they are thought to be caused by repeated strand-slippage in the replication process of early microbes \cite{saeed_microsatellites_2015}.   Nonetheless, they serve as useful markers since they are an inheritable and observable, and thus informative for linkage.
 
 There are several classes of tandem repeats, each class determined by either/both the number of repeats and the length of the repeating sequence. A \gls{bio:minisatellite} or \textit{variable number tandem repeat} (\gls{bio:VNTR}) is any repeating sequence approximately 10-60 nucleotides in length, and a \gls{bio:microsatellite} or \textit{short tandem repeat} (\gls{bio:STR}) is typically fewer than 10 nucleotides.
 
@@ -190,7 +190,7 @@ Gregor Mendel was a botanist monk who outlined the first basic principles of gen
 \subsubsection{Law of Segregation}
 
 \fignow{../writer/Background/images/Mendelian_inheritance_3_1.png}
-	{Image courtesy of Wikimedia Commons}
+	{Segregation diagram of traits with Punnett square (Image courtesy of Wikimedia Commons)}
 	{fig:back1}
 	{0.5}
 	{Segregation Diagram}
@@ -217,9 +217,9 @@ In relation to his third law, the concept of \gls{bio:codominance} is missed; if
 \subsection{Pedigrees}
 
 \fignow{../writer/Background/images/simple_pedigree.png}
-	{Typical pedigree, with females represented as circles and males as squares. Affectation is represented by a red colour fill.}
+	{Typical dominant pedigree, with females represented as circles and males as squares. Affectation is represented by a red colour fill.}
 	{fig:back2pedigree}
-	{0.5}
+	{0.3}
 	{Simple Pedigree}
 
 Individuals from the same family share a \gls{bio:pedigree}, and each individual is grouped into two classes: \gls{bio:founders} and \gls{bio:non-founders}. 
@@ -251,13 +251,13 @@ P (D | A) = [0,1]
 where:
 \begin{description}
 \listitem{D}{Affected or Unaffected}
-\listitem{A}{Genotype belonging to {GG,Gg,gg} where G is the disease allele.}
+\listitem{A}{Genotype belonging to \{GG,Gg,gg\} where G is the disease allele.}
 \end{description}
 
 
 \subsubsection{Autosomal Dominant}
 
-If the disease segregates through an autosomal dominant model, then the disease trait is dominant and the penetrance function is thus:  \(P(D|GG) = P(D|Gg) = 1\), and \(P(D|gg)=0\)
+If the disease segregates through an autosomal dominant model, then the disease trait is dominant and the penetrance function is thus:  \(P(D|GG) = P(D|Gg) = 1\), and \(P(D|gg)=0\).
 Affected individuals are present at all generations, and because the disease trait lies within the autosomes (chromosomes 1 to 22), affectation is non-gender specific and both sexes have equal probability in inheriting the trait.
 
 \subsubsection{Autosomal Recessive}
@@ -288,7 +288,7 @@ The penetrance function is gender-specific, taking on the same rules for females
 
 An individual's genotype is usually acquired in an \gls{bio:unphased} manner, meaning that that genotyping process acquired the alleles present at a locus, but the ordering was unimportant so that the maternal and paternal allele are ambiguous.
 
-A genotype with a known path of inheritance for its alleles is said to be \gls{bio:phased}, and a phased genotype is also known as a \gls{bio:haplotype}.  A haplotype typically spans a single locus similar to an allele, but a haplotype is encapsulated and a restricted to a larger group of haplotypes known as a \gls{bio:haploblock}, which represent the intervals between two recombination events\footnote{Including the recombination that occurs at the start/end of each chromosome}.
+A genotype with a known path of inheritance for its alleles is said to be \gls{bio:phased}, and a phased genotype is also known as a \gls{bio:haplotype}.  A haplotype typically spans a single locus similar to an allele, but a haplotype is encapsulated and a restricted to a larger group of haplotypes known as a \gls{bio:haploblock}, which represent the intervals between two recombination events\footnote{Including the recombination that occurs at the start/end of each chromosome.}.
 
 These blocks represent the splitting of founder alleles which occurs at every meiosis, effectively halving the founder data within the allele at each generation. 
 
@@ -331,10 +331,13 @@ LOD(\theta) = log_{10} (\frac{L(\hat{\theta})}{L(\theta = 0.5)}
 where:
 \begin{itemize}[labelsep=2em, align=right, labelwidth=3em, labelindent=4em, leftmargin=*]
 \listitem{\bf \( \theta = \frac{1}{2}(1 - e^{-2d}) \)}{
-The Haldane map function that estimates the recombination frequency given the genetic distance in centiMorgan (as defined in equation~ \ref{eqn:morgan} on page~\pageref{eqn:morgan}).
+The Haldane map function that estimates the recombination frequency given the genetic distance in centiMorgan (as defined in equation\pref{eqn:morgan}).
+}
+\listitem{\bf \( \hat{\theta} \)}{
+The observed recombination frequency.
 }
 \listitem{\bf \( \theta = 0.5 \)}{
-The probability that  two traits segregate independently (are essentially unlinked).
+The frequency of two traits segregating independently (are essentially unlinked).
 }
 \listitem{\bf \( L(\theta)\)}{The joint likelihood}
 \end{itemize}
@@ -371,7 +374,7 @@ Though the methodology between algorithms varies somewhat, all work under the sa
 
 The very first linkage algorithm first computed upon paper, by performing a task known as peeling upon a \gls{bio:pedigree}.
 
-A connected graph of individuals (as nodes) and relationships (as edges) would be recursively peeled in a depth-first manner, by collapsing LOD score calculations onto members of a pedigree known as \textit{pivots}, who are key to the pedigree such that their removal would create two detached pedigrees\citep{elston}. 
+A connected graph of individuals (as nodes) and relationships (as edges) would be recursively peeled in a depth-first manner, by collapsing LOD score calculations onto members of a pedigree known as \textit{pivots}, who are key to the pedigree such that their removal would create two detached pedigrees \cite{elston}. 
 
 At each stage, the algorithm considers a simple nuclear family (mother, father, offspring(s)) and performs a LOD score computation of the offspring inheriting their founder parents genotypes, then flattening the score up a generation into that founder parent.
 
@@ -381,7 +384,7 @@ Over time, programs such as \gls{prog:Linkage} allowed multiple markers to be co
 
 The algorithm scales linearly with the number of individuals in a pedigree, but exponentially with the number of markers for a multi-point analysis; a severe limiting step in an age where the density of markers were on the increase.
 
-Generating fast and reasonable accurate LOD results became the main aim for a lot of programs, each performing a different approximation upon the LOD score calculations to generate a faster analysis. The program \gls{prog:Vitesse} was boasted as being able to analyse 8 markers jointly using "fuzzy inheritance"\citep{o1995vitesse}.
+Generating fast and reasonable accurate LOD results became the main aim for a lot of programs, each performing a different approximation upon the LOD score calculations to generate a faster analysis. The program \gls{prog:Vitesse} was boasted as being able to analyse 8 markers jointly using "fuzzy inheritance" \cite{o1995vitesse}.
 
 Since haplotype reconstruction requires precise determination of a missing genotype, the Elston-Stewart algorithm was lacking in this regard.
 
@@ -389,7 +392,7 @@ Since haplotype reconstruction requires precise determination of a missing genot
 
 The era of haplotypes began with the Lander-Green algorithm, which aims to describe a probability distribution over all possible ways traits may segregate between individuals based on their genotypes for a given marker, whilst being dependent on adjacent markers.
 
-Under Lander-Green, a pedigree is represented using an \textit{inheritance vector}, which shows the transition of founder alleles to non-founders\citep{landergreen}.
+Under Lander-Green, a pedigree is represented using an \textit{inheritance vector}, which shows the transition of founder alleles to non-founders \cite{landergreen}.
 
 \fignow{../writer/Background/images/inheritance_vector.png}
 	{A pedigree of phased individuals with inheritance vectors represented as arrows. Here the order of the genotypes are \{maternal,paternal\} indexed to \{0,1\}}
@@ -404,7 +407,7 @@ The importance of this for haplotype reconstruction is apparent, for it consider
 
 This was the first linkage analysis that made use of a Hidden Markov Model (\gls{bio:HMM}),  which denotes a dependent chain of unobserved hidden states with state probabilities, that transition between each other under transmission probabilities.  
 
-Kruglyak readily applied this to a a linkage model where the states mapped the possible inheritance vectors, and the transmission probabilities were the genotype likelihoods\citep{kruglyak_parametric_1996}. The Elston-Stewart algorithm was then used to sum over the inheritance probability distribution at each locus.
+Kruglyak readily applied this to a a linkage model where the states mapped the possible inheritance vectors, and the transmission probabilities were the genotype likelihoods \cite{kruglyak_parametric_1996}. The Elston-Stewart algorithm was then used to sum over the inheritance probability distribution at each locus.
 
 Over time, a few notable speedups were incorporated without the cost of accuracy incurred by approximation:
 
@@ -434,10 +437,10 @@ One such algorithm is the forward-backward \textit{Viterbi} algorithm. A forward
 
 \begin{enumerate}[labelsep=2em, align=right, labelwidth=3em, labelindent=4em, leftmargin=*]
 \enumitem{Forward Pass}{Starts at the first state and steps forwards towards the end state, computing forward probabilities that set the probabilities of any given state ending at any other subsequent state. In linkage, this is essentially setting a weighted graph based on compatible inheritance vectors from the observed genotypes.}
-\enumitem{Backwards Pass}{After the forward pass, computes a set of backward probabilities that sets the probabilities of any given state observing any applicable previous state. This is essentially the same as the previous step}
+\enumitem{Backwards Pass}{After the forward pass, computes a set of backward probabilities that sets the probabilities of any given state observing any applicable previous state. This is essentially the same as the previous step.}
 \end{enumerate}
 
-Once performed, a combined probability distribution is obtained to find the mostly likely state at any step in the chain\citep{viterbi1967error}.
+Once performed, a combined probability distribution is obtained to find the mostly likely state at any step in the chain \cite{viterbi1967error}.
 
 \fignow{../writer/Background/images/Viterbi-4.png}
 	{Fourth step of Viterbi}
@@ -461,7 +464,7 @@ We have seen that there are two main limiting steps in linkage analysis algorith
 
 The Lander-Green-Kruglyak algorithm was the inverse of this; where  the number of meiosis caused an exponential increase in complexity due to the possible inheritance vector states doubling at each step.  The number of markers scaled linearly however, and this is what made it the most widely-adopted algorithm in linkage analysis programs, since the density of genotyping chips have only increased over the time.
 
-Hidden Markov Models lend their use to inheritance or descent diagrams that allow us to set phase at each genotype by following the most likely set of inheritance vectors\citep{sobel1996descent}.
+Hidden Markov Models lend their use to inheritance or descent diagrams that allow us to set phase at each genotype by following the most likely set of inheritance vectors \cite{sobel1996descent}.
 
 Haplotype reconstruction is by no means deterministic, as the optimal path as derived from the Viterbi algorithm may be just as likely as another path, especially for incomplete data where the potential alleles of untyped genotypes may have equal likelihood.
 
