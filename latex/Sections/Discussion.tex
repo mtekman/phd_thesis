@@ -94,7 +94,9 @@ Scores between Allegro and GeneHunter tend to differ by only $\pm$ 0.2. Any larg
 \subsection{HaploHTML5 Improvements}
 
 \subsubsection{Founder Colour Group Representation}
-One current problem with the application is the limited colour space for the founder allele groups to be allocated to. Under the \gls{comp:HSV} model with a hue scored from 0\% to 100\% differences in colour become harder to distinguish below the 15\% range as shown in Figure~\ref{fig:disc:huescale}. For $f$ founders, there are $2f$ unique colours that must be assigned to their respective alleles, meaning that as soon as the pedigree begins to have more than 3 founders\footnote{$ \frac{100}{15} \sim 7 $ unique colour groups for all founder alleles $ \sim 3$ founders.}, the colour groups become more ambiguous.
+One current problem with the application is the limited colour space for the founder allele groups to be allocated to. Under the \gls{comp:HSV} model with a hue scored from 0\% to 100\% differences in colour become harder to distinguish below the 15\% range as shown in Figure~\ref{fig:disc:huescale}. 
+
+For $f$ founders, there are $2f$ unique colours that must be assigned to their respective alleles, meaning that as soon as the pedigree begins to have more than 3 founders\footnote{$ \frac{100}{15} \sim 7 $ unique colour groups for all founder alleles $ \sim 3$ founders.}, the colour groups become more ambiguous.
 
 One solution would be to change the the Value component of the HSV model to take on darker and/or lighter components, which would double and/or triple the number of available colours, but would require changing the colour of the genotypes text which reside on top of the coloured block. 
 
@@ -109,6 +111,8 @@ Another solution would be to regenerate the founder allele colour groups to only
 
 
 \subsubsection{Annotation and Sharing}
+
+The application currently operates in-browser via either local or web deployment, and analyses are restricted to the 
 
 
 \subsubsection{Framework overhaul}
