@@ -32,9 +32,9 @@ As shown in Figure~\ref{fig:res:haplo29compare} and Figure~\ref{fig:res:haplo23c
 The 15-bit X-linked pedigree shown in Figures \{~\ref{fig:res:haplo20comparetop},~\ref{fig:res:haplo20comparemid},~\ref{fig:res:haplo20comparebot}\} on pages~\pageref*{fig:res:haplo20comparetop} to ~\pageref*{fig:res:haplo20comparebot} shows how the chromosome X limitation inherent in HaploPainter is overcome in HaploHTML5, where the highly improbably blocks shown in HaploPainter are resolved correctly using the appropriate penetrance model.
 
 \subsection{UI Operability}
-The PedCreate view is intuitive and simple, with two types of relations of possible (mate-mate, and parent-offspring) with valid connections being highlighted to the user via red or white anchor points\footnote{See Figure\pref{fig:haplo:pedcreate} as an example}. Individuals are trivially added, modified, deleted, and can be moved around with their various relationship lines updating their positions (and their siblings and/or mates lines) accordingly. The resultant pedigree can be exported to pedfile, with optional positional meta tags which can be reread back into the application either by manually selecting the exported file, or by saving the pedigree into local storage and reloading it upon startup.
+The PedCreate view is intuitive and simple, with two types of relations of possible (mate-mate, and parent-offspring) with valid connections being highlighted to the user via red or white anchor points\footnote{See Figure\pref{fig:haplo:pedcreate} as an example}. Individuals are trivially added, modified, deleted, and can be moved around with their various relationship lines updating their positions (and their siblings and/or mates lines) accordingly. An invidiual's name can also be specified, but it is not a requirement. The resultant pedigree can be exported to pedfile, with optional positional meta tags which can be reread back into the application either by manually selecting the exported file, or by saving the pedigree into local storage and reloading it upon startup.
 
-The SelectionView mode as shown in Figure\pref{fig:haplo:selectmode} allows for multi-family selection which simplifies the comparison process, especially when comparing the disease locus (found via linkage) within combined analyses. The \gls{comp:DOS} view outlined in page~\pageref{ref:haplo:dos} is in intriguing concept that aims to simplify generational representation upon the selected indivduals under analysis, but ultimately complicates it. It may be better to simply represent the pedigrees of all selected individuals via a small \gls{comp:mipmap} thumbnail in the corner of the screen.
+The SelectionView mode as shown in Figure\pref{fig:haplo:selectmode} allows for multi-family selection which simplifies the comparison process, especially when comparing the disease locus (found via linkage) within combined analyses. The \gls{comp:DOS}\label{ref:disc:dos} view outlined in page~\pageref{ref:haplo:dos} is in intriguing concept that aims to simplify generational representation upon the selected indivduals under analysis, but ultimately complicates it. It may be better to simply represent the pedigrees of all selected individuals via a small \gls{comp:mipmap} thumbnail in the corner of the screen.
 
 The Homology tools mode is a useful tool for scoring regions of sequence homology under heterozygous, homozygous, and compound heterozygous models. These scores are plotted vertically against the marker scale (see Figure\pref{fig:haplo:homomode}) for quick scrolling, and can also be output to a text file for later inspection. However, the mode can be confusing to interpret due to the non-binary nature in which it scores homology (see page~\pageref{ref:haplo:homologyscoredet}) and the modified HaploPainterRFH script is better in highlighting regions of homology as shown in Figure\pref{fig:res:haplo29comparehomology}. It would be more beneficial for the end-user if the homology tools merely outlined the regions that met that maximum homology score for the scenario (as in the case of HaploPainterRFH) instead of trying to overlay all the data at once.
 
@@ -47,14 +47,54 @@ HaploPainter runs on Perl and relies upon \gls{comp:Tk}, \gls{comp:Cairo}, \gls{
 
 \section{Future Work}
 
+The pipeline and application are in a useable state, and both will achieve the tasks they are designed for: performing quality linkage on large data, and rendering haplotypes in-browser. However, there are a few improvements that could be incorporated to make them more intuitive to use at the end-user level, and also adjustments that could be made at the core level to increase performance.
 
 \subsection{Pipeline improvements}
-Quick retesting usually involves modifying the main pipeline script to some degree, in order to prematurely terminate the analysis after the filtering stage. This is trivial for any technician familiar with Bash or Unix, but may prove more difficult for those used to graphical interfaces. Each run also comes equipped with an automatic readme generator in order to facilitate user logging webUI easier.
+
+\subsection{Custom Modular Component Ordering}
+
+The pipeline as outlined in Figure\pref{fig:methpipe} exists as two main modules: Filtering (comprising of three sub-modules), and Linkage, with pre-linkage and post-linkage operations.
+
+Quick retesting usually involves modifying the main pipeline script to some degree in order to prematurely terminate the analysis after the Filtering stage. This is trivial for any technician familiar with Bash or Unix who can comment out the relevant portions, but may prove more difficult for those used to graphical interfaces.
+
+A better method would be use a configuration text file that outlines what modules and submodules the pipeline should run before terminating. The default configuration would run all modules in their specific orders, but a custom user configuration could change the order of the modules and better tailor the analysis to their needs (e.g. maximising a pedigree requires only the Filtering module).
+
+\subsection{Automate Large Pedigree Handling}
+
+Pedigrees beyond the 19-bit limit are not handled by the default pipeline. Only the pre-linkage and Filtering components are handled and then the pipeline has to terminate in order for the custom scripts that can handle the large pedigrees can be called manually by the user.
+
+This can be easily automated, since the \textit{bit\_score.py} script automatically determines the bit-size of any pedigree, and can act as a screening stage for whether the pipeline should run the vanilla Allegro binary, or the custom modified (over 19-bit) Allegro binary. A potential pitfall would be having to declare beforehand whether the analysis should be haplotypes or multi-point parametric driven, since the modified binary cannot do both, but this can be specified in a configuration text file mentioned in the previous subsection.
+
+\subsection{Allegro Fix}
+
+The modified Allegro binary works by deactivating the \gls{CUDD} library which minimizes the number of unique computations made in the LOD score calculations and vastly improves upon memory and disk resources. Allegro uses version 2.4.1 of the CUDD library, but a later version exists that may fix the problem.
+
+Attempts to incorporate this library into Allegro, but certain function calls that Allegro depended upon were depreciated between versions and remapping them to newer ones proved problematic. 
+
+One other solution to this problem would be to rewrite Allegro from scratch. Allegro is written in C/C++ and is well commented in the source code. A more up-to-date rendition of the same program, using some of the newer features of the C++11 specification\cite{c++2011iso} may greatly benefit the program and even boost performance under the previous C++98 specification under which it was written and compiled.
+
+\subsection{GRR Backend}
+
+The most problematic component of the pipeline is the graphical GRR interface, which is a Windows binary that does not take any commandline arguments\footnote{Despite a pleading email to the developers who promised to add such functionality in the future, only to then respond with silence}. As a result data cannot be simply fed into the application from the commandline where it performs all computations in the background, instead the application requires a display server to host its graphical interface where user-clicks are then simulated by the system in order to load in the data.
+
+The requirements of GRR are immense; entire display libraries must be installed such as a X11 or Wayland display server, a desktop environment, display fonts, sounds, and all manner of other multimedia dependencies that come packaged with operating systems that require desktop sessions to run. The application also requires \gls{prog:wine} to run because it was originally written for Windows.
+
+A replacement Linux-based binary would be ideal at this stage, and prompting our own rewrite of GRR may be required.
+
+
+\subsection{Installer Issues}
+
+The pipeline comes packaged with an installer that is designed to work on all Unix and Linux platforms; and so far it has been successfully upon Ubuntu, Debian, Arch, and Gentoo. The installation is not straightforward however, since every OS does not always use the same package manager as another. Ubuntu and Debian use Aptitute (or simply \textit{apt}), Arch uses \textit{pacman}, and Gentoo uses \textit{portage}.
+
+Their install syntax is very similar, but they are all separate package installers and must be treated as such. To ease this issue, all software packages are kept in a separate file which merely lists them so that they can be fed into each OS's respective package manager. Unfortunately, though there is generally good accordance of package names between different Linux OS's, there can be some minor discrepancies in their naming that can cause issues\footnote{The switchover from Python2 to Python3 for example creates some very ambiguous instances where a package named \textit{python-gobl} is not inherently clear on which version of Python the gobl library is for}. 
+
+Another issue is installing the Perl dependencies (for HaploPainter). If HaploPainter will be depreciated in the future with the uptake of HaploHTML5, then this issue can be easily resolved by simply removing the Perl dependencies from the installer altogether. Otherwise, the problem arises when deciding which means of 
+
+
+Each run also comes equipped with an automatic readme generator in order to facilitate user logging webUI easier.
 
 
 \subsection{Effective Filesystem Management}
-
-Why Upgrading Disk Technology Wont Necessarily Lend a Performance Increase...
 
 The working directory should be seen as a temporary file system at best, since many linkage programs generate a substantial amount of temporary files during processing. Though modern file systems are excellent at keeping track of and recovering files (a task known as \gls{comp:journaling}), it is still good practice to "mount a scratch monkey" such that temporary working files are isolated away from archived ones in distinctly separate partitions. 
 
@@ -64,6 +104,8 @@ This is not an improbable occurrence; operating systems routinely write temporar
 
 When a system begins to run low on \gls{comp:RAM} (as in the frequent case of extensive linkage analysis), a great deal of paging is performed to keep the linkage program in memory, leading to a substantial amount of disk writes on a journaled file-system. Mechanical (spin) drives can handle these read/write requests robustly, but they are an order of magnitude slower than SSDs and significant bottlenecks can occur where the system has to wait for the disk to be ready in order to perform a block\footnote{If multiple sequential operations are requested on same contiguous portion of a disk, then the operating system groups the individual requests under a large contiguous 'block' request, that performs one long read/write operation instead of several short ones.}    read/write to it.
 
+
+\subsubsection{Why Upgrading Disk Technology Wont Necessarily Lend a Performance Increase}
 It is clear that SSDs offer no advantage at all in the use-case of frequent large temporary file activity, since though the operating system will rarely have to wait in order to perform a read/write, the limitations on the number of these operations shortens their lifetime considerably.
 
 The best long-term compromise is to use mechanical disks with a filesystem without journaling; either an older filesystem where journaling was never implemented (though file size constraints may be enacted), or a newer filesystem where journaling is disabled upon initialization. This reduces the total number of read/write operations whilst still ensuring disk longevity.
@@ -93,6 +135,9 @@ Scores between Allegro and GeneHunter tend to differ by only $\pm$ 0.2. Any larg
 
 \subsection{HaploHTML5 Improvements}
 
+Other than the general bugfixes, as well as rewriting the \gls{comp:DOS} method mentioned previously (page~\pageref{ref:disc:dos}), there are numerous improvements that could be made to the application in order to boost its popularity amongst geneticists.
+
+
 \subsubsection{Founder Colour Group Representation}
 One current problem with the application is the limited colour space for the founder allele groups to be allocated to. Under the \gls{comp:HSV} model with a hue scored from 0\% to 100\% differences in colour become harder to distinguish below the 15\% range as shown in Figure~\ref{fig:disc:huescale}. 
 
@@ -110,12 +155,38 @@ It is possible to move the genotype text out next to the block as represented in
 Another solution would be to regenerate the founder allele colour groups to only those currently under selection, but introduces the issue of inconsistent colouring across multiple runs on the same data.
 
 
-\subsubsection{Annotation and Sharing}
+\subsubsection{Analysis Sharing and Privacy}
 
-The application currently operates in-browser via either local or web deployment, and analyses are restricted to the 
+The application currently operates in-browser via either local or web deployment, and analyses are restricted to a single user. In the interests of scientific collaboration, it is likely that the end-user would want to share their analysis with another who may be working on the same project.
+
+In order to achieve this, there are two main avenues of development to explore:
+\begin{enumerate}
+\item{Restrict application deployment to cloud-based services, where analyses are stored in a \gls{comp:mySQL}\footnote{The mariaDB open-source fork to be specific, since mySQL was acquired by Oracle\cite{oraclemysql}} database and are issued private login keys to restrict access to the data to only permitted users.
+
+Access can then be metered using established social network authentication services such as Google, Facebook, Microsoft, Twitter, and OpenID via the \gls{comp:OAuth2}\cite{hardt2012oauth} protocol.
+
+The issue of patient confidentiality would still remain an issue however, since shared analyses would store patient data remotely on the site host, and could be subject to vulnerabilities if the host is compromised.  To complicate matters, the PedCreate View allows for the option of applying actual names to individual IDs, which is not an issue if the application uses locally-stored data, but is a major concern if such names are stored in a remote server.
+
+A solution to this would be to store two copies of the pedigree: one unmodified within local storage, and the other in remote storage with patient names stripped from the pedigree. The user could then share their analysis with another (with names omitted) over the internet, and still preserve names when working locally on their own machine. However, problems will quickly arise if the other user wishes to modify the pedigree, in which case the locally-stored names become moot, where it may then be beneficial to restrict modification altogether and only allow read-only sharing to solve this problem.
+
+Another concern is that stripping names from the pedigrees may not be enough to preserve patient confidentiality, since the pedigree structure itself may be enough to identify a family, especially if the phenotype is rare.
+}
+\item{Analyses are encoded within the URL, where nothing is actually stored in the remote database. The pedigree is compressed via \gls{comp:LZMA}\cite{lzma} in order to keep the number of characters within the recommended 2000 character limit for URLs\cite{urllength} and encoded under \gls{comp:base64} where the string is then affixed to a \gls{comp:GET} specifier the URL to be shared.
+
+Once a recipient clicks on the URL, the GET variable is decoded and uncompressed, where it is then loaded as a regular pedigree file on the recipient's browser. 
+
+Base64 encoding is supported by the HTML5 specification\cite{masinter1998data}, and the lz-string library exists\cite{lzstring} to perform LZMA compression and decompression within Javascript.
+
+Though data is never stored remotely, this approach does run the risk of anyone with the link being able to view the data.
+}
+\end{enumerate}
+
+A combination of both approaches would likely need to be implemented to achieve both privacy and security.
 
 
-\subsubsection{Framework overhaul}
-Concrete.js \cite{concretejs}
+\subsubsection{Framework Upgrade}
 
+Eric Dowell is the author of \gls{comp:KineticJS}\footnote{the framework used extensively in the application's development} but has since moved onto another project after he completed KineticJS. KineticJS was deemed "complete" in 2014\cite{kinetictar} and has not been worked upon since. This was good news developers who needed a stable platform to work with, but came with the unspoken agreement that applications developed under it would not be future maintained.
+
+Dowell has since moved onto \gls{comp:ConcreteJS}\cite{concretejs} which is a more general-purpose 2D library from manipulating shapes and is vastly optimized such that the entire codebase (including documentation) consists of no more than 600 lines. The project is still in the early Alpha phase (v0.1.0), but it looks very promising. It shares almost the same syntax as KineticJS and will be non-problematic to implement.
 
