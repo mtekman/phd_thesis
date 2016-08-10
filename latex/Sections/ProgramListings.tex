@@ -22,63 +22,116 @@
 
 
 % Begin
-\addglossprogger{physicallinkageplot}{physical\_linkage\_plot.sh}{}
-\addglossprogger{plotlinkagephysical}{plot\_linkage\_physical.py}{}
-\addglossprogger{xallegroinhaplout}{x\_allegroin\_haploout.py}{}
-\addglossprogger{simwalkmulticore}{simwalk\_multicore.sh}{}
-\addglossprogger{linkagepipeline}{linkage\_pipeline.sh}{}
-\addglossprogger{allegroparallel}{allegro\_parallel.sh}{}
-\addglossprogger{readalllinkage}{read\_all\_linkage.py}{}
-\addglossprogger{prelimcheck}{prelim\_check.py}{}
-\addglossprogger{ghparallel}{gh\_parallel.sh}{}
-\addglossprogger{autostage1}{auto\_stage1.sh}{}
-\addglossprogger{autostage2}{auto\_stage2.sh}{}
-\addglossprogger{autostage3}{auto\_stage3.sh}{}
-\addglossprogger{readmegen}{readme\_gen.py}{}
-\addglossprogger{xmakedat}{x\_makedat.py}{}
-\addglossprog{Linkage}{}
-\addglossprog{Vitesse}{}
-\addglossprog{bcftools}{}
-\addglossprog{snpbutcher}{}
-\addglossprog{screen}{A program  that allows for multiple users to access the same terminal session and co-operatively witness and interact with users sharing the same session. It has the added benefit that it detaches the parent process from the application it was spawned from (usually the desktop manager), such that the process is not killed when the application is closed. De-parenting a process is not exclusive to a screen session, but re-accessing the same terminal to resume interacting with an ongoing process is the main benefit of the program (though the tmux program is also capable of this).}
-\addglossprog{parallel}{The GNU parallel framework is an encapsulating program that takes an existing program and a list of argument parameters, and then dispatches each argument to a separate clone of the program, running them simultaneously. It is implemented via a queue-and-dispatch system, where jobs are added sequentially to a queue buffer, and are dispatched in a first-come-first-serve manner to a given work resource until there are no more resources left. As soon as a job finishes, a resource is freed and another job can be dispatched from the queue. The number of active jobs at any one time can be set manually and can also be dynamically changed during runtime. For efficiency, the number of active jobs should be the number of cores/threads that the CPU can handle, though if the task is memory-intensive then the number of jobs should be limited to the total amount of available RAM divided by the maximum memory usage of that task. Most linkage programs process an entire chromosome at once, and so jobs are queued as chromosomes, with small chromosomes such as chr21 finishing quickly compared to chr1. This is problematic if chromosomes are queued sequentially (either ascending or descending), as the lower-numbered chromosomes can only be effectively processed two at a time whereas the higher-numbered chromosomes can be processed five at a time, requiring a daemon to watch over RAM usage and change the number of active jobs parameter accordingly. This is not always effective, since the daemon must know beforehand how much system resources will be consumed for a given chromosome, and this varies with bit-size and the number of markers (which varies greatly between projects) and so the daemon must make conservative estimates so that the system does not run out of memory and begin killing processes. A better compromise which requires much less oversight is to alternate chromosomes by counting from either end and meeting in the middle (e.g. the queue order would be: 1, 22, 2, 21, 3, 20, 4, 19, 5, 18, 6, 17, 7, 16, 8, 15, 9, 14, 10, 13, 11, 12) with at most 3 jobs running at once. Linkage programs that utilize a sliding-window approach (such as Simwalk) split input data evenly into windows of n markers, regardless of chromosome, and so jobs can be more efficiently queued without any resource monitoring at all.}
-\addglossprog{HaploPainter}{A Perl script/program that relies on the TkInter framework for drawing and parsing pedigrees with an interactive graphical user interface (GUI). It has a background batch mode that enables it to run without the need to draw anything, and it can also parse and draw haplotypes. Should an invalid pedigree be given to it, it reports to standard error and terminates.}
-\addglossprog{Alohomora}{A linkage analysis suite written in Perl, primarily used for its quality control modules such as pedigree checking and Mendelian error checking. It is also an excellent format conversion tool, and is primarily responsible for taking the input files set by the user at the beginning of the linkage analysis and converting into input formats for programs such as Merlin, Allegro, GeneHunter, and Simwalk.}
-\addglossprog{GRR}{The only windows binary in the entire program listing. The program has no commandline interface and can only be run graphically. In order to load genotypes, we must simulate mouseclicks  via Xautomation and regularly poll the display server via Xwininfo to verify that the correct window has appeared in order to resume automation. }
-\addglossprog{Merlin}{One of the fastest linkage application suites; capable of parametric and  non-parametric analysis, as well as various utilities such as gender checking, pedigree checking, and genotyping error detection. Unable to handle pedigrees over 18 bits without splitting.}
-\addglossprog{Allegro}{}
-\addglossprog{Simwalk}{Written in Fortran, it is one of the most trusted comprehensive linkage analysis suites spanning two decades. The current version is 2.91 and it performs parametric linkage, non-parametric linkage, and rudimentary haplotype reconstruction by searching for the optimal chain amongst the various Monte Carlo Markov Chain simulations it performs. On top of the three main input files (pedigree, map, genotypes), Simwalk also requires a penetrance file to complement the map as well as a custom script file to perform user-specified instructions that dictate the type of analysis. Input files are split into chromosomes, and then further split into overlapping marker windows with a 25-marker length. The output files generated come in three main prefix types: SCORE, ERROR, STATS, and VIDEO; each being tailed by an integer that maps it to a specific chromosome, and another integer to indicate which marker window is being examined. LOD scores are parsed from the SCORE files, and associative statistics with significance scores are detailed in the STATS files. ERROR files is where standard error is duplicated, and VIDEO is where standard output is duplicated.}
-\addglossprog{Genehunter}{}
-\addglossprog{clodhopper.py}{A Python script to estimate the maximum LOD score of an analysis for either Simwalk, GeneHunter, or Allegro. The input files generated are program specific, but all work under the same principle of creating three distinct haplotype blocks: affected individuals ($12^g$, $11^h$, $12^g$), unaffected individuals with unaffected parents ($12^g$, $12^h$, $12^g$), and unaffected individuals with affected parents ($12^g$, $22^h$, $12^g$), where $g$ and $h$ are positive integers and $g \neq h$ . The implication being that all affected individuals are subject to the same (in this case, double) recombination event to create a singular well-defined linkage peak spanning h markers. It is then trivial for linkage programs to evaluate this.}
-\addglossprog{echo}{Prints a line of text}
-\addglossprog{chromosomes.sh}{Generates chromosome-specific linkage plots via GNUplot.}
-\addglossprog{GNUplot}{GNU plotting tool that produces postscript files using a scripting language known as Ghostscript.}
-\addglossprog{ps2pdf}{converts postscript files to PDF}
-\addglossprog{mkhaplotypes.sh}{Runs HaploPainter upon ihaplo.out Allegro data to be converted into \gls{comp:PDF}}
-\addglossprog{collect.sh}{Collects all relevant linkage data from the working directory to be packaged for review. This involves: GRR charts, Mendelian error plots, Pedigrees, Linkage plots (converted from \gls{comp:PS} to \gls{comp:PDF}) and haplotypes.}
-\addglossprog{ldd}{Shows the shared libraries called by a program by inspecting the programs' dependencies.}
-\addglossprog{git}{A popular type of version control.}
-\addglossprog{GNU}{Recursive Acronym: "GNU's Not Unix". Coined by Richard Stallman founder of the Free Software Movement.}
-\addglossprog{version control}{A means to store incremental changes between two file edits and synchronize across multiple hosts. Edits can be rewound, merged with other edits, and forked into separate branches of development. Useful for coding.}
+\addglossprogger{physicallinkageplot}{physical\_linkage\_plot.sh}{Plots Allegro/Simwalk/Swiftlink data using physical map instead of genetic map, moving genetic maps into their own "Alohomora" folder. Calling script for read\_all\_linkage.py and plot\_linkage\_physical.py which it uses to produce chromosome-specific and genomewide plots.}
+
+\addglossprogger{plotlinkagephysical}{plot\_linkage\_physical.py}{Plots physical linkage map in Mbp for a specific chromosome or genomewide, with parameters to specify chromosomal bands, and a threshold amount to unlink markers spaced apart more than a certain threshold amount (default 1000 Mbp), as well as a minimum LOD specifier.}
+
+\addglossprogger{xallegroinhaplout}{x\_allegroin\_haploout.py}{This script generates allegro.in input files for the X chromosome, and also generates the correct ihaplo.out files after allegro has run by adding an extra row of zero alleles for males (no longer required with HaploHTML5). Should only be run after x\_makedat.py.}
+
+\addglossprog{pedcheck}{Binary that detects Mendelian errors and generates the list of unlikely markers to be excluded from the analysis. Called from Alohomora.}
+
+\addglossprog{wine}{Compatability layer to run Windows programs on Linux. Not an emulator, instead actual DLL libraries are rewritten and compiled under Linux.}
+
+\addglossprog{CPAN}{Utility to download Perl packages from the Comprehensive Perl Archive Network.}
+
+\addglossprog{ssh}{Open-source secure shell protocol to remotely log in to a remote machine that runs a SSH daemon and is listening for incoming connections. For security the default listening port of 22 is changed to 6622 to hide it from over-curious ping probes.}
+
+\addglossprog{scp}{Secure copy utility that operates through ssh, allowing the remote transfer of files.}
+
+\addglossprog{rsync}{Better copy utility with speed optimizations and resumeability features that make it ideal for making backups with. Can operate using its own rsync protocol, or otherwise uses ssh to securely  transfer files.}
+
+\addglossprog{qmake}{A cross-platform tool that assists in the creation of C++ Make files during program compilation. Relies on the Qt framework.}
+
+\addglossprog{CMake}{A cross-platform tool that assists in the creation of C++ Make files during program compilation. Relatively lightweight compared to qmake.}
+
+\addglossprog{cygwin}{A Linux environment and shell made accessible from Windows. Programs must still be compiled and built under cygwin to operate under it.}
+
+\addglossprog{messner}{Python script to parse the output linkage files of Simwalk/GeneHunter/Allegro and find linkage peaks higher than an amount specified by an argument (determined by clodhopper.py). GeneHunter positions do not match any real marker positions, so the script has to bisect the data in order to closely-approximate scores for GeneHunter.}
+
 \addglossprog{allegro21bitstart.sh}{}
+
+\addglossprog{GeneHunter}{GeneHunter-ModScore v3, Linkage program used as a control for small pedigrees. Not as fast as Allegro, and has a tendency to split large pedigrees in order compute an analysis. Not used in large pedigrees.}
+
+\addglossprog{Allegro}{Version 2.0f, Linkage program extensively used in the pipeline for all sized pedigrees. Makes use of MTBDD for compactness, and performs haplotype reconstruction in the same run as multi-point parametric linkage in small pedigrees. Larger pedigrees require a modified Allegro version to run where MTBDD is switched off.}
+
+\addglossprogger{simwalkmulticore}{simwalk\_multicore.sh}{Overarching script that queues parallel jobs to Simwalk. Simwalk uses a sliding window approach, and its input files are split accordingly, meaning that analyses are not locked to a single chromosome but are distributed as smaller pieces that makes them much more even to distribute. The script is fully resumeable by simply checking for the appropriate output file and determining whether it is populated with the correct number of markers before moving on to another job. Very efficiently parallelized.}
+
+\addglossprogger{linkagepipeline}{linkage\_pipeline.sh}{Overarching pipeline script responsible for parsing user inputs and starting a screen session, before calling the appropriate linkage pipeline script.}
+
+\addglossprogger{allegroparallel}{allegro\_parallel.sh}{Script that parallelizes Allegro runs so that several chromosomes run at once. For small pedigrees it is possible to maximize all threads, but larger pedigrees typically only run 2 threads at most due to RAM constraints and disk-write/paging bottlenecks.}
+
+\addglossprogger{readalllinkage}{read\_all\_linkage.py}{Makes a genomewide physical linkage map for UCSC genome graphs with LOD scores for Allegro/Swiftlink/Simwalk/GeneHunter. Must be run in their respective folders, and given the map file as first argument. A minimum LOD parameter can also be specified (default is -3).}
+
+\addglossprogger{prelimcheck}{prelim\_check.py}{Compares the individuals found in the genotypes file header against those found in the pedfile name column to see how the sets intersect. If any are missing, a warning is thrown to the user to either terminate the application or ignore.}
+\addglossprogger{ghparallel}{gh\_parallel.sh}{Clone of the allegro\_parallel.sh script rewritten for GeneHunter using the parallel framework. Works well on small pedigrees, but is ineffective for large pedigrees.}
+\addglossprogger{autostage1}{auto\_stage1.sh}{First filtering script: Generates pedigrees, primes the MAF file, performs gender checking, and plots GRR.}
+\addglossprogger{autostage2}{auto\_stage2.sh}{Second filtering script: Produces Merlin plot, runs pedigree check to find unlikely genotypes list.}
+\addglossprogger{autostage3}{auto\_stage3.sh}{Third filtering script: Creates linkage input files based upon the unlikely genotypes file for Allegro, GeneHunter, and Simwalk.}
+\addglossprogger{readmegen}{readme\_gen.py}{Readme generator that automatically detects project name and ID, bit score, date, number of markers, and looks for configuration files to determine the type of filtering performed at the snpbutcher stage as well as the type of pipeline analysis (autosomal/X-linked)(recessive/dominant)(singlecore/multicore) as written by the pipeline log file. It still relies on manual input of the technician's name, the genotype chipset, and the original genotypes file.}
+\addglossprogger{xmakedat}{x\_makedat.py}{This script converts the standard Alohomora output DAT (and Allegro/GeneHunter input) files and resets the headers so that an X-linked analysis is specified.}
+\addglossprog{Linkage}{One of the first general-purpose linkage program suites for use by the genetics community. Ground breaking at the time, but could only effectively carry out calculations when a single locus was used \cite{lathrop1984strategies}.}
+\addglossprog{Vitesse}{One of the the first major linkage programs capable of multi-point linkage analysis for reasonably sized pedigrees, using "fuzzy inheritance" to recode genotypes in a stochastic manner to infer transmission probabilities \cite{o1995vitesse}.}
+
+\addglossprog{bcftools}{BCFtools is a set of utilities \cite{bcftools} for manipulating binary compressed Variant Call Files (VCFs)\cite{danecek2011variant} }
+
+\addglossprog{snpbutcher}{snpbutcher v2.8, a Python script that filters a genotyping map file into a subselection of informative markers based upon MAFs and genotypes. By default it searches for informative SNPs using HapMap project data \cite{gibbs2003international}, but if none is found or the --nohapmap flag is given, then this step is skipped. It can be told to space markers by cM distances (default=0.05) or to determine spacing by a maximum number of desired SNPs. Under these options, uninformative SNPs and those with non-existent minor allele frequencies are skipped.}
+
+\addglossprog{screen}{A program  that allows for multiple users to access the same terminal session and co-operatively witness and interact with users sharing the same session. It has the added benefit that it detaches the parent process from the application it was spawned from (usually the desktop manager), such that the process is not killed when the application is closed. De-parenting a process is not exclusive to a screen session, but re-accessing the same terminal to resume interacting with an ongoing process is the main benefit of the program (though the tmux program is also capable of this).}
+
+\addglossprog{parallel}{The GNU parallel framework is an encapsulating program that takes an existing program and a list of argument parameters, and then dispatches each argument to a separate clone of the program, running them simultaneously. It is implemented via a queue-and-dispatch system, where jobs are added sequentially to a queue buffer, and are dispatched in a first-come-first-serve manner to a given work resource until there are no more resources left. As soon as a job finishes, a resource is freed and another job can be dispatched from the queue. The number of active jobs at any one time can be set manually and can also be dynamically changed during runtime. For efficiency, the number of active jobs should be the number of cores/threads that the CPU can handle, though if the task is memory-intensive then the number of jobs should be limited to the total amount of available RAM divided by the maximum memory usage of that task. Most linkage programs process an entire chromosome at once, and so jobs are queued as chromosomes, with small chromosomes such as chr21 finishing quickly compared to chr1. This is problematic if chromosomes are queued sequentially (either ascending or descending), as the lower-numbered chromosomes can only be effectively processed two at a time whereas the higher-numbered chromosomes can be processed five at a time, requiring a daemon to watch over RAM usage and change the number of active jobs parameter accordingly. This is not always effective, since the daemon must know beforehand how much system resources will be consumed for a given chromosome, and this varies with bit-size and the number of markers (which varies greatly between projects) and so the daemon must make conservative estimates so that the system does not run out of memory and begin killing processes. A better compromise which requires much less oversight is to alternate chromosomes by counting from either end and meeting in the middle (e.g. the queue order would be: 1, 22, 2, 21, 3, 20, 4, 19, 5, 18, 6, 17, 7, 16, 8, 15, 9, 14, 10, 13, 11, 12) with at most 3 jobs running at once. Linkage programs that utilize a sliding-window approach (such as Simwalk) split input data evenly into windows of n markers, regardless of chromosome, and so jobs can be more efficiently queued without any resource monitoring at all.}
+
+\addglossprog{HaploPainter}{A Perl script/program that relies on the TkInter framework for drawing and parsing pedigrees with an interactive graphical user interface (GUI). It has a background batch mode that enables it to run without the need to draw anything, and it can also parse and draw haplotypes. Should an invalid pedigree be given to it, it reports to standard error and terminates.}
+
+\addglossprog{Alohomora}{A linkage analysis suite written in Perl, primarily used for its quality control modules such as pedigree checking and Mendelian error checking. It is also an excellent format conversion tool, and is primarily responsible for taking the input files set by the user at the beginning of the linkage analysis and converting into input formats for programs such as Merlin, Allegro, GeneHunter, and Simwalk.}
+
+\addglossprog{GRR}{The only windows binary in the entire program listing. The program has no commandline interface and can only be run graphically. In order to load genotypes, we must simulate mouseclicks  via Xautomation and regularly poll the display server via Xwininfo to verify that the correct window has appeared in order to resume automation. }
+
+\addglossprog{Merlin}{One of the fastest linkage application suites; capable of parametric and  non-parametric analysis, as well as various utilities such as gender checking, pedigree checking, and genotyping error detection. Unable to handle pedigrees over 18 bits without splitting.}
+
+\addglossprog{Simwalk}{Written in Fortran, it is one of the most trusted comprehensive linkage analysis suites spanning two decades. The current version is 2.91 and it performs parametric linkage, non-parametric linkage, and rudimentary haplotype reconstruction by searching for the optimal chain amongst the various Monte Carlo Markov Chain simulations it performs. On top of the three main input files (pedigree, map, genotypes), Simwalk also requires a penetrance file to complement the map as well as a custom script file to perform user-specified instructions that dictate the type of analysis. Input files are split into chromosomes, and then further split into overlapping marker windows with a 25-marker length. The output files generated come in three main prefix types: SCORE, ERROR, STATS, and VIDEO; each being tailed by an integer that maps it to a specific chromosome, and another integer to indicate which marker window is being examined. LOD scores are parsed from the SCORE files, and associative statistics with significance scores are detailed in the STATS files. ERROR files is where standard error is duplicated, and VIDEO is where standard output is duplicated.}
+
+
+\addglossprog{clodhopper.py}{A Python script to estimate the maximum LOD score of an analysis for either Simwalk, GeneHunter, or Allegro. The input files generated are program specific, but all work under the same principle of creating three distinct haplotype blocks: affected individuals ($12^g$, $11^h$, $12^g$), unaffected individuals with unaffected parents ($12^g$, $12^h$, $12^g$), and unaffected individuals with affected parents ($12^g$, $22^h$, $12^g$), where $g$ and $h$ are positive integers and $g \neq h$ . The implication being that all affected individuals are subject to the same (in this case, double) recombination event to create a singular well-defined linkage peak spanning h markers. It is then trivial for linkage programs to evaluate this.}
+
+\addglossprog{echo}{Prints a line of text}
+
+\addglossprog{chromosomes.sh}{Generates chromosome-specific linkage plots via GNUplot.}
+
+\addglossprog{GNUplot}{GNU plotting tool that produces postscript files using a scripting language known as Ghostscript.}
+
+\addglossprog{ps2pdf}{converts postscript files to PDF}
+
+\addglossprog{mkhaplotypes.sh}{Runs HaploPainter upon ihaplo.out Allegro data to be converted into \gls{comp:PDF}}
+
+\addglossprog{collect.sh}{Collects all relevant linkage data from the working directory to be packaged for review. This involves: GRR charts, Mendelian error plots, Pedigrees, Linkage plots (converted from \gls{comp:PS} to \gls{comp:PDF}) and haplotypes.}
+
+\addglossprog{ldd}{Shows the shared libraries called by a program by inspecting the programs' dependencies.}
+
+\addglossprog{git}{A popular type of version control.}
+
+\addglossprog{GNU}{Recursive Acronym: "GNU's Not Unix". Coined by Richard Stallman founder of the Free Software Movement.}
+
+\addglossprog{version control}{A means to store incremental changes between two file edits and synchronize across multiple hosts. Edits can be rewound, merged with other edits, and forked into separate branches of development. Useful for coding.}
+
 \addglossprog{haploregion.py}{A Python script to address the large marker sets in haplotype output files from Allegro (ihaplo.out). It can produce haplotype subsets, detect regions of homology, and extract haplotypes. Works in conjunction with HaploPainterRFH for which it provides input files.}
+
 \addglossprog{HaploPainterRFH}{A modified clone of HaploPainter, with extra functionality added to be tailored more to the type inspection performed at the RFH. New features include the optional parameters of reading in a messner output file and/or pairs of markers, plotting a transparent box of blue and/or red to highlight multiple regions of interest across multiple generations. A limitation of the script (as with the original HaploPainter) is that it requires both the ihaplo.out data file and the map.N map file (where N is a chromosome number) with a direct 1:1 mapping of each marker in the map file to each marker in the data file, with no tolerance for any overlaps. As a result, any modification of the ihaplo.out file (via haploregion.py) must be met with the same modifications within the map.N file.}
-\addglossprog{messner}{}
+
 \addglossprog{notepad}{Simple plain text editor}
+
 \addglossprog{gedit}{Simple plain text editor}
+
 \addglossprog{GTK}{Gimp Toolkit, set of }
+
 \addglossprog{zenity}{Utility to show and manipulate graphical dialogs and return input back to the command line. Uses GTK framework.}
-\addglossprog{qmake}{}
-\addglossprog{CMake}{}
-\addglossprog{cygwin}{}
+
 \addglossprog{SublimeText}{Fancy text editor with syntax highlighting, multiple variable renaming, and general project control.}
+
 \addglossprog{nano}{Simple curses plain text editor, some syntax highlighting.}
+
 \addglossprog{curses}{Libary for manipulating a terminal/shell window without using graphics.}
+
 \addglossprog{vi}{Simple curses plain text editor.}
+
 \addglossprog{emacs}{Fancy curses editor with syntax highlighting, autocompletion extentions, custom Macros. Very feature-rich.}
-\addglossprog{pedcheck}{}
-\addglossprog{wine}{}
-\addglossprog{CPAN}{}
-\addglossprog{ssh}{}
-\addglossprog{scp}{}
-\addglossprog{rsync}{}
+
