@@ -31,40 +31,40 @@
         }
 }
 
-\newcommand{\addglossbioacro}[3]{
-
-    \newglossaryentry{bio:#1gloss}{
-                type=biol,
-                name=\glslink{bio:#1}{#2 (\gls{#1})},
-                description={#3}
-    }
-
-	\newglossaryentry{bio:#1}{
-		type=\acronymtype,
-		name={#1},
-		first={#2 (#1)},
-		see=[Glossary:]{\gls{bio:#1gloss}}, 
-		description=\glslink{bio:#1gloss}{#2}
-	}
-}
-
-
-\newcommand{\addglosscompacro}[3]{
-
-    \newglossaryentry{comp:#1gloss}{
-                type=comp,
-                name=\glslink{comp:#1}{#2 (\gls{#1})},
-                description={#3}
-    }
-
-	\newglossaryentry{comp:#1}{
-		type=\acronymtype,
-		name={#1},
-		first={#2 (#1)},
-		see=[Glossary:]{\gls{comp:#1gloss}}, 
-		description=\glslink{comp:#1gloss}{#2}
-	}
-}
+%\newcommand{\addglossbioacro}[3]{
+%
+%    \newglossaryentry{bio:#1gloss}{
+%                type=biol,
+%                name=\glslink{bio:#1}{#2 (\gls{#1})},
+%                description={#3}
+%    }
+%
+%	\newglossaryentry{bio:#1}{
+%		type=\acronymtype,
+%		name={#1},
+%		first={#2 (#1)},
+%		see=[Glossary:]{\gls{bio:#1gloss}}, 
+%		description=\glslink{bio:#1gloss}{#2}
+%	}
+%}
+%
+%
+%\newcommand{\addglosscompacro}[3]{
+%
+%    \newglossaryentry{comp:#1gloss}{
+%                type=comp,
+%                name=\glslink{comp:#1}{#2 (\gls{#1})},
+%                description={#3}
+%    }
+%
+%	\newglossaryentry{comp:#1}{
+%		type=\acronymtype,
+%		name={#1},
+%		first={#2 (#1)},
+%		see=[Glossary:]{\gls{comp:#1gloss}}, 
+%		description=\glslink{comp:#1gloss}{#2}
+%	}
+%}
 
 
 
@@ -86,210 +86,207 @@
 %\include{glossary}
 %%% Background
 % DNA
-\addglossbio{DNA}{Deoxyribonucleic Acid}
-\addglossbio{nucleotides}{FILL}
-\addglossbio{genome}{FILL}
-\addglossbio{chromosomes}{FILL}
-\addglossbio{nucleobase}{FILL}
-\addglossbio{base pairs}{FILL}
-\addglossbio{double helix}{FILL}
+\addglossbio{DNA}{Deoxyribonucleic Acid.}
+\addglossbio{nucleotides}{Sub-units of DNA, consists of a phosphate group and nucleobase.}
+\addglossbio{genome}{complete genetic material present in an organism.}
+\addglossbio{chromosomes}{long DNA strands bound together.}
+\addglossbio{nucleobase}{Four bases: A,T,C,G.}
+\addglossbio{base pairs}{nucleobases that span across the two chromosome strands.}
+\addglossbio{double helix}{Shape of helical DNA backbone.}
 %-    Polarity
-\addglossbio{forward}{FILL}
-\addglossbio{sense}{FILL}
-\addglossbio{reverse}{FILL}
-\addglossbio{antisense}{FILL}
+\addglossbio{forward}{5' to 3' orientation.}
+\addglossbio{sense}{See forward.}
+\addglossbio{reverse}{3' to 5' orientation.}
+\addglossbio{antisense}{See reverse.}
 %-    Chromosomes
-\addglossbio{chromatin}{FILL}
-\addglossbio{haploid}{FILL}
-\addglossbio{pairs}{FILL}
-\addglossbio{diploid}{FILL}
-\addglossbio{centromere}{FILL}
-\addglossbio{telomeres}{FILL}
-\addglossbio{homologs}{FILL}
-\addglossbio{autosomal}{FILL}
-\addglossbio{allosomal}{FILL}
-\addglossbio{alleles}{FILL}
+\addglossbio{chromatin}{condensed DNA wrapped around proteins to fit in nucleus}
+\addglossbio{haploid}{cell with a single set of unpair chromosomes.}
+\addglossbio{pairs}{}
+\addglossbio{diploid}{cell with two sets of chromosomes from each parent.}
+\addglossbio{centromere}{Central structure binding pairs of chromosomes together.}
+\addglossbio{telomeres}{Caps at the ends of chromosomes that shorten every cell division.}
+\addglossbio{homologs}{Pairs of chromosomes.}
+\addglossbio{autosomal}{Chromosomes 1 to 22.}
+\addglossbio{allosomal}{Chromosomes X and Y.}
+\addglossbio{alleles}{Locus that spans across both chromosome pairs.}
 %-     Genes and Function
-\addglossbio{phenotype}{FILL}
-\addglossbio{coding}{FILL}
-\addglossbio{exons}{FILL}
-\addglossbio{codons}{FILL}
-\addglossbio{RNA polymerase}{FILL}
-\addglossbio{ribosome}{FILL}
-\addglossbio{open reading frame}{FILL}
-\addglossbio{intergenic}{FILL}
-\addglossbio{translated}{FILL}
-\addglossbio{start codon}{FILL}
-\addglossbio{stop codon}{FILL}
+\addglossbio{phenotype}{Observable traits.}
+\addglossbio{coding}{Part of DNA known to encode for genes.}
+\addglossbio{exons}{Coding part of a gene.}
+\addglossbio{codons}{Triplet groups of nucleobases.}
+\addglossbio{RNA polymerase}{Enzyme that produces primary transcript RNA.}
+\addglossbio{ribosome}{Converts mRNA into amino acids.}
+\addglossbio{open reading frame}{Uninterrupted string of codons.}
+\addglossbio{intergenic}{Region between genes.}
+\addglossbio{translated}{The process of converting between mRNA and Protein.}
+\addglossbio{start codon}{ATG.}
+\addglossbio{stop codon}{TAA, TGA, TAG.}
 \addglossbio{mRNA}{messenger RNA}
-\addglossbio{uracil}{FILL}
-\addglossbio{splicing}{FILL}
-\addglossbio{transcription}{FILL}
-\addglossbio{amino-acid}{FILL}
-\addglossbio{meiosis}{FILL}
-\addglossbio{UTR}{FILL}
+\addglossbio{uracil}{mRNA equivalent of Thymine}
+\addglossbio{splicing}{Process of cutting introns out of gene locus and stitching together exons.}
+\addglossbio{transcription}{DNA being coped into mRNA by \glslink{RNA polymerase}}
+\addglossbio{amino-acid}{Sub unit of Protein}
+\addglossbio{meiosis}{Process in which single-cell splits into four gametes.}
+\addglossbio{UTR}{Untranslated Region.}
 % Heredity
-\addglossbio{zygote}{FILL}
-\addglossbio{bivalent}{FILL}
-\addglossbio{meiotic spindle}{FILL}
-\addglossbio{metaphase plate}{FILL}
+\addglossbio{zygote}{Cell formed by the fertilization of two gametes.}
+\addglossbio{bivalent}{A pair of homologous chromosomes.}
+\addglossbio{meiotic spindle}{Spindle used to equally divide chromosomes and create two daughter cells.}
+\addglossbio{metaphase plate}{Plane that bisects the meiotic spindle, axis in which chromosomes align during metaphase.}
 %-     Recombination
-\addglossbio{chiasmata}{FILL}
-\addglossbio{crossover}{FILL}
-\addglossbio{recombination frequency}{FILL}
-\addglossbio{linkage disequilibrium}{FILL}
-\addglossbio{Morgan}{FILL}
-\addglossbio{crossover interference}{FILL}
-\addglossbio{Informative marker}{FILL}
+\addglossbio{chiasmata}{Point of constant contact where crossover events occur.}
+\addglossbio{crossover}{Exchange of genetic material between homologous chromosomes.}
+\addglossbio{recombination frequency}{Frequency of independent assortment between two loci. $<$50\% if linked.}
+\addglossbio{linkage disequilibrium}{Two linked loci that have a recombination frequency higher or lower than the amount expected if the loci were independent.}
+\addglossbio{Morgan}{Genetic map unit, where 1 cM denotes 0.01 expected crossovers.}
+\addglossbio{crossover interference}{Measure of interference between otherwise separate crossover events, where the act of one may hinder another.}
+\addglossbio{Informative marker}{Marker thought to lend power to a linkage analysis.}
 % Molecular Maps
-\addglossbio{markers}{FILL}
-\addglossbio{polymorphic}{FILL}
-\addglossbio{biallelic}{FILL}
-\addglossbio{co-dominance}{FILL}
-\addglossbio{Hardy-Weinberg Equilibrium}{FILL}
+\addglossbio{markers}{Genetic marker that denotes a known locus in a genome.}
+\addglossbio{polymorphic}{Alelles with multiple variations}
+\addglossbio{biallelic}{Alleles with only two variations, work better in conjunction with SNPs}
+\addglossbio{co-dominance}{A case where neither allele dominates the other and phenotypes are independent of each other enough to both be expressed.}
 %-       Markers
-\addglossbio{minisatellite}{FILL}
-\addglossbio{VNTR}{FILL}
-\addglossbio{microsatellite}{FILL}
+\addglossbio{minisatellite}{A block of repetitive DNA, 5-50 bp.}
+\addglossbio{VNTR}{Variable Number Tander Repeat.}
+\addglossbio{microsatellite}{A block of repetitive DNA, 2-5 bp.}
 \addglossbio{STR}{See microsatellite}
-\addglossbio{SNP}{FILL}
+\addglossbio{SNP}{Extremely prevalent binary marker.}
 % Modes of Inheritance
-\addglossbio{homozygous}{FILL}
-\addglossbio{heterozygous}{FILL}
+\addglossbio{homozygous}{Alleles are identical}
+\addglossbio{heterozygous}{Alleles differ}
 %-   Mendel's Lawss
-\addglossbio{recombinant}{FILL}
-\addglossbio{non-recombinant}{FILL}
-\addglossbio{dominant}{FILL}
-\addglossbio{recessive}{FILL}
+\addglossbio{recombinant}{Offspring with genotypes that do not match any single parent at a given locus.}
+\addglossbio{non-recombinant}{Offspring with genotypes that do match a single parent at a given locus. All offspring a recombinant across an entire chromosome.}
+\addglossbio{dominant}{heterozygous allele where phenotype manifests.}
+\addglossbio{recessive}{heterozygous allele where phenotype does not manifest.}
 %-  Mendel's Laws Revised
-\addglossbio{multi-allelic}{FILL}
-\addglossbio{polygenic traits}{FILL}
-\addglossbio{codominance}{FILL}
-\addglossbio{HWE}{FILL}
-\addglossbio{incomplete dominance}{FILL}
-\addglossbio{pedigree}{FILL}
-\addglossbio{founders}{FILL}
-\addglossbio{non-founders}{FILL}
-\addglossbio{founder alleles}{FILL}
-\addglossbio{bit size}{FILL}
-\addglossbio{consanguineous}{FILL}
-\addglossbio{penetrance function}{FILL}
-\addglossbio{carriers}{FILL}
-\addglossbio{autozygous}{FILL}
+\addglossbio{multi-allelic}{Genotypes with more that just two alleles}
+\addglossbio{polygenic traits}{Inheritance of phenotype affected by more than one gene.}
+\addglossbio{HWE}{Hardy-Weinberg Equlibrium, law that states that allele frequencies in a population remain constant in the absence of external factors.}
+\addglossbio{incomplete dominance}{Same as co-dominant except that traits are related and so phenotype is a blend of both.}
+\addglossbio{pedigree}{A collection of related individuals represented in a graph diagram indicating mating and offspring.}
+\addglossbio{founders}{Members of a pedigree who have no parents.}
+\addglossbio{non-founders}{Members of a pedigree who inherit genetic data from founders.}
+\addglossbio{founder alleles}{Unique alleles that contribute to a pedigree, portions of which are inherited by non-founders.}
+\addglossbio{bit size}{the size of the pedigree as determined by the number of founders, non-founders, and genotyped founder couples.}
+\addglossbio{consanguineous}{Relating to individuals who breed within the family and cause inbreeding loops in the pedigree.}
+\addglossbio{carriers}{Individuals who carry the disease allele but not the phenotype}
+\addglossbio{autozygous}{Homozygous alleles that arise from separate paths of descent as a result of consanguineous interbreeding.}
 % Haploblocks
-\addglossbio{unphased}{FILL}
-\addglossbio{phased}{FILL}
-\addglossbio{haplotype}{FILL}
-\addglossbio{haploblock}{FILL}
+\addglossbio{unphased}{Unknown path of descent.}
+\addglossbio{phased}{Path of descent of each allele is known.}
+\addglossbio{haplotype}{Phased genotype}
+\addglossbio{haploblock}{Contiguous block of haplotypes of the same phase}
 %Linkage Analysis and Haplotype Generation
-\addglossbio{co-segregate}{FILL}
-\addglossbio{LOD}{FILL}
-\addglossbio{peeling}{FILL}
-\addglossbio{multi-point parametric}{FILL}
-\addglossbio{inheritance vector}{FILL}
-\addglossbio{forward probabilities}{FILL}
-\addglossbio{backward probabilities}{FILL}
-\addglossbio{HMM}{Hidden Markov Models}
+\addglossbio{co-segregate}{Two locus to be inherited together.}
+\addglossbio{LOD}{Logarithm of the Odds (score)}
+\addglossbio{peeling}{The act of removing individuals from a pedigree in order to reduce the number of loops}
+\addglossbio{multi-point parametric}{Linkage analysis that uses a map of genetic markers to reconstruct inheritance along a chromosome. LOD is calculated by comparing each marker against an unlinked locus.}
+\addglossbio{inheritance vector}{Type of genotype that carries parental phase and is transferred between generations}
+\addglossbio{forward probabilities}{Probabilities computed when stepping forwards through a network.}
+\addglossbio{backward probabilities}{Probabilities computed when stepping backwards through a network.}
+\addglossbio{HMM}{Hidden Markov Models.}
 
-
-%METHODS
-\addglossbio{trio}{FILL}
+%
+%%METHODS
+\addglossbio{trio}{A single mother-father-offspring group.}
 \addglossbio{IBS}{identity-by-state}
 \addglossbio{IBD}{identity-by-descent}
-\addglossbio{ELOD}{}
-
-%LINKAGE
-\addglosscomp{journaling}{}
-\addglosscomp{SSD}{}
-\addglosscomp{paging}{}
-\addglosscomp{RAM}{}
-\addglosscomp{striping}{}
-\addglosscomp{parity}{}
-\addglosscomp{RAID}{}
-\addglosscomp{PDF}{}
-\addglosscomp{thread safe}{}
-\addglosscomp{PATH}{}
-\addglosscomp{MTBDD}{}
-\addglosscomp{CUDD}{}
-\addglosscomp{VRAM}{}
-\addglosscomp{swap space}{}
+\addglossbio{ELOD}{Expected LOD score.}
+%
+%%LINKAGE
+\addglosscomp{journaling}{The process of actively indexing files in a filesystem.}
+\addglosscomp{SSD}{Solid State Drive, a type of fast non-mechanical storage.}
+\addglosscomp{paging}{The process of swapping portions of memory out of swap space and into the RAM for immediate processing and vice versa.}
+\addglosscomp{RAM}{Random Access Memory, fast device used to store temporary data.}
+\addglosscomp{striping}{The act of spreading data across multiple block devices.}
+\addglosscomp{parity}{A single bit added to the end of a string that indicates whether the 1-bits are even.}
+\addglosscomp{RAID}{Redundant Array of Independent Disks}
+\addglosscomp{PDF}{Portable Document Format, type of document container.}
+\addglosscomp{thread safe}{A process is thread safe if multiple threads can execute the same process without them clashing or competing for variables.}
+\addglosscomp{PATH}{A global environment variable that allows for the execution of scripts and binaries without having to specify full pathname.}
+\addglosscomp{MTBDD}{Multi Terminal Binary Decision Diagram, a compact structure used to minimize the number of unique computations.}
+\addglosscomp{CUDD}{Colarado University Decision Diagrams, an extension of MTBDDs.}
+\addglosscomp{VRAM}{Virtual RAM, the addition of real RAM and swap space.}
+\addglosscomp{swap space}{Reusable memory on disk that acts like RAM, only much slower.}
 \addglosscomp{horizontal-buffering}{}
 
 % HAPLO
-\addglosscomp{forking}{}
-\addglosscomp{Cairo}{}
-\addglosscomp{Perl}{}
-\addglosscomp{Java}{}
-\addglosscomp{Python}{}
-\addglosscomp{C++}{}
-\addglosscomp{Bash}{}
-\addglosscomp{Tk}{}
-\addglosscomp{Qt}{}
-\addglosscomp{OS}{}
-\addglosscomp{standard template libraries}{}
-\addglosscomp{MVC}{}
-\addglosscomp{API}{}
-\addglosscomp{SIMD}{}
-\addglosscomp{MIMD}{}
-\addglosscomp{MISD}{}
-\addglosscomp{IDE}{}
-\addglosscomp{JIT}{}
+\addglosscomp{forking}{The act of splitting off a task from the main control flow and letting it perform work in parallel.}
+\addglosscomp{Cairo}{2D graphics library.}
+\addglosscomp{Perl}{High-level general-purpose scripting language.}
+\addglosscomp{Java}{Medium-level programming language that runs in a live  environment.}
+\addglosscomp{Python}{High-level scripting language that runs in a live interpreter environment. Emphasis on code readability.}
+\addglosscomp{C++}{Low-level language that compiles programs to machine code. Emphasis on speed and optimization.}
+\addglosscomp{Bash}{Bourne-again Shell, type of terminal shell language.}
+\addglosscomp{Tk}{Tkinter GUI framework used heavily in application development.}
+\addglosscomp{Qt}{C++, Python and Java Framework used to facilitate in cross-platform development. Has superior string handling.}
+\addglosscomp{OS}{Operating System, manages hardware and software.}
+\addglosscomp{standard template libraries}{Libraries that influence many parts of the language standard (primarily C++).}
+\addglosscomp{MVC}{Model-View-Controller, Software development practice of separating graphics from data and representing data statically.}
+\addglosscomp{API}{Application Programmers Interface, a well-documented list of possible function calls and services offered by a library.}
+\addglosscomp{SIMD}{Single Instruction Multiple Data.}
+\addglosscomp{MIMD}{Multiple Instruction Multiple Data.}
+\addglosscomp{MISD}{Multiple Instruction Single Data.}
+\addglosscomp{IDE}{Integrated Development Environment, a rich and full-features source code editor.}
+\addglosscomp{JIT}{Just-In-Time compiling, the practice of creating sub-binaries of portions of code known to create bottlenecks.}
 \addglosscomp{macros}{Snippets of code defined within the IDE usually with the intention of running only for a specific platform, though they can be used whenever the cost of repeatedly calling a function has a higher cost than simply copy/pasting the code snippet. At compilation, the compiler detects the platform and moves/pastes the appropriate macro into the normal code scope and produces a binary specific to that platform.}
-\addglosscomp{Cross-platform}{}
+\addglosscomp{Cross-platform}{Transcends Operating System specifics.}
 \addglosscomp{overflow/underflow}{If a variable tries to store information that exceeds ('overflows') the upper-bound of the data type it is within, it may undesirably take on the value of the lower-bound of that data type. The reverse is also true ('underflow').}
-\addglosscomp{primitives}{}
-\addglosscomp{object}{}
-\addglosscomp{object-oriented}{}
-\addglosscomp{IP}{}
-\addglosscomp{DNS}{}
-\addglosscomp{ECMAScript6}{}
-\addglosscomp{Strings}{}
-\addglosscomp{regex}{}
-\addglosscomp{DOM}{}
-\addglosscomp{terniary}{}
+\addglosscomp{primitives}{Types of common data forms that exist in many languages. See Appendix.}
+\addglosscomp{object}{Data construct that has properties bound to it.}
+\addglosscomp{object-oriented}{Programming paradigm in which data is structured into classes which dictate functionality and access.}
+\addglosscomp{IP}{Internet Protocol}
+\addglosscomp{DNS}{Domain Name Server, resolves textual domain names into IP addresses.}
+\addglosscomp{ECMAScript6}{Script specification (version 6) used by Actionscript and Javascript.}
+\addglosscomp{Strings}{Type of data type used to hold textual information.}
+\addglosscomp{regex}{Regular Expressions, type of string used to match other strings. See Appendix for more information.}
+\addglosscomp{DOM}{Document Object Model, interface to HTML/XML documents.}
+\addglosscomp{terniary}{Code that consists of three parts (if,then,else), typically written on a single line.}
 \addglosscomp{MESA}{MESA is an open-source software implementation of OpenGL and enables graphics to be drawn under the API using the CPU. For this reason it is not as fast as the OpenGL implemented by card vendors such as Nvidia or AMD upon their respective GPUs.}
-\addglosscomp{DirectX}{}
-\addglosscomp{OpenGL}{}
-\addglosscomp{WebGL}{}
-\addglosscomp{Three.js}{}
-\addglosscomp{GPU}{}
-\addglosscomp{event listeners}{}
-\addglosscomp{autocompletion}{}
-\addglosscomp{compilation}{}
-\addglosscomp{HSV}{}
-\addglosscomp{MAKEPED}{}
-\addglosscomp{ihaplo.out}{}
-\addglosscomp{getters and setters}{}
-\addglosscomp{Ubuntu}{}
-\addglosscomp{Debian}{}
-\addglosscomp{Arch}{}
-\addglosscomp{Gentoo}{}
-\addglosscomp{SpiderMonkey}{}
-\addglosscomp{JavascriptCore}{}
-\addglosscomp{V8}{}
-\addglosscomp{dedicated graphics}{}
-\addglosscomp{embedded graphics}{}
-\addglosscomp{Sort Naturally}{}
-\addglosscomp{DBI}{}
-\addglosscomp{ARM}{}
+\addglosscomp{DirectX}{Type of 2D/3D graphics specification with closed source implementations aimed at Windows platforms.}
+\addglosscomp{OpenGL}{Type of 2D/3D graphics specification with closed source and open source implementations aimed at all platforms.}
+\addglosscomp{WebGL}{Web standard for incorporating OpenGL bindings into Javascript.}
+\addglosscomp{Three.js}{Core 3D library in Javascript.}
+\addglosscomp{GPU}{Graphical Processing Unit, chip dedicated to computing graphical data and drawing data to screen.}
+\addglosscomp{event listeners}{Type of input polling that performs a pre-specified action upon receiving input.}
+\addglosscomp{autocompletion}{The process of automatically completing a word based on a starting prefix.}
+\addglosscomp{compilation}{The process of breaking down high-level user scripts or programs into low-level machine tokens.}
+\addglosscomp{HSV}{Hue-Saturation-Value, type of colour space aimed at preserving channels for common image changes.}
+\addglosscomp{MAKEPED}{Linkage pedigree format with 6 standard columns of: familyID, patientID, fatherID, motherID, gender, affectation.}
+\addglosscomp{ihaplo.out}{The Allegro haplotypes output file.}
+\addglosscomp{getters and setters}{Functions that retrieve or set a value, usually under an Object-Oriented context.}
+\addglosscomp{Ubuntu}{Type of Linux OS, based upon Debian with a focus on desktop applications and general operability}
+\addglosscomp{Debian}{Type of Linux OS, one of the oldest, very robust.}
+\addglosscomp{Arch}{Type of Linux OS that follows a "Keep It Simple, Stupid" (KISS) ethos.}
+\addglosscomp{Gentoo}{Type of Linux OS aimed for performance users.}
+\addglosscomp{SpiderMonkey}{Gecko's Javascript Engine.}
+\addglosscomp{JavascriptCore}{WebKit's Javascript Engine.}
+\addglosscomp{V8}{Google's Javascript Engine. Integrated more recently into WebKit engine.}
+\addglosscomp{dedicated graphics}{Graphics from a dedicated hardware device with its own memory such as a graphics card.}
+\addglosscomp{embedded graphics}{Graphics from hardware that comes premade with another component, sharing resources with that component.}
+\addglosscomp{Sort Naturally}{Type of sorting algorithm that alternately sorts data alphabetically and numerically (but not alphanumerically).}
+\addglosscomp{DBI}{General Database Interface.}
+\addglosscomp{ARM}{Type of low energy processor used in mobile devices with a small restricted instruction set.}
 \addglosscomp{DOS}{Degree of Separation. }
-\addglosscomp{mipmap}{}
-\addglosscomp{mySQL}{}
-\addglosscomp{OAuth2}{}
-\addglosscomp{LZMA}{}
-\addglosscomp{base64}{}
-\addglosscomp{GET}{}
-\addglosscomp{KineticJS}{}
-\addglosscomp{ConcreteJS}{}
-\addglosscomp{SIGHUP}{}
-\addglosscomp{PHP}{}
-\addglosscomp{HTTP}{}
-\addglosscomp{SSL}{}
-\addglosscomp{CPU}{}
-\addglosscomp{Linux}{}
-\addglosscomp{POSIX}{Portable Operating System Interface}{Standards specification common across Unix and Unix-like OS's}
-\addglosscomp{mutex}{}
-\addglosscomp{PS}{Post Script}
+\addglosscomp{mipmap}{A series of small renders of otherwise large images to be loaded at points where the zoom factor would not otherwise be able to tell the difference in pixel density between the mipmap and the original large image.}
+\addglosscomp{mySQL}{Declerative open-source database for storing records, now owned by Oracle.}
+\addglosscomp{OAuth2}{Type of authentication protocol.}
+\addglosscomp{LZMA}{Lempel-Ziv-Markov chain Algorithm, type of compression method.}
+\addglosscomp{base64}{A type of 64-bit encoding.}
+\addglosscomp{GET}{Type of request-response protocol for accessing data bundled with HTTP headers.}
+\addglosscomp{KineticJS}{2D Javascript framework}
+\addglosscomp{ConcreteJS}{Optimized general-purpose 2D Javascript framework, from the same author as KineticJS.}
+\addglosscomp{SIGHUP}{Signal Hang Up, a signal emitted by a process when the user that spawned the process logs off. Usually kills the process at the same time, but can be overriden using \textbf{nohup}.}
+\addglosscomp{PHP}{Scripting language used on HTTP servers to automate background system tasks.}
+\addglosscomp{HTTP}{Hyper-Text Transfer Protocol, common internet protocol for sending ordered packets of data over the internet with handshaking error checks.}
+\addglosscomp{SSL}{Secure Socks Layer, type of encrypted communication protocol.}
+\addglosscomp{CPU}{Central Processing Unit, the "brain" of a computer.}
+\addglosscomp{Linux}{Free Open-Source operating system concieved by Linus Torvalds.}
+\addglosscomp{POSIX}{Portable Operating System Interface, standards specification common across Unix and Unix-like OS's.}
+\addglosscomp{mutex}{A mutually exclusive variable that cannot be used by a process if another is currently using it (blocking the process).}
+\addglosscomp{PS}{Post Script, vector graphics-centric document format.}
 
 
 
