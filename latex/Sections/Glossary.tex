@@ -31,6 +31,44 @@
         }
 }
 
+\newcommand{\addglossbioacro}[3]{
+
+    \newglossaryentry{bio:#1gloss}{
+                type=biol,
+                name=\glslink{bio:#1}{#2 (\gls{#1})},
+                description={#3}
+    }
+
+	\newglossaryentry{bio:#1}{
+		type=\acronymtype,
+		name={#1},
+		first={#2 (#1)},
+		see=[Glossary:]{\gls{bio:#1gloss}}, 
+		description=\glslink{bio:#1gloss}{#2}
+	}
+}
+
+
+\newcommand{\addglosscompacro}[3]{
+
+    \newglossaryentry{comp:#1gloss}{
+                type=comp,
+                name=\glslink{comp:#1}{#2 (\gls{#1})},
+                description={#3}
+    }
+
+	\newglossaryentry{comp:#1}{
+		type=\acronymtype,
+		name={#1},
+		first={#2 (#1)},
+		see=[Glossary:]{\gls{comp:#1gloss}}, 
+		description=\glslink{comp:#1gloss}{#2}
+	}
+}
+
+
+
+
 \newcommand{\addglosscomp}[2]
 {
         \newglossaryentry{comp:#1}{
@@ -48,7 +86,7 @@
 %\include{glossary}
 %%% Background
 % DNA
-\addglossbio{DNA}{deoxyribonucleic acid}
+\addglossbio{DNA}{Deoxyribonucleic Acid}
 \addglossbio{nucleotides}{FILL}
 \addglossbio{genome}{FILL}
 \addglossbio{chromosomes}{FILL}
@@ -83,7 +121,7 @@
 \addglossbio{translated}{FILL}
 \addglossbio{start codon}{FILL}
 \addglossbio{stop codon}{FILL}
-\addglossbio{mRNA}{FILL}
+\addglossbio{mRNA}{messenger RNA}
 \addglossbio{uracil}{FILL}
 \addglossbio{splicing}{FILL}
 \addglossbio{transcription}{FILL}
@@ -248,6 +286,11 @@
 \addglosscomp{HTTP}{}
 \addglosscomp{SSL}{}
 \addglosscomp{CPU}{}
+\addglosscomp{Linux}{}
+\addglosscomp{POSIX}{Portable Operating System Interface}{Standards specification common across Unix and Unix-like OS's}
+\addglosscomp{mutex}{}
+\addglosscomp{PS}{Post Script}
+
 
 
 

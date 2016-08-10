@@ -3,6 +3,27 @@
 
 \section{Hardware Specification}\label{ref:app:hwspec}
 
+The server hardware used to incorporate the High-Throughput Linkage Analysis Pipeline was a \textbf{Dell PowerEdge R710}, with:
+\begin{spacing}{1.2}
+\begin{itemize}
+\enumdesc{CPU}{16 $\times$ 3.02 GHz.}
+\enumdesc{RAM}{256 GB 1066 MHz Error-Correcting.}
+\enumdesc{Disk}{20 TB SAS (RAID-5).}
+\end{itemize}
+\end{spacing}
+
+\noindent
+The desktop hardware used to develop the HaploHTML5 pipeline was a custom rig, with:
+\begin{spacing}{1.2}
+\begin{itemize}
+\enumdesc{CPU}{AMD A10-7850K APU with Radeon R7 Graphics, 4 x 3.7 GHz }
+\enumdesc{RAM}{24 GB 1366 MHz DDR3.}
+\enumdesc{Disk}{16 TB 7200 rpm}
+\enumdesc{Graphics}{NVidia GTX under Linux \textit{nouveau} open-source driver}
+\end{itemize}
+\end{spacing}
+
+
 
 
 \section{Computing Concepts}
@@ -41,11 +62,10 @@ A colour space is a way to index colours under a certain schema. There are 4 mai
 \enumdesc{CMYK}{ Cyan-Magenta-Yellow-Key; where Key represents the darkness of an image. The colour model is used primarily in printers and uses subtractive mixing to achieve different colour blends (e.g. Green is the subtraction of Yellow and Cyan). Has the same colour scaling patterns as RGB but can produce darker semitones using the K component.}
 \enumdesc{YUV}{ Luminance-ChromaU-ChromaV; where Luminance denotes the brightness and the two chroma channels denote separate colour ranges as shown by the two axes in Figure~\ref{fig:app:yuv}. The colour model makes use of the human eye's lack of color perception compared to awareness of changes in brightness. Early engineers used this 'hack' to reduce the size of TV transmissions by reducing the U and V components of an image without any perceptible difference to the quality of the image.
 
-\fignow{./Sections/images/yuv_scale.png}
+\fignownocap{./Sections/images/yuv_scale.png}
 {YUV scale for Y = 0.5 (compressed). Image courtesy of Wikimedia Commons.}
 {fig:app:yuv}
 {0.3}
-{YUV scale for Y = 0.5 (compressed).}
 
 }
 
@@ -112,11 +132,11 @@ This is where regex takes precedence as it converts a reference string into what
 
 Figure~\ref{fig:fsa} shows how such a pattern is first converted into character-specific states of 'X', 'Y' and blank intermediaries which allow a specific sequence of letters occur by taking either one of paths 'a' or 'b'. This state diagram can be further compacted and optimized into a Deterministic Finite State Automaton (DFSA) which is a simple non-character specific two-state system which allows transitions between states via 'X' and 'Y' input paths. The table below shows possible string matching scenarios using such a system and it shoud be noted that the last string input is not valid for the RegEx given hence why it ends prematurely.
 
-\fignow{./Sections/images/FSA.png}
-{}
+\fignownocap{./Sections/images/FSA.png}
+{Finite State Automaton.}
 {fig:fsa}
 {0.4}
-{Finite State Automaton}
+{}
 
 \begin{center}
 \begin{tabular}{|r|l|}
@@ -188,8 +208,71 @@ The optimizations are too numerous to list, but a few examples are provided belo
 
 
 \subsection{Linux Filesystem}\label{ref:app:linuxfs}
+
+\gls{comp:Linux} \gls{comp:OS}'s have filesystem structure that is well-conserved across different versions (or "flavours") of Linux.
+
+The filesystem tree structure is as follows, stemming off the main branching point '/':
+
+\begin{description}
+	\descitem{/boot}{Bootloader specific files are stored here and are used to load the initial RAM filesystem which in turn loads the full OS.}
+	\descitem{/dev}{Provides special accessors to real and virtual block devices such as terminals, hardisks, input/output buffers, random number streams, etc.}
+	\descitem{/etc}{Stores system-wide variables that are preserved across reboots. Noteable entries are \textit{fstab} which stores (and automatically mounts) the mount points of the hard drives used by the OS,  \textit{mdadm} which stores the configuration of a RAID setup, and \textit{resolv.conf} that is used as a nameserver to resolve internet addresses.}
+	\descitem{/home}{Location of all user data (separated into respective user-specific folders with user-specific access permissions).}
+	\descitem{/mnt}{Generally empty, but can be used as a mount point for anything.}
+	\descitem{/opt}{System-wide scripts and binaries that are not installed through the standard system package manager. Convention states that extragenous software should go here.}
+	\descitem{/proc}{File descriptors of active (or previously active) processes, with accessible properties such as status and system resource usage.}
+	\descitem{/root}{Location of the root user's home directory. Access is frowned upon.}
+	\descitem{/sys}{Where platform-specific device settings are retrieved and set.}
+	\descitem{/var}{System runtime variables populated by normal OS operation. Reset every boot.}
+	\descitem{/tmp}{Same as /var but with user access.}
+	\descitem{/usr}{Where all the system libraries, binaries, shared data resources, and include headers are stored. Most \gls{comp:PATH} locations point here.}
+
+\end{description}
+
+
+Linux also has it's own filesystem types that have limited compatibility with the default Windows filesystems (VFAT and NTFS). 
+
+A few of the more comonly used filesystems are: ext\{2,3,4\}, ReiserFS, BtrFs, XFS, and JFS.  
+
+Each implement partitions and file storage in different ways that lend relative performance boosts in different task-specific ways. 
+
+\subsubsection{Inodes}
+
+Most file systems store files using inodes which are unique descriptors for accessing a file. The reason why filenames are not used as the descriptors themselves is due to the dynamic and changing nature of filenames, wherein a file may be renamed but the file itself remains unchanged. 
+
+It is the inode that assigns the file the new filename without changing the file's location within memory.
+
+Inodes are also useful when linking files via hard and soft symbolic links, where a hard link would point to the actual inode  which would remain valid even if the original file was renamed. A softlink would point only to the original file (which in turn would point to the inode), and would be subject to any changes made to the original file.
+
+
+\subsubsection{POSIX Permissions}
+
+Most Linux and Unix systems are said to be \gls{comp:POSIX}-compliant if they adhere to the principles set by the standard \cite{walli1995posix}.
+
+One of the most  prominent features of the standard is the set of permissions attributed to each file, where file access is restricted to certain users (or certain groups of users) who can perform certain functions upon it.
+
+File functions are independently limited to: Reading, Writing, and Executing. A file can be read and written to, or written and executable, or just executable, or any variation of three options.
+
+Further, these operations can be limited to a triad of users: the owner, the group, and other users.
+
+
 \subsection{Semaphores}\label{ref:app:semaphores}
-\citep{downey_little_2005}
+
+A semaphore is tool that aids in the synchronization in multiple parallel processes/threads such that they can operate concurrently with one another with clashing when accessing the same shared variables.
+
+First invented by Edgar Dijkstra \cite{dijkstra1968cooperating}, they are defined as follows:
+
+\begin{enumerate}
+\item{A semaphore can be set to any value upon initialization, but can only be incremented/decremented thereafter.}
+\item{Each thread that decrements the semaphore must block itself from performing further processing and wait if the semaphore becomes negative. It can only resume processing when another thread increments the semaphore.}
+\item{Each thread that increments the semaphore unblocks another waiting thread.}
+\end{enumerate}
+
+That is; the value of the semaphore (unknown to all threads) represents the number of active threads when positive, and the number of waiting threads when negative \cite{downey_little_2005}.
+
+Semaphores serve as a means for threads to signal each other when to stop and go, as well being \gls{comp:mutex} variables such that no two threads access the same resource at the same time.
+
+
 
 
 
@@ -213,19 +296,14 @@ where:
 \end{spacing}
 
 
-\fignow{./Sections/images/poisson.png}
+\fignownocap{./Sections/images/poisson.png}
 {Poisson Distribution for three different $\lambda$ values for increasing values of \textit{k}.}
 {fig:app:pois}
 {0.6}
-{}
 
 
 
-
-
-
-
-
+\pagebreak
 \section{Results Data}
 
 \subsection{LOD Scores for 21-bit Linkage}
@@ -260,10 +338,10 @@ where:
 \foreach \x in {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22}
 {
 	\vspace{-20pt}
-	\fignow{../writer/Results/images/interesting_cases/109_5k_scenarios/Summary_scenarios_chr\x.jpg}
+	\fignownocap{../writer/Results/images/interesting_cases/109_5k_scenarios/Summary_scenarios_chr\x.jpg}
 		{\vspace{-5pt}Linkage plots of chromosome \x\ for each of the eight analyses}
 		{fig:res:21bitallegrochr\x}
-		{0.7}{Eight scenarios, 21 to 23 bit, chr\x}
+		{0.7}
 }
 
 
