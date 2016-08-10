@@ -42,11 +42,11 @@ Here we look at a variety of pedigrees, each with an increasingly larger bit-siz
 
 Figure~\ref{fig:res:3bit} shows a very simple pedigree; depicting one affected male (2053) amongst unaffected male (2052) and female (2054) siblings from two parents (2056 and 2055). All individuals are genotyped; the parents  and the affected offspring being the main targets of informative meiosis, and the siblings acting as controls.  
 
-The GRR relationship chart shows normal bunching of sib-pairs (red), two close clusters of parent-offspring relations (yellow), and one single unrelated connection (cyan) between the two parents. For small non-consanguineous pedigrees, parents typically exhibit separate clusters of relation to their offspring since allele inheritance is never perfectly even and some offspring will share more alleles with one parent than another. 
+The GRR relationship chart shows normal bunching of sib-pairs (red), two close clusters of parent-offspring relations (yellow), and one single unrelated connection (cyan) between the two parents. For small non-consanguineous pedigrees, parents typically exhibit separate clusters of relation to their offspring since allele inheritance is never perfectly even and some offspring will share more \gls{bio:alleles} with one parent than another.
 
 In larger (usually inbred) pedigrees, these two parental clusters either bunch together due to the parents being more related, or the gap between two outlying parent clusters are filled with other more-related parental clusters to form one large group that is still distinct from other sib-pair and half-sib groups.
 
-The number of markers used for this analysis was 35,155 of which only 9 exhibited Mendelian errors and were filtered out from subsequent analysis. This constitutes 0.025\% of the number of markers and is of no cause for concern, allowing the rest of the analysis to progress.
+The number of \gls{bio:markers} used for this analysis was 35,155 of which only 9 exhibited Mendelian errors and were filtered out from subsequent analysis. This constitutes 0.025\% of the number of markers and is of no cause for concern, allowing the rest of the analysis to progress.
 
 \fignow{../writer/Results/images/standard_cases/115_summary.png}
 {3-bit Autosomal Recessive Pedigree. (Top) Family Tree and GRR, (Middle) Mendelian errors, (Bottom) Genomewide linkage plot.}
@@ -54,7 +54,7 @@ The number of markers used for this analysis was 35,155 of which only 9 exhibite
 {0.94}
 {3-bit Automal Recessive Pedigree}
 
-Due to the low bit-size, the estimated lod score for the pedigree gave a maximum score of 0.2499 (Allegro and Genehunter), which is reflected in the genome-wide plot. Unfortunately most regions of the genome reached this score ( $\sim>$ 80\%) likely due to there not being enough lack of homology between the affected and unaffected siblings. The score is also far below the minimum LOD score for significant linkage (LOD $>$ 3.3 \cite{center1995genetic}) meaning that the analysis was likely not very useful in identifying or excluding regions of interest for a causative disease locus.
+Due to the low bit-size, the estimated lod score for the \gls{bio:pedigree} gave a maximum score of 0.2499 (Allegro and Genehunter), which is reflected in the genome-wide plot. Unfortunately most regions of the \gls{bio:genome} reached this score ( $\sim>$ 80\%) likely due to there not being enough lack of homology between the affected and unaffected siblings. The score is also far below the minimum \gls{bio:LOD} score for significant linkage (LOD $>$ 3.3 \cite{center1995genetic}) meaning that the analysis was likely not very useful in identifying or excluding regions of interest for a causative disease locus.
 
 \subsubsection*{5-bit Autosomal Recessive}
 
@@ -62,7 +62,7 @@ This pedigree is very similar to the 3-bit pedigree above, but the bit-size incr
 
 55 SNPs (of 41,479 markers) were identified having Mendelian errors, with a cluster of 6 towards the telomeric p-arm of chromosome 8. Removing these from the analysis also had negligible impact (0.133\%).
 
-The estimated LOD score was 0.8519 (Allegro and Genehunter) which was once again reached by the linkage with a smaller number of peaks to indicate locus of interest. Though a single causative peak could not be determined, wide regions of exclusion defined chromosomes 2, 3, 6, and 7, as well much narrower peaks genome-wide.
+The estimated LOD score was 0.8519 (Allegro and Genehunter) which was once again reached by the linkage with a smaller number of peaks to indicate locus of interest. Though a single causative peak could not be determined, wide regions of exclusion defined \gls{bio:chromosomes} 2, 3, 6, and 7, as well much narrower peaks genome-wide.
 
 We can also see a few distinct types of peaks: the nicely squared "flat" plateau peaks, the "rounded" bullet-like peaks, and the sharp "shard" peaks. Flat peaks tend to be of more worth to the analysis because they indicate that there are at minimum three markers exhibiting the same LOD score to constitute a left-wall, a right-wall and a point in-between. 
 
@@ -124,11 +124,11 @@ This created some disarray in the GRR plots for run 09 and 10, and even some rel
 
 \subsubsection*{15-bit X-Linked Dominant}
 
-Figure~\ref{fig:res:15summary} below shows a larger pedigree, with three individuals of unknown affectation status.  The penetrance model is dominant because an affected individual resides at each generation, and it is suspected to be X-linked because of the absence of male-male transmission though that is not to say that it is not autosomal.
+Figure~\ref{fig:res:15summary} below shows a larger pedigree, with three individuals of unknown affectation status. The penetrance model is \gls{bio:dominant} because an affected individual resides at each generation, and it is suspected to be X-linked because of the absence of male-male transmission though that is not to say that it is not autosomal.
 
-Normally when a penetrance model is fully described in a pedigree, then individuals of unknown affectation are pre-emptively set to either affected or unaffected in order to better accommodate the model.  Here the phenotype is not fully penetrant, so ambiguity was purposefully left for the linkage  pipeline to interpret.
+Normally when a penetrance model is fully described in a pedigree, then individuals of unknown affectation are pre-emptively set to either affected or unaffected in order to better accommodate the model. Here the \gls{bio:phenotype} is not fully penetrant, so ambiguity was purposefully left for the linkage pipeline to interpret.
 
-Despite autosomal dominant and X-linked dominant not being biologically compatible models, computationally they are processed in the same run because each chromosome is treated as fully independent of each other. The linkage pipeline treats X-linked models as "special cases" in conjunction with the standard dominant and recessive runs. It is for this reason that the X chromosome is included with autosomal chromosomes in the genome-wide plots, though the historical threshold for significant linkage is lowered to 2 \cite{morton1955sequential}.
+Despite \gls{bio:autosomal} dominant and X-linked dominant not being biologically compatible models, computationally they are processed in the same run because each chromosome is treated as fully independent of each other. The linkage pipeline treats X-linked models as "special cases" in conjunction with the standard dominant and \gls{bio:recessive} runs. It is for this reason that the X chromosome is included with autosomal chromosomes in the genome-wide plots, though the historical threshold for significant linkage is lowered to 2 \cite{morton1955sequential}.
 
 The low 162 Mendelian errors are usually negligible for marker set of 41,480 SNPs (0.391\%), but the close bunching of 52 SNPs in the q-arm of chromosome X raises some concern on possible genotyping errors. This is later reflected in the genome-wide linkage plot which consists of extremely "noisy" peaks: sharp and intermittent, consisting of no more than two markers before the signal is lost and drops below significance, only to resurrect again within close proximity of the previous signal.
 
@@ -156,7 +156,7 @@ Further probing of the pedigree under different models (autosomal/X-linked reces
 
 \subsubsection*{18-bit Autosomal Recessive}
 
-Figure~\ref{fig:res:18summary} shows a family with an inbreeding loop stemming primarily from the founders on the right (101 and 102) that results in a second-cousin consanguineous pairing (401 and 402).
+Figure~\ref{fig:res:18summary} shows a family with an inbreeding loop stemming primarily from the \gls{bio:founders} on the right (101 and 102) that results in a second-cousin \gls{bio:consanguineous} pairing (401 and 402).
 
 Occasionally members of consanguineous families have a tendency of obscuring such relations, but the members of this family are fully described with their GRR relationship plot clustering in a good distinct groupings. The lack of extra relations in the plot is due to the only 7 of the individuals being genotyped (401, 402, 404, 403, 501, 502, 503).
 
@@ -230,7 +230,7 @@ The width of the chromosome 4 peak (26.8 Mbp) does not narrow with the addition 
 \subsubsection{29-bit Autosomal Recessive}
 This is the largest family ever considered by the pipeline. Figure~\ref{fig:res:29bitped}  consists of three inbreeding loops  that span four generations stemming from the same founder couple, where all individuals in the last generation were genotyped along with their parents. Parent-offspring genotyping is always more favoured than grandparent-offspring genotyping because it leaves little ambiguity in tracing the path of inheritance of the disease locus, and makes detecting Mendelian errors much more effective. 
 
-Three pedigrees were used in this analysis, the first being the 29-bit pedigree used to lend power to the linkage study and the latter two (Figure~\ref{fig:res:29bitpedother}) not being informative for linkage at all but aided in the haplotype reconstruction process to reconstitute the genotypes of grandparents and great-grandparents.
+Three pedigrees were used in this analysis, the first being the 29-bit pedigree used to lend power to the linkage study and the latter two (Figure~\ref{fig:res:29bitpedother}) not being informative for linkage at all but aided in the \gls{bio:haplotype} reconstruction process to reconstitute the genotypes of grandparents and great-grandparents.
 
 \fignow{../writer/Results/images/standard_cases/931_pedigree.png}
 	{29-bit Autosomal Recessive Pedigree, 4 affecteds in the last generation.}
@@ -431,9 +431,9 @@ The bottom image represents a zoomed out Y-axis scale of the same data by 5 orde
 
 The multi-core run-times shown in Table~\ref{table:res:allegromultiruntimes} are plotted above in Figure~\ref{fig:res:multitimes}, where individual chromosome-runtimes were ommitted for simplicity.   Runtimes remain reasonably linear from 3-bit to 15-bits where a sharp rise in runtime occurs 18-bits where the system resources requested by active Allegro instances begin to compete for memory.
 
-Due to RAM constraints, the pedigrees larger than 18-bits were not able utilize parallelization effectively, only being able to process a single chromosome at a time (i.e. single-core) and so they were removed from the analysis.
+Due to \gls{comp:RAM} constraints, the pedigrees larger than 18-bits were not able utilize parallelization effectively, only being able to process a single chromosome at a time (i.e. single-core) and so they were removed from the analysis.
 
-For the 29-bit pedigree, Simwalk performed the genomewide analysis and then Allegro reconfirmed the chromosome 16 peak. Allegro took 315615.20 seconds (3.7 days) to process chromosome 16 alone. A large portion of the processing at that point was memory paging in order to preserve all the LOD calculations being made.  Simwalk writes straight to disk and has an extremely small RAM usage globally, so despite being the traditionally slower program (due to the sliding-window approach creating numerous overlaps), it did not suffer from paging bottlenecks. Due to the Simwalk parallelization script not being chromosome-specific (i.e. it executes any window-processing job it is dispatched), only the genome-wide runtime was recorded at 682117.03 seconds ( $\sim$ 7.9 days).
+For the 29-bit pedigree, Simwalk performed the genomewide analysis and then Allegro reconfirmed the chromosome 16 peak. Allegro took 315615.20 seconds (3.7 days) to process chromosome 16 alone. A large portion of the processing at that point was memory \gls{comp:paging} in order to preserve all the LOD calculations being made. Simwalk writes straight to disk and has an extremely small RAM usage globally, so despite being the traditionally slower program (due to the sliding-window approach creating numerous overlaps), it did not suffer from paging bottlenecks. Due to the Simwalk parallelization script not being chromosome-specific (i.e. it executes any window-processing job it is dispatched), only the genome-wide runtime was recorded at 682117.03 seconds ( $\sim$ 7.9 days).
 
 
 
@@ -455,7 +455,7 @@ Family 109 in the figure below consists of many members and so it was prudent to
 
 Figure~\ref{fig:res:haplo23compare} shows a side-by-side comparison of the pedigree given in Figure~\ref{fig:res:haplo23ped}. The top image shows the HaploPainter rendition\footnote{manually modified to be horizontally aligned since it normally only produces generation-based vertical plots.}, and the bottom the HaploHTML5 render.
 
-The first red arrow marks a point between rs7693827 and rs11735648  which refers to a recombination in both haploblock renditions where the founder allele switches to a red block HaploPainter which is equivalent to the green block in HaploHTML5. Both blocks persist fully in the right allele of 32707, 32709, 7610, and 327011. The red arrow at point 3 shows agreability too between the applications, though HaploHTML5 appears to have selected two very similar looking colors for the pink block just above point 3, which looks identical to the right allele of 32704 but has a different set of genotypes. Debugging the allele shows that HaploHTML5 does assign them different color groups, but the groups themselves have high colour homology due to an over abundance of founder alleles (9 founders, 18 alleles) and a limited selection of colors. 
+The first red arrow marks a point between rs7693827 and rs11735648 which refers to a recombination in both \gls{bio:haploblock} renditions where the founder allele switches to a red block HaploPainter which is equivalent to the green block in HaploHTML5. Both blocks persist fully in the right allele of 32707, 32709, 7610, and 327011. The red arrow at point 3 shows agreability too between the applications, though HaploHTML5 appears to have selected two very similar looking colors for the pink block just above point 3, which looks identical to the right allele of 32704 but has a different set of genotypes. Debugging the allele shows that HaploHTML5 does assign them different color groups, but the groups themselves have high colour homology due to an over abundance of founder alleles (9 founders, 18 alleles) and a limited selection of colors.
 
 \pagebreak
 
@@ -491,7 +491,7 @@ However there is a slight difference at the point 2 location(s) where HaploHTML5
 
 A better compromise would be to allow the inclusion of marker map data (such as is read in by HaploPainter) so that the algorithm can determine whether the inter-marker distances surrounding a marker is great enough to warrant a haploblock on its own.
 
-Figure~\ref{fig:res:haplo29comparehomology} below compares the homology tools used by the two applications. HaploPainter was adapated to take in messner files and marker pairs, where regions of homology could be detected using our haploregion.py script. Messner regions are boxed in a blue regions, and regions of homology are surrounded by red boxes where in this case the affecteds are all homozygous for the regions shown, with the extra condition that the unaffecteds are not also similarly homozygous.
+Figure~\ref{fig:res:haplo29comparehomology} below compares the homology tools used by the two applications. HaploPainter was adapated to take in messner files and marker pairs, where regions of homology could be detected using our haploregion.py script. Messner regions are boxed in a blue regions, and regions of homology are surrounded by red boxes where in this case the affecteds are all \gls{bio:homozygous} for the regions shown, with the extra condition that the unaffecteds are not also similarly homozygous.
  HaploHTML5 performs all homology detection within the browser, but uses a different approach where it assumes that homology detection is not so binary and assigns a "homology score" at each locus which is overlayed against the haplotypes and marker slider. HaploPainter is much clearer in showing homology in this instance, but HaploHTML5 allows forr some leeway for erroneous genotypes that might otherwise obstruct a binary homology detection.
 \end{spacing}
 

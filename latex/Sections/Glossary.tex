@@ -15,10 +15,11 @@
 }
 
 %\usepackage[nomain]{glossaries}
-\usepackage[nopostdot,acronym,toc,section=section,style=indexgroup]{glossaries}
+\usepackage[nopostdot,acronym,toc,numberedsection,section=section,style=indexgroup]{glossaries}
 
-\newglossary*{biol}{Glossary of Biology Terms}
-\newglossary*{comp}{Glossary of Computing Terms}
+
+\newglossary*{biol}{Biological Terms}
+\newglossary*{comp}{Computing Terms}
 \newglossary*{prog}{Program Listing}
 \makeglossaries
 
@@ -88,10 +89,10 @@
 % DNA
 \addglossbio{DNA}{Deoxyribonucleic Acid.}
 \addglossbio{nucleotides}{Sub-units of DNA, consists of a phosphate group and nucleobase.}
-\addglossbio{genome}{complete genetic material present in an organism.}
-\addglossbio{chromosomes}{long DNA strands bound together.}
+\addglossbio{genome}{Complete genetic material present in an organism.}
+\addglossbio{chromosomes}{Long DNA strands bound together.}
 \addglossbio{nucleobase}{Four bases: A,T,C,G.}
-\addglossbio{base pairs}{nucleobases that span across the two chromosome strands.}
+\addglossbio{base pairs}{Nucleobases that span across the two chromosome strands.}
 \addglossbio{double helix}{Shape of helical DNA backbone.}
 %-    Polarity
 \addglossbio{forward}{5' to 3' orientation.}
@@ -99,10 +100,10 @@
 \addglossbio{reverse}{3' to 5' orientation.}
 \addglossbio{antisense}{See reverse.}
 %-    Chromosomes
-\addglossbio{chromatin}{condensed DNA wrapped around proteins to fit in nucleus}
-\addglossbio{haploid}{cell with a single set of unpair chromosomes.}
+\addglossbio{chromatin}{Xondensed DNA wrapped around proteins to fit in nucleus}
+\addglossbio{haploid}{Xell with a single set of unpair chromosomes.}
 \addglossbio{pairs}{}
-\addglossbio{diploid}{cell with two sets of chromosomes from each parent.}
+\addglossbio{diploid}{Cell with two sets of chromosomes from each parent.}
 \addglossbio{centromere}{Central structure binding pairs of chromosomes together.}
 \addglossbio{telomeres}{Caps at the ends of chromosomes that shorten every cell division.}
 \addglossbio{homologs}{Pairs of chromosomes.}
@@ -122,7 +123,7 @@
 \addglossbio{start codon}{ATG.}
 \addglossbio{stop codon}{TAA, TGA, TAG.}
 \addglossbio{mRNA}{messenger RNA}
-\addglossbio{uracil}{mRNA equivalent of Thymine}
+\addglossbio{uracil}{The mRNA equivalent of Thymine}
 \addglossbio{splicing}{Process of cutting introns out of gene locus and stitching together exons.}
 \addglossbio{transcription}{DNA being coped into mRNA by \glslink{bio:RNA polymerase}}
 \addglossbio{amino-acid}{Sub unit of Protein}
@@ -158,8 +159,8 @@
 %-   Mendel's Lawss
 \addglossbio{recombinant}{Offspring with genotypes that do not match any single parent at a given locus.}
 \addglossbio{non-recombinant}{Offspring with genotypes that do match a single parent at a given locus. All offspring a recombinant across an entire chromosome.}
-\addglossbio{dominant}{heterozygous allele where phenotype manifests.}
-\addglossbio{recessive}{heterozygous allele where phenotype does not manifest.}
+\addglossbio{dominant}{Heterozygous allele where phenotype manifests.}
+\addglossbio{recessive}{Heterozygous allele where phenotype does not manifest.}
 %-  Mendel's Laws Revised
 \addglossbio{multi-allelic}{Genotypes with more that just two alleles}
 \addglossbio{polygenic traits}{Inheritance of phenotype affected by more than one gene.}
@@ -169,7 +170,7 @@
 \addglossbio{founders}{Members of a pedigree who have no parents.}
 \addglossbio{non-founders}{Members of a pedigree who inherit genetic data from founders.}
 \addglossbio{founder alleles}{Unique alleles that contribute to a pedigree, portions of which are inherited by non-founders.}
-\addglossbio{bit size}{the size of the pedigree as determined by the number of founders, non-founders, and genotyped founder couples.}
+\addglossbio{bit size}{The size of the pedigree as determined by the number of founders, non-founders, and genotyped founder couples.}
 \addglossbio{consanguineous}{Relating to individuals who breed within the family and cause inbreeding loops in the pedigree.}
 \addglossbio{carriers}{Individuals who carry the disease allele but not the phenotype}
 \addglossbio{autozygous}{Homozygous alleles that arise from separate paths of descent as a result of consanguineous interbreeding.}
@@ -191,8 +192,8 @@
 %
 %%METHODS
 \addglossbio{trio}{A single mother-father-offspring group.}
-\addglossbio{IBS}{identity-by-state}
-\addglossbio{IBD}{identity-by-descent}
+\addglossbio{IBS}{Identity-By-State, Genotypes matching in two individuals by chance.}
+\addglossbio{IBD}{Identity-By-Descent, Genotypes matching in two individuals due to a common ancestor.}
 \addglossbio{ELOD}{Expected LOD score.}
 \addglossbio{ihaplo.out}{The Allegro haplotypes output file.}
 %
@@ -211,7 +212,8 @@
 \addglosscomp{CUDD}{Colarado University Decision Diagrams, an extension of MTBDDs.}
 \addglosscomp{VRAM}{Virtual RAM, the addition of real RAM and swap space.}
 \addglosscomp{swap space}{Reusable memory on disk that acts like RAM, only much slower.}
-\addglosscomp{horizontal-buffering}{}
+
+\addglosscomp{horizontal-buffering}{Large text that is not often delimited by newline characters can produce significant latency in text editors that try to load the entire line into memory. Some text editors support horizontal buffering which only loads a portion (usually just the visible component) of the text to overcome this issue.}
 
 % HAPLO
 \addglosscomp{forking}{The act of splitting off a task from the main control flow and letting it perform work in parallel.}
@@ -283,11 +285,12 @@
 \addglosscomp{HTTP}{Hyper-Text Transfer Protocol, common internet protocol for sending ordered packets of data over the internet with handshaking error checks.}
 \addglosscomp{SSL}{Secure Socks Layer, type of encrypted communication protocol.}
 \addglosscomp{CPU}{Central Processing Unit, the "brain" of a computer.}
-\addglosscomp{Linux}{Free Open-Source operating system concieved by Linus Torvalds.}
+\addglosscomp{Linux}{Free Open-Source operating system conceived by Linus Torvalds.}
 \addglosscomp{POSIX}{Portable Operating System Interface, standards specification common across Unix and Unix-like OS's.}
 \addglosscomp{mutex}{A mutually exclusive variable that cannot be used by a process if another is currently using it (blocking the process).}
 \addglosscomp{PS}{Post Script, vector graphics-centric document format.}
 
+\addglosscomp{GNU}{Recursive Acronym: "GNU's Not Unix". Coined by Richard Stallman founder of the Free Software Movement.}
 
 
 

@@ -1,7 +1,7 @@
 \chapter[Methods - HaploHTML5: A Comprehensive Pedigree and\\Haplotype Analysis Suite]{Methods - HaploHTML5: A\\Comprehensive Pedigree and\\Haplotype Analysis Suite}
 
 \vspace{10pt}
-The problems with current haplotype visualization tools highlighted in the previous section prompted the need for a new tool that would meet the shortcomings of its predecessors. Such a tool would have to be developed with a more modern perspective on the needs of both the geneticists and the data they deal with.
+The problems with current \gls{bio:haplotype} visualization tools highlighted in the previous section prompted the need for a new tool that would meet the shortcomings of its predecessors. Such a tool would have to be developed with a more modern perspective on the needs of both the geneticists and the data they deal with.
 
 \section{Application Requirements}
 
@@ -28,7 +28,7 @@ Before development can begin to address the requirements set out in this schema,
 
 The first step in any development process is to choose a basis that would allow us to program more efficiently without having to "reinvent the wheel". There are many ways to perform the same task, but some ways are more geared towards certain types of tasks than others, with each method having their own respective advantages and disadvantages.  
 
-E.g. a data-mining task that requires some mathematical capabilities as well as the ability to read/write to file. If hardware constraints are not an issue, then a large encompassing framework that provides a vast array of utilities such as file operations, operating system non-specifics, and even its own filtering functions may suit the task well, albeit at the cost of high memory and CPU resources. However if the focus is more upon optimization, then maybe a smaller underlying framework that provides only basic file utilities may be sufficient for the task.
+E.g. a data-mining task that requires some mathematical capabilities as well as the ability to read/write to file. If hardware constraints are not an issue, then a large encompassing framework that provides a vast array of utilities such as file operations, operating system non-specifics, and even its own filtering functions may suit the task well, albeit at the cost of high memory and \gls{comp:CPU} resources. However if the focus is more upon optimization, then maybe a smaller underlying framework that provides only basic file utilities may be sufficient for the task.
 
 The problem, of course, is the constant balance between defining just the right amount of specificity in the task at hand without compromising the ability to implement further features at a later time. A constant mantra spoken to generations of university undergraduates in computer science: "Never optimize too early".
 
@@ -41,9 +41,9 @@ Programming is a transferable skill; practice in one will aid in the practice of
 
 The applications produced by different languages are typically split into two groups; scripts and programs, each with their own forms of accession and distribution.
 
-Scripting languages such as Bash, Javascript, Perl, and Python \cite{vanrossum2010python} are high-level runtime dependent languages written in plain-text into files that can be directly executed by their respective interpreters. Scripts are said to be open-source, where to share or distribute the script is to openly share the code source with all users.
+Scripting languages such as Bash, Javascript, Perl, and \gls{comp:Python} \cite{vanrossum2010python} are high-level runtime dependent languages written in plain-text into files that can be directly executed by their respective interpreters. Scripts are said to be open-source, where to share or distribute the script is to openly share the code source with all users.
 
-Programs allude to languages where all the files containing the code are used to generate a binary that contains a reduction of all the files related to the application parsed into machine code; namely C++ and Java. These binaries are distributed to end-users but the users cannot see the code source used to create the binary\footnote{here are however numerous methods to reverse-engineer the code source from a binary.}. It is then up to developer to share their code (making the program open-source) so that the user can compile the binary themselves, or the developer can choose not to share their code at all (making the program closed-source) and it is then up to the user to decide whether the binary is trustworthy or not\footnote{The problem with closed-source development is the room for abuse in which code can be written with malicious intent without the end-user knowing about it.}.
+Programs allude to languages where all the files containing the code are used to generate a binary that contains a reduction of all the files related to the application parsed into machine code; namely \gls{comp:C++} and Java. These binaries are distributed to end-users but the users cannot see the code source used to create the binary\footnote{here are however numerous methods to reverse-engineer the code source from a binary.}. It is then up to developer to share their code (making the program open-source) so that the user can compile the binary themselves, or the developer can choose not to share their code at all (making the program closed-source) and it is then up to the user to decide whether the binary is trustworthy or not\footnote{The problem with closed-source development is the room for abuse in which code can be written with malicious intent without the end-user knowing about it.}.
 
 Open-source applications are also avenues for the misuse of the developers original intention to the distribution and modification of their code\footnote{For an overview of the various types of licensing in digital media, please see the Licensing section on page~\pageref{ref:app:licensing} in the Appendix.}.
 
@@ -54,7 +54,7 @@ There are times when an application often needs to execute multiple tasks simult
 Threading is mainly implemented via three methods:
 
 \begin{enumerate}
-\enumline{Run and Wait}{A thread is bound to a function and executed immediately in parallel to the normal flow of code execution (a method known as \gls{comp:forking}). The rest of the code execution resumes normally until it reaches a portion in the code where it is specified that it must wait and block all further execution until the thread finishes, where control is then handed back to the main process. Numerous threads can be spawned, and numerous block calls can be made. Bash implements this behaviour by default using the '\&' modifier to fork off a process and the 'wait' command to block. \gls{comp:C++}, \gls{comp:Java}, and \gls{comp:Perl} incorporate this basic forking methodology too in their respective \gls{comp:standard template libraries}.}
+\enumline{Run and Wait}{A thread is bound to a function and executed immediately in parallel to the normal flow of code execution (a method known as \gls{comp:forking}). The rest of the code execution resumes normally until it reaches a portion in the code where it is specified that it must wait and block all further execution until the thread finishes, where control is then handed back to the main process. Numerous threads can be spawned, and numerous block calls can be made. \gls{comp:Bash} implements this behaviour by default using the '\&' modifier to fork off a process and the 'wait' command to block. \gls{comp:C++}, \gls{comp:Java}, and \gls{comp:Perl} incorporate this basic forking methodology too in their respective \gls{comp:standard template libraries}.}
 \enumline{Queue and Dispatch}{Threads are not executed straight away but are treated as jobs that are added to a queue. Jobs are then dispatched from this queue on a first-come first-serve basis to any available threads. If there are no available threads, then the jobs wait in the queue until there are. This method is used primarily in batch processing where the job types are similar and the code is parallelizing data would otherwise have been iterated through via a standard for loop. Not many languages incorporate this natively, with Bash relying on the parallel framework\footnote{See \gls{prog:parallel} specification within the Program Listings (page~\pageref{ref:meth:proglist}).}, and other languages dependent on external implementations.}
 \enumline{Asynchronous Callback}{This structure does not follow the traditional sequential flow of control; rather that there is no "main" flow of control, and all code blocks instead inhabit separate realms which are all assumed to be independent of each other and can be executed concurrently, unless a dependency between a group of blocks is detected in which case blocks within the group are executed sequentially.
 
@@ -69,7 +69,7 @@ Threading is mainly implemented via three methods:
 }
 \end{enumerate}
 
-This asynchronous callback structure is native to Javascript, where there is no guarantee to the order in which two separate lines of code will execute; the interpreter decides what load order is best based upon a dependency model it creates. The Qt framework which has bindings in both C++, Python, and Java, also incorporates this model using a "signals-and-slots" architecture where functions are bound to 'slots' (code blocks) which emit 'signals' that prompt other slots into action, where a termination signal is a holder for a callback function.
+This asynchronous callback structure is native to Javascript, where there is no guarantee to the order in which two separate lines of code will execute; the interpreter decides what load order is best based upon a dependency model it creates. The \gls{comp:Qt} framework which has bindings in both C++, Python, and Java, also incorporates this model using a "signals-and-slots" architecture where functions are bound to 'slots' (code blocks) which emit 'signals' that prompt other slots into action, where a termination signal is a holder for a callback function.
 
 Each type of multi-threading process is suited to different tasks, but the asynchronous callback architecture removes a lot of the user-imposed blocking processes and automatically derives the most efficient method to handle concurrent tasks. In order for a developer to effectively wield the other two methods, they must have at least a general understanding of mutual exclusive variables and semaphores\footnote{See Semaphores section in Appendix on page~\pageref{ref:app:semaphores}.}. 
 
@@ -168,7 +168,7 @@ Javascript's asynchronous callback structure can take some getting used to, but 
 
 One concept that was not explored in the previous section due to the uncertain nature of it is the "shelf life" of a language. The easier it is for a language to program in, the more likely it will have longer popularity amongst  developers as well as better future support since more people would have invested their time in it. 
 
-Languages come and go, but Javascript is here to stay with every major browser supporting some version of it; an act that prompted the drive for hardware accelerated graphics via the WebGL and canvas initiative that has only further ensured the future of the language.
+Languages come and go, but Javascript is here to stay with every major browser supporting some version of it; an act that prompted the drive for hardware accelerated graphics via the \gls{comp:WebGL} and canvas initiative that has only further ensured the future of the language.
 
 
 \subsection{A Case For Open Source}
@@ -201,7 +201,7 @@ Flash used to be the main plugin that covered all the media requirements that br
 
 Flash is scripted in a language called Actionscript which is also ECMAScript based, and developed a very longstanding loyal following with the new generation of game developers and web advert designers because of the ease-of-use it provided for dealing with vector graphics.
 
-However the closed-source nature of Flash\footnote{Created by Macromedia and later acquired by Adobe.}, paired with continuous security risks and update requests, the non-free proprietary nature of its IDE, and its reluctant uptake of hardware acceleration made its approval wane over time. The final nail in coffin was sealed however, when Adobe dropped Flash support for Linux altogether in 2012\footnote{See: \url{http://www.adobe.com/devnet/flashplatform/whitepapers/roadmap.html}} and effectively managed to distance itself from a large portion of its fanbase. 
+However the closed-source nature of Flash\footnote{Created by Macromedia and later acquired by Adobe.}, paired with continuous security risks and update requests, the non-free proprietary nature of its IDE, and its reluctant uptake of hardware acceleration made its approval wane over time. The final nail in coffin was sealed however, when Adobe dropped Flash support for \gls{comp:Linux} altogether in 2012\footnote{See: \url{http://www.adobe.com/devnet/flashplatform/whitepapers/roadmap.html}} and effectively managed to distance itself from a large portion of its fanbase.
 
 This created a noticeable gap in trusted content, and the need for a new specification that could provide media support without the need for insecure/proprietary plugins prompted the conception of the HTML5 schema that all modern browsers strive to follow.
 
@@ -229,7 +229,7 @@ However, large collections of numbers (or number arrays) quickly begin to eat at
 
 Consider haplotype data which in the case of SNPs represents exactly 3 values: 1 (first allele), 2 (not first allele), and 0 (error). This can be captured very easily by 2-bits ($2^2 = 4$ unique addresses), but under the old array model each haplotype would be contained under 32-bits on a 32-bit platform.
 
-Assuming 1,000 markers for a given chromosome, this translates to 32,000 bits to capture the haplotypes with 30,000 of those bits being padded with nothing but zeros.  An 8-bit Typed Array saves a lot of this redundancy and uses at most 8,000 bits to represent the data which is a memory saving multiplier of 4 to 8 times depending on platform. 8-bit arrays allow for each element to have ($2^8 =$) 256 possible values which very easily covers the number of alleles represented by polymorphic markers.
+Assuming 1,000 \gls{bio:markers} for a given chromosome, this translates to 32,000 bits to capture the haplotypes with 30,000 of those bits being padded with nothing but zeros. An 8-bit Typed Array saves a lot of this redundancy and uses at most 8,000 bits to represent the data which is a memory saving multiplier of 4 to 8 times depending on platform. 8-bit arrays allow for each element to have ($2^8 =$) 256 possible values which very easily covers the number of \gls{bio:alleles} represented by \gls{bio:polymorphic} markers.
 
 With the ECMAScript6 specification came class and inheritance models, which already existed under the Object model but now provided bindings for the more familiar syntax that object-oriented developers were used to.
 
@@ -354,7 +354,7 @@ Efficient resource-usage should not be a concern of a developer in a modern age,
 
 \subsubsection{KineticJS}
 
-KineticJS follows the same easy syntax as jCanvas, but with the addition of a core interaction shape model. Shapes can now be created first, modified, added to layers, and assigned other custom properties before being rendered onto the screen. This greatly simplifies the development process, since changes can be made to  the active scene and rendered/updated at the developers will. 
+\gls{comp:KineticJS} follows the same easy syntax as jCanvas, but with the addition of a core interaction shape model. Shapes can now be created first, modified, added to layers, and assigned other custom properties before being rendered onto the screen. This greatly simplifies the development process, since changes can be made to the active scene and rendered/updated at the developers will.
 
 \begingroup
 \begin{spacing}{1}
@@ -391,7 +391,7 @@ KineticJS seems to provide the relevant WebGL canvas extensions required to crea
 
 The application was developed at first using small terminal text editors such as \gls{prog:nano} and \gls{prog:vi}, but as the need for multiple buffers to be open at the same time became apparent, \gls{prog:emacs} was adopted. Emacs is a terminal text editor, but has modules that allow for word \gls{comp:autocompletion}, \gls{comp:compilation}, command testing, and many more via the (M)EPLA\footnote{(Milkypostman's) Emacs Lisp Package Archive, a large collection of script extensions for Emacs \url{https://github.com/melpa/melpa}.} repository \cite{stallman1981emacs}.
 
-In later stages of development the graphical \gls{prog:SublimeText} editor was used, providing the standard IDE features such as split views, multiple renaming, function usage, and code syntax highlighting (with support for the \gls{comp:ECMAScript6} schema).
+In later stages of development the graphical \gls{prog:SublimeText} editor was used, providing the standard \gls{comp:IDE} features such as split views, multiple renaming, function usage, and code syntax highlighting (with support for the \gls{comp:ECMAScript6} schema).
 
 The application process was split primarily into two main groups of focus: the user interface, and the theoretical backbone. A great deal of work was performed in user interface section for rendering pedigrees, but these will be discussed later. We will first explore the theoretical core of the application that tackles the two main issues of this thesis: Haploblock Resolution, and X-Linked Inheritance. 
 
@@ -400,7 +400,7 @@ The application process was split primarily into two main groups of focus: the u
 
 Haploblock resolution is the method of phasing a set of genotypes from related individuals to generate haplotypes, which are then used to determine points of recombination between parent-offspring trios under the heuristic of a genetic model and a likelihood over a locus.
 
-Table~\ref{table:haplo:trioalleles} shows the four main trio cases that cater for the combination of different parental alleles that are presented, as well as the possible child alleles from such variations.
+Table~\ref{table:haplo:trioalleles} shows the four main \gls{bio:trio} cases that cater for the combination of different parental alleles that are presented, as well as the possible child alleles from such variations.
 
 
 \begin{table}[h]
@@ -432,7 +432,7 @@ Heterozygous    &         & AB &    & N & Y & Y & B\\
 
 For the sake readability and clarity, we will define three types of alleles: \textit{sealed} (unambiguous), \textit{bound} (ambiguous, parent specific), and \textit{orphaned} (ambiguous, non-parent specific).
 
-The majority of ambiguous alleles stem from the combination of homozygous and heterozygous parental alleles, however they are all of the bound type since the attributing parent of an allele is always known even if the specific allele is not (see the PS field). 
+The majority of ambiguous alleles stem from the combination of \gls{bio:homozygous} and \gls{bio:heterozygous} parental alleles, however they are all of the bound type since the attributing parent of an allele is always known even if the specific allele is not (see the \gls{comp:PS} field).
 
 The most ambiguous group by far are the identical homozygous parental alleles, containing only orphaned alleles without any parental-specificity at all.
 
@@ -483,7 +483,7 @@ Each strategy comes with their own advantages and drawbacks, but these are discu
 
 \subsubsection{Implementation}
 
-The pseudocode code below demonstrates the underlying method used to iterate through a list of markers, extract the genotype trios for a given marker, and then crawl back and forward from that marker location to find the nearest unambiguously phased markers. 
+The pseudocode code below demonstrates the underlying method used to iterate through a list of markers, extract the genotype trios for a given marker, and then crawl back and forward from that marker location to find the nearest unambiguously \gls{bio:phased} markers.
 
 
 \begingroup
@@ -538,7 +538,7 @@ One more variant of this method that provided 2x speedup in the process was to u
 
 \subsubsection{Discussion of Approach}
 
-The 2x speedup variant method raises the concern that the search may be greedily optimistic; with uncertain genotypes towards the end of analysis being too dependent upon the uncertain genotypes analysed just prior. This could effectively "box" the later uncertain genotype trios into more restricted groups, since the former iterations aggressively remove potential groups from the back-selection; creating the tendency of resisting crossover events in favour of maximising the current haploblock. Though not necessarily wrong\footnote{A solution will always be reached since a crossover event will be prompted eventually (at maximum) just before the last flanking sealed genotype.}, it may create a noticeable disparity in the distribution of haploblock sizes in later generations.
+The 2x speedup variant method raises the concern that the search may be greedily optimistic; with uncertain genotypes towards the end of analysis being too dependent upon the uncertain genotypes analysed just prior. This could effectively "box" the later uncertain genotype trios into more restricted groups, since the former iterations aggressively remove potential groups from the back-selection; creating the tendency of resisting \gls{bio:crossover} events in favour of maximising the current haploblock. Though not necessarily wrong\footnote{A solution will always be reached since a crossover event will be prompted eventually (at maximum) just before the last flanking sealed genotype.}, it may create a noticeable disparity in the distribution of \gls{bio:haploblock} sizes in later generations.
 
 The real core of the neighbouring states approach lies within the \textit{resolvePhase()} function referenced (but not defined) in the pseudocode. The reason for this is due to the the numerous ways that the function was implemented, and ultimately abandoned.
 
@@ -573,7 +573,7 @@ An orphaned genotype of an unknown founder allele group U is flanked between a s
 \enumdesc{Event2}{ Group A underwent a crossover to group X followed by any number of successive crossovers (to group Y, group Z, etc.) before finally crossing over to group B, where U is of any applicable founder allele group type.}
 \end{description}
 
-In order to determine which of these two events occurred, we first initially map out the positions of all sealed genotypes in order to gauge the approximate known sizes of the available founder haploblocks. These can then be compared to the expected sizes of the founder haploblocks for that individual in the pedigree when evaluating the orphaned genotype in the A-B locus.
+In order to determine which of these two events occurred, we first initially map out the positions of all sealed genotypes in order to gauge the approximate known sizes of the available founder haploblocks. These can then be compared to the expected sizes of the founder haploblocks for that individual in the \gls{bio:pedigree} when evaluating the orphaned genotype in the A-B locus.
 
 \fignow{../writer/Methods/images/IterInspect_AB.png}
 	{Small (top), Medium (top), and Large (bottom) A-B locus showing the types of inspection that can be performed. A and B are sealed genotypes; UG1 and UG2 are uncertain genotypes. Dashed lines indicate regions where the size of a block is known/estimatable but the start position is not. In the small A-B case, UG1 falls within the range of the green haploblock with a known starting position as observed by a prior crossover event. UG1 and UG2 also fall under estimated range of the blue haploblock, though UG1 is less likely because the green haploblock is more definitive.}
@@ -604,7 +604,7 @@ In the unlikely event that after probing U with the available founder groups, a 
 \subsubsection{Discussion of Approach}\label{ref:haplo:eventdiscuss}
 The handling of Event3 types may have serious ramifications in later descendants if the wrong haploblock is picked, wherein a complete recursive re-run of that particular individual (and descendants of) would need to be performed with a different random haploblock being assigned. If incompatible haploblocks are still detected in later descendants, then this process is repeated ad infinitum until there are no more blocks to choose from. 
 
-The iterative nature of this process can take quite some time to process, since though the method itself runs in approximately $O(n^2)$ time, it may repeat numerously for every Event3 encountered. Computational slowdowns not withstanding, the model cannot handle consanguineous pedigrees effectively, since much of the resolution involved in the Event2 process depends upon the assumption of non-repeating haploblocks, which may exist if there are multiple paths of descent a haploblock can take to reach an individual.
+The iterative nature of this process can take quite some time to process, since though the method itself runs in approximately $O(n^2)$ time, it may repeat numerously for every Event3 encountered. Computational slowdowns not withstanding, the model cannot handle \gls{bio:consanguineous} pedigrees effectively, since much of the resolution involved in the Event2 process depends upon the assumption of non-repeating haploblocks, which may exist if there are multiple paths of descent a haploblock can take to reach an individual.
 
 The coding and maintenance of this method also became extremely lengthy, as separate classes had to be written to handle each event. Solutions to transparent biological processes should be natural and simple, and this method was quickly becoming unmanageable in its attempt to separately cater for all event types. Further, Event2 and Event3 types had a tendency to continuously recurse down through the pedigree often repeating previous analyses to favour the current individual in question. By the time root founder couples were analysed a complete consistent model was found, but run times exceeded practical limits with massive latency ($>$10s) between reading in the genotypes and presenting them.
 
@@ -718,11 +718,11 @@ The green square is the start node, and the blue square is the target end node. 
 
 It does not take much imagination to see that the algorithm scales linearly (\textit{4k}, for \textit{k} iterations), with the overlaps and wall intersections keeping the number of active paths relatively low. For example, by the 19th iteration there should be 76 active paths being considered, but wall constraints  have limited this to just 4.
 
-To bring this back to more a genomic context, for \textit{f} founders in a pedigree, there are a maximum of $2fm$ active paths by the $m$th marker. For a simple pedigree with 4 founders and 500 markers, a maximum of 4000 active paths would be under consideration.
+To bring this back to more a genomic context, for \textit{f} \gls{bio:founders} in a pedigree, there are a maximum of $2fm$ active paths by the $m$th marker. For a simple pedigree with 4 founders and 500 markers, a maximum of 4000 active paths would be under consideration.
 
 Of course, haplotype resolution has wall constraints of its own; sealed and bound genotypes  collectively reducing the amount of available founder allele groups at specific markers, which work to remove whole path varieties altogether.
 
-Nonetheless, for \textit{i} individuals in a pedigree with \textit{2i} chromosomes\footnote{There are of course 23 pairs of chromosomes in an individual, but analyses are chromosome specific so only the current pair is considered.}, the delay in processing would be:
+Nonetheless, for \textit{i} individuals in a pedigree with \textit{2i} chromosomes\footnote{There are of course 23 pairs of \gls{bio:chromosomes} in an individual, but analyses are chromosome specific so only the current pair is considered.}, the delay in processing would be:
 
 \begin{equation}\label{eqn:time2proc}
 2i \times p \times d = 2ipd
@@ -965,7 +965,7 @@ X-linked (Male)   & \{x1 x2\} & \{x3 y1\} & [x1 y1],[x2 y1]                 & 4 
 
 It can be seen that the pedigree being dominant/recessive has no effect in the way that the alleles are inherited, the only deciding factor being X-linkage paired with gender-specific cases. Even if the pedigree is consanguineous, the model still holds because any founder blocks that find their way into both alleles of an individual, did so because their colour groups were contained in the separate maternal and paternal alleles through different paths of descent.
 
-Under the pointer model, X-linked inheritance is not a very involved process since it acts merely as a more constrained version of the autosomal model under different gender designations. The only unknown exists in the X-linked male model, where knowledge of which allele indicates the Y chromosome is required prior to evaluation.
+Under the pointer model, X-linked inheritance is not a very involved process since it acts merely as a more constrained version of the \gls{bio:autosomal} model under different gender designations. The only unknown exists in the X-linked male model, where knowledge of which allele indicates the Y chromosome is required prior to evaluation.
 
 Initially it was a hard-coded requirement in the input file that the second male allele was the Y-chromosome, but this restraint was later removed and resolved in the software via the function \textit{detectYalleles} in \textit{filehandler.js}.
 
@@ -982,7 +982,7 @@ One of the core reasons for HaploHTML5's conception was the lack of X-linked inh
 	{fig:haplo:xlinkedbad}
 	{0.6}{Minimal X-linked Dominant Pedigree}
 	
-Figure~\ref{fig:haplo:xlinkedbad} shows a typical X-linked dominant pedigree as rendered by HaploPainter. There are  several issues highlighted in this example:
+Figure~\ref{fig:haplo:xlinkedbad} shows a typical X-linked \gls{bio:dominant} pedigree as rendered by HaploPainter. There are several issues highlighted in this example:
 
 \begin{enumerate}
 \enumdesc{Non-zero Alleles Assigned Zero-Allele Blocks}{This is shown in the left allele of individuals 206125 and 206127, which are represented as narrow blocks normally reserved for the zero-alleles.}
@@ -1007,7 +1007,7 @@ Consider now a graph where there is no longer a single root node, but instead se
 
 A problem will quickly arise however where individuals who exist in the descent path of multiple founders will be evaluated more than once and lead to duplicity in the data if not carefully handled.
 
-The peeling method that Elston and Stewart devised (as mentioned in Background, page~\pageref{ref:back:els})  was considered as one solution; determining pivot individuals and treating them as special edge cases to be separately handled when drawing the pedigree. However, previous experiences in handling edge-cases (see page~\pageref{ref:haplo:eventdiscuss}) had not been straightforward and so a more general solution was derived instead.
+The \gls{bio:peeling} method that Elston and Stewart devised (as mentioned in Background, page~\pageref{ref:back:els}) was considered as one solution; determining pivot individuals and treating them as special edge cases to be separately handled when drawing the pedigree. However, previous experiences in handling edge-cases (see page~\pageref{ref:haplo:eventdiscuss}) had not been straightforward and so a more general solution was derived instead.
 
 The resulting function \textit{populateGrids\_and\_UniqueObjs} (\textit{init\_graph.js}) required iterating through all individuals and populating an array that stored each generation, as well as populating a map which stored unique nodes and vertices associated with pedigree members and their relationships as discussed below.
 
@@ -1199,7 +1199,7 @@ HaploHTML5 does away with this notion by allowing the user to freely select whic
 
 When individuals are selected within the Selection View and transferred into the Haploblock View, generational information is generally hidden. In order to give some context to individuals selected in relation to one another, a Degree-Of-Separation (\gls{comp:DOS}) function was implemented to show by how many generations one related individual was to another.
 
-The function \textit{findDOSinSelection} in file \textit{dos.js} works by grouping siblings under the same node, where only non-founders can be within the same group in order to allow founders to extend their own DOS to other non-founders. Founders are their own sib groups, and for each sibgroup defined, relations are recursed upwards through mates and parents in order to find selected individuals at grouped by level.
+The function \textit{findDOSinSelection} in file \textit{dos.js} works by grouping siblings under the same node, where only \gls{bio:non-founders} can be within the same group in order to allow founders to extend their own DOS to other non-founders. Founders are their own sib groups, and for each sibgroup defined, relations are recursed upwards through mates and parents in order to find selected individuals at grouped by level.
 
 The method works well for simple relations, but grows computationally complex for more involved selections which can lead to bad line rendering. Figure~\ref{fig:haplo:dos} represents this below, with a clear DOS for the four selected individuals in the left pedigree selection, and inconsistent or missing line renders in the right pedigree selection
 

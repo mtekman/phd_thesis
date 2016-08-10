@@ -52,15 +52,21 @@
 % Bib appears in TOC
 \begin{spacing}{1}
 \bibliography{bibliography}
-\addcontentsline{toc}{chapter}{Bibliography}
+
+\addtocounter{chapter}{1}
+\addcontentsline{toc}{chapter}{\arabic{chapter}. Bibliography}
+
+
+\appendix
 
 \pagebreak
-\printglossary[type=biol]
+\chapter{Glossaries}
+\printglossary[type=biol,style=long]
 \pagebreak
-\printglossary[type=comp]
+\printglossary[type=comp,style=long]
 
 \end{spacing}
-\appendix
+
 \include{./Sections/Appendix}
 
 \end{document}

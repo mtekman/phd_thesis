@@ -44,7 +44,7 @@ for gloss in gloss_files.split('+'):
 
 for f in other_files:
 
-#    fnew = open(f+".new.tex","w")
+    fnew = open(f+".new.tex","w")
     
     with open(f,'r') as fill:
 
@@ -53,6 +53,9 @@ for f in other_files:
 
         for line in fill:
 
+
+            modif_made = False
+            
             lc += 1
 
             line = line.splitlines()[0]
@@ -102,21 +105,26 @@ for f in other_files:
 
                     local_map_counter[wo] = 1
 
-                    words[w] = "\\gls{"+map_of_acros[wo]+"}"
-                    print("line %d modified" % lc, wo)
+                    ans = input("tag %s ? " % wo)
+                    if ans == "y":
+                        words[w] = "\\gls{"+map_of_acros[wo]+"}"
+                        print("line %d modified" % lc, wo)
+                        modif_made = True
 
                 w += 1
 #                print(w, len(words))
 
-            line = ' '.join(words)
-            print(line)
-            
+            if modif_made:
+                line = ' '.join(words)
+
+            print(line, file=fnew)
+
 
 
 
 
         fill.close()
- #       fnew.close()
+        fnew.close()
 
 
 
