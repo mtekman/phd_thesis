@@ -195,7 +195,7 @@ Gregor Mendel was a botanist monk who outlined the first basic principles of gen
 	{0.5}
 	{Segregation Diagram}
 
-Every diploid organism has two alleles that segregate during gamete formation to create diploid offspring that bears just one of the alleles from that parent (i.e. each offspring inherits one allele from their parents). As shown in Figure~\ref{fig:back1}, this has the interesting effect such that two homozygous parents with genotypes \textit{ww} and \textit{RR} respectively will \textit{always} have heterozygous offspring with \textit{wR} genotypes, yet these heterozygous offspring can further mate to reconstitute their parent's genotypes.
+Every \gls{bio:diploid} organism has two alleles that segregate during gamete formation to create diploid offspring that bears just one of the alleles from that parent (i.e. each offspring inherits one allele from their parents). As shown in Figure~\ref{fig:back1}, this has the interesting effect such that two homozygous parents with genotypes \textit{ww} and \textit{RR} respectively will \textit{always} have heterozygous offspring with \textit{wR} genotypes, yet these heterozygous offspring can further mate to reconstitute their parent's genotypes.
 
 
 \subsubsection{Law of Independent Assortment}
@@ -257,14 +257,14 @@ where:
 
 \subsubsection{Autosomal Dominant}
 
-If the disease segregates through an autosomal dominant model, then the disease trait is dominant and the penetrance function is thus:  \(P(D|GG) = P(D|Gg) = 1\), and \(P(D|gg)=0\).
+If the disease segregates through an \gls{bio:autosomal} \gls{bio:dominant} model, then the disease trait is dominant and the penetrance function is thus:  \(P(D|GG) = P(D|Gg) = 1\), and \(P(D|gg)=0\).
 Affected individuals are present at all generations, and because the disease trait lies within the autosomes (chromosomes 1 to 22), affectation is non-gender specific and both sexes have equal probability in inheriting the trait.
 
 \subsubsection{Autosomal Recessive}
 
 Autosomal recessive is a more constrained mode, where instead the disease trait is recessive and the penetrance function is limited to: \(P(D|GG)=1\), and \(P(D|Gg) = P(D|gg) = 0\)
 
-Here, affected individuals appear to skip generations since parents carrying a heterozygous genotype will not present the phenotype, but instead be \gls{bio:carriers} of the disease trait that can be reconstituted as a homozygous disease allele in their offspring. In consanguineous pedigrees, the likelihood of this happening is significantly increased due to the multiple pathways the disease allele can take, with each generation having potentially double the chance of inheriting the disease allele after each subsequent consanguineous pairing.
+Here, affected individuals appear to skip generations since parents carrying a \gls{bio:heterozygous} genotype will not present the phenotype, but instead be \gls{bio:carriers} of the disease trait that can be reconstituted as a homozygous disease allele in their offspring. In consanguineous pedigrees, the likelihood of this happening is significantly increased due to the multiple pathways the disease allele can take, with each generation having potentially double the chance of inheriting the disease allele after each subsequent consanguineous pairing.
 
 \subsubsection{X-linked Dominant}
 
@@ -318,7 +318,7 @@ If a given marker co-segregates with a disease allele over multiple recombinatio
 In linkage analysis, this translates as pinpointing the multiple subsets of markers with the fewest number of crossovers between themselves, such that the the number of meioses in the cases is minimized and the controls are maximized (i.e. which markers/traits are in linkage with one another in affected individuals, but are not in linkage within unaffected individuals).
 Classical linkage analysis involves doing this by direct means; counting each crossover event for each marker against every other marker, but the complexity of such a task scales exponentially for large sets and is almost highly impractical.
 
-Modern linkage analysis determines this using statistical means; through the filter of the correct genetic model to establish a correct penetrance function,  the assumption of linkage equilibrium between markers to simplify computation by discounting crossover interference, the lack of monozygotic twins\footnote{Identical genotypes in twins bias the analysis since meioses may not be independent.}, and the known recombination frequencies between markers as well as their ordering. These are then used to establish a likelihood score that rates each marker upon the aforementioned principles such that disease loci can be found by scanning for the highest likelihood.
+Modern linkage analysis determines this using statistical means; through the filter of the correct genetic model to establish a correct penetrance function,  the assumption of linkage equilibrium between markers to simplify computation by discounting \gls{bio:crossover interference}, the lack of monozygotic twins\footnote{Identical genotypes in twins bias the analysis since meioses may not be independent.}, and the known recombination frequencies between markers as well as their ordering. These are then used to establish a likelihood score that rates each marker upon the aforementioned principles such that disease loci can be found by scanning for the highest likelihood.
 
 \subsubsection{Likelihood and LODs}
 
@@ -368,7 +368,7 @@ A LOD score greater than or equal to 3 is considered to be of great significance
 
 \subsection{Linkage Algorithms}
 
-Though the methodology between algorithms varies somewhat, all work under the same principle of determining a LOD score and generating missing genotypes, though some are more engineered towards resolving phase than others.
+Though the methodology between algorithms varies somewhat, all work under the same principle of determining a \gls{bio:LOD} score and generating missing genotypes, though some are more engineered towards resolving phase than others.
 
 \subsubsection{Elston-Stewart}\label{ref:back:els}
 
