@@ -1,30 +1,74 @@
 % Appendix
 \chapter{Appendix}
 
-\section{Semaphores}\label{ref:app:semaphores}
-\citep{downey_little_2005}
-
 \section{Hardware Specification}\label{ref:app:hwspec}
 
-\section{Hardware Concepts}
-\subsection{Compiler}\label{ref:app:compiler}
-\subsection{Linux Filesystem}\label{ref:app:linuxfs}
+
+
+\section{Computing Concepts}
+
+\subsection{Colour Spaces}\label{ref:app:colour}
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|lll|lll|llll|lll|}\hline
+Colours      & \multicolumn{13}{c}{Colour Models} \\
+             & \textbf{R}   & \textbf{G}   & \textbf{B}   & \textbf{H}   & \textbf{S}   & \textbf{V}   & \textbf{C}   & \textbf{M}   & \textbf{Y}   & \textbf{K} & \textbf{Y}    & \textbf{U}     & \textbf{V}     \\\hline					\cellcolor{RED}
+Red          & 255 & 0   & 0   & 0   & 100 & 100 & 0   & 1   & 1   & 0 & 0.3  & 0.5   & -0.17 \\		\cellcolor{ORANGE}
+Orange       & 255 & 128 & 0   & 30  & 100 & 100 & 0   & 0.5 & 1   & 0 & 0.59 & 0.29  & -0.33 \\		\cellcolor{YELLOW}
+Yellow       & 255 & 255 & 0   & 60  & 100 & 100 & 0   & 0   & 1   & 0 & 0.89 & 0.08  & -0.5  \\		\cellcolor{LGREEN}
+Light Green  & 64  & 255 & 0   & 90  & 100 & 100 & 0.5 & 0   & 1   & 0 & 0.74 & -0.17 & -0.42 \\		\cellcolor{GREEN}
+Green        & 0   & 255 & 0   & 120 & 100 & 100 & 1   & 0   & 1   & 0 & 0.59 & -0.42 & -0.33 \\		\cellcolor{SGREEN}
+Spring Green & 0   & 255 & 128 & 150 & 100 & 100 & 1   & 0   & 0.5 & 0 & 0.64 & -0.46 & -0.08 \\		\cellcolor{CYAN}
+Cyan         & 0   & 255 & 255 & 180 & 100 & 100 & 1   & 0   & 0   & 0 & 0.7  & -0.5  & 0.17  \\		\cellcolor{TEAL}
+Teal         & 0   & 128 & 255 & 210 & 100 & 100 & 1   & 0.5 & 0   & 0 & 0.41 & -0.29 & 0.33  \\		\cellcolor{BLUE}
+Blue         & 0   & 0   & 255 & 240 & 100 & 100 & 1   & 1   & 0   & 0 & 0.11 & -0.08 & 0.5   \\		\cellcolor{INDIGO}
+Indigo       & 128 & 0   & 255 & 270 & 100 & 100 & 0.5 & 1   & 0   & 0 & 0.26 & 0.17  & 0.42  \\		\cellcolor{PURPLE}
+Purple       & 255 & 0   & 255 & 300 & 100 & 100 & 0   & 1   & 0   & 0 & 0.41 & 0.42  & 0.33  \\		\cellcolor{MAGENTA}
+Magenta      & 255 & 0   & 128 & 330 & 100 & 100 & 0   & 1   & 0.5 & 0 & 0.36 & 0.46  & 0.08  \\\hline
+\end{tabular}
+\end{center}
+\vspace{-15pt}
+\caption[Colour Indexes]{Colour Indexes for RGB (8-bit), HSV, CMYK, and YUV.}\label{table:app:colours}
+\end{table}
+
+
+A colour space is a way to index colours under a certain schema. There are 4 main types used in digital processing:
+
+\begin{enumerate}
+
+\enumdesc{RGB}{ Red-Green-Blue; directly maps to the Red/Green/Blue channels on monitors where (for example) an increase in the R-component will produce a redder image, and likewise with the G and B components for greener and bluer images respectively. Intermediate colours such as Yellow, Purple, and Brown are created 1:1 representations of two channels (with the third remaining constant), and Black$\rightarrow$Grey$\rightarrow$White representations are produced when locking the values of all three channels. Darkening and lightening an image requires changing all three channels.}
+\enumdesc{CMYK}{ Cyan-Magenta-Yellow-Key; where Key represents the darkness of an image. The colour model is used primarily in printers and uses subtractive mixing to achieve different colour blends (e.g. Green is the subtraction of Yellow and Cyan). Has the same colour scaling patterns as RGB but can produce darker semitones using the K component.}
+\enumdesc{YUV}{ Luminance-ChromaU-ChromaV; where Luminance denotes the brightness and the two chroma channels denote separate colour ranges as shown by the two axes in Figure~\ref{fig:app:yuv}. The colour model makes use of the human eye's lack of color perception compared to awareness of changes in brightness. Early engineers used this 'hack' to reduce the size of TV transmissions by reducing the U and V components of an image without any perceptible difference to the quality of the image.
+
+\fignow{./Sections/images/yuv_scale.png}
+{YUV scale for Y = 0.5 (compressed). Image courtesy of Wikimedia Commons.}
+{fig:app:yuv}
+{0.3}
+{YUV scale for Y = 0.5 (compressed).}
+
+}
+
+\enumdesc{HSV}{ Hue-Saturation-Value; where Hue denotes a shade of colour, Saturation the intensity of the colour, and Value being the brightness. This allows for changes in colour to be recorded by a single channel only and is a very convenient way to modify brightness too. Stepping through a rainbow of colours involves only modifying the H component, as shown in Figure\pref{fig:disc:huescale}.}
+
+\end{enumerate}
+
+Table~\ref{table:app:colours} shows the values that each colour model takes for each colour in the table. Note the constancy in the S and V channels of the HSV model.
 
 
 
-\section{Software Concepts}
 \subsection{Primitives}\label{ref:app:primitives}
 
 Data generally comes in two forms:
 
 \begin{enumerate}
-\item{numeric
+\item{{\bf Numeric}
 	\begin{enumerate}
 	\item{\textbf{decimal}, the integer value of a number represented in base-2 (or 'binary') number format, (e.g. 8 = 1000 (4-bits), 7 = 111 (3-bits), 652 = 101000110 (9-bits)). For n bits, the decimal range is [0,$2^n - 1$]\footnote{This is only in case of positive unsigned integers. To include negative integers too, the first bit is sacrificed as an indicator of polarity. This produces signed integers and follows a more involved schema known as \textit{two's-complement} in order to only have a single representation of the number zero. The numeric range for n bits is then [-2n-1, 2n-1 - 1].}.Decimals tend to come in fixed bit-sizes\footnote{byte (8-bit), short/char (16-bit), int (32-bit), long (64-bit), and (in some languages) long long (128-bit).} so there can be some redundancy in representing a small number with a large decimal type.}
-	\item{\textit{floating-point} numbers are a compact approximation of a number as deemed by the specification\citep{floats}. Numbers are represented as powers of exponents such that $5 \sim= e^{1.61}$ (where 1.61 would be the stored number in this loose example). The precision of the representation is determined by how many bits the number has. Floats have a much larger range than decimals, albeit with less accuracy}
+	\item{\textbf{floating-point} numbers are a compact approximation of a number as deemed by the specification\citep{floats}. Numbers are represented as powers of exponents such that $5 \sim= e^{1.61}$ (where 1.61 would be the stored number in this loose example). The precision of the representation is determined by how many bits the number has. Floats have a much larger range than decimals, albeit with less accuracy}
 	\end{enumerate}
 }
-\item{textual}{See Strings section}
+\item{{\bf Textual}\\See Strings section below.}
 \end{enumerate}
 
 
@@ -33,7 +77,7 @@ Strings are a type of data that is defined as any block of text surrounded by si
 
 Numbers can be assigned specific memory sizes to contain their values such as char(8-bit) , short(16-bit), int(32-bit), and long(64-bit) for decimal numbers, and float(32-bit) and double(64-bit) for floating point numbers, each with their specific range of values.
 
-Strings are essentially an array of characters, and so if each character is 8-bit, then the phrase "Hello World!" has a size of 96 bits (12 characters x 8 bits) . When strings are created they are assigned initial sizes to contain a specific text, but they are essentially immutable past this point since concactenating two strings together requires re-computing their sizes and copying the text into a new block of memory (i.e. you cannot directly shorten or extend a string since it creates memory leaks).
+Strings are essentially an array of characters, and so if each character is 8-bit, then the phrase "Hello World!" has a size of 96 bits (12 characters x 8 bits) . When strings are created they are assigned initial sizes to contain a specific text, but they are essentially immutable past this point since concatenating two strings together requires re-computing their sizes and copying the text into a new block of memory (i.e. you cannot directly shorten or extend a string since it creates memory leaks).
 
 \subsubsection{String Interning}
 
@@ -71,7 +115,7 @@ Figure~\ref{fig:fsa} shows how such a pattern is first converted into character-
 \fignow{./Sections/images/FSA.png}
 {}
 {fig:fsa}
-{0.6}
+{0.4}
 {Finite State Automaton}
 
 \begin{center}
@@ -91,9 +135,7 @@ Figure~\ref{fig:fsa} shows how such a pattern is first converted into character-
 
 DFSA's can be further compacted and optimized to create fast pattern matching systems with little overhead, making them the ideal tool to deal with strings flexibly. Multiple genetic sequences can be extracted this way by using the same regular expression undoubtedly making RegEx a very powerful tool for programmers and geneticists alike.
 
-\section{Poisson Distribution}\label{ref:app:poisson}
-\section{Colour Spaces}\label{ref:app:colour}
-\section{Licensing}\label{ref:app:licensing}
+\subsection{Licensing}\label{ref:app:licensing}
 
 Software licences are typically split into two groups: \textit{CopyLeft} and \textit{Permissive}.
 
@@ -124,11 +166,108 @@ A license that lets anyone do whatever they want without any restrictions on mod
 \end{description}
 
 
+\subsection{Compiler}\label{ref:app:compiler}
+
+There are several optimizations that the compiler undertakes to optimize user-written code to be more efficiently read and processed by the \gls{comp:CPU}.
+
+The optimizations are too numerous to list, but a few examples are provided below in order to provide some reference upon the nature of the optimizations:
+
+\begin{description}
+\descitem{Parallelize}{Split sequential data into separate dependency chains that can be processed in parallel.}
+\descitem{Common Expression Elimination}{Calculate the value of reused static expressions only once, and cache the result.}
+\descitem{Expand Constants}{Precompute expressions that involve only constants so that they don't need to be calculated at runtime.}
+\descitem{Strength Reduction}{Convert difficult operations into smaller easier ones. e.g. replace an integer multiplication with a series of repeated additions instead.}
+\descitem{Fast Pathing}{Split an instruction set into a "fast" path that handles the majority of input cases, and handle the infrequent edge cases separately.}
+\descitem{Tail Recursion Elimination}{Convert stack-greedy recursive functions into less demanding iterative functions instead.}
+\descitem{Loop Peeling/Splitting}{Remove unchanging variables within for or while loops outside of the loop and process separately (before or after the main loop body).}
+\descitem{Loop Unrolling}{Copy and paste the body of a loop in repeated succession if the loop has a small body or few iterations.}
+\descitem{Inline Code}{Small functions that occur repeatedly incur a cost of switching to them whenever they are executed. It is better to simply copy-and-paste them as entire code blocks at calling points so that they are part of the current instruction.}
+\descitem{Bunch Related Data}{Keep related code blocks and variables close to each other in memory.}
+
+\end{description}
+
+
+\subsection{Linux Filesystem}\label{ref:app:linuxfs}
+\subsection{Semaphores}\label{ref:app:semaphores}
+\citep{downey_little_2005}
+
+
+
+
+\section{Poisson Distribution}\label{ref:app:poisson}
+
+A discrete probability distribution that describes events that are expected to occur within fixed time intervals, known to recur at an average rate that is independent of the last time interval.
+
+The probability of such events are given by the equation:
+
+\begin{equation}
+P(k) = \frac{\lambda^k e^{-k}}{k!}
+\end{equation}
+
+\begin{spacing}{1}
+where:
+\begin{description}
+\descitem{$k = $}{number of expected events in the time interval}
+\descitem{$\lambda =$}{the average frequency of said events in the time interval}
+\end{description}
+\end{spacing}
+
+
+\fignow{./Sections/images/poisson.png}
+{Poisson Distribution for three different $\lambda$ values for increasing values of \textit{k}.}
+{fig:app:pois}
+{0.6}
+{}
+
+
+
+
+
+
 
 
 \section{Results Data}
-\subsection{Scores for 21-bit Linkage}\label{ref:app:21bitscores}
+
+\subsection{LOD Scores for 21-bit Linkage}
+\label{ref:app:21bitscores}
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{|c|c|}\hline
+\textbf{Scenario} & \textbf{Expected} \\
+         & \textbf{Max. LOD}  \\\hline
+(Base) 0 &  3.31 \\
+1 & 3.72 \\
+2 & 3.64 \\
+3 & 3.75 \\
+4 & 3.44 \\
+5 & 3.63 \\
+6 & 3.72 \\
+7 & 3.45 \\\hline
+\textbf{Mean} &      \\
+\textbf{of 7} & 3.62 \\
+\textbf{scenarios} & \\\hline
+\end{tabular}
+\end{center}
+\caption{Maximum Estimated LOD Scores for 21-bit linkage}
+\end{table}
+
+
+\pagebreak
+
 \subsection{Chromosome plots for 21-bit Linkage}\label{ref:app:21bitplots}
+
+\foreach \x in {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22}
+{
+	\vspace{-20pt}
+	\fignow{../writer/Results/images/interesting_cases/109_5k_scenarios/Summary_scenarios_chr\x.jpg}
+		{\vspace{-5pt}Linkage plots of chromosome \x\ for each of the eight analyses}
+		{fig:res:21bitallegrochr\x}
+		{0.7}{Eight scenarios, 21 to 23 bit, chr\x}
+}
+
+
+
 
 \pagebreak
 \subsection{Allegro Single-Core Individual Runtimes}\label{ref:app:singlecoreindiv}
