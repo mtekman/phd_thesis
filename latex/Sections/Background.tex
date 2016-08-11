@@ -6,7 +6,7 @@ Here we define some fundamental molecular biology from a genetics standpoint, bu
 
 \section{DNA}
 
-Each organism is defined by the data encoded within \gls{bio:DNA}, a long molecule made of up sub-units of \gls{bio:nucleotides} that constitutes the \gls{bio:genome} of the organism. The order of these nucleotides form an ordered sequence specific to that individual, and ultimately encoded the genetic information that makes that individual unique.
+Each organism is defined by the data encoded within \gls{bio:DNA}, a long molecule made of up sub-units of \gls{bio:nucleotides} that constitutes the \gls{bio:genome} of the organism. The order of these nucleotides form an ordered sequence specific to that individual, and ultimately encode the genetic information that makes that individual unique.
 
 DNA is packed into \gls{bio:chromosomes}, two long strands of chained nucleotides bound together by hydrogen bonds between nucleotide pairs on opposing strands. Nucleotides consist of a molecule made up of a phosphate group, 2-deoxyribose, and a \gls{bio:nucleobase} (or base). There are four possible bases: adenine, cytosine, guanine, or thymine (or A, C, T, G).  All adenine bases are paired with thymine, and all cytosine bases are paired with guanine. 
 These form AT and GC pairs across the two strands forming what are known as \gls{bio:base pairs} (or bp).
@@ -68,7 +68,15 @@ Meiosis is split into three phases: \textit{meiosis S}, \textit{meiosis I}, and 
 
 In the S-phase, homologs from the chromosomes of each parent are replicated. This results in a cell that has twice the number of chromosomes.
 
-\subsubsection{Meoisis I}
+\fignow{./Sections/images/meiosis.png}
+{fig:back:meiosis}
+{The two main stages of Meiosis}
+{0.8}
+{}
+
+
+
+\subsubsection{Meiosis I}
 
 The meiosis I phase is by far the longest phase of meiosis, and is split into nine stages. 
 
@@ -81,11 +89,11 @@ The bivalents migrate to a \gls{bio:metaphase plate} plane and are randomly orie
 The two resultant daughter cells have half the number of original chromosomes, but each chromosome is made up of a pair of chromatids.
 
 
-\subsubsection{Meoisis II}
+\subsubsection{Meiosis II}
 
 Meiosis II can be seen as a simplified version of the cell division in the previous phase, as many of the steps are repeated.
 
-Chromatids once again shorten and thicken (\textbf{Prophase II}), and as before the meiotic spindle surfaces dragging material to the poles (\textbf{Metaphase II}). Sister chromatids then segregate towards the poles and become sister chromosomes (\textbf{Anaphase II}), and finally the spindle is dissembled and the chromosomes lengthened (\textbf{Telophase II}).
+Chromatids once again shorten and thicken (\textbf{Prophase II}), and as before the meiotic spindle surfaces dragging material to the poles (\textbf{Metaphase II}). The sister chromatids then segregate towards the poles and group to become sister chromosomes (\textbf{Anaphase II}), and finally the meiotic spindle is dissembled and the chromosomes lengthened (\textbf{Telophase II}).
 
 This results in four haploid gametes from the two daughter cells in meiosis I. 
 
@@ -316,9 +324,9 @@ In the previous chapter we discussed how genotypes are mapped to specific marker
 If a given marker co-segregates with a disease allele over multiple recombination events, then it is safe to assume that they are in close proximity of one another. Such bound loci are said to be \textit{in linkage} with one another, and when one undergoes a meiosis; so does the other.
 
 In linkage analysis, this translates as pinpointing the multiple subsets of markers with the fewest number of crossovers between themselves, such that the the number of meioses in the cases is minimized and the controls are maximized (i.e. which markers/traits are in linkage with one another in affected individuals, but are not in linkage within unaffected individuals).
-Classical linkage analysis involves doing this by direct means; counting each crossover event for each marker against every other marker, but the complexity of such a task scales exponentially for large sets and is almost highly impractical.
+Classical linkage analysis involves doing this by direct means; counting each crossover event for each marker against every other marker, but the complexity of such a task scales exponentially for large sets and is highly impractical.
 
-Modern linkage analysis determines this using statistical means; through the filter of the correct genetic model to establish a correct penetrance function,  the assumption of linkage equilibrium between markers to simplify computation by discounting \gls{bio:crossover interference}, the lack of monozygotic twins\footnote{Identical genotypes in twins bias the analysis since meioses may not be independent.}, and the known recombination frequencies between markers as well as their ordering. These are then used to establish a likelihood score that rates each marker upon the aforementioned principles such that disease loci can be found by scanning for the highest likelihood.
+Modern linkage analysis determines this using statistical means; through the filter of the correct genetic model to establish a correct penetrance function,  the assumption of linkage equilibrium between markers to simplify computation by discounting \gls{bio:crossover interference}, the exclusion of monozygotic twins\footnote{Identical genotypes in twins bias the analysis since meioses may not be independent.}, and the known recombination frequencies between markers as well as their ordering. These are then used to establish a likelihood score that rates each marker upon the aforementioned principles such that disease loci can be found by scanning for the highest likelihood.
 
 \subsubsection{Likelihood and LODs}
 
@@ -456,9 +464,7 @@ This is still an approximation upon the data, since the most likely set of inher
 
 
 
-
 \section{Summary}
-
 
 We have seen that there are two main limiting steps in linkage analysis algorithms that scale either with the \textbf{number of meiosis} or the \textbf{number of markers}. The Elston-Stewart algorithm's complexity scaled linearly with the number of meiosis by collapsing computations on pivot individuals, but scaled exponentially with the number of markers. 
 
@@ -466,10 +472,9 @@ The Lander-Green-Kruglyak algorithm was the inverse of this; where  the number o
 
 Hidden Markov Models lend their use to inheritance or descent diagrams that allow us to set phase at each genotype by following the most likely set of inheritance vectors \cite{sobel1996descent}.
 
-Haplotype reconstruction is by no means deterministic, as the optimal path as derived from the Viterbi algorithm may be just as likely as another path, especially for incomplete data where the potential alleles of untyped genotypes may have equal likelihood.
+Haplotype reconstruction is by no means deterministic, as the optimal path as derived from the Viterbi algorithm may be just as likely as another path, especially for incomplete data where the potential alleles of untyped genotypes may have equal likelihood. 
 
-
-The strength of the analysis ultimately lies in the observed genotypes, and some are more informative than others, as we explore in greater detail within the next chapter.
+The strength of the analysis ultimately lies in the observed genotypes, and some are more informative than others. In the next chapter we outline a linkage analysis pipeline that aims to achieve high quality analyses through a combination of elegant filtering protocols, as well as brute-force hardware maximisation. 
 
 
 
