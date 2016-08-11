@@ -48,9 +48,16 @@ for gloss in gloss_files.split('+'):
                 map_of_acros[word]= ("bio:"+word, sentence)
 
                 # Programs really only apply to one section
-#            elif line.startswith('\\addglossprog'):
-#                word = line.split('{')[1].split('}')[0].strip()
-#                map_of_acros[word]= "prog:"+word
+            elif line.startswith('\\addglossprog'):
+                word = line.split('{')[1].split('}')[0].strip()
+
+                sentence = word.split()
+                word = sentence[0]
+
+                if len(sentence)==1:
+                    sentence = 0
+
+                map_of_acros[word]= ("prog:"+word, sentence)
 
                 
         glf.close()
@@ -124,9 +131,9 @@ for f in other_files:
                         rest = sentence[1:]
                     
                     # Add to "seen" dictionary
-#                    print("velouria: start=[%s] words=|%s| key=[%s] sentence=%s" % (
-#                        wo, nwo, key, rest), w, start_index)
-                    local_map_counter[nwo] = 1
+#                    print("velouria: start=[%s] words=|%s| key=[%s] sentence=%s" % (wo, nwo, key, rest), w, start_index)
+                    local_map_counter[":".join(nwo.split(':')[1:])] = 1
+                    print("Line %3d: seen " % lc, nwo)
                     w = start_index
                     continue
 
@@ -149,24 +156,25 @@ for f in other_files:
 
 
                 else:
-
                     key,sentence = map_of_acros[wo]
                     if sentence == 0:   # simple word
 
                         if wo in local_map_counter:
+                            print("Line %3d: Skipping" %lc,wo)
                             w += 1
                             continue  # reference no more than once for each Heading Delim
 
                         local_map_counter[wo] = 1
 
-                        ans = input("tag %s ? " % wo)
+                        key = map_of_acros[wo][0]
+
+                        ans = input("Line %3d: tag  %s ? \"%s\" " % (lc,key, words[w-5:w+5]))
                         if ans == "y":
-                            words[w] = beg_part + "\\gls{"+map_of_acros[wo]+"}"
-                            print("line %d modified" % lc, wo)
+                            words[w] = beg_part + "\\gls{"+ key +"}"
                             modif_made = True
 
                     else: # Complex word, look ahead
-                        print("HERE", key, sentence)
+                        print("Line %3d: Complex word?" % lc, key, sentence, end="")
                         iterator  = 0
                         start_index = w + iterator
 
@@ -175,13 +183,13 @@ for f in other_files:
                                    words[start_index].startswith(sentence[iterator])
                                    )
                                ):
+#                            print(words[start_index])
                             start_index += 1
                             iterator += 1
-                            print(words[start_index])
 
                         # Perfect Match!
                         if len(sentence) == iterator:
-                            print("PERFECT", beg_part)
+                            print(" Yep.")
                             last_sentence = sentence[-1]
                             last_word = words[start_index-1]
 
@@ -192,15 +200,18 @@ for f in other_files:
                             else:
                                 extra_after = ""
 
+#                            makerword = " ".join(sentence)
                             makerbird = key+" "+" ".join(sentence[1:])
 
                             if makerbird in local_map_counter:  # already tagged, skip.. :(
                                 w += 1
                                 continue
 
+                            local_map_counter[makerbird] = 1
+                            
                             make_word = beg_part + "\\gls{"+makerbird+"}" + extra_after
 
-                            ans = input("tag %s ?" % make_word)
+                            ans = input("Line %3d: tag [%s] ? \"%s\" " % (lc,make_word, words[w-5:w+5]))
 
                             if ans=="y":
                                 make_split = make_word.split()
@@ -210,13 +221,15 @@ for f in other_files:
                                 modif_made=True
                                 w = start_index
                                 continue
+                        else:
+                            print(" No.")
 
                 w += 1
 
             if modif_made:
                 line = ' '.join(words)
 
-            print(line) #, file=fnew)
+            print(line, file=fnew)
 
 
 
