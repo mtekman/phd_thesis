@@ -4,9 +4,9 @@
 
 Small analyses such as the 3-bit and 5-bit pedigrees examined in the previous chapter are generally not very informative for linkage by themselves. For the 3-bit \gls{bio:pedigree} we observed multiple low \gls{bio:LOD} score flat peaks that did not exclude many regions, and for the 5-bit pedigree we saw fewer flat peaks with slightly higher LOD scores and still not that many regions of exclusion.
 
-That is not to say small pedigrees are unusable; weak studies can lend strength to larger analyses where the linkage region is one of a multitude of peaks which can be narrowed down by the extra regions of exclusion given by a smaller analysis. Similarly, large analyses are of great assistance to smaller ones, where we witnessed a 29-bit pedigree reconstitute the parental genotypes of two 3-bit pedigrees in Figure\pref{fig:res:29bitpedother}.
+That is not to say small pedigrees are unusable; weak studies can lend strength to larger analyses where the linkage region is one of a multitude of peaks which can be narrowed down by the extra regions of exclusion given by a smaller analysis. Similarly, large analyses are of great assistance to smaller ones, where we witnessed a 29-bit pedigree lend power to the haplotype analysis of two 3-bit pedigrees in Figure\pref{fig:res:29bitpedother}.
 
-Filtering errors such as those indicated by GRR, gender, or Mendelian errors are typically not hindered by the size of analysis\footnote{except for GRR runtimes, where window polling increases with the number of total genotypes.} and problems are detected at the \gls{bio:trio} level. Often, small pedigrees are later expanded into larger ones by genotyping the rest of the family in order to improve the LOD score. By catching these small trio errors early on, a researcher can make a more informed decision on whether to pursue the family for further linkage. As we saw in the pedigree in Figure\pref{fig:res:7bitgenotypes}, parents sometimes have to falsify their children's genealogy for personal and legal reasons, and this can be cause for many a headache for the technician who has to reconcile the true pedigree.
+Pedigree errors such as those indicated by GRR, gender, or Mendelian errors are typically not hindered by the size of analysis\footnote{except for GRR runtimes, where window polling increases with the number of total genotypes.} and problems are detected at the \gls{bio:trio} level. Often, small pedigrees are later expanded into larger ones by genotyping the rest of the family in order to improve the LOD score. By catching these small trio errors early on, a researcher can make a more informed decision on whether to pursue the family for further linkage. As we saw in the pedigree in Figure\pref{fig:res:7bitgenotypes}, parents sometimes have to falsify their children's genealogy for personal and legal reasons, and this can be cause for many a headache for the researcher who has to reconcile the true pedigree.
 
 Medium size analyses (7-bit to 18-bit) are usually in the vicinity where such scenarios occur because the linkage peaks are reasonably high ($>$ 1) and few in number ($<$ 6), meaning that there is more room for a researcher to "play" with analysis by running more variations upon the input sets to maximize the analysis. Again, it should be stated that maximizing an analysis by small modifications to the pedigree and penetrance model are not necessarily a true representation of the phenotype, but only what is expected or allowed according to the classical ideals of genetics (e.g. parent-offspring genotype variance and Mendelian inheritance).
 
@@ -27,7 +27,7 @@ In relation to the rest of the pipeline, analyses are typically brute-force driv
 \subsection{HaploBlock Resolution}
 As shown in Figure~\ref{fig:res:haplo29compare} and Figure~\ref{fig:res:haplo23compare} in Section\prefstar{ref:res:hapcomp} HaploHTML5 resolves \gls{bio:autosomal} haplotypes just as well as HaploPainter, with the added benefit of comparing haplotypes of any selected individuals in a side-by-side view.
 
-The 15-bit X-linked pedigree shown in Figures \{~\ref{fig:res:haplo20comparetop},~\ref{fig:res:haplo20comparemid},~\ref{fig:res:haplo20comparebot}\} on pages~\pageref*{fig:res:haplo20comparetop} to ~\pageref*{fig:res:haplo20comparebot} shows how the chromosome X limitation inherent in HaploPainter is overcome in HaploHTML5, where the highly improbably blocks shown in HaploPainter are resolved correctly using the appropriate penetrance model.
+The 15-bit X-linked pedigree shown in Figures \{\ref{fig:res:haplo20comparetop},~\ref{fig:res:haplo20comparemid},~\ref{fig:res:haplo20comparebot}\} on pages~\pageref*{fig:res:haplo20comparetop} to ~\pageref*{fig:res:haplo20comparebot} shows how the chromosome X limitation inherent in HaploPainter is overcome in HaploHTML5, where the highly improbably blocks shown in HaploPainter are resolved correctly using the appropriate penetrance model.
 
 \subsection{UI Operability}
 The PedCreate view is intuitive and simple, with two types of relations of possible (mate-mate, and parent-offspring) with valid connections being highlighted to the user via red or white anchor points\footnote{See Figure\pref{fig:haplo:pedcreate} as an example.}. Individuals are trivially added, modified, deleted, and can be moved around with their various relationship lines updating their positions (and their siblings and/or mates lines) accordingly. An invidiual's name can also be specified, but it is not a requirement. The resultant pedigree can be exported to pedfile, with optional positional meta tags which can be reread back into the application either by manually selecting the exported file, or by saving the pedigree into local storage and reloading it upon startup.
@@ -42,6 +42,10 @@ Performance testing of the A* best-first algorithm upon a single set of test dat
 
 HaploPainter runs on \gls{comp:Perl} and relies upon \gls{comp:Tk}, \gls{comp:Cairo}, \gls{comp:Sort Naturally}, and \gls{comp:DBI} Perl dependencies to be present in the system. The more dependencies a program has, the less likely it is to be ported to other platforms successfully since it's dependencies must be ported first. Perl itself also is not very common on \gls{comp:ARM} devices\footnote{The Jolla mobile device used in the Results chapter runs an OS aimed at \gls{comp:Linux} and shell enthusiasts; Perl did exist upon it, however none of the Perl dependencies had been ported to it and so HaploPainter could not run on it.}. However, the only dependency that HaploHTML5 requires is a web-browser with Javascript capability, immediately making it much more portable than HaploPainter.
 
+\subsection{Distribution}
+
+HaploHTML5 was always considered to be distributed open source
+
 
 \section{Future Work}
 
@@ -55,7 +59,7 @@ The pipeline comes packaged with an installer that is designed to work on all Un
 
 Their install syntax is very similar, but they are all separate package installers and must be treated as such. To ease this issue, all software packages are kept in a separate file which merely lists them so that they can be fed into each OS's respective package manager. Unfortunately, though there is generally good accordance of package names between different Linux OS's, there can be some minor discrepancies in their naming that can cause issues\footnote{The switchover from Python2 to Python3 for example creates some very ambiguous instances where a package named \textit{python-gobl} is not inherently clear on which version of \gls{comp:Python} the gobl library is for.}.
 
-Another issue is installing the Perl dependencies (for HaploPainter). If HaploPainter will be depreciated in the future with the uptake of HaploHTML5, then this issue can be easily resolved by simply removing the Perl dependencies from the installer altogether. Otherwise, the problem arises when deciding which means of software distribution to install the Perl dependencies from: the OS package manager, or via \gls{prog:CPAN} \cite{cpan} which installs Perl modules to user or root directories seperate from the system.
+Another issue is installing the Perl dependencies (for HaploPainter). If HaploPainter will be depreciated in the future with the uptake of HaploHTML5, then this issue can be easily resolved by simply removing the Perl dependencies from the installer altogether. Otherwise, the problem arises when deciding which means of software distribution to install the Perl dependencies from: the OS package manager, or via \gls{prog:CPAN} \cite{cpan} which installs Perl modules to user or root directories separate from the system.
 
 The latter is the more compatible option, since CPAN exists on every system that supports Perl, but the packages from CPAN tend to be newer than those distributed by the system repositories and this may cause clashes.
 
@@ -84,7 +88,7 @@ One other solution to this problem would be to rewrite Allegro from scratch. All
 
 \subsection{GRR Backend}
 
-The most problematic component of the pipeline is the graphical GRR interface, which is a Windows binary that does not take any commandline arguments\footnote{Despite a pleading email to the developers who promised to add such functionality in the future, only to then respond with silence}. As a result data cannot be simply fed into the application from the commandline where it performs all computations in the background, instead the application requires a display server to host its graphical interface where user-clicks are then simulated by the system in order to load in the data.
+The most problematic component of the pipeline is the graphical GRR interface, which is a Windows binary that does not take any commandline arguments\footnote{Despite a pleading email to the developers who promised to add such functionality in the future, only to then respond with silence.}. As a result data cannot be simply fed into the application from the commandline where it performs all computations in the background, instead the application requires a display server to host its graphical interface where user-clicks are then simulated by the system in order to load in the data.
 
 The requirements of GRR are immense; entire display libraries must be installed such as a X11 or Wayland display server, a desktop environment, display fonts, sounds, and all manner of other multimedia dependencies that come packaged with operating systems that require desktop sessions to run. The application also requires \gls{prog:wine} to run because it was originally written for Windows.
 
@@ -95,17 +99,17 @@ A replacement Linux-based binary would be ideal at this stage, and prompting our
 
 Each run comes equipped with an automatic readme generator so that each run has a log of what analysis transpired, from what input sources, at what date, with how many markers, and under what penetrance. The penetrance and number of \gls{bio:markers} are automatically detected from the surrounding input files, but everything else must be typed by the user.
 
-A web frontend would facilitate in this greatly, where the user would simply upload their files to the webserver which would place them in a correctly named folder (see page~\pageref{ref:meth:foldconv}) as specified by a project ID input field within the form, filter for informative markers as set by other options in the form, and would print the details into the readme file without the user having to manually specify anything.
+A web front-end would facilitate in this greatly, where the user would simply upload their files to the webserver which would place them in a correctly named folder (see page~\pageref{ref:meth:foldconv}) as specified by a project ID input field within the form, filter for informative markers as set by other options in the form, and would print the details into the readme file without the user having to manually specify anything.
 
 The web interface could also give options for customizing the order of pipeline modules and write an appropriate configuration script.
 
 This could be implemented in pure \gls{comp:PHP} \cite{bakken2000php} which can talk to the system and is capable of spawning off bash commands and reporting on their feedback in realtime. The images generated during the Filtering stage (pedigrees, Mendelian errors, GRR) could be displayed within the interface as and when they appear.
 
-The linkage portion of the pipeline would have to be reported to the user via commandline output which would be fed into a textarea in the interface, but once complete the linkage plots could be displayed as tiled images or opened up as seperate PDFs in a new tab.
+The linkage portion of the pipeline would have to be reported to the user via commandline output which would be fed into a textarea in the interface, but once complete the linkage plots could be displayed as tiled images or opened up as separate PDFs in a new tab.
 
 The user would then be able to download their data as a compressed ZIP file as packaged using the normal \gls{prog:collect.sh} script from a button or link that would only become visible once the analysis is complete.
 
-One issue that has been known to arise when implementing similar interfaces in other pipelines\footnote{Significant work has also been performed upon a High-Throughput \textit{Sequence} Analysis Pipeline} is that the pipeline is spawned by the browser which makes the browser the parent process. Once the browser is closed (or a \gls{comp:SIGHUP} signal is detected) the system will attempt to terminate all child processes too which may kill an ongoing process.
+One issue that has been known to arise when implementing similar interfaces in other pipelines\footnote{Significant work has also been performed upon a High-Throughput \textit{Sequence} Analysis Pipeline.} is that the pipeline is spawned by the browser which makes the browser the parent process. Once the browser is closed (or a \gls{comp:SIGHUP} signal is detected) the system will attempt to terminate all child processes too which may kill an ongoing process.
 
 To get around this, the \gls{prog:screen} utility is used to detach the child process from the parent but still maintain control later on. However getting realtime output out of a screen process is not straightforward, and requires taking repeated "snapshots" of the session window and reading the contents.
 
@@ -116,7 +120,7 @@ There are three ways that the pipeline can be deployed:
 \begin{enumerate}
 \item{{\bf Install} - The pipeline is installed onto a Unix or Linux system via the installer script to work alongside the other files and programs on the OS.}
 \item{{\bf Live Environment} - the entire pipeline is placed into a bootable medium (DVD or USB) and all analyses are run in-house off the medium. Live environments are restricted in the notion that the operating system is essentially read-only, which has the benefit of greatly reducing any \gls{comp:paging} overhead from the OS itself, but means that all created files must be kept in memory. For small analyses this is not a problem, but larger pedigrees will prove a problem.}
-\item{{\bf Web hosting} - the pipeline is hosted from a dedicated server with all optimizations catered towards the specific hardware it runs upon. Users then interface with the pipeline remotely either through the \gls{prog:ssh} utility via the secure \gls{comp:SSL} protocol, or through a \gls{comp:HTTP} server to a web interface. Complete analyses are transferred through \gls{prog:scp}, \gls{prog:rsync}, or downloaded from the web interface via HTTP }
+\item{{\bf Web hosting} - the pipeline is hosted from a dedicated server with all optimizations catered towards the specific hardware it runs upon. Users then interface with the pipeline remotely either through the \gls{prog:ssh} utility via the secure \gls{comp:SSL} protocol, or through a \gls{comp:HTTP} server to a web interface. Complete analyses are transferred through \gls{prog:scp}, \gls{prog:rsync}, or downloaded from the web interface via HTTP.}
 \end{enumerate}
 
 The first and third option are the most viable, albeit with the install stage requiring the user to take care of their own hardware which may be a large limiting factor in the overall uptake of pipeline usage due to heavy hardware requirements. The web hosting option is more approachable, but requires limiting the number of concurrent users accessing the pipeline at any time since it can only handle one large pedigree at a time, though numerous small pedigrees can be handled at any given time.
@@ -125,7 +129,7 @@ The first and third option are the most viable, albeit with the install stage re
 
 \subsection{Effective Filesystem Management}
 
-The working directory should be seen as a temporary file system at best, since many linkage programs generate a substantial amount of temporary files during processing. Though modern file systems are excellent at keeping track of and recovering files (a task known as \gls{comp:journaling}), it is still good practice to "mount a scratch monkey" such that temporary working files are isolated away from archived ones in distinctly separate partitions. 
+The working directory should be seen as a temporary file system at best, since many linkage programs generate a substantial amount of temporary files during processing. Though modern file systems are excellent at keeping track of and recovering files (a task known as \gls{comp:journaling}), it is still good practice to "mount a scratch monkey" such that temporary working files are isolated away from archived ones in distinctly separate partitions.
 
 It is preferable to isolate the two file systems on different disks altogether, such that a disk-wide read error on a given hard disk won't affect the operation of another. Most modern file systems have journaling enabled by default, which writes extra data to disk so that a recovery is possible in the event of a crash, but this becomes more problematic with Solid State Drives (\gls{comp:SSD}s) which have a limited number of read/write operations, and are prone to seizing should an operating system over-breach those limits.
 
@@ -177,7 +181,7 @@ The application currently operates in-browser via either local or web deployment
 
 In order to achieve this, there are two main avenues of development to explore:
 \begin{enumerate}
-\item{Restrict application deployment to cloud-based services, where analyses are stored in a \gls{comp:mySQL}\footnote{The mariaDB open-source fork to be specific, since mySQL was acquired by Oracle \cite{oraclemysql}} database and are issued private login keys to restrict access to the data to only permitted users.
+\item{Restrict application deployment to cloud-based services, where analyses are stored in a \gls{comp:mySQL}\footnote{The mariaDB open source fork to be specific, since mySQL was acquired by Oracle \cite{oraclemysql}.} database and are issued private login keys to restrict access to the data to only permitted users.
 
 Access can then be metered using established social network authentication services such as Google, Facebook, Microsoft, Twitter, and OpenID via the \gls{comp:OAuth2} \cite{hardt2012oauth} protocol.
 
@@ -202,7 +206,7 @@ A combination of both approaches would likely need to be implemented to achieve 
 
 \subsubsection{Framework Upgrade}
 
-Eric Dowell is the author of \gls{comp:KineticJS}\footnote{the framework used extensively in the application's development} but has since moved onto another project after he completed KineticJS. KineticJS was deemed "complete" in 2014 \cite{kinetictar} and has not been worked upon since. This was good news developers who needed a stable platform to work with, but came with the unspoken agreement that applications developed under it would not be future maintained.
+Eric Dowell is the author of \gls{comp:KineticJS}\footnote{the framework used extensively in the application's development.} but has since moved onto another project after he completed KineticJS. KineticJS was deemed "complete" in 2014 \cite{kinetictar} and has not been worked upon since. This was good news for developers who needed a stable platform to work with, but came with the unspoken agreement that applications developed under it would not be future maintained.
 
 Dowell has since moved onto \gls{comp:ConcreteJS} \cite{concretejs} which is a more general-purpose 2D library from manipulating shapes and is vastly optimized such that the entire codebase (including documentation) consists of no more than 600 lines. The project is still in the early Alpha phase (v0.1.0), but looks very promising. It shares almost the same syntax as KineticJS and will be non-problematic to implement.
 

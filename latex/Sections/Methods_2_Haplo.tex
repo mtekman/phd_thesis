@@ -41,9 +41,9 @@ Programming is a transferable skill; practice in one will aid in the practice of
 
 The applications produced by different languages are typically split into two groups; scripts and programs, each with their own forms of accession and distribution.
 
-Scripting languages such as Bash, Javascript, Perl, and \gls{comp:Python} \cite{vanrossum2010python} are high-level runtime dependent languages written in plain-text into files that can be directly executed by their respective interpreters. Scripts are said to be open-source, where to share or distribute the script is to openly share the code source with all users.
+Scripting languages such as Bash, Javascript, Perl, and \gls{comp:Python} \cite{vanrossum2010python} are high-level runtime dependent languages written in plain-text into files that can be directly executed by their respective interpreters. Scripts are said to be open source, where to share or distribute the script is to openly share the code source with all users.
 
-Programs allude to languages where all the files containing the code are used to generate a binary that contains a reduction of all the files related to the application parsed into machine code; namely \gls{comp:C++} and Java. These binaries are distributed to end-users but the users cannot see the code source used to create the binary\footnote{here are however numerous methods to reverse-engineer the code source from a binary.}. It is then up to developer to share their code (making the program open-source) so that the user can compile the binary themselves, or the developer can choose not to share their code at all (making the program closed-source) and it is then up to the user to decide whether the binary is trustworthy or not\footnote{The problem with closed-source development is the room for abuse in which code can be written with malicious intent without the end-user knowing about it.}.
+Programs allude to languages where all the files containing the code are used to generate a binary that contains a reduction of all the files related to the application parsed into machine code; namely \gls{comp:C++} and Java. These binaries are distributed to end-users but the users cannot see the code source used to create the binary\footnote{here are however numerous methods to reverse-engineer the code source from a binary.}. It is then up to developer to share their code (making the program open source) so that the user can compile the binary themselves, or the developer can choose not to share their code at all (making the program closed-source) and it is then up to the user to decide whether the binary is trustworthy or not\footnote{The problem with closed-source development is the room for abuse in which code can be written with malicious intent without the end-user knowing about it.}.
 
 Open-source applications are also avenues for the misuse of the developers original intention to the distribution and modification of their code\footnote{For an overview of the various types of licensing in digital media, please see the Licensing section on page~\pageref{ref:app:licensing} in the Appendix.}.
 
@@ -178,7 +178,7 @@ Before we go any further, the need of open source software within academia shoul
 
 The scientific principle works under the notion of iterating towards a consistent truth model through the use of reproducible peer-reviewed experiments and analyses.  In order for this to be the case, other scientists must be able to assess these experiments by accessing the same data sets and the same tools or methods to reproduce the same results. The whole process must be transparent; with no ambiguity at any stage that could cast doubt on the experiment in question.
 
-With open-source software, an inquisitive scientist has the freedom to take an existing method or tool and tailor it better to their experiment\footnote{Depending on licensing. See Appendix page~\pageref{ref:app:licensing}.}. With open-source software, a reviewer can go through the source code and understand the method in which data was analysed.
+With open source software, an inquisitive scientist has the freedom to take an existing method or tool and tailor it better to their experiment\footnote{Depending on licensing. See Appendix page~\pageref{ref:app:licensing}.}, and a reviewer can then go through the source code and understand the method in which data was analysed.
 
 The transparency of this process becomes somewhat clouded as soon as more black-box methods are employed; software binaries or proprietary owned cloud-computing models.
 
@@ -190,7 +190,7 @@ Proprietary cloud-computing solutions are even worse in this regard; essentially
 
 The issue of privacy and ease-of-use is another factor. The ongoing battle to keep free information access as open as possible has been met with many pitfalls; net neutrality, \gls{comp:IP} blocking, \gls{comp:DNS} ownership, purposefully weakened encryption, and untrustworthy proprietary security protocols. 
 
-However, client security remains a boundary that not many are willing to compromise upon, mostly because of the privacy issues related to client data. As a result only an open-source language could be trusted to run on the client machines, and a large-scale effort has been undertaken to ensure that this is the case with Javascript\footnote{Even corporate institutions such as Google, Apple, and Microsoft have aided and given support to this initative \cite{o2004open}.}.
+However, client security remains a boundary that not many are willing to compromise upon, mostly because of the privacy issues related to client data. As a result only an open source language could be trusted to run on the client machines, and a large-scale effort has been undertaken to ensure that this is the case with Javascript\footnote{Even corporate institutions such as Google, Apple, and Microsoft have aided and given support to this initative \cite{o2004open}.}.
 
 
 \section{HTML5 and Javascript}
@@ -210,7 +210,7 @@ Javascript previously was just a language to manage the various background tasks
 
 \subsection{Javascript Overview}\label{ref:haplo:javaover}
 
-Javascript's open-source asynchronous callback structure may seem like a major diversion from standard programming styles and principles, but the (somewhat reluctant) uptake of said principles in other languages only reinforces the notion that Javascript is setting the stage for things to come.
+Javascript's open source asynchronous callback structure may seem like a major diversion from standard programming styles and principles, but the (somewhat reluctant) uptake of said principles in other languages only reinforces the notion that Javascript is setting the stage for things to come.
 
 Javascript in the context of general web page management makes use of the Document Object Model (\gls{comp:DOM}) for manipulating elements of a page. The DOM model is a nested collection of inter-related objects following a parent-child hierarchy such that each child can reference their containing parent, and each parent can iterate through their child elements. Elements are accessed using unique identifying tags, or via multiply-specifiable class names.
 
@@ -240,13 +240,13 @@ The graphical contexts now supplied by the HTML5 schema provided a canvas for 3D
 
 With the need for graphics on the web coming into fruition, a new initiative was developed to provide Javascript bindings to the \gls{comp:OpenGL} API \cite{opengl}, aptly named \gls{comp:WebGL} \cite{webgl}, which provides syntactic-sugar to the low-level graphics API specification OpenGL.
 
-All graphics card vendors cater to both OpenGL and \gls{comp:DirectX} API standards \cite{directx}, but it is only the former which has open-source implementations (\gls{comp:MESA}) and generally better cross-platform support. 
+All graphics card vendors cater to both OpenGL and \gls{comp:DirectX} API standards \cite{directx}, but it is only the former which has open source implementations (\gls{comp:MESA}) and generally better cross-platform support. 
 
 The canvas element not only allows for graphics via the 2D and 3D WebGL API, but also has accelerated 2D graphics of its own. In somewhat of a misnomer, canvas-accelerated graphics are commonly generalised under the WebGL banner, despite using very different APIs to render graphics. However for the purpose of conciseness we will also adopt this convention, and silently note that there are three contexts that the canvas element supports: 3D and 2D (WebGL API, hardware-accelerated), and another 2D (Canvas API, hardware or software accelerated).
 
 \subsection{General Runtime Performance}
 
-Javascript is incorporated differently into the web-engines of different web-browsers, each with comparable levels of performance and ECMAScript compliance. There are two main competing open-source web-engines in active development:
+Javascript is incorporated differently into the web-engines of different web-browsers, each with comparable levels of performance and ECMAScript compliance. There are two main competing open source web-engines in active development:
 
 \begin{description}
 \enumdesc{Gecko}{Incorporated by Firefox and Netscape, using the \gls{comp:SpiderMonkey} Javascript engine.}
