@@ -199,7 +199,7 @@ The next step is the visual inspection of the genotypes through the genetics rel
 {fig:methgrr}
 {0.8}{GRR clusters on simulated set}
 
-GRR uses \textit{identity-by-state} (\gls{bio:IBS}) allele sharing in its metrics, allowing it to identify monozygotic twins (who share identical alleles) without having trace haplotypes.
+GRR uses \textit{identity-by-state} (\gls{bio:IBS}) allele sharing in its metrics\footnote{as opposed to \gls{bio:IBD} metric which would be computationally expensive.}, allowing it to identify monozygotic twins (who share identical alleles) without having trace haplotypes.
 
 Each point is formed by querying the relationships between any two individuals, coloured by the type of relationship specified in the pedigree, and plotting the mean against the standard deviation of the allele's being shared.
 
@@ -255,15 +255,15 @@ Only Allegro and GeneHunter are run by default, and they are run sequentially so
 
 This is the longest stage of the entire pipeline, with the previous filtering (auto) stages taking no longer than 5 minutes. Here, the rest of the pipeline can take anything from 10 minutes for small pedigrees, and then any interval from 10 hours to over a 100 hours for pedigrees larger than 19 bits.
 
-\subsection{Preliminary \gls{bio:LOD} estimation}
+\subsection{Preliminary LOD estimation}
 
-The first step is to produce a maximum estimated LOD (\gls{bio:ELOD}) score, using a simulated data upon the pedigree. This is produced by the \gls{comp:Python} script \gls{prog:clodhopper.py} which generates false linkage files for both Allegro and Genehunter using the shortest chromosome input files as templates (chromosome 21).
+The first step is to produce a maximum estimated \gls{bio:LOD} (\gls{bio:ELOD}) score, using a simulated data upon the pedigree. This is produced by the \gls{comp:Python} script \gls{prog:clodhopper.py} which generates false linkage files for both Allegro and GeneHunter using the shortest chromosome input files as templates (chromosome 21).
 
 The maximum ELOD score is parsed straight from the output files, storing largest result in a parent folder, and then all related files are deleted in preparation for the real linkage analysis. Scores between Allegro and GeneHunter tend to differ by only $\pm$ 0.2. Any larger discrepancies are suspect, and usually prompt a Simwalk run as a precautionary third control.
 
 \subsection{Simwalk}
 
-Though Simwalk is not run by default it is useful to discuss before delving into Allegro and Genehunter, since it is the more classically robust linkage program with a longer publication history \cite{simwalk}. It is generally one order slower than more modern linkage programs and is not able to process X-linked inheritance models effectively, which is why it is not included by default. Analysis on moderately sized 19-bit pedigrees can take several days to complete. There are methods we designed to increase its throughput, but these are discussed later (see page~\pageref{ref:meth:simwalkmulti}).
+Though Simwalk is not run by default it is useful to discuss before delving into Allegro and GeneHunter, since it is the more classically robust linkage program with a longer publication history \cite{simwalk}. It is generally one order slower than more modern linkage programs and is not able to process X-linked inheritance models effectively, which is why it is not included by default. Analysis on moderately sized 19-bit pedigrees can take several days to complete. There are methods we designed to increase its throughput, but these are discussed later (see page~\pageref{ref:meth:simwalkmulti}).
 
 
 \subsection{GeneHunter}
@@ -272,7 +272,7 @@ GeneHunter is one of the core linkage programs, and is used as the main secondar
 
 \subsection{Allegro}
 
-The fastest, memory compact, and consistently accurate linkage program in the entire runtime linkage suite. Allegro's main strength comes from its ability to perform multi-point parametric linkage and haplotype reconstruction within the same pass. For a pedigree under 19-bits, it performs linkage upon the entire \gls{bio:genome} with an average time of 10 mins. The real bottleneck occurs for any pedigrees outside of this limit, but this is addressed in the next chapter (see the Large Pedigrees section on page~\pageref{ref:meth:largepeds}).
+The fastest, memory compact, and consistently accurate linkage program in the entire runtime linkage suite. Allegro's main strength comes from its ability to perform \gls{bio:multi-point parametric} linkage and haplotype reconstruction within the same pass. For a pedigree under 19-bits, it performs linkage upon the entire \gls{bio:genome} with an average time of 10 mins. The real bottleneck occurs for any pedigrees outside of this limit, but this is addressed in the next chapter (see the Large Pedigrees section on page~\pageref{ref:meth:largepeds}).
 
 
 \section{Post-Linkage Processing}
@@ -302,7 +302,7 @@ The need for parallelization in linkage becomes apparent almost immediately afte
 
 An ideal run would utilize all the cores/threads available on a system at any given time, by processing several chromosomes at the same time. Such a process must first be \gls{comp:thread safe}, meaning that any two instances of the same program either use independent output resources (temporary files, output files, blocks of memory) or any shared resources are accessed mutually exclusively such that they do not write to the same resource at the same time\footnote{See Appendix page~\pageref{ref:app:semaphores} for a quick overview on Semaphores}.
 
-Three scripts were developed under the parallel framework to ease this process, by queuing up chromosomes (or 'jobs') in a waiting buffer, and dispatching from it whenever a core (or 'resource') became available. The script \gls{prog:ghparallel} dispatched jobs from Genehunter, and the script \gls{prog:allegroparallel} did the same from Allegro. The script \gls{prog:simwalkmulticore}\label{ref:meth:simwalkmulti} worked under the same principle, but operated differently because Simwalk splits its input not just into chromosomes, but smaller fixed-size loci. This has the benefit of being able to partially process an entire chromosome, since some of the sub-input files might have been processed and others not. This also allows the script to be \textit{resumeable}, in the manner that the script can be terminated prematurely, and then re-run, but it would not start from scratch upon each chromosome, but would resume from the files it had not processed yet. The parallel description in the Program Listing (page~\pageref{ref:meth:proglist}) goes into further detail about the nature of these scripts.
+Three scripts were developed under the parallel framework to ease this process, by queuing up chromosomes (or 'jobs') in a waiting buffer, and dispatching from it whenever a core (or 'resource') became available. The script \gls{prog:ghparallel} dispatched jobs from GeneHunter, and the script \gls{prog:allegroparallel} did the same from Allegro. The script \gls{prog:simwalkmulticore}\label{ref:meth:simwalkmulti} worked under the same principle, but operated differently because Simwalk splits its input not just into chromosomes, but smaller fixed-size loci. This has the benefit of being able to partially process an entire chromosome, since some of the sub-input files might have been processed and others not. This also allows the script to be \textit{resumeable}, in the manner that the script can be terminated prematurely, and then re-run, but it would not start from scratch upon each chromosome, but would resume from the files it had not processed yet. The parallel description in the Program Listing (page~\pageref{ref:meth:proglist}) goes into further detail about the nature of these scripts.
 
 \subsection{Distribution}
 
@@ -327,7 +327,7 @@ The first iteration of the pipeline was unable to generate the relevant input fi
 
 There were several stages where this problem could originate, the most likely being the Alohomora input file generation stage, but closer inspection revealed that the program merely re-formats the data and makes no assumptions upon the genetic model. The real source of the error messages was from the separate linkage programs themselves.
 
-Upon thorough cross-checking between the input formats of the Allegro and Genehunter, separate male and female penetrances could be set \footnote{As per the GeneHunter Manual, see:\\\url{https://www.helmholtz-muenchen.de/fileadmin/GENEPI/downloads/ghm-3.1.pdf}.}, and correct run configuration files could be generated for the setup. This process was automated via the script \gls{prog:xmakedat} which modifies the chromosome X "datain" input files by setting the "use X" flag\footnote{0 $\rightarrow$ 1, top line third column.}, and producing an extra line of male-specific penetrances\footnote{7th line denotes female penetrances (3 values). Male penetrances duplicate a line above this, modifying the second value 0 $\rightarrow$ 1 if dominant.} specific to the dominant/recessive models within Genehunter.
+Upon thorough cross-checking between the input formats of the Allegro and GeneHunter, separate male and female penetrances could be set \footnote{As per the GeneHunter Manual, see:\\\url{https://www.helmholtz-muenchen.de/fileadmin/GENEPI/downloads/ghm-3.1.pdf}.}, and correct run configuration files could be generated for the setup. This process was automated via the script \gls{prog:xmakedat} which modifies the chromosome X "datain" input files by setting the "use X" flag\footnote{0 $\rightarrow$ 1, top line third column.}, and producing an extra line of male-specific penetrances\footnote{7th line denotes female penetrances (3 values). Male penetrances duplicate a line above this, modifying the second value 0 $\rightarrow$ 1 if dominant.} specific to the dominant/recessive models within GeneHunter.
 
 Another script (xallegroinhaploout) generates the correct the Allegro run parameters in an almost identical manner. The same script is also used after a linkage run to convert haplotype output files into a more consistent formatting scheme, where males which only have 1 allele haplotyped in the analysis, now have two (a Y-chromosome consisting of entirely zeroes), aiding in the haplotype visualization process when inspecting the results.
 
@@ -340,7 +340,7 @@ Such behaviour are typical of out-of-memory / insufficient-resource errors, but 
 
 \subsubsection{GeneHunter}
 
-Genehunter was relatively easy to fix , by simply changing its default MAXBITS size setting 19 to 30. This worked well for pedigrees within a range of 19 to 22 bits, but any larger and Genehunter would split the pedigree or truncate individuals altogether in order to spare the computation. Flags to prevent these processes were alternated in numerous runs, but Genehunter would either override them if it deemed that it could not or did not have the resources to perform the computation. The flags modified were:
+GeneHunter was relatively easy to fix , by simply changing its default MAXBITS size setting 19 to 30. This worked well for pedigrees within a range of 19 to 22 bits, but any larger and GeneHunter would split the pedigree or truncate individuals altogether in order to spare the computation. Flags to prevent these processes were alternated in numerous runs, but GeneHunter would either override them if it deemed that it could not or did not have the resources to perform the computation. The flags modified were:
 
 \begin{itemize}
 \item{{\bf\footnotesize PENETRANCE RESTRICTION} Heterozygous penetrances never drop out of a set range.}
@@ -353,7 +353,7 @@ Genehunter was relatively easy to fix , by simply changing its default MAXBITS s
 \item{{\bf\footnotesize INCREMENT <integer>} Increase distance at which program bisects markers to compute score. In order to reduce system resources it was thought that fewer markers may ease the complexity of the analysis.}
 \end{itemize}
 
-Due to the unresolved splitting problem in large pedigrees for Genehunter, Allegro is the only linkage program used for large bit-sized pedigrees.
+Due to the unresolved splitting problem in large pedigrees for GeneHunter, Allegro is the only linkage program used for large bit-sized pedigrees.
 
 
 \subsubsection{Allegro}\label{ref:meth:allegrobigdata}
@@ -454,6 +454,6 @@ In order to address the minuscule fonts as well as the pan and zoom limitations,
 
 Using the \gls{prog:haploregion.py} script in precession with \gls{prog:HaploPainterRFH} (a modified HaploPainter clone) produces a much more useable representation of the haplotypes that the user does not need to extensively pan/zoom through (see page~\pageref{ref:res:hapcomp} in the Results section for example images).
 
-
+\pagebreak
 \printglossary[type=prog]\label{ref:meth:proglist}
 %\printnoidxglossary[sort=case, type=programs]

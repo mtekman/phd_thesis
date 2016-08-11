@@ -24,14 +24,14 @@ In this section we examine the output of seven linkage projects; five small stra
 \caption[Pedigrees by Bit-Size]{Summary table of the pedigrees evaluated in ascending order of bit-size.}\label{table:res:evaluated}
 \end{table}
 
-Timings of each pipeline run are considered later in the section, and haplotypes are compared using HaploPainter and HaploHTML5.
+Timings of each pipeline run are considered later in the section, and haplotypes are compared using \gls{prog:HaploPainter} and HaploHTML5.
 
 
 \section{Linkage Projects}
 
 The small pedigrees underwent two types of runs: single-core and multi-core. Due to the speed at which both types operate on small pedigrees, each type performed 10 trials each. The larger pedigrees were for the most part single-core due to resource limitations, but parallelizations were undertaken where possible. 
 
-We will examine the pipeline by looking at the four main visual components of each analysis: the pedigree, the GRR relationship charts, the Mendelian error plots, and finally the linkage plots. Run times will be displayed at the end of the section.
+We will examine the pipeline by looking at the four main visual components of each analysis: the pedigree, the \gls{prog:GRR} relationship charts, the Mendelian error plots, and finally the linkage plots. Run times will be displayed at the end of the section.
 
 \subsection{Small Pedigrees}
 
@@ -54,7 +54,7 @@ The number of \gls{bio:markers} used for this analysis was 35,155 of which only 
 {0.94}
 {3-bit Automal Recessive Pedigree}
 
-Due to the low bit-size, the estimated lod score for the \gls{bio:pedigree} gave a maximum score of 0.2499 (Allegro and Genehunter), which is reflected in the genome-wide plot. Unfortunately most regions of the \gls{bio:genome} reached this score ( $\sim>$ 80\%) likely due to there not being enough lack of homology between the affected and unaffected siblings. The score is also far below the minimum \gls{bio:LOD} score for significant linkage (LOD $>$ 3.3 \cite{center1995genetic}) meaning that the analysis was likely not very useful in identifying or excluding regions of interest for a causative disease locus.
+Due to the low bit-size, the estimated lod score for the \gls{bio:pedigree} gave a maximum score of 0.2499 (\gls{prog:Allegro} and \gls{prog:GeneHunter}), which is reflected in the genome-wide plot. Unfortunately most regions of the \gls{bio:genome} reached this score ( $\sim>$ 80\%) likely due to there not being enough lack of homology between the affected and unaffected siblings. The score is also far below the minimum \gls{bio:LOD} score for significant linkage (LOD $>$ 3.3 \cite{center1995genetic}) meaning that the analysis was likely not very useful in identifying or excluding regions of interest for a causative disease locus.
 
 \subsubsection*{5-bit Autosomal Recessive}
 
@@ -62,7 +62,7 @@ This pedigree is very similar to the 3-bit pedigree above, but the bit-size incr
 
 55 SNPs (of 41,479 markers) were identified having Mendelian errors, with a cluster of 6 towards the telomeric p-arm of chromosome 8. Removing these from the analysis also had negligible impact (0.133\%).
 
-The estimated LOD score was 0.8519 (Allegro and Genehunter) which was once again reached by the linkage with a smaller number of peaks to indicate locus of interest. Though a single causative peak could not be determined, wide regions of exclusion defined \gls{bio:chromosomes} 2, 3, 6, and 7, as well much narrower peaks genome-wide.
+The estimated LOD score was 0.8519 (Allegro and GeneHunter) which was once again reached by the linkage with a smaller number of peaks to indicate locus of interest. Though a single causative peak could not be determined, wide regions of exclusion defined \gls{bio:chromosomes} 2, 3, 6, and 7, as well much narrower peaks genome-wide.
 
 We can also see a few distinct types of peaks: the nicely squared "flat" plateau peaks, the "rounded" bullet-like peaks, and the sharp "shard" peaks. Flat peaks tend to be of more worth to the analysis because they indicate that there are at minimum three markers exhibiting the same LOD score to constitute a left-wall, a right-wall and a point in-between. 
 
@@ -98,7 +98,7 @@ This clearly implicated 16 and 13 as the source of the errors, and the next two 
 
 The next analysis (run 08) omitted 16 from the base analysis, preserving the original parents and offspring. This resulted in only 37 SNPs (0.0852\%) with Mendelian errors across the entire analysis. GRR also showed better group clustering for sib-pair and parent-offspring relations, with much less disparity within each group, and no mixing.
 
-Due to the more complete nature of this run, a genomewide linkage plot was also produced (Figure 6 (top)) showing distinct peaks in chromosomes 4, 7, 8, 9, 12, 13, and 17, 20, and 22 each with a LOD score of 1.25. The estimated LOD gave an expected maximum of 1.52 (Allegro and Genehunter) which was not reached.
+Due to the more complete nature of this run, a genomewide linkage plot was also produced (Figure 6 (top)) showing distinct peaks in chromosomes 4, 7, 8, 9, 12, 13, and 17, 20, and 22 each with a LOD score of 1.25. The estimated LOD gave an expected maximum of 1.52 (Allegro and GeneHunter) which was not reached.
 
 Reconfirmation upon the sample data prompted a two more genotype sets to be introduced for a mother and a father of individual 16. Runs 09 and 10 denote alternate testing of each new parent in conjunction with an existing parent in order keep a half-sib relation between 16 and the other offspring.
 This created some disarray in the GRR plots for run 09 and 10, and even some relation mixing for run 10. The number of Mendelian errors also rose to significant levels (1849 and 2978 SNPs respectively) though the linkage peaks remained relatively unchanged.
@@ -262,7 +262,7 @@ The GRR plot of the first family (Figure 18) showed good distinct relational gro
 	{fig:res:29bitgrrother}
 	{1}{}
 
-Due to the complexity of the analysis, genome-wide analysis had to be performed via Simwalk due to the big data errors mentioned previously (see page~\pageref{ref:meth:allegrobigdata} of Methods).  An estimated maximum LOD score could also not be computed because of this reason since the calculation relied upon GeneHunter and Allegro, both of which were not able to process the analysis in any reasonable timeframe.
+Due to the complexity of the analysis, genome-wide analysis had to be performed via \gls{prog:Simwalk} due to the big data errors mentioned previously (see page~\pageref{ref:meth:allegrobigdata} of Methods). An estimated maximum LOD score could also not be computed because of this reason since the calculation relied upon GeneHunter and Allegro, both of which were not able to process the analysis in any reasonable timeframe.
 
 The sliding-window approach of Simwalk allowed the parallelization techniques employed by the \textit{simwalk\_multicore.sh} script to fully utilize all threads available on platform without throttling the RAM. Timings of these runs are discussed later in the next section.
 
@@ -286,7 +286,7 @@ The Simwalk run produced a single peak on the p-arm (p13.3 to p13.2) of chromoso
 
 \section{Linkage Run Times}
 
-All analyses were timed using the GNU time utility in order to get the "wall clock" runtimes from the calling (bash) script.
+All analyses were timed using the \gls{comp:GNU} time utility in order to get the "wall clock" runtimes from the calling (bash) script.
 
 \subsection{GRR}
 For all projects with pedigree complexities less than 19-bits, the main limiting factor in their runtimes was the graphical GRR Xautomation script. Table~\ref{table:res:grrtimes} below shows how the mean runtime  remains at a reasonably constant 122 seconds up to the 19-bit limit, where GRR window polling then begins to take precedence and longer wait times are required for the genotypes to fully load.
@@ -455,7 +455,7 @@ Family 109 in the figure below consists of many members and so it was prudent to
 
 Figure~\ref{fig:res:haplo23compare} shows a side-by-side comparison of the pedigree given in Figure~\ref{fig:res:haplo23ped}. The top image shows the HaploPainter rendition\footnote{manually modified to be horizontally aligned since it normally only produces generation-based vertical plots.}, and the bottom the HaploHTML5 render.
 
-The first red arrow marks a point between rs7693827 and rs11735648 which refers to a recombination in both \gls{bio:haploblock} renditions where the founder allele switches to a red block HaploPainter which is equivalent to the green block in HaploHTML5. Both blocks persist fully in the right allele of 32707, 32709, 7610, and 327011. The red arrow at point 3 shows agreability too between the applications, though HaploHTML5 appears to have selected two very similar looking colors for the pink block just above point 3, which looks identical to the right allele of 32704 but has a different set of genotypes. Debugging the allele shows that HaploHTML5 does assign them different color groups, but the groups themselves have high colour homology due to an over abundance of founder alleles (9 founders, 18 alleles) and a limited selection of colors.
+The first red arrow marks a point between rs7693827 and rs11735648 which refers to a recombination in both \gls{bio:haploblock} renditions where the founder allele switches to a red block HaploPainter which is equivalent to the green block in HaploHTML5. Both blocks persist fully in the right allele of 32707, 32709, 7610, and 327011. The red arrow at point 3 shows agreability too between the applications, though HaploHTML5 appears to have selected two very similar looking colors for the pink block just above point 3, which looks identical to the right allele of 32704 but has a different set of genotypes. Debugging the allele shows that HaploHTML5 does assign them different color groups, but the groups themselves have high colour homology due to an over abundance of \gls{bio:founder alleles} (9 founders, 18 alleles) and a limited selection of colors.
 
 \pagebreak
 
@@ -491,12 +491,12 @@ However there is a slight difference at the point 2 location(s) where HaploHTML5
 
 A better compromise would be to allow the inclusion of marker map data (such as is read in by HaploPainter) so that the algorithm can determine whether the inter-marker distances surrounding a marker is great enough to warrant a haploblock on its own.
 
-Figure~\ref{fig:res:haplo29comparehomology} below compares the homology tools used by the two applications. HaploPainter was adapated to take in messner files and marker pairs, where regions of homology could be detected using our haploregion.py script. Messner regions are boxed in a blue regions, and regions of homology are surrounded by red boxes where in this case the affecteds are all \gls{bio:homozygous} for the regions shown, with the extra condition that the unaffecteds are not also similarly homozygous.
+Figure~\ref{fig:res:haplo29comparehomology} below compares the homology tools used by the two applications. HaploPainter was adapated to take in \gls{prog:messner} files and marker pairs, where regions of homology could be detected using our \gls{prog:haploregion.py} script. Messner regions are boxed in a blue regions, and regions of homology are surrounded by red boxes where in this case the affecteds are all \gls{bio:homozygous} for the regions shown, with the extra condition that the unaffecteds are not also similarly homozygous.
  HaploHTML5 performs all homology detection within the browser, but uses a different approach where it assumes that homology detection is not so binary and assigns a "homology score" at each locus which is overlayed against the haplotypes and marker slider. HaploPainter is much clearer in showing homology in this instance, but HaploHTML5 allows forr some leeway for erroneous genotypes that might otherwise obstruct a binary homology detection.
 \end{spacing}
 
 \fignow{../writer/Results/images/haplotypes/104_homology_compare.jpg}
-	{Homology Tool comparison of HaploPainter via HaploPainterRFH modification script (Top), and HaploHTML5 Homology Mode (Bottom).}
+{Homology Tool comparison of HaploPainter via \gls{prog:HaploPainterRFH} modification script (Top), and HaploHTML5 Homology Mode (Bottom).}
 	{fig:res:haplo29comparehomology}
 	{0.72}{29-bit homology comparison}
 
@@ -624,7 +624,7 @@ Table~\ref{table:res:haploastarperf} below shows the runtimes of the above scrip
 \textbf{Laptop}  &  (Windows 8.1, Gecko, SpiderMonkey)  & 0.371      & 0.482      & 0.472      & 0.268      & 0.398          \\
  & & & & & & \\
 \textbf{Desktop} & Chromium  & 0.055      & 0.013      & 0.025      & 0.032      & 0.031           \\
-\textbf{Laptop}  & (Arch Linux, WebKit, V8)  & 0.157      & 0.224      & 0.229      & 0.243      & 0.213           \\
+\textbf{Laptop} & (\gls{comp:Arch} Linux, WebKit, V8) & 0.157 & 0.224 & 0.229 & 0.243 & 0.213 \\
  & & & & & & \\
 \textbf{Desktop} & Firefox   & 0.060      & 0.039      & 0.059      & 0.042      & 0.050          \\
 \textbf{Laptop}  & (Arch Linux, Gecko, SpiderMonkey)   & 0.333      & 0.456      & 0.508      & 0.231      & 0.382          \\
