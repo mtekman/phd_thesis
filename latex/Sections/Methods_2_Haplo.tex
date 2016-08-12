@@ -430,7 +430,7 @@ Heterozygous    &         & AB &    & N & Y & Y & B\\
 \caption[Trio Allele Cases]{Trio Allele Cases showing applicable cases on separate lines, with possible and impossible child alleles, and parental alleles separated by a vertical pipe. A, R, and P denote whether the possible child alleles are Ambiguous, Recombinant, and Parental-Specificity.}\label{table:haplo:trioalleles}
 \end{table}
 
-For the sake readability and clarity, we will define three types of alleles: \textit{sealed} (unambiguous), \textit{bound} (ambiguous, parent specific), and \textit{orphaned} (ambiguous, non-parent specific).
+For the sake of readability and clarity, we will define three types of alleles: \textit{sealed} (unambiguous), \textit{bound} (ambiguous, parent specific), and \textit{orphaned} (ambiguous, non-parent specific).
 
 The majority of ambiguous alleles stem from the combination of \gls{bio:homozygous} and \gls{bio:heterozygous} parental alleles, however they are all of the bound type since the attributing parent of an allele is always known even if the specific allele is not (see the \gls{comp:PS} field).
 
@@ -458,10 +458,9 @@ This enables the ambiguous trio to 'orient' itself relative to the flanking unam
 \fignow{../writer/Methods/images/simple_haplotypes.png}
 	{A simple parent-offspring trio, with coloured blocks representing founder allele groups.}
 	{fig:haplo:fags}
-	{0.5}{}
+	{0.3}{}
 
-
-
+%\vspace{-20pt}
 As highlighted in Figure~\ref{fig:haplo:fags}, the approach operates by crawling up and down a genotype of interest to find flanking unambiguous neighbouring alleles. If the neighbouring haplogroups are the same, they are absorbed into the group. If they differ, an informed choice on the point of recombination must be made.
 
 Genotypes are reduced into two simple cases; one where flanking sealed genotypes are of the same founder allele group, and one where the flanking alleles differ as shown in Figure~\ref{fig:haplo:neighbouring}. In the former case, the uncertain genotype is encompassed totally by the group, but the latter case requires more thought.
@@ -469,8 +468,9 @@ Genotypes are reduced into two simple cases; one where flanking sealed genotypes
 \fignow{../writer/Methods/images/Neighbouring.png}
 	{Two possible neighbouring state scenarios, where uncertain genotypes (UG1 and UG2) are flanked by sealed genotypes with: (Top) the same founder allele group, (Bottom) different founder allele groups.}
 	{fig:haplo:neighbouring}
-	{0.5}{Two possible neighbouring state scenarios}
+	{0.8}{Two possible neighbouring state scenarios}
 
+\vspace{-20pt}
 When flanking sealed genotypes differ, there are limited resolution strategies that can be taken to investigate where a point of recombination has occurred:
 
 \begin{enumerate}
@@ -529,6 +529,7 @@ FOR m IN RANGE [0, max]:
 \captionof{lstlisting}{Pseudocode for Neighbouring States approach.}
 \end{spacing}
 \endgroup
+\vspace{10pt}
 
 There is some redundancy in this, for contiguous ambiguous regions will likely crawl over the same positions multiple times to reach the same unambiguously phased flanking markers, giving an average time complexity of $n * log(n)$. 
 
@@ -651,20 +652,20 @@ Since the nodes in his graph are connected via weighted edges, Dijkstra's algori
 The algorithm works under the heuristic of minimizing the cost of unvisited neighbouring nodes. Its method is outlined as follows:
 \begingroup
 \begin{spacing}{1}
-\begin{enumerate}
-\enumdesc{}{The node now occupied is the current node, $n$.}
-\enumdesc{}{If n is the target node, terminate the search.}
-\enumdesc{}{Consider all adjacent nodes and the cost of traversing to them. For each adjacent node, $\alpha$:
+\begin{description}
+\enumdesc{1.}{The node now occupied is the current node, $n$.}
+\enumdesc{2.}{If n is the target node, terminate the search.}
+\enumdesc{3.}{Consider all adjacent nodes and the cost of traversing to them. For each adjacent node, $\alpha$:
 
-\begin{enumerate}
-\item{Calculate the cost $w$, equal to the cost of traversing the weighted edge to it.}
-\item{If $\alpha$ already has a cost assigned to it from a previous cost evaluation, and that cost happens to be lower than $w$, do nothing. Otherwise assign $w$ to $\alpha$.}
-\end{enumerate}
+\begin{description}
+\item[(a)]{Calculate the cost $w$, equal to the cost of traversing the weighted edge to it.}
+\item[(b)]{If $\alpha$ already has a cost assigned to it from a previous cost evaluation, and that cost happens to be lower than $w$, do nothing. Otherwise assign $w$ to $\alpha$.}
+\end{description}
 }
 
-\enumdesc{}{Remove n from the search and move to the adjacent node with the lowest assigned cost.}
-\enumdesc{}{Go to\footnote{Dijkstra would be spinning in his grave at this careless use of the $GOTO$ statement that he so famously campaigned against in favour of the now well precedented $FOR$ loop \cite{Dijkstra1968}.} step 1.}
-\end{enumerate}
+\enumdesc{4.}{Remove n from the search and move to the adjacent node with the lowest assigned cost.}
+\enumdesc{5.}{Go to\footnote{Dijkstra would be spinning in his grave at this careless use of the $GOTO$ statement that he so famously campaigned against in favour of the now well precedented $FOR$ loop \cite{Dijkstra1968}.} step 1.}
+\end{description}
 \end{spacing}
 \endgroup
 
@@ -709,10 +710,11 @@ All the search algorithms visited so far can be implemented by the A* search alg
 
 To understand what is meant by the frontier of the search path, consider the state-space grid shown in Figure~\ref{fig:haplo:statespace}. This can be viewed as a network graph where each square represents a node, and each adjacent square/node is connected to it via an edge with a uniform edge weight cost.
 
+\vspace{20pt}
 \fignow{../writer/Methods/images/astar.png}
 	{State-space diagram showing the optimal path as discovered by an A* best-first search: 1st iteration (Top-Left), 2nd iteration (Bottom-Left), 3rd iteration (Top-Right), 22nd iteration (Bottom-Right).}
 	{fig:haplo:statespace}
-	{0.9}{State-space diagram, A*}
+	{0.95}{State-space diagram, A*}
 	
 The green square is the start node, and the blue square is the target end node. All available edges have equal cost, and upon start there four active paths under consideration by the algorithm (up, down, left, right) with a value of 1 . Upon second iteration of the algorithm, the 4 paths can expand, each in 3 more unvisited directions yielding ($4 \times 3 = $) 12 paths, though four of these actually overlap with same cost; so a total of 8 active paths are under consideration for the next iteration. At the third iteration, we have ($8 \times 3 = $) 24 paths, though twelve of these overlap with already visited paths and one of them  has hit the end of the grid and has nowhere to expand to leaving 11 active paths.
 
@@ -736,7 +738,7 @@ where:
 
 If there are over 20 active paths being explored and each chromosome took 0.05 seconds to precess, then this would result in over 2 seconds of processing per individual, and over 20 seconds of delay for a pedigree with 10 members in it.
 
-\subsubsection{Active Queue}
+\subsubsection*{Active Queue}
 
 Thankfully one of the A* search algorithms greatest strengths is its search heuristic $h(n)$ which only considers a sub-selection of active paths it believes will lead to the target node. 
 
@@ -750,7 +752,7 @@ This ensures that that there are at maximum \textit{P} active paths under consid
 
 Implementing the A* search algorithm within haplotype reconstruction involves two passes of the data; the first pass for populating a chromosome map with possible founder allele groups, and the second pass for performing the search itself.
 
-\subsubsection{First Pass: Priming the Data}
+\subsubsection*{First Pass: Priming the Data}
 
 When pedigree data is first parsed, genotypes for each chromosome are structured into an Allele\footnote{See Allele class in pedigree.js for more information.} object which contains four types of data:
 
@@ -783,7 +785,7 @@ To counter this, we populate exclusion groups where all the unique colour groups
 \enumdesc{Consanguineous Check}{If the maternal/paternal relationship has been labelled consanguineous, then we must slacken the parental exclusion somewhat since having duplicate haploblock groups in both child alleles is now not impossible. To do so, we first find the the intersection of  the maternal and paternal unique colour groups, and then remove the colors identified from both groups. At this stage, the pter\_array is now fully primed for the A* search algorithm to process.}
 \end{enumerate}
 
-\subsubsection{Second Pass: Path-finding Algorithm}
+\subsubsection*{Second Pass: Path-finding Algorithm}
 
 The algorithm is contained within the function \textit{a\_star\_bestfirst()} which takes a pointer array as argument, as well as an (optional) exclusion list.
 
@@ -868,6 +870,7 @@ WHILE algorithm_running AND routes_to_explore:
 \captionof{lstlisting}{A* Best-First Haplotype Pseudocode Representation}\label{code:astarbf}
 \end{spacing}
 \endgroup
+\vspace{20pt}
 
 Essentially the number of active paths expands with the number of available colour groups at the frontier of each path, with every path split into several sub-paths each designated an available colour group. Each of these sub-paths attempts to maximize their colour group as much as possible to create new paths that will be used in the next iteration.
 
@@ -1061,7 +1064,7 @@ This is divorced completely from the the pedigree data that pertains to individu
 
 It cannot be stressed enough that the Model (familyMapOps) and the View (uniqueGraphOps) do not overlap, i.e. one does not have pointers that reference entries in the other or vice versa. This ensures clean code management and simplifies tasks drawing tasks since the graphics should ultimately be a disposable representation of the pedigree data. The deletion of an individual's graphical node should not also prompt the deletion of that individual's pedigree data.
 
-
+\vspace{15pt}
 \subsection{Determining Pedigree and Penetrance Model}
 
 The right penetrance model is key to running the correct analysis upon the pedigree, and the function \textit{determinePedigreeType} (\textit{pedigree.js}) was written to determine whether the pedigree was X-linked/Autosomal, and Dominant/Recessive.
@@ -1170,7 +1173,7 @@ Pedigrees can be created from scratch without having to load a pedigree file. Wh
 \fignow{../writer/Methods/images/pedcreate.png}
 	{The four stages of creating a pedigree: (1) Adding individuals, (2) Joining mates, (3) Joining Offspring, (4) Completing a trio.}
 	{fig:haplo:pedcreate}
-	{0.5}{Four stages to creating a pedigree}
+	{0.8}{Four stages to creating a pedigree}
 	
 Once complete, the pedigree can exported as standard MAKEPED file, as well as optional non-standard tags which contain metadata such as individual names (i.e. not just IDs), and position upon rendering which are interpreted by the application.
 
@@ -1192,7 +1195,7 @@ HaploHTML5 does away with this notion by allowing the user to freely select whic
 \fignow{../writer/Methods/images/selection_mode.png}
 	{Selection mode in three stages; (Top Left) User selection, (Bottom Left) Transitioning to side-by-side view, (Right) Comparison mode}
 	{fig:haplo:selectmode}
-	{0.9}{Three stages of Selection Mode}
+	{1}{Three stages of Selection Mode}
 
 
 \subsubsection{Degrees of Separation (Selection View)}\label{ref:haplo:dos}
@@ -1206,7 +1209,7 @@ The method works well for simple relations, but grows computationally complex fo
 \fignow{../writer/Methods/images/haplo_dos.png}
 	{Degrees of Seperation (DOS) for two subselections of the same family. (Left) Simple and correct representation of three degrees of seperation between founders and great grandchilden. (Right) Complex and erroneous representation of larger selection spanning more generations. The top image of each column shows the subselection of the pedigree, the middle image shows the DOS view, and the bottom shows the aligned view.}
 	{fig:haplo:dos}
-	{0.9}{Degrees of Seperation (DOS) for two subselections of the same family}
+	{1}{Degrees of Separation (DOS) for two subselections of the same family}
 	
 Due to the incompleteness of the method, it was dropped from the release version of the application, and the Haploblock View aligns the pedigrees by default.
 
