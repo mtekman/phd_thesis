@@ -353,7 +353,7 @@ The GRR runtimes appear to be constant at approximately 122 seconds within the e
 
 \subsection{Chromosome-Specific}
 
-The following table contains the average chromosome-specific\footnote{For a full disclosure of all trials run, please see Appendix page~\pageref{ref:app:singlecoreindiv}.} runtimes that comprise the single-core components of Table~\ref{table:res:allegrosingleruntimes}.
+The following table contains the average chromosome-specific\footnote{\label{ref:footnote:singlecorefull}For a full disclosure of all trials run, please see Appendix page~\pageref{ref:app:singlecoreindiv}.} runtimes that comprise the single-core components of Table~\ref{table:res:allegrosingleruntimes}.
 
 \begin{table}[h]
 \begin{center}
@@ -427,12 +427,12 @@ The bottom image represents a zoomed out Y-axis scale of the same data by 5 orde
 \caption[Total Genome-wide Allegro Multi-core Run Times for MPT and Haplotype Reconstruction]{Total Genome-wide Allegro Multi-core Run Times for MPT and Haplotypes. Multicore timings for 21-bit and 23-bit analyses were not processed.}\label{table:res:allegromultiruntimes}
 \end{table}
 
-\fignow{../writer/Results/tables/runtimes_multicore.jpg}
-	{Multi-core Allegro runtimes displayed as a function of bit-size against run time fitted with a power curve. Individual chromosome runtimes were not recorded due to parallel evaluation.}
+\fignow{../writer/Results/tables/runtimes_multicore_vs_singlecore.png}
+	{Single-Core and Multi-Core Allegro runtimes displayed as a function of bit-size against run time fitted with an exponential fit curve.}
 	{fig:res:multitimes}
-	{0.8}{Multi-core Allegro runtimes plot}
+	{1}{Single-Core and Multi-Core Allegro runtimes plot}
 
-The multi-core run-times shown in Table~\ref{table:res:allegromultiruntimes} are plotted above in Figure~\ref{fig:res:multitimes}, where individual chromosome-runtimes were ommitted for simplicity.   Runtimes remain reasonably linear from 3-bit to 15-bits where a sharp rise in runtime occurs 18-bits where the system resources requested by active Allegro instances begin to compete for memory.
+The multi-core runtimes shown in Table~\ref{table:res:allegromultiruntimes} are plotted above in Figure~\ref{fig:res:multitimes} alongside the single-core runtimes summarized in Table~\ref{table:res:allegrosinglechroms} and tabulated verbosely in the Appendix\footnote{See footnote~\ref{ref:footnote:singlecorefull}.} with exponential fit curves\footnote{Curves were derived by fitting $log(runtime)$ and then iteratively correcting the coefficients with a nonlinear least squares model: $ y = 78 + 0.0028x ^{4.7}$ (single), $ y = 55 + 0.00021x^{4.95}$ (multi).}. Individual chromosome runtimes for the multi-core analyses were not recorded due to the scope of the parallel evaluation. In the case of multi-core, runtimes remain reasonably linear from 3-bit to 15-bits where a sharp rise in runtime occurs 18-bits due to system resources requested by the active Allegro instances having to compete for memory. This lends a sharper exponential rise in higher-bit multi-core runs compared to single-core runs, despite a lower and flatter outset.
 
 Due to \gls{comp:RAM} constraints, the pedigrees larger than 18-bits were not able utilize parallelization effectively, only being able to process a single chromosome at a time (i.e. single-core) and so they were removed from the analysis.
 
