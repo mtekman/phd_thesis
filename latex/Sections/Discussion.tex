@@ -44,7 +44,14 @@ HaploPainter runs on \gls{comp:Perl} and relies upon \gls{comp:Tk}, \gls{comp:Ca
 
 \subsection{Distribution}
 
-HaploHTML5 was always considered to be distributed open source
+The scripting nature of Javascript virtually enforces an open source distribution model upon all web applications created under it. However, language notwithstanding, HaploHTML5 was always going to be released as \gls{comp:FOSS}, and it was only the enforcement of this principle that prompted the exploration of the obfuscation methods outlined on page~\pageref{ref:haplo:codeobf}.
+
+Though the static source files were indeed concealed from the user through said methods, runtime debugging would still be able to recapitulate the body of most functions, albeit the discovery of \textit{all} functions would involve careful (recursive) manual inspection. 
+
+The obfuscation methods were therefore ultimately removed from the release version of the application, and it was licensed under GPLv3\footnote{See Licensing section in Appendix on page~\pageref{ref:app:licensing}.}.
+
+
+
 
 
 \section{Future Work}
@@ -53,7 +60,7 @@ The pipeline and application are in a useable state, and both will achieve the t
 
 \subsection{Pipeline improvements}
 
-\subsection{Fixing Installer Issues}
+\subsubsection{Fixing Installer Issues}
 
 The pipeline comes packaged with an installer that is designed to work on all Unix and Linux platforms; and so far it has been successfully upon Ubuntu, Debian, Arch, and Gentoo. The installation is not straightforward however, since every OS does not always use the same package manager as another. \gls{comp:Ubuntu} and \gls{comp:Debian} use Aptitute (or simply \textit{apt}), \gls{comp:Arch} uses \textit{pacman}, and \gls{comp:Gentoo} uses \textit{portage}.
 
@@ -64,7 +71,7 @@ Another issue is installing the Perl dependencies (for HaploPainter). If HaploPa
 The latter is the more compatible option, since CPAN exists on every system that supports Perl, but the packages from CPAN tend to be newer than those distributed by the system repositories and this may cause clashes.
 
 
-\subsection{Custom Modular Component Ordering}
+\subsubsection{Custom Modular Component Ordering}
 
 The pipeline as outlined in Figure\pref{fig:methpipe} exists as two main modules: Filtering (comprising of three sub-modules), and Linkage, with pre-linkage and post-linkage operations.
 
@@ -72,13 +79,13 @@ Quick retesting usually involves modifying the main pipeline script to some degr
 
 A better method would be use a configuration text file that outlines what modules and submodules the pipeline should run before terminating. The default configuration would run all modules in their specific orders, but a custom user configuration could change the order of the modules and better tailor the analysis to their needs (e.g. maximising a pedigree requires only the Filtering module).
 
-\subsection{Automate Large Pedigree Handling}
+\subsubsection{Automate Large Pedigree Handling}
 
 Pedigrees beyond the 19-bit limit are not handled by the default pipeline. Only the pre-linkage and Filtering components are handled and then the pipeline has to terminate in order for the custom scripts that can handle the large pedigrees can be called manually by the user.
 
 This can be easily automated, since the \textit{bit\_score.py} script automatically determines the bit-size of any pedigree, and can act as a screening stage for whether the pipeline should run the vanilla Allegro binary, or the custom modified (over 19-bit) Allegro binary. A potential pitfall would be having to declare beforehand whether the analysis should be haplotypes or \gls{bio:multi-point parametric} driven, since the modified binary cannot do both, but this can be specified in a configuration text file mentioned in the previous subsection.
 
-\subsection{Fixing Allegro}
+\subsubsection{Fixing Allegro}
 
 The modified Allegro binary works by deactivating the \gls{comp:CUDD} library which minimizes the number of unique computations made in the LOD score calculations and vastly improves upon memory and disk resources. Allegro uses version 2.4.1 of the CUDD library, but a later version exists that may fix the problem.
 
@@ -86,7 +93,7 @@ Attempts to incorporate this library into Allegro, but certain function calls th
 
 One other solution to this problem would be to rewrite Allegro from scratch. Allegro is written in C/C++ and is well commented in the source code. A more up-to-date rendition of the same program, using some of the newer features of the C++11 specification \cite{c++2011iso} may greatly benefit the program and even boost performance under the previous C++98 specification under which it was written and compiled.
 
-\subsection{GRR Backend}
+\subsubsection{GRR Backend}
 
 The most problematic component of the pipeline is the graphical GRR interface, which is a Windows binary that does not take any commandline arguments\footnote{Despite a pleading email to the developers who promised to add such functionality in the future, only to then respond with silence.}. As a result data cannot be simply fed into the application from the commandline where it performs all computations in the background, instead the application requires a display server to host its graphical interface where user-clicks are then simulated by the system in order to load in the data.
 
@@ -95,7 +102,7 @@ The requirements of GRR are immense; entire display libraries must be installed 
 A replacement Linux-based binary would be ideal at this stage, and prompting our own rewrite of GRR may be required.
 
 
-\subsection{Web UI}
+\subsubsection{Web UI}
 
 Each run comes equipped with an automatic readme generator so that each run has a log of what analysis transpired, from what input sources, at what date, with how many markers, and under what penetrance. The penetrance and number of \gls{bio:markers} are automatically detected from the surrounding input files, but everything else must be typed by the user.
 
@@ -114,7 +121,7 @@ One issue that has been known to arise when implementing similar interfaces in o
 To get around this, the \gls{prog:screen} utility is used to detach the child process from the parent but still maintain control later on. However getting realtime output out of a screen process is not straightforward, and requires taking repeated "snapshots" of the session window and reading the contents.
 
 
-\subsection{Deployment}
+\subsubsection{Deployment}
 
 There are three ways that the pipeline can be deployed:
 \begin{enumerate}
@@ -127,7 +134,7 @@ The first and third option are the most viable, albeit with the install stage re
 
 
 
-\subsection{Effective Filesystem Management}
+\subsubsection{Effective Filesystem Management}
 
 The working directory should be seen as a temporary file system at best, since many linkage programs generate a substantial amount of temporary files during processing. Though modern file systems are excellent at keeping track of and recovering files (a task known as \gls{comp:journaling}), it is still good practice to "mount a scratch monkey" such that temporary working files are isolated away from archived ones in distinctly separate partitions.
 
@@ -138,7 +145,7 @@ This is not an improbable occurrence; operating systems routinely write temporar
 When a system begins to run low on \gls{comp:RAM} (as in the frequent case of extensive linkage analysis), a great deal of paging is performed to keep the linkage program in memory, leading to a substantial amount of disk writes on a journaled file-system. Mechanical (spin) drives can handle these read/write requests robustly, but they are an order of magnitude slower than SSDs and significant bottlenecks can occur where the system has to wait for the disk to be ready in order to perform a block\footnote{If multiple sequential operations are requested on same contiguous portion of a disk, then the operating system groups the individual requests under a large contiguous 'block' request, that performs one long read/write operation instead of several short ones.}    read/write to it.
 
 
-\subsubsection{Why Upgrading Disk Technology Wont Necessarily Lend a Performance Increase}
+\paragraph{Why Upgrading Disk Technology May Not Necessarily Lend a Performance Increase}
 It is clear that SSDs offer no advantage at all in the use-case of frequent large temporary file activity, since though the operating system will rarely have to wait in order to perform a read/write, the limitations on the number of these operations shortens their lifetime considerably.
 
 The best long-term compromise is to use mechanical disks with a filesystem without journaling; either an older filesystem where journaling was never implemented (though file size constraints may be enacted), or a newer filesystem where journaling is disabled upon initialization. This reduces the total number of read/write operations whilst still ensuring disk longevity.
@@ -146,7 +153,7 @@ The best long-term compromise is to use mechanical disks with a filesystem witho
 Recoverability may be jeopardized, but the temporary nature of the files within the system imply that a re-run of the same analysis would not be resumable in any case; for it is the operating system that dispatches the temporary files to the linkage programs, and not the linkage program itself (with the  notable exception of \gls{prog:Simwalk}).
 
 
-\subsubsection{RAID Configuration}
+\subparagraph{RAID Configuration}
 
 One extra caveat to reduce the number of operations upon a single disk \textit{and} keep some level of redundancy is to distribute the load across several disk drives in a standard redundant array of independent disks (\gls{comp:RAID}); specifically a RAID-5 level setup. RAID relies on the method of storing contiguous data across several mediums (a concept known as \gls{comp:striping}), as well as ensuring the data is correct and error-checkable without having to scan the entire block of data (a concept known as \gls{comp:parity}). The failure of one disk drive would not be enough to impede the setup and an ongoing analysis could be reconstituted from the other remaining disks, though a minimum of three identically sized disks is required.
 
