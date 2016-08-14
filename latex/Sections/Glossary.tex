@@ -8,76 +8,32 @@
     colorlinks=true,
     citecolor=blue,
     filecolor=blue,
-    linkcolor=blue,
-    urlcolor=red,
-    pdfborderstyle={/S/B/W 2},
-    linkbordercolor=red
+    linkcolor=black,
+    urlcolor=red
 }
 
 %\usepackage[nomain]{glossaries}
 \usepackage[nopostdot,acronym,toc,numberedsection,section=section,style=indexgroup]{glossaries}
 
 
-\newglossary*{biol}{Biological Terms}
+\newglossary*{bio}{Biological Terms}
 \newglossary*{comp}{Computing Terms}
 \newglossary*{prog}{Program Listing}
 \makeglossaries
 
-\newcommand{\addglossbio}[2]
+\newcommand{\addglosser}[3]
 {
-        \newglossaryentry{bio:#1}{
-                type=biol,
-                name={#1},
-                description={#2}
-        }
+	\newglossaryentry{#3:#1}{
+		type=#3,
+		name={\textbf{\textit{#1}}},
+		description={#2}
+	}
 }
 
-%\newcommand{\addglossbioacro}[3]{
-%
-%    \newglossaryentry{bio:#1gloss}{
-%                type=biol,
-%                name=\glslink{bio:#1}{#2 (\gls{#1})},
-%                description={#3}
-%    }
-%
-%	\newglossaryentry{bio:#1}{
-%		type=\acronymtype,
-%		name={#1},
-%		first={#2 (#1)},
-%		see=[Glossary:]{\gls{bio:#1gloss}}, 
-%		description=\glslink{bio:#1gloss}{#2}
-%	}
-%}
-%
-%
-%\newcommand{\addglosscompacro}[3]{
-%
-%    \newglossaryentry{comp:#1gloss}{
-%                type=comp,
-%                name=\glslink{comp:#1}{#2 (\gls{#1})},
-%                description={#3}
-%    }
-%
-%	\newglossaryentry{comp:#1}{
-%		type=\acronymtype,
-%		name={#1},
-%		first={#2 (#1)},
-%		see=[Glossary:]{\gls{comp:#1gloss}}, 
-%		description=\glslink{comp:#1gloss}{#2}
-%	}
-%}
 
+\newcommand{\addglossbio}[2]{\addglosser{#1}{#2}{bio}}
 
-
-
-\newcommand{\addglosscomp}[2]
-{
-        \newglossaryentry{comp:#1}{
-                type=comp,
-                name={#1},
-                description={#2}
-        }
-}
+\newcommand{\addglosscomp}[2]{\addglosser{#1}{#2}{comp}}
 
 %bold gls
 %\renewcommand*{\glstextformat}{\textbf}
