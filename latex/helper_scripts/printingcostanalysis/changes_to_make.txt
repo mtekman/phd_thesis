@@ -1,0 +1,4 @@
+
+check Glossary.tex:
+	using hyperref NOT cleverref, change the page
+	Also change format of links
