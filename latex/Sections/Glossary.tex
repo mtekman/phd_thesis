@@ -2,7 +2,8 @@
 \usepackage{xifthen}
 
 % gls font format
-\newcommand{\glsfont}[1]{\fontfamily{qpl}\selectfont {#1}}
+%\newcommand{\glsfont}[1]{\fontfamily{qpl}\selectfont {#1}}
+\newcommand{\glsfont}[1]{\underline{#1}}
 \newcommand{\progstyle}[1]{\fontfamily{cmtt}\selectfont\large {\bf#1}}
 
 % needs to be before gloassary to be able to link
@@ -22,7 +23,8 @@
 
 %\usepackage[nomain]{glossaries}
 \usepackage[nopostdot,acronym,toc,numberedsection,section=section,style=indexgroup]{glossaries}
-\renewcommand{\glsnamefont}[1]{\textbf{#1}}
+\renewcommand{\glsnamefont}[1]{\textbf{\textup #1}}
+
 
 \newglossary*{bio}{Biological Terms}
 \newglossary*{comp}{Computing Terms}
@@ -112,7 +114,7 @@
 \addglossbio{co-dominance}{A case where neither allele dominates the other and phenotypes are independent of each other enough to both be expressed.}
 %-       Markers
 \addglossbio{minisatellite}{A block of repetitive DNA, 5-50 bp.}
-\addglossbio{VNTR}{Variable Number Tander Repeat.}
+\addglossbio{VNTR}{Variable Number Tandem Repeat.}
 \addglossbio{microsatellite}{A block of repetitive DNA, 2-5 bp.}
 \addglossbio{STR}{See microsatellite.}
 \addglossbio{SNP}{Extremely prevalent binary marker.}
