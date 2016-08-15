@@ -58,7 +58,9 @@ A colour space is a way to index colours under a certain schema. There are 4 mai
 
 \begin{enumerate}
 
-\enumdesc{RGB}{ Red-Green-Blue; directly maps to the Red/Green/Blue channels on monitors where (for example) an increase in the R-component will produce a redder image, and likewise with the G and B components for greener and bluer images respectively. Intermediate colours such as Yellow, Purple, and Brown are created 1:1 representations of two channels (with the third remaining constant), and Black$\rightarrow$Grey$\rightarrow$White representations are produced when locking the values of all three channels. Darkening and lightening an image requires changing all three channels.}
+\enumdesc{RGB}{ Red-Green-Blue; directly maps to the Red/Green/Blue channels on monitors where (for example) an increase in the R-component will produce a redder image, and likewise with the G and B components for greener and bluer images respectively. 
+
+Intermediate colours such as Yellow, Purple, and Brown are created 1:1 representations of two channels (with the third remaining constant), and Black$\rightarrow$Grey$\rightarrow$White representations are produced when locking the values of all three channels. Darkening and lightening an image requires changing all three channels.}
 \enumdesc{CMYK}{ Cyan-Magenta-Yellow-Key; where Key represents the darkness of an image. The colour model is used primarily in printers and uses subtractive mixing to achieve different colour blends (e.g. Green is the subtraction of Yellow and Cyan). Has the same colour scaling patterns as RGB but can produce darker semitones using the K component.}
 \enumdesc{YUV}{ Luminance-ChromaU-ChromaV; where Luminance denotes the brightness and the two chroma channels denote separate colour ranges as shown by the two axes in Figure~\ref{fig:app:yuv}. The colour model makes use of the human eye's lack of color perception compared to awareness of changes in brightness. Early engineers used this 'hack' to reduce the size of TV transmissions by reducing the U and V components of an image without any perceptible difference to the quality of the image.
 
@@ -211,7 +213,7 @@ The optimizations are too numerous to list, but a few examples are provided belo
 
 \gls{comp:Linux} \gls{comp:OS}'s have filesystem structure that is well-conserved across different versions (or "flavours") of Linux.
 
-The filesystem tree structure is as follows, stemming off the main branching point '/':
+The filesystem tree structure is as follows, stemming off the main root branching point '\textit{/}':
 
 \begin{description}
 	\descitem{/boot}{Bootloader specific files are stored here and are used to load the initial RAM filesystem which in turn loads the full OS.}
@@ -251,11 +253,11 @@ Most Linux and Unix systems are said to be \gls{comp:POSIX}-compliant if they ad
 
 One of the most  prominent features of the standard is the set of permissions attributed to each file, where file access is restricted to certain users (or certain groups of users) who can perform certain functions upon it.
 
-File functions are independently limited to: Reading, Writing, and Executing. A file can be read and written to, or written and executable, or just executable, or any variation of three options.
+File functions are independently limited to: Reading, Writing, and Executing. A file can be read and written to, or written and executable, or just executable, or any variation of three options. Further, these operations can be limited to a triad of users: the owner, the group, and other users. 
 
-Further, these operations can be limited to a triad of users: the owner, the group, and other users.
+This essentially prevents the average user from making dangerous edits to system files, where only the root user has access to the file system, and the root user is used sparingly. Typically an average user would have to invoke root privileges in order to make a system edit, which would require knowledge of the root password. More common implementations make use of the \gls{prog:sudo} utility which temporarily elevates the current user's privileges without having to directly invoke root.
 
-
+\pagebreak
 \subsection{Semaphores}\label{ref:app:semaphores}
 
 A semaphore is tool that aids in the synchronization in multiple parallel processes/threads such that they can operate concurrently with one another with clashing when accessing the same shared variables.
@@ -274,9 +276,7 @@ Semaphores serve as a means for threads to signal each other when to stop and go
 
 
 
-
-
-
+\pagebreak
 \section{Poisson Distribution}\label{ref:app:poisson}
 
 A discrete probability distribution that describes events that are expected to occur within fixed time intervals, known to recur at an average rate that is independent of the last time interval.
