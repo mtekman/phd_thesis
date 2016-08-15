@@ -16,7 +16,7 @@ def torez(flo):
 #    print("##########")
 #    print(flo, end=" ")
 
-    flo = "%.3f" % float(flo)
+    flo = "%.4f" % float(flo)
 #    print(flo, end=" ")
 #    print(float(flo))
     return float(flo)
@@ -35,12 +35,12 @@ with open(pagemetricsfile, 'r') as metrics_file:
         y = torez(y)
         k = torez(k)
 
-        cm_diff = c - m
-        cm_diff = cm_diff if cm_diff > 0 else -cm_diff
+#        cm_diff = c - m
+#        cm_diff = cm_diff if cm_diff > 0 else -cm_diff
 
-        cm_locked = (c==m==0) or (cm_diff < 0.003)
+        cm_locked = (c==m==y==0) #or (cm_diff < 0.001)
         
-        tuple = ( cm_locked, y < 0.005)
+        tuple = ( cm_locked, True)  #y < 0.005)
         # blue highlights lock c and m, with no Y
 
         # Debugging

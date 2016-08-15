@@ -2,7 +2,7 @@
 \usepackage{xifthen}
 
 % gls font format
-\newcommand{\glsfont}{\fontfamily{qpl}\selectfont}
+\newcommand{\glsfont}[1]{\fontfamily{qpl}\selectfont {#1}}
 \newcommand{\progstyle}[1]{\fontfamily{cmtt}\selectfont\large {\bf#1}}
 
 % needs to be before gloassary to be able to link
@@ -13,10 +13,11 @@
     citecolor=black,
     filecolor=black,
     linkcolor=black,
+    urlcolor=black
 %    citecolor=blue,
 %    filecolor=blue,
 %    linkcolor=blue,
-    urlcolor=red
+%    urlcolor=red
 }
 
 %\usepackage[nomain]{glossaries}
@@ -32,7 +33,7 @@
 {
 	\newglossaryentry{#3:#1}{
 		type=#3,
-		name={\glsfont #1},
+		name={\glsfont{#1}},
 		description={#2}
 	}
 }
