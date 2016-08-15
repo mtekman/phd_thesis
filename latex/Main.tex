@@ -24,12 +24,14 @@
 \include{./Other/Works}
 \include{./Other/Abstract}
 
-{\noindent \textbf{Note:} This thesis was built using \LaTeXe\  under the \textit{hyperref} package that converts all references to figures, tables, glossaries, acronyms, and citations into hyperlinks within the PDF. It is therefore better viewed using software, than through a hardcopy for ease of use, though page numbers to references are given where applicable.}\\
+{\noindent \textbf{Note:} This thesis was built using \LaTeXe\  under the \textit{hyperref} package that converts all references to figures, tables, glossaries, acronyms, and citations into clickable hyperlinks within the PDF. It is therefore better viewed using software, than through a hard copy for ease of use, though page numbers to references are given where applicable.}\\
 
-{\noindent Glossary entries are marked up using {\glsfont{this font}}, and program list entries are outlined using {\progstyle{this font}}. Only the first mention of each entry in a chapter is emphasized.}\\
+{\noindent Throughout the thesis, the first mention of each glossary term is {\glsfont{underlined}} and each  program listing is {\progstyle{outlined}}. Glossaries are indexed starting at page~\pageref{ref:main:gloss}, and full program listings are given on page~\pageref{ref:meth:proglist}.}\\
 
-{\noindent The interactive PDF for this thesis can be found at:\\
-\url{http://bitbucket.org/mtekman/phd_thesis/thesis.pdf}}
+{\noindent The more aesthetically-pleasing interactive PDF for this thesis can be found at:\\
+\url{http://mtekman.bitbucket.org/thesis/PhD_thesis_coloured.pdf}}
+
+
 
 
 
@@ -62,23 +64,22 @@
 % Bib appears in TOC
 \begin{spacing}{1}
 
-\addtocounter{chapter}{1}
-\pagebreak
-\addcontentsline{toc}{chapter}{\arabic{chapter}. Bibliography}
-\bibliography{bibliography}
+	\addtocounter{chapter}{1}
+	\pagebreak
+	\addcontentsline{toc}{chapter}{\arabic{chapter}. Bibliography}
+	\bibliography{bibliography}
+	\let\cleardoublepage\clearpage
+	
+	\appendix
 
-
-
-
-\appendix
-
-\pagebreak
-\chapter{Glossaries}
-\printglossary[type=bio,style=long]
-\pagebreak
-\printglossary[type=comp,style=long]
+	\pagebreak
+	\chapter{Glossaries}\label{ref:main:gloss}
+	\printglossary[type=bio ,style=super]
+	\pagebreak
+	\printglossary[type=comp,style=super]
 
 \end{spacing}
+
 
 \include{./Sections/Appendix}
 
