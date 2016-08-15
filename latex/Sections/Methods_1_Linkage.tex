@@ -24,13 +24,13 @@ Other fields record the relationship of that individual to other family members 
 
 \begingroup
 \begin{lstlisting}[label=verb:pedfile]
-FamilyID PersonID FatherID MotherID Sex Affectation
-311 101 0 0 1 1
-311 102 0 0 2 2
-311 201 101 102 1 2
-311 202 101 102 2 1
+FamilyID  PersonID  FatherID  MotherID  Sex  Affectation
+311       101       0         0         1    1
+311       102       0         0         2    2
+311       201       101       102       1    2
+311       202       101       102       2    1
 \end{lstlisting}
-\captionof{lstlisting}{An example \gls{bio:pedigree} file, showing members of family 311, with mother and father of 102 and 101 respectively, and their offspring 201 and 202.}
+\captionof{lstlisting}{An example pedigree file, showing members of family 311, with mother and father of 102 and 101 respectively, and their offspring 201 and 202.}
 \endgroup
 
 Siblings are not stated within a trio, as this would introduce a great deal of redundancy for individuals that share multiple siblings\footnote{who would then be stated multiple times at later points in the file.}. Instead, these relationships are inferred under the rubric that trios who share the same set of parents must be siblings. Similarly, (great-)grandparents and (great-)grandchildren are inferred from recursing up through a parent's identifying record, or down through an offspring's.
@@ -40,7 +40,7 @@ Individuals without parents are given a null pointer to refer to\footnote{usuall
 \enlargethispage{-\baselineskip}
 Extra fields are also permitted, but these are typically used to store genotype data which can be housed in a separate file.
 
-Individual IDs can be alphanumeric, but most linkage programs were written at a time where it was more efficient to use plain integers, and precautious measures have taught us to follow this convention.
+Individual IDs can be alphanumeric, but most linkage programs were written at a time where it was more efficient to use plain integers, and pre-cautious measures have taught us to follow this convention.
 
 Another convention of ours is to follow an individual identifier naming scheme of: <generation><gender (odd/even)>.
 
@@ -52,7 +52,7 @@ It is not a necessary rubric, but it facilitates in the creation of large (and o
 
 \subsubsection{Genotypes (genotypes.dat)}
 
-If the pedigree file does not contain genotypic data, then it is stored separately here. This is typically a truncated readout of the genotyping chip output file.
+If the \gls{bio:pedigree} file does not contain genotypic data, then it is stored separately here. This is typically a truncated readout of the genotyping chip output file.
 
 The full genotype output report is paired with map data that contains marker positions as well as the AB genotypic call for each individual that was genotyped under the same chipset. Calls include, but are not limited to, a combination of A and/or B.
 
