@@ -3,6 +3,12 @@
 \input{./Preamble}
 \input{./Commands}
 
+% Colour mode
+\newif\ifcolourmode
+\colourmodetrue
+%\colourmodefalse
+
+
 % Glossaries
 \input{./Sections/Glossary}
 \input{./Sections/ProgramListings}
@@ -26,10 +32,20 @@
 
 {\noindent \textbf{Note:} This thesis was built using \LaTeXe\  under the \textit{hyperref} package that converts all references to figures, tables, glossaries, acronyms, and citations into clickable hyperlinks within the PDF. It is therefore better viewed using software, than through a hard copy for ease of use, though page numbers to references are given where applicable.}\\
 
-{\noindent Throughout the thesis, the first mention of each glossary term is {\glsfont{underlined}} and each  program listing is {\progstyle{outlined}}. Glossaries are indexed starting at page~\pageref{ref:main:gloss}, and full program listings are given on page~\pageref{ref:meth:proglist}.}\\
+\ifcolourmode
 
-{\noindent The more aesthetically-pleasing interactive PDF for this thesis can be found at:\\
-\url{http://mtekman.bitbucket.org/thesis/PhD_thesis_coloured.pdf}}
+	{\noindent Throughout the thesis, the first mention of each glossary term and program listing is marked in blue, and links to an index. Glossaries are indexed starting at page~\pageref{ref:main:gloss}, and full program listings are given on page~\pageref{ref:meth:proglist}.}\\
+
+\else
+
+	{\noindent Throughout the thesis, the first mention of each glossary term is {\glsfont{underlined}} and each  program listing is {\progstyle{outlined}}. Glossaries are indexed starting at page~\pageref{ref:main:gloss}, and full program listings are given on page~\pageref{ref:meth:proglist}.}\\
+	
+	{\noindent The more aesthetically-pleasing interactive PDF for this thesis can be found at:\\
+\url{http://mtekman.bitbucket.org/thesis/}}
+
+\fi
+
+
 
 
 

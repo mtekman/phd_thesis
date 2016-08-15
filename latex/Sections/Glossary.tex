@@ -1,27 +1,39 @@
 %%% Glossary
 \usepackage{xifthen}
 
-% gls font format
-%\newcommand{\glsfont}[1]{\fontfamily{qpl}\selectfont {#1}}
-\newcommand{\glsfont}[1]{\underline{#1}}
-\newcommand{\progstyle}[1]{\fontfamily{cmtt}\selectfont\large {\bf#1}}
 
 % needs to be before gloassary to be able to link
 \usepackage{natbib}
 \usepackage{hyperref}
-\hypersetup{
-    colorlinks=true,
-    citecolor=black,
-    filecolor=black,
-    linkcolor=black,
-    urlcolor=black
-%    citecolor=blue,
-%    filecolor=blue,
-%    linkcolor=blue,
-%    urlcolor=red
-}
 
-%\usepackage[nomain]{glossaries}
+
+\ifcolourmode
+	% Colour Mode
+	\newcommand{\glsfont}[1]{\textup{#1}}
+	\newcommand{\progstyle}[1]{{\bf#1}}
+	\hypersetup{
+    		colorlinks=true,
+	    citecolor=blue,
+	    filecolor=blue,
+    		linkcolor=blue,
+	    urlcolor=red
+	}
+
+\else
+	% BW MODE
+	\newcommand{\glsfont}[1]{\underline{#1}}
+	\newcommand{\progstyle}[1]{\fontfamily{cmtt}\selectfont\large {\bf#1}}
+	\hypersetup{
+	    colorlinks=true,
+	    citecolor=black,
+	    filecolor=black,
+	    linkcolor=black,
+	    urlcolor=black
+	}
+\fi
+
+
+
 \usepackage[nopostdot,acronym,toc,numberedsection,section=section,style=indexgroup]{glossaries}
 \renewcommand{\glsnamefont}[1]{\textbf{\textup #1}}
 
