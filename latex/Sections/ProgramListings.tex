@@ -4,7 +4,7 @@
 {
         \newglossaryentry{prog:#1}{
                 type=prog,
-                name={\textbf{\textit{#1}}},
+                name={\progstyle{#1}},
                 description={#2}
         }
 }
@@ -13,7 +13,7 @@
 {
         \newglossaryentry{prog:#1}{
                 type=prog,
-                name={\textbf{\textit{#2}}},
+                name={\progstyle{#2}},
                 description={#3}
         }
 }
@@ -93,15 +93,15 @@
 
 \addglossprog{clodhopper.py}{A Python script to estimate the maximum LOD score of an analysis for either Simwalk, GeneHunter, or Allegro. The input files generated are program specific, but all work under the same principle of creating three distinct haplotype blocks: affected individuals ($12^g$, $11^h$, $12^g$), unaffected individuals with unaffected parents ($12^g$, $12^h$, $12^g$), and unaffected individuals with affected parents ($12^g$, $22^h$, $12^g$), where $g$ and $h$ are positive integers and $g \neq h$ . The implication being that all affected individuals are subject to the same (in this case, double) recombination event to create a singular well-defined linkage peak spanning h markers. It is then trivial for linkage programs to evaluate this.}
 
-\addglossprog{echo}{Prints a line of text}
+\addglossprog{echo}{Prints a line of text.}
 
 \addglossprog{chromosomes.sh}{Generates chromosome-specific linkage plots via GNUplot.}
 
 \addglossprog{GNUplot}{GNU plotting tool that produces postscript files using a scripting language known as Ghostscript.}
 
-\addglossprog{ps2pdf}{converts postscript files to PDF}
+\addglossprog{ps2pdf}{converts postscript files to PDF.}
 
-\addglossprog{mkhaplotypes.sh}{Runs HaploPainter upon ihaplo.out Allegro data to be converted into \gls{comp:PDF}}
+\addglossprog{mkhaplotypes.sh}{Runs HaploPainter upon ihaplo.out Allegro data to be converted into \gls{comp:PDF}.}
 
 \addglossprog{collect.sh}{Collects all relevant linkage data from the working directory to be packaged for review. This involves: GRR charts, Mendelian error plots, Pedigrees, Linkage plots (converted from \gls{comp:PS} to \gls{comp:PDF}) and haplotypes.}
 
@@ -115,11 +115,11 @@
 
 \addglossprog{HaploPainterRFH}{A modified clone of HaploPainter, with extra functionality added to be tailored more to the type inspection performed at the RFH. New features include the optional parameters of reading in a messner output file and/or pairs of markers, plotting a transparent box of blue and/or red to highlight multiple regions of interest across multiple generations. A limitation of the script (as with the original HaploPainter) is that it requires both the ihaplo.out data file and the map.N map file (where N is a chromosome number) with a direct 1:1 mapping of each marker in the map file to each marker in the data file, with no tolerance for any overlaps. As a result, any modification of the ihaplo.out file (via haploregion.py) must be met with the same modifications within the map.N file.}
 
-\addglossprog{notepad}{Simple plain text editor}
+\addglossprog{notepad}{Simple plain text editor.}
 
-\addglossprog{gedit}{Simple plain text editor}
+\addglossprog{gedit}{Simple plain text editor.}
 
-\addglossprog{GTK}{Gimp Toolkit, set of }
+\addglossprog{GTK}{Gimp Toolkit, cross-platform set of widgets sued for creating graphical interfaces.}
 
 \addglossprog{zenity}{Utility to show and manipulate graphical dialogs and return input back to the command line. Uses GTK framework.}
 

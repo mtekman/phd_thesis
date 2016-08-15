@@ -1,20 +1,27 @@
 %%% Glossary
 \usepackage{xifthen}
 
+% gls font format
+\newcommand{\glsfont}{\fontfamily{qpl}\selectfont}
+\newcommand{\progstyle}[1]{\fontfamily{cmtt}\selectfont\large {\bf#1}}
+
 % needs to be before gloassary to be able to link
 \usepackage{natbib}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
-    citecolor=blue,
-    filecolor=blue,
+    citecolor=black,
+    filecolor=black,
     linkcolor=black,
+%    citecolor=blue,
+%    filecolor=blue,
+%    linkcolor=blue,
     urlcolor=red
 }
 
 %\usepackage[nomain]{glossaries}
 \usepackage[nopostdot,acronym,toc,numberedsection,section=section,style=indexgroup]{glossaries}
-
+\renewcommand{\glsnamefont}[1]{\textbf{#1}}
 
 \newglossary*{bio}{Biological Terms}
 \newglossary*{comp}{Computing Terms}
@@ -25,15 +32,15 @@
 {
 	\newglossaryentry{#3:#1}{
 		type=#3,
-		name={\textbf{\textit{#1}}},
+		name={\glsfont #1},
 		description={#2}
 	}
 }
 
 
 \newcommand{\addglossbio}[2]{\addglosser{#1}{#2}{bio}}
-
 \newcommand{\addglosscomp}[2]{\addglosser{#1}{#2}{comp}}
+
 
 %bold gls
 %\renewcommand*{\glstextformat}{\textbf}
@@ -56,7 +63,7 @@
 \addglossbio{reverse}{3' to 5' orientation.}
 \addglossbio{antisense}{See reverse.}
 %-    Chromosomes
-\addglossbio{chromatin}{Xondensed DNA wrapped around proteins to fit in nucleus}
+\addglossbio{chromatin}{Xondensed DNA wrapped around proteins to fit in nucleus.}
 \addglossbio{haploid}{Xell with a single set of unpair chromosomes.}
 \addglossbio{diploid}{Cell with two sets of chromosomes from each parent.}
 \addglossbio{centromere}{Central structure binding pairs of chromosomes together.}
@@ -77,11 +84,11 @@
 \addglossbio{translated}{The process of converting between mRNA and Protein.}
 \addglossbio{start codon}{ATG.}
 \addglossbio{stop codon}{TAA, TGA, TAG.}
-\addglossbio{mRNA}{messenger RNA}
-\addglossbio{uracil}{The mRNA equivalent of Thymine}
+\addglossbio{mRNA}{messenger RNA.}
+\addglossbio{uracil}{The mRNA equivalent of Thymine.}
 \addglossbio{splicing}{Process of cutting introns out of gene locus and stitching together exons.}
-\addglossbio{transcription}{DNA being coped into mRNA by \glslink{bio:RNA polymerase}}
-\addglossbio{amino-acid}{Sub unit of Protein}
+\addglossbio{transcription}{DNA being coped into mRNA by \glslink{bio:RNA polymerase}.}
+\addglossbio{amino-acid}{Sub unit of Protein.}
 \addglossbio{meiosis}{Process in which single-cell splits into four gametes.}
 \addglossbio{UTR}{Untranslated Region.}
 % Heredity
@@ -99,25 +106,25 @@
 \addglossbio{Informative marker}{Marker thought to lend power to a linkage analysis.}
 % Molecular Maps
 \addglossbio{markers}{Genetic marker that denotes a known locus in a genome.}
-\addglossbio{polymorphic}{Alelles with multiple variations}
-\addglossbio{biallelic}{Alleles with only two variations, work better in conjunction with SNPs}
+\addglossbio{polymorphic}{Alelles with multiple variations.}
+\addglossbio{biallelic}{Alleles with only two variations, work better in conjunction with SNPs.}
 \addglossbio{co-dominance}{A case where neither allele dominates the other and phenotypes are independent of each other enough to both be expressed.}
 %-       Markers
 \addglossbio{minisatellite}{A block of repetitive DNA, 5-50 bp.}
 \addglossbio{VNTR}{Variable Number Tander Repeat.}
 \addglossbio{microsatellite}{A block of repetitive DNA, 2-5 bp.}
-\addglossbio{STR}{See microsatellite}
+\addglossbio{STR}{See microsatellite.}
 \addglossbio{SNP}{Extremely prevalent binary marker.}
 % Modes of Inheritance
-\addglossbio{homozygous}{Alleles are identical}
-\addglossbio{heterozygous}{Alleles differ}
+\addglossbio{homozygous}{Alleles are identical.}
+\addglossbio{heterozygous}{Alleles differ.}
 %-   Mendel's Lawss
 \addglossbio{recombinant}{Offspring with genotypes that do not match any single parent at a given locus.}
 \addglossbio{non-recombinant}{Offspring with genotypes that do match a single parent at a given locus. All offspring a recombinant across an entire chromosome.}
 \addglossbio{dominant}{Heterozygous allele where phenotype manifests.}
 \addglossbio{recessive}{Heterozygous allele where phenotype does not manifest.}
 %-  Mendel's Laws Revised
-\addglossbio{multi-allelic}{Genotypes with more that just two alleles}
+\addglossbio{multi-allelic}{Genotypes with more that just two alleles.}
 \addglossbio{polygenic traits}{Inheritance of phenotype affected by more than one gene.}
 \addglossbio{HWE}{Hardy-Weinberg Equlibrium, law that states that allele frequencies in a population remain constant in the absence of external factors.}
 \addglossbio{incomplete dominance}{Same as co-dominant except that traits are related and so phenotype is a blend of both.}
@@ -127,19 +134,19 @@
 \addglossbio{founder alleles}{Unique alleles that contribute to a pedigree, portions of which are inherited by non-founders.}
 \addglossbio{bit size}{The size of the pedigree as determined by the number of founders, non-founders, and genotyped founder couples.}
 \addglossbio{consanguineous}{Relating to individuals who breed within the family and cause inbreeding loops in the pedigree.}
-\addglossbio{carriers}{Individuals who carry the disease allele but not the phenotype}
+\addglossbio{carriers}{Individuals who carry the disease allele but not the phenotype.}
 \addglossbio{autozygous}{Homozygous alleles that arise from separate paths of descent as a result of consanguineous interbreeding.}
 % Haploblocks
 \addglossbio{unphased}{Unknown path of descent.}
 \addglossbio{phased}{Path of descent of each allele is known.}
-\addglossbio{haplotype}{Phased genotype}
-\addglossbio{haploblock}{Contiguous block of haplotypes of the same phase}
+\addglossbio{haplotype}{Phased genotype.}
+\addglossbio{haploblock}{Contiguous block of haplotypes of the same phase.}
 %Linkage Analysis and Haplotype Generation
 \addglossbio{co-segregate}{Two locus to be inherited together.}
-\addglossbio{LOD}{Logarithm of the Odds (score)}
-\addglossbio{peeling}{The act of removing individuals from a pedigree in order to reduce the number of loops}
+\addglossbio{LOD}{Logarithm of the Odds (score).}
+\addglossbio{peeling}{The act of removing individuals from a pedigree in order to reduce the number of loops.}
 \addglossbio{multi-point parametric}{Linkage analysis that uses a map of genetic markers to reconstruct inheritance along a chromosome. LOD is calculated by comparing each marker against all other assumed unlinked loci.}
-\addglossbio{inheritance vector}{Type of genotype that carries parental phase and is transferred between generations}
+\addglossbio{inheritance vector}{Type of genotype that carries parental phase and is transferred between generations.}
 \addglossbio{forward probabilities}{Probabilities computed when stepping forwards through a network.}
 \addglossbio{backward probabilities}{Probabilities computed when stepping backwards through a network.}
 \addglossbio{HMM}{Hidden Markov Models.}
@@ -159,7 +166,7 @@
 \addglosscomp{RAM}{Random Access Memory, fast device used to store temporary data.}
 \addglosscomp{striping}{The act of spreading data across multiple block devices.}
 \addglosscomp{parity}{A single bit added to the end of a string that indicates whether the 1-bits are even.}
-\addglosscomp{RAID}{Redundant Array of Independent Disks}
+\addglosscomp{RAID}{Redundant Array of Independent Disks.}
 \addglosscomp{PDF}{Portable Document Format, type of document container.}
 \addglosscomp{thread safe}{A process is thread safe if multiple threads can execute the same process without them clashing or competing for variables.}
 \addglosscomp{PATH}{A global environment variable that allows for the execution of scripts and binaries without having to specify full pathname.}
@@ -195,7 +202,7 @@
 \addglosscomp{primitives}{Types of common data forms that exist in many languages. See Appendix.}
 \addglosscomp{object}{Data construct that has properties bound to it.}
 \addglosscomp{object-oriented}{Programming paradigm in which data is structured into classes which dictate functionality and access.}
-\addglosscomp{IP}{Internet Protocol}
+\addglosscomp{IP}{Internet Protocol.}
 \addglosscomp{DNS}{Domain Name Server, resolves textual domain names into IP addresses.}
 \addglosscomp{ECMAScript6}{Script specification (version 6) used by Actionscript and Javascript.}
 \addglosscomp{Strings}{Type of data type used to hold textual information.}
@@ -214,7 +221,7 @@
 \addglosscomp{HSV}{Hue-Saturation-Value, type of colour space aimed at preserving channels for common image changes.}
 \addglosscomp{MAKEPED}{Linkage pedigree format with 6 standard columns of: familyID, patientID, fatherID, motherID, gender, affectation.}
 \addglosscomp{getters and setters}{Functions that retrieve or set a value, usually under an Object-Oriented context.}
-\addglosscomp{Ubuntu}{Type of Linux OS, based upon Debian with a focus on desktop applications and general operability}
+\addglosscomp{Ubuntu}{Type of Linux OS, based upon Debian with a focus on desktop applications and general operability.}
 \addglosscomp{Debian}{Type of Linux OS, one of the oldest, very robust.}
 \addglosscomp{Arch}{Type of Linux OS that follows a "Keep It Simple, Stupid" (KISS) ethos.}
 \addglosscomp{Gentoo}{Type of Linux OS aimed for performance users.}
