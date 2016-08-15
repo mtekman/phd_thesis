@@ -100,6 +100,7 @@ This clearly implicated 16 and 13 as the source of the errors, and the next two 
 
 The next analysis (run 08) omitted 16 from the base analysis, preserving the original parents and offspring. This resulted in only 37 SNPs (0.0852\%) with Mendelian errors across the entire analysis. GRR also showed better group clustering for sib-pair and parent-offspring relations, with much less disparity within each group, and no mixing.
 
+\enlargethispage{-\baselineskip}
 Due to the more complete nature of this run, a genomewide linkage plot was also produced (Figure 6 (top)) showing distinct peaks in chromosomes 4, 7, 8, 9, 12, 13, and 17, 20, and 22 each with a LOD score of 1.25. The estimated LOD gave an expected maximum of 1.52 (Allegro and GeneHunter) which was not reached.
 
 Reconfirmation upon the sample data prompted a two more genotype sets to be introduced for a mother and a father of individual 16. Runs 09 and 10 denote alternate testing of each new parent in conjunction with an existing parent in order keep a half-sib relation between 16 and the other offspring.
@@ -114,7 +115,7 @@ This created some disarray in the GRR plots for run 09 and 10, and even some rel
 \fignow{../writer/Results/images/interesting_cases/117_FSGS/grr_montage_fixed.png}
 {GRR plots for the ten scenarios. Identity-by-State (\gls{bio:IBS}) is plotted as a function of Mean against Standard Deviation and bound within an arced range of possible values.}
 {fig:res:7bitgrr}
-{1}
+{0.9}
 {Ten scenarios, GRR plots, 7-bit}
 
 \fignow{../writer/Results/images/interesting_cases/117_FSGS/allegro_lod_genomewide_zrun3_16out_zrun4mother_zrun4father.png}
@@ -434,6 +435,7 @@ The bottom image represents a zoomed out Y-axis scale of the same data by 5 orde
 	{fig:res:multitimes}
 	{1}{Single-Core and Multi-Core Allegro runtimes plot}
 
+\vspace{-10pt}
 The multi-core runtimes shown in Table~\ref{table:res:allegromultiruntimes} are plotted above in Figure~\ref{fig:res:multitimes} alongside the single-core runtimes summarized in Table~\ref{table:res:allegrosinglechroms} and tabulated verbosely in the Appendix\footnote{See footnote~\ref{ref:footnote:singlecorefull}.} with exponential fit curves\footnote{Curves were derived by fitting $log(runtime)$ and then iteratively correcting the coefficients with a nonlinear least squares model: $ y = 78 + 0.0028x ^{4.7}$ (single), $ y = 55 + 0.00021x^{4.95}$ (multi).}. Individual chromosome runtimes for the multi-core analyses were not recorded due to the scope of the parallel evaluation. In the case of multi-core, runtimes remain reasonably linear from 3-bit to 15-bits where a sharp rise in runtime occurs 18-bits due to system resources requested by the active Allegro instances having to compete for memory. This lends a sharper exponential rise in higher-bit multi-core runs compared to single-core runs, despite a lower and flatter outset.
 
 Due to \gls{comp:RAM} constraints, the pedigrees larger than 18-bits were not able utilize parallelization effectively, only being able to process a single chromosome at a time (i.e. single-core) and so they were removed from the analysis.
@@ -540,9 +542,9 @@ The figures below provide three ranges of which to examine the X chromosome wher
 
 In order to gain some understanding in how practical the A* best-first algorithm was on common hardware, we utilized Equation\pref{eqn:time2proc} to determine the actual time it took to process a single chromosome upon different platforms.
 
+\pagebreak
 The test itself involved the following initialization script:
 
-\pagebreak
 \begingroup
 \begin{spacing}{1}
 \begin{lstlisting}[label=code:inithaplo]
@@ -594,11 +596,11 @@ alert("Time :", end_time - start_time);
 \captionof{lstlisting}{Javascript initialization to automatically load pedigree from storage, select all members, and view their haplotypes.}
 \end{spacing}
 \endgroup
-
+\vspace{10pt}
 
 This performs the standard HaploHTML5 functions in the order given below:
 
-\begin{spacing}{1.1}
+\begin{spacing}{1}
 \begin{enumerate}
 \item{\textit{loadPedFromStorage} loads a single 9-bit pedigree of 9 members\footnote{Scenario 10 of the family shown in Figure\pref{fig:res:7bitped}} for a 3,561 marker analysis (chromosome 3).}
 \item{\textit{connectAllIndividuals} connects the pedigree.}
@@ -613,6 +615,8 @@ This performs the standard HaploHTML5 functions in the order given below:
 \end{enumerate}
 \end{spacing}
 
+\vfill
+
 The \textit{alert} function was used instead of the standard \textit{console.log} logging tool because many mobile browsers do not show logging output. 
 
 Table~\ref{table:res:haploastarperf} below shows the runtimes of the above script for each of the two main ECMAScript engines (JavascriptCore, SpiderMonkey) on three different hardware platforms: Desktop (x64, 4GB \gls{comp:dedicated graphics}, 3.2GHz x 2 CPU, 8GB RAM), Laptop (x86, \gls{comp:embedded graphics}, 1.67GHz x 2, 8GB RAM ), and Mobile (armv7, embedded graphics, 1.16GHz x 2, 1GB RAM).
@@ -620,8 +624,8 @@ Table~\ref{table:res:haploastarperf} below shows the runtimes of the above scrip
 
 \begin{table}[h]
 \begin{center}
-\begin{tabular}{ c c | c c c c | c }\hline
-   \multicolumn{2}{c}{\textbf{Hardware and Browser(OS, Engine)}}  & \textbf{1}  & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{Mean}   \\\hline
+\begin{tabular}{| c c | c c c c | c |}\hline
+   \multicolumn{2}{|c|}{\textbf{Hardware and Browser(OS, Engine)}}  & \textbf{1}  & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{Mean}   \\\hline
 \textbf{Desktop}  & Chromium  & 0.051      & 0.042      & 0.014      & 0.047      & 0.038           \\
 \textbf{Laptop}   &  (Windows 8.1, WebKit, V8)   & 0.185      & 0.252      & 0.214      & 0.210      & 0.215           \\
  & & & & & & \\

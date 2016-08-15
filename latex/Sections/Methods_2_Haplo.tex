@@ -8,16 +8,16 @@ The problems with current \gls{bio:haplotype} visualization tools highlighted in
 In order for the application to be of use in a post-analysis haplotypes context, the following specifications must be met:
 
 \begin{description}
-\item[\textbf{Haploblock Resolution}]{Haplotypes must be correctly parsed and fielded into distinct allele blocks that describe recombination intervals within founder alleles. This applies to all penetrance models; recessive/dominant, autosomal/X-linked.}
-\item[\textbf{Haploblock Rendering}]{The application must be able to correctly render the blocks into coloured rectangles behind the haplotypes, with each coloured rectangle representing a found allele group, and any recombination events being represented as a distinct break between two coloured blocks.}
-\item[\textbf{Pedigree Generation}]{In order for the application to be a true replacement for HaploPainter, it should also be possible to draw entirely new pedigrees, and export them to supported formats.}
-\item[\textbf{Format Flexible}]{Haplotype files can come in a variety of output formats; Simwalk, GeneHunter, Allegro, and many others. The application should be able to detect and read from these formats, as well as export to them.}
-\item[\textbf{User Accessible}]{It should not be hard for the user to obtain, install, and run the application. There should also (ideally) be no licensing barriers preventing the user from using the application in any kind of free context.}
-\item[\textbf{Intuitive Analysis Interface}]{The application should enable the user to compare any number of differently affected individuals in a determined region/locus of their own choosing. The region of interest should be simple to specify, as well as being easy and fast to manipulate without hindering the overall analysis process.}
-\item[(Optional) \textbf{Analysis Tools}]{It is likely that the user will be inspecting the haplotypes with the intention of discovering regions of homology between cases and controls. It would be beneficial to the user to programatically aid this process by providing a utility of some design.}
-\item[(Optional) \textbf{Resumeable}]{The user should be able to resume an ongoing analysis without having to reload the same data twice.}
-\item[(Optional) \textbf{Annotation Tools}]{The option to add custom annotations visible either across the entire view, or within a specific region of interest.}
-\item[(Optional) \textbf{Shareable}]{The user should be able to share an analysis with another user. Privacy controls would be required, and patient identifiers would have to be hidden to alleviate patient data sensitivities.}
+\descitem{Haploblock Resolution}{Haplotypes must be correctly parsed and fielded into distinct allele blocks that describe recombination intervals within founder alleles. This applies to all penetrance models; recessive/dominant, autosomal/X-linked.}
+\descitem{Haploblock Rendering}{The application must be able to correctly render the blocks into coloured rectangles behind the haplotypes, with each coloured rectangle representing a found allele group, and any recombination events being represented as a distinct break between two coloured blocks.}
+\descitem{Pedigree Generation}{In order for the application to be a true replacement for HaploPainter, it should also be possible to draw entirely new pedigrees, and export them to supported formats.}
+\descitem{Format Flexible}{Haplotype files can come in a variety of output formats; Simwalk, GeneHunter, Allegro, and many others. The application should be able to detect and read from these formats, as well as export to them.}
+\descitem{User Accessible}{It should not be hard for the user to obtain, install, and run the application. There should also (ideally) be no licensing barriers preventing the user from using the application in any kind of free context.}
+\descitem{Intuitive Analysis Interface}{The application should enable the user to compare any number of differently affected individuals in a determined region/locus of their own choosing. The region of interest should be simple to specify, as well as being easy and fast to manipulate without hindering the overall analysis process.}
+\descitem{(Optional) \textbf{Analysis Tools}}{It is likely that the user will be inspecting the haplotypes with the intention of discovering regions of homology between cases and controls. It would be beneficial to the user to programatically aid this process by providing a utility of some design.}
+\descitem{(Optional) \textbf{Resumeable}}{The user should be able to resume an ongoing analysis without having to reload the same data twice.}
+\descitem{(Optional) \textbf{Annotation Tools}}{The option to add custom annotations visible either across the entire view, or within a specific region of interest.}
+\descitem{(Optional) \textbf{Shareable}}{The user should be able to share an analysis with another user. Privacy controls would be required, and patient identifiers would have to be hidden to alleviate patient data sensitivities.}
 \end{description}
 
 
@@ -174,7 +174,7 @@ Languages come and go, but Javascript is here to stay with every major browser s
 \subsection{A Case For Open Source}
 
 
-Before we go any further, the need for free and open source software \gls{comp:FOSS} within academia should be addressed. The role of scientists and researchers is to push the boundaries of their understanding of a concept in order to make new discoveries that benefits not only them, but their field, and in turn, science in general. 
+Before we go any further, the need for free and open source software (\gls{comp:FOSS}) within academia should be addressed. The role of scientists and researchers is to push the boundaries of their understanding of a concept in order to make new discoveries that benefits not only them, but their field, and in turn, science in general. 
 
 The scientific principle works under the notion of iterating towards a consistent truth model through the use of reproducible peer-reviewed experiments and analyses.  In order for this to be the case, other scientists must be able to assess these experiments by accessing the same data sets and the same tools or methods to reproduce the same results. The whole process must be transparent; with no ambiguity at any stage that could cast doubt on the experiment in question.
 
@@ -212,9 +212,10 @@ Javascript previously was just a language to manage the various background tasks
 
 Javascript's open source asynchronous callback structure may seem like a major diversion from standard programming styles and principles, but the (somewhat reluctant) uptake of said principles in other languages only reinforces the notion that Javascript is setting the stage for things to come.
 
+\enlargethispage{=\baselineskip}
 Javascript in the context of general web page management makes use of the Document Object Model (\gls{comp:DOM}) for manipulating elements of a page. The DOM model is a nested collection of inter-related objects following a parent-child hierarchy such that each child can reference their containing parent, and each parent can iterate through their child elements. Elements are accessed using unique identifying tags, or via multiply-specifiable class names.
 
-Javascript follows this Object model to an almost religious extent, by treating all variables as Objects that can be extended by methods. Primitives do exist, but they are interchangeable depending on context. Indeed, a long running joke amongst developers is how the '=' operator takes on multiple meanings depending on context\footnote{
+Javascript follows this Object model faithfully by treating all variables as Objects that can be extended by methods. Primitives do exist, but they are interchangeable depending on context. Indeed, a long running joke amongst developers is how the equality/assignment '$=$' operator takes on multiple meanings depending on context\footnote{
 
 \noindent
 E.g.1.		a = [] ? 1 : 2, is a standard \gls{comp:terniary} operator which in most languages would ask, "is array true ? If so return value 1, otherwise return value 2".\\\noindent
@@ -300,6 +301,7 @@ function drawDiamond([c_x,c_y], color, nodeSize)
 \captionof{lstlisting}{Example Canvas API call for drawing a diamond}
 \end{spacing}
 \endgroup
+\vspace{10pt}
 
 It should be noted that a shape is not returned after a function call for later manipulation or property editing, but is drawn directly to the screen and would need to be repeat 'clear()' and 'draw()' calls to implement any changes.
 
@@ -340,6 +342,7 @@ function drawDiamond([c_x,c_y], color, size){
 \captionof{lstlisting}{jCanvas function to draw a diagonal by simply rotating a square.}
 \end{spacing}
 \endgroup
+\vspace{10pt}
 
 This greatly simplifies in the rendering of shapes, but it should once again be noted that the graphics are drawn directly to screen, so the entire scene must be composed first through external shape management before being drawn to screen in order to reduce the number of redraws.
 
@@ -373,11 +376,14 @@ function drawDiamond([c_x,c_y], color, size){
 \captionof{lstlisting}{KineticJS function to draw a diagonal (a rotated square) and returns an object.}
 \end{spacing}
 \endgroup
+\vspace{10pt}
 
 KineticJS makes use of layers and groups. Groups are shapes that move together when one of them is transformed in terms of position, rotation, or scale \cite{kineticjs}. 
 
 Layers are interestingly separate canvas elements altogether: that is, elements in two different layers are animated separately onto separate canvases, and then overlayed upon one another to create the illusion of layering.
 This may seem needlessly contrived, but it enables the developer to manage their elements efficiently by restricting more repeatedly updated shapes into a more 'active' layer, so that a full scene redraw is not being called for the otherwise more static elements which would exist on another layer.
+
+\pagebreak
 
 There is a limit to this speedup, and any performance gains begin to falter if too many layers are used, with a good balanced number being two active layers and one static reserve.
 
@@ -451,6 +457,7 @@ Here we will discuss the three main implementations attempted within the applica
 
 The neighbouring states approach follows a very straightforward methodology: upon finding an ambiguous trio of genotypes at a given marker locus, find the nearest set of flanking markers that contain unambiguous trios.
 
+\enlargethispage{\baselineskip}
 This enables the ambiguous trio to 'orient' itself relative to the flanking unambiguous trios.  This is a fairly common technique used in many problems of a similar nature, and Illumina actually employ a variant of this technique in their Top-Bottom encoding for representing the direction of ambiguous SNPs \cite{illuminatopbot}.
 
 \subsubsection{Theory}
@@ -531,6 +538,7 @@ FOR m IN RANGE [0, max]:
 \endgroup
 \vspace{10pt}
 
+\enlargethispage{\baselineskip}
 There is some redundancy in this, for contiguous ambiguous regions will likely crawl over the same positions multiple times to reach the same unambiguously phased flanking markers, giving an average time complexity of $n * log(n)$. 
 
 Actual implementation first mapped out unambiguous markers in an initial pass, and then a second pass bisected the map to find the nearest flanking markers, reducing the time complexity to \textit{n}.
@@ -581,8 +589,10 @@ In order to determine which of these two events occurred, we first initially map
 	{fig:haplo:iterinspect}
 	{0.9}{Iterative Inspection}
 
+\vspace{-20pt}\enlargethispage{\baselineskip}
 The rest of the method can be broken down into specific cases of uncertain genotypes within an A-B locus of specific size ranges:
 
+\vspace{-8pt}
 \begin{description}
 \enumdesc{Small}{If the A-B locus spans a region smaller than the smallest expected founder haploblock, then Event 1 has occurred, and further analysis can be performed to determine whether U is of type A or B.}
 \enumdesc{Medium}{If the A-B locus is larger than the smallest expected founder haploblock, but smaller than the average expected founder haploblock size; then we must probe the region by alternately assuming U=A and then U=B, and testing if the size of haploblock in question exceeds its expected size, where an Event 1 has occurred upon the success of one of these probes.}
@@ -600,6 +610,7 @@ The large case is seemingly complex, but large cases (Event 2 types) are only ev
 Under this more complete model of haploblock sizes, we can then probe U against each of the available founder allele groups and test whether the model still holds. For example, if the founder allele group S is identified in a region much further downstream than U, where the region spans a locus of sealed genotypes that is consistent with its expected size, then it is unlikely that a whole S haploblock would also exist within the A-B locus\footnote{See footnote \ref{footnote:consang}.}.
 
 In the unlikely event that after probing U with the available founder groups, a clear result still cannot be established, then a compatible haploblock group is picked at random (an operation dubbed "Event 3"), since it is impossible to distinguish between any one group.
+\enlargethispage{-3\baselineskip}
 
 
 \subsubsection{Discussion of Approach}\label{ref:haplo:eventdiscuss}
@@ -685,6 +696,7 @@ This is illustrated in Figure~\ref{fig:haplo:network1} as a multi-layered networ
 	{fig:haplo:network1}
 	{0.7}{Founder allele groups}
 
+\vspace{-10pt}
 Nodes that are connected to the nodes of the same group incur no edge cost, whereas nodes that are joined to those of different groups (indicating a meiosis) have non-zero costs associated with them. By traversing through the network under the heuristic of finding the path with the smallest cost, we can minimize the number of meioses and trace an optimal path.
 
 The nature of this task scales with number of markers \textit{m}, and the number of possible founder allele groups \textit{f}, effectively placing it on the order polynomial-time, and this can be very resource intensive for practical usage.
@@ -716,6 +728,7 @@ To understand what is meant by the frontier of the search path, consider the sta
 	{fig:haplo:statespace}
 	{0.95}{State-space diagram, A*}
 	
+\vspace{-10pt}
 The green square is the start node, and the blue square is the target end node. All available edges have equal cost, and upon start there four active paths under consideration by the algorithm (up, down, left, right) with a value of 1 . Upon second iteration of the algorithm, the 4 paths can expand, each in 3 more unvisited directions yielding ($4 \times 3 = $) 12 paths, though four of these actually overlap with same cost; so a total of 8 active paths are under consideration for the next iteration. At the third iteration, we have ($8 \times 3 = $) 24 paths, though twelve of these overlap with already visited paths and one of them  has hit the end of the grid and has nowhere to expand to leaving 11 active paths.
 
 It does not take much imagination to see that the algorithm scales linearly (\textit{4k}, for \textit{k} iterations), with the overlaps and wall intersections keeping the number of active paths relatively low. For example, by the 19th iteration there should be 76 active paths being considered, but wall constraints  have limited this to just 4.
@@ -756,15 +769,18 @@ Implementing the A* search algorithm within haplotype reconstruction involves tw
 
 When pedigree data is first parsed, genotypes for each chromosome are structured into an Allele\footnote{See Allele class in pedigree.js for more information.} object which contains four types of data:
 
+\begin{spacing}{1.1}
 \begin{description}
 \enumdesc{data\_array}{A signed 8-bit array (\textit{Int8Array}) to compactly store the genotypes, and is initialised to the actual genotypes described by the input file.}
 \enumdesc{pter\_array}{A temporary standard Array (\textit{Javascript Object}) which carries pointers to founder allele "colour" groups, and is initialised as empty.}
 \enumdesc{unique\_groups}{Another temporary standard Array for storing the unique founder allele groups encountered across the entire chromosome, also initialised as empty.}
 \enumdesc{haplogroup\_array}{A signed 8-bit array (\textit{Int8Array}) to store the resolved founder allele group designations in a compact format, initialised as a null pointer.}
 \end{description}
+\end{spacing}
 
 The usage of these constructs is carried out in the \textit{haploblock\_backend.js} file, and performs the first pass procedure as follows:
 
+\begin{spacing}{1.3}
 \begin{enumerate}
 \enumdesc{Founder Initialization}{All founder chromosomes are assigned unique colour groups\footnote{Unique colours that will be used to represent these groups are also assigned, evenly distributed across the colour spectrum as designated under a \gls{comp:HSV} colour space (see Colour Space section in Appendix on page~\pageref{ref:app:colour} for more information).} via the function \textit{initFounderAlleles()}. The entire stretch of the pointer array for a founder Allele class is populated with the same colour.
 
@@ -772,10 +788,13 @@ E.g. pter\_array = [ [5] , [5], [5],  $\dots$ , [5] ]     (for the 5th founder a
 
 \enumdesc{Non-Founder to Founder Group Assignment}{The function \textit{assignHgroups()} performs a top-down sweep over the pedigree and processes each parent-offspring trio by descending down until there is no more offspring to process.  For each trio encountered, a length check is performed on their data to assert that the number of genotypes in the analysis is the same. Then the function \textit{child2parent\_link(child, mother, father, family)} performs the brunt of operation, where at each marker locus:
 
+\enlargethispage{\baselineskip}
+\begin{spacing}{1.3}
 \begin{enumerate}
 \enumdesc{Empty Data Assignment}{Maternal and paternal genotypes with no data (i.e. have a marker allele index designation of 0) are assigned to a zero colour group (-1).}
 \enumdesc{Autosomal Inheritance Modelling\label{ref:haplo:aim}}{For maternal alleles \textit{m1 m2}, paternal alleles \textit{p1 p2}, and child alleles \textit{c1 c2}; check for genotype equality such that \textit{\{c1,c2\}} exists within the four valid genotype designations \textit{\{ \{m1,p1\}, \{m1,p2\}, \{m2, p1\}, \{m2,p2\} \}}. If a match is found (or multiple) then the parental allele colour groups are pushed onto the child allele colour groups in a mutually-exclusive fashion such that \textit{c1 c2} would only share the same colour groups by chance.}
 \end{enumerate}
+\end{spacing}
 }
 
 \enumdesc{Parental Exclusion}{At this stage some clean up is required to deal with the overly ambiguous regions such that the next generation deals with a clean inheritance set of colour groups. The problem is that each child allele could inherit from one of the four parental chromosomes, but needs to do so in an exclusive fashion such that a maternal haploblock does not also appear in the childs paternal haploblock (i.e. no two blocks can have the same colour across sister alleles).
@@ -784,17 +803,22 @@ To counter this, we populate exclusion groups where all the unique colour groups
 
 \enumdesc{Consanguineous Check}{If the maternal/paternal relationship has been labelled consanguineous, then we must slacken the parental exclusion somewhat since having duplicate haploblock groups in both child alleles is now not impossible. To do so, we first find the the intersection of  the maternal and paternal unique colour groups, and then remove the colors identified from both groups. At this stage, the pter\_array is now fully primed for the A* search algorithm to process.}
 \end{enumerate}
+\end{spacing}
 
 \subsubsection*{Second Pass: Path-finding Algorithm}
 
 The algorithm is contained within the function \textit{a\_star\_bestfirst()} which takes a pointer array as argument, as well as an (optional) exclusion list.
 
 First, a function to define whether an item exists within the exclusion list is determined based upon whether the list itself is:
+\begin{spacing}{1.1}
 \begin{enumerate}[label=(\alph*)]
 \enumdesc{Undefined / Non-existent}{where upon the function simply returns false.}
 \enumdesc{A single index/number}{where a simple equality check is performed.}
 \enumdesc{A list}{where the exclusion list is mapped and items are checked against the map.}
 \end{enumerate}
+\end{spacing}
+
+\enlargethispage{\baselineskip}
 
 The global parameter \textit{MAX\_ROUTES}  defines the number of active routes at any point within the iteration, and optional global parameters such as allowing single-marker stretches.
 
@@ -880,11 +904,14 @@ New paths are then formed from the current path, each padded with separate stret
 
 The exclusion list is used during the lookahead process, where any colour groups encountered from the frontier of the search that appear in the exclusion list are not expanded upon. This serves the purpose of separating maternal and paternal blocks from each other in order to prevent illegally inherited  blocks from propagating down the pedigree.
 
+\enlargethispage{\baselineskip}
 The A* best-first search is run under two mutually-exclusive assumptions:
+\begin{spacing}{1.2}
 \begin{enumerate}
 \enumdesc{}{Either the chromosome is \textbf{maternally-inherited}, therefore the paternal exclusion list should be used. The sister chromosome should perform the opposite (paternally-inherited, maternal exclusion).}
 \enumdesc{}{Or the chromosome is \textbf{paternally-inherited}, therefore the maternal exclusion list should be used. The sister chromosome  should perform the opposite (maternally-inherited, paternal exclusion).}
 \end{enumerate}
+\end{spacing}
 
 It may seem that two whole searches are being performed, but it should be noted that a search on a chromosome performed under the wrong assumption will terminate very early due to the colour group inconsistencies being encountered early on.
 
@@ -972,7 +999,7 @@ Under the pointer model, X-linked inheritance is not a very involved process sin
 
 Initially it was a hard-coded requirement in the input file that the second male allele was the Y-chromosome, but this restraint was later removed and resolved in the software via the function \textit{detectYalleles} in \textit{filehandler.js}.
 
-At this current time of writing, Y-chromosome capable genotyping exists but is not utilized in most linkage software\footnote{\gls{prog:Allegro}, \gls{prog:GeneHunter}, and \gls{prog:Simwalk} have not been updated since 2003. Genotyping chipsets have greatly increased in density and coverage since then.}, which ignores it altogether and designates the entire chromosome to an array of zeroes. The function simply detects these zero alleles in the males when parsing the pedigree, and stores the Y-chromosome as the second allele in the Pedigree class.
+At this current time of writing, Y-chromosome capable genotyping exists but is not effectively utilized in most linkage software, with {\gls{prog:Allegro}, \gls{prog:GeneHunter}, and \gls{prog:Simwalk} merely defaulting it to an entire chromosome array of zeroes. The function simply detects these zero alleles in the males when parsing the pedigree, and stores the Y-chromosome as the second allele in the Pedigree class.
 
 In the event that Y-chromosome capable genotyping becomes more widely used, the \textit{detectYalleles} function will need to perform further probing. This will not preclude the rest of the analysis, since the Y-allele will still be assigned to the second allele in males.
 
@@ -983,7 +1010,7 @@ One of the core reasons for HaploHTML5's conception was the lack of X-linked inh
 \fignow{../writer/Methods/images/xlinked_bad_inheritance.png}
 	{Minimum working example of an X-linked Dominant pedigree. Inconsistent colouring within alleles depict HaploPainter's haploblock resolution failing in the case of X-linked pedigrees. Overlayed arrows depict true inheritance paths; black disease allele (green-dashed), correctly inherited alleles (blue-dashed), incorrectly inherited alleles (red-dashed).}
 	{fig:haplo:xlinkedbad}
-	{0.6}{Minimal X-linked Dominant Pedigree}
+	{0.65}{Minimal X-linked Dominant Pedigree}
 	
 Figure~\ref{fig:haplo:xlinkedbad} shows a typical X-linked \gls{bio:dominant} pedigree as rendered by HaploPainter. There are several issues highlighted in this example:
 
@@ -1012,6 +1039,7 @@ A problem will quickly arise however where individuals who exist in the descent 
 
 The \gls{bio:peeling} method that Elston and Stewart devised (as mentioned in Background, page~\pageref{ref:back:els}) was considered as one solution; determining pivot individuals and treating them as special edge cases to be separately handled when drawing the pedigree. However, previous experiences in handling edge-cases (see page~\pageref{ref:haplo:eventdiscuss}) had not been straightforward and so a more general solution was derived instead.
 
+\enlargethispage{\baselineskip}
 The resulting function \textit{populateGrids\_and\_UniqueObjs} (\textit{init\_graph.js}) required iterating through all individuals and populating an array that stored each generation, as well as populating a map which stored unique nodes and vertices associated with pedigree members and their relationships as discussed below.
 
 
@@ -1032,6 +1060,7 @@ e.g 14 (offspring of 11 and 12) $\rightarrow$ "c:m:11-12-14"
 }
 \end{description}
 
+\enlargethispage{-2\baselineskip}
 Under this format, even if individuals are evaluated twice the map will not contain duplicate data because the order of parental gender and offspring is preserved so that the same relationship is only recorded once.
 
 \subsubsection{Generational Grid Array}
@@ -1041,7 +1070,7 @@ Within the same recursion step that the graphics map is populated, the level par
 \fignow{../writer/Methods/images/pedigree_recurse.png}
 	{Example of pedigree levels and recursion}
 	{fig:haplo:pedrecurse}
-	{0.4}{}
+	{0.45}{}
 
 Consider Figure~\ref{fig:haplo:pedrecurse} which shows three levels for a group of individuals as determined by recursive function. If we pick 32 as the root individual with a level of 0, then we can trace a route first-cousin 31, via $32 \rightarrow 23 \rightarrow 11 \rightarrow 21 \rightarrow 31$:
 \begin{spacing}{0.8}
@@ -1062,7 +1091,9 @@ The information generated and stored at this stage follows a strict Model-View s
 
 This is divorced completely from the the pedigree data that pertains to individuals' information storage (name, gender, parents, offspring, mates) which is held entirely within the global data mappings \textit{family\_map} which is likewise accessed solely through its own static library class \textit{familyMapOps} via its own getters and setters for adding/removing individuals.
 
-It cannot be stressed enough that the Model (familyMapOps) and the View (uniqueGraphOps) do not overlap, i.e. one does not have pointers that reference entries in the other or vice versa. This ensures clean code management and simplifies tasks drawing tasks since the graphics should ultimately be a disposable representation of the pedigree data. The deletion of an individual's graphical node should not also prompt the deletion of that individual's pedigree data.
+It cannot be stressed enough that the Model (familyMapOps) and the View (uniqueGraphOps) do not overlap, i.e. one does not have pointers that reference entries in the other or vice versa. 
+
+This ensures clean code management and simplifies tasks drawing tasks since the graphics should ultimately be a disposable representation of the pedigree data. The deletion of an individual's graphical node should not also prompt the deletion of that individual's pedigree data.
 
 \vspace{15pt}
 \subsection{Determining Pedigree and Penetrance Model}
@@ -1070,6 +1101,8 @@ It cannot be stressed enough that the Model (familyMapOps) and the View (uniqueG
 The right penetrance model is key to running the correct analysis upon the pedigree, and the function \textit{determinePedigreeType} (\textit{pedigree.js}) was written to determine whether the pedigree was X-linked/Autosomal, and Dominant/Recessive.
 
 Though Table 3 showed that the analysis does not depend on dominance/recessiveness, it is still useful in the context that it can be used for other programs that may require it without having to prompt the user.
+
+\pagebreak
 
 The function iterates through every member of the pedigree and operates as follows:
 \begin{enumerate}
@@ -1095,6 +1128,7 @@ Essentially the search begins with the two individuals \textit{p1} and \textit{p
 
 This populates a global list of founders as derived from separate "routes" starting at \textit{p1} and \textit{p2}. If \textit{p1} and \textit{p2} do not share any of the same founders then they are unrelated. However if they do share founders then there will be duplicates in the global list of founders, because shared founders will be discovered more than once from the two separate starting points.
 
+\vspace{5pt}
 \begingroup
 \begin{spacing}{0.9}
 \begin{lstlisting}
@@ -1140,12 +1174,15 @@ KineticJS also has a Line class that can represent a straight line between two p
 
 As a result, line management must be performed manually via graphics map. Essentially upon the detection of a single node being moved\footnote{Thankfully, nodes can only be moved one at a time thanks to there being only a single mouse pointer. Multi-touch mobile devices may present problems in the future however.}:
 
+\enlargethispage{\baselineskip}
+\begin{spacing}{1.25}
 \begin{enumerate}
 \enumdesc{}{All matelines associated with that node must have their positions updated.}
 \enumdesc{}{All childlines associated with each mateline moved in the previous step must also have their positions updated.}
 \enumdesc{}{If the individual that the node represents is not a founder, then their own childline must be updated.}
 \enumdesc{}{Draw updated positions onto screen.}
 \end{enumerate}
+\end{spacing}
 
 Given that these steps are performed repeatedly in real time until the node is no longer being moved, it may be seen as a costly process. However, it is not recursive (i.e. the positions of grand-parents and grand-children do not need to be taken into consideration), so at most only two generations of childlines are being updated.
 
@@ -1155,7 +1192,7 @@ In order to reduce some of the draw operations when moving nodes in real-time, a
 
 Dragging a node between the points in this grid will not prompt a redraw, where redraws will only occur when the node is locked into one of the points on the grid.  
 
-The grid itself is not global to the screen, but is family group specific, where the graphics of each pedigree are contained within their own separate group. These family groups (and their containing nodes and edges) can be moved freely without any snapping taking place. It is only the movement nodes within these groups that are subject to grid snapping, and the grid is relative to placement of the family group.
+The grid itself is not global to the screen, but is family-specific, where the graphics of each pedigree is contained within their own separate family-group. These groups (and their containing nodes and edges) can be moved freely without any snapping taking place. It is only the movement of nodes within these groups that are subject to grid snapping, and the grid is relative to placement of overall the family-group.
 
 \subsubsection{Sibling Level Balancing and Mate Swapping}
 
@@ -1199,12 +1236,12 @@ HaploHTML5 does away with this notion by allowing the user to freely select whic
 
 
 \subsubsection{Degrees of Separation (Selection View)}\label{ref:haplo:dos}
-
+\enlargethispage{-\baselineskip}
 When individuals are selected within the Selection View and transferred into the Haploblock View, generational information is generally hidden. In order to give some context to individuals selected in relation to one another, a Degree-Of-Separation (\gls{comp:DOS}) function was implemented to show by how many generations one related individual was to another.
 
 The function \textit{findDOSinSelection} in file \textit{dos.js} works by grouping siblings under the same node, where only \gls{bio:non-founders} can be within the same group in order to allow founders to extend their own DOS to other non-founders. Founders are their own sib groups, and for each sibgroup defined, relations are recursed upwards through mates and parents in order to find selected individuals at grouped by level.
 
-The method works well for simple relations, but grows computationally complex for more involved selections which can lead to bad line rendering. Figure~\ref{fig:haplo:dos} represents this below, with a clear DOS for the four selected individuals in the left pedigree selection, and inconsistent or missing line renders in the right pedigree selection
+The method works well for simple relations, but grows computationally complex for more involved selections which can lead to bad line rendering. Figure~\ref{fig:haplo:dos} represents this below, with a clear DOS for the four selected individuals in the left pedigree selection, and inconsistent or missing line renders in the right pedigree selection. \enlargethispage{\baselineskip}
 
 \fignow{../writer/Methods/images/haplo_dos.png}
 	{Degrees of Seperation (DOS) for two subselections of the same family. (Left) Simple and correct representation of three degrees of seperation between founders and great grandchilden. (Right) Complex and erroneous representation of larger selection spanning more generations. The top image of each column shows the subselection of the pedigree, the middle image shows the DOS view, and the bottom shows the aligned view.}
