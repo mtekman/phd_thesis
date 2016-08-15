@@ -55,7 +55,7 @@ The obfuscation methods were therefore ultimately removed from the release versi
 
 
 \section{Future Work}
-
+\enlargethispage{\baselineskip}
 The pipeline and application are in a useable state, and both will achieve the tasks they are designed for: performing quality linkage on large data, and rendering haplotypes in-browser. However, there are a few improvements that could be incorporated to make them more intuitive to use at the end-user level, and also adjustments that could be made at the core level to increase performance.
 
 \subsection{Pipeline improvements}
@@ -97,6 +97,8 @@ One other solution to this problem would be to rewrite Allegro from scratch. All
 
 The most problematic component of the pipeline is the graphical GRR interface, which is a Windows binary that does not take any commandline arguments\footnote{Despite a pleading email to the developers who promised to add such functionality in the future, only to then respond with silence.}. As a result data cannot be simply fed into the application from the commandline where it performs all computations in the background, instead the application requires a display server to host its graphical interface where user-clicks are then simulated by the system in order to load in the data.
 
+\enlargethispage{-\baselineskip}
+
 The requirements of GRR are immense; entire display libraries must be installed such as a X11 or Wayland display server, a desktop environment, display fonts, sounds, and all manner of other multimedia dependencies that come packaged with operating systems that require desktop sessions to run. The application also requires \gls{prog:wine} to run because it was originally written for Windows.
 
 A replacement Linux-based binary would be ideal at this stage, and prompting our own rewrite of GRR may be required.
@@ -113,6 +115,8 @@ The web interface could also give options for customizing the order of pipeline 
 This could be implemented in pure \gls{comp:PHP} \cite{bakken2000php} which can talk to the system and is capable of spawning off bash commands and reporting on their feedback in realtime. The images generated during the Filtering stage (pedigrees, Mendelian errors, GRR) could be displayed within the interface as and when they appear.
 
 The linkage portion of the pipeline would have to be reported to the user via commandline output which would be fed into a textarea in the interface, but once complete the linkage plots could be displayed as tiled images or opened up as separate PDFs in a new tab.
+
+\enlargethispage{\baselineskip}
 
 The user would then be able to download their data as a compressed ZIP file as packaged using the normal \gls{prog:collect.sh} script from a button or link that would only become visible once the analysis is complete.
 
@@ -146,6 +150,7 @@ When a system begins to run low on \gls{comp:RAM} (as in the frequent case of ex
 
 
 \paragraph{Why Upgrading Disk Technology May Not Necessarily Lend a Performance Increase}
+
 It is clear that SSDs offer no advantage at all in the use-case of frequent large temporary file activity, since though the operating system will rarely have to wait in order to perform a read/write, the limitations on the number of these operations shortens their lifetime considerably.
 
 The best long-term compromise is to use mechanical disks with a filesystem without journaling; either an older filesystem where journaling was never implemented (though file size constraints may be enacted), or a newer filesystem where journaling is disabled upon initialization. This reduces the total number of read/write operations whilst still ensuring disk longevity.
@@ -170,6 +175,8 @@ One current problem with the application is the limited colour space for the fou
 
 For $f$ founders, there are $2f$ unique colours that must be assigned to their respective alleles, meaning that as soon as the pedigree begins to have more than 3 founders\footnote{$ \frac{100}{15} \sim 7 $ unique colour groups for all founder \gls{bio:alleles} $ \sim 3$ founders.}, the colour groups become more ambiguous.
 
+\enlargethispage{\baselineskip}
+
 One solution would be to change the the Value component of the HSV model to take on darker and/or lighter components, which would double and/or triple the number of available colours, but would require changing the colour of the genotypes text which reside on top of the coloured block. 
 
 \fignow{Sections/images/hue_scale.png}
@@ -192,6 +199,7 @@ In order to achieve this, there are two main avenues of development to explore:
 
 Access can then be metered using established social network authentication services such as Google, Facebook, Microsoft, Twitter, and OpenID via the \gls{comp:OAuth2} \cite{hardt2012oauth} protocol.
 
+\enlargethispage{\baselineskip}
 The issue of patient confidentiality would still remain an issue however, since shared analyses would store patient data remotely on the site host, and could be subject to vulnerabilities if the host is compromised.  To complicate matters, the PedCreate View allows for the option of applying actual names to individual IDs, which is not an issue if the application uses locally-stored data, but is a major concern if such names are stored in a remote server.
 
 A solution to this would be to store two copies of the pedigree: one unmodified within local storage, and the other in remote storage with patient names stripped from the pedigree. The user could then share their analysis with another (with names omitted) over the internet, and still preserve names when working locally on their own machine. However, problems will quickly arise if the other user wishes to modify the pedigree, in which case the locally-stored names become moot, where it may then be beneficial to restrict modification altogether and only allow read-only sharing to solve this problem.
@@ -204,6 +212,7 @@ Once a recipient clicks on the URL, the GET variable is decoded and uncompressed
 
 Base64 encoding is supported by the HTML5 specification \cite{masinter1998data}, and the lz-string library exists \cite{lzstring} to perform LZMA compression and decompression within Javascript.
 
+\enlargethispage{\baselineskip}
 Though data is never stored remotely, this approach does run the risk of anyone with the link being able to view the data.
 }
 \end{enumerate}
@@ -213,7 +222,7 @@ A combination of both approaches would likely need to be implemented to achieve 
 
 \subsubsection{Framework Upgrade}
 
-Eric Dowell is the author of \gls{comp:KineticJS}\footnote{the framework used extensively in the application's development.} but has since moved onto another project after he completed KineticJS. KineticJS was deemed "complete" in 2014 \cite{kinetictar} and has not been worked upon since. This was good news for developers who needed a stable platform to work with, but came with the unspoken agreement that applications developed under it would not be future maintained.
+Eric Dowell is the author of \gls{comp:KineticJS} but has since moved onto another project after he completed KineticJS. KineticJS was deemed "complete" in 2014 \cite{kinetictar} and has not been worked upon since. This was good news for developers who needed a stable platform to work with, but came with the unspoken agreement that applications developed under it would not be future maintained.
 
 Dowell has since moved onto \gls{comp:ConcreteJS} \cite{concretejs} which is a more general-purpose 2D library from manipulating shapes and is vastly optimized such that the entire codebase (including documentation) consists of no more than 600 lines. The project is still in the early Alpha phase (v0.1.0), but looks very promising. It shares almost the same syntax as KineticJS and will be non-problematic to implement.
 

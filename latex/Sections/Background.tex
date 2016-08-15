@@ -227,7 +227,7 @@ In relation to his third law, the concept of \gls{bio:co-dominance} is missed; i
 \fignow{../writer/Background/images/simple_pedigree.png}
 	{Typical dominant pedigree, with females represented as circles and males as squares. Affectation is represented by a red colour fill.}
 	{fig:back2pedigree}
-	{0.3}
+	{0.4}
 	{Simple Pedigree}
 
 Individuals from the same family share a \gls{bio:pedigree}, and each individual is grouped into two classes: \gls{bio:founders} and \gls{bio:non-founders}. 
@@ -307,13 +307,14 @@ In Figure~\ref{fig:back_inheritance} the offspring is recombinant at that partic
 \fignow{../writer/Background/images/simple_inheritance.png}
 	{Four complete haploblocks from two founders inherited by their non-founder offspring. The sixth marker is highlighted due to ambiguous genotypes.}
 	{fig:back_inheritance}
-	{0.4}
+	{0.5}
 	{Simple Inheritance}
 
 Resolving ambiguous genotypes to specific chromosomes requires providing the genotype with some neighbouring context such that it knows whether it is in a recombination hotspot, or whether it lies within an existing block.  
 
 It is the aim of this thesis to derive methods to explore such problems,  but in order to do so we must first understand how haplotypes are generated through linkage analysis.
 
+\begin{spacing}{1.45}
 \section{Linkage Analysis and Haplotype Generation}
 
 In this chapter we look at the underlying principles that power linkage analysis; the general methodology, as well as the algorithms best suited for generating haplotypes from incomplete genotypes.
@@ -326,7 +327,9 @@ If a given marker co-segregates with a disease allele over multiple recombinatio
 In linkage analysis, this translates as pinpointing the multiple subsets of markers with the fewest number of crossovers between themselves, such that the the number of meioses in the cases is minimized and the controls are maximized (i.e. which markers/traits are in linkage with one another in affected individuals, but are not in linkage within unaffected individuals).
 Classical linkage analysis involves doing this by direct means; counting each crossover event for each marker against every other marker, but the complexity of such a task scales exponentially for large sets and is highly impractical.
 
+\enlargethispage{\baselineskip}
 Modern linkage analysis determines this using statistical means; through the filter of the correct genetic model to establish a correct penetrance function,  the assumption of linkage equilibrium between markers to simplify computation by discounting \gls{bio:crossover interference}, the exclusion of monozygotic twins\footnote{Identical genotypes in twins bias the analysis since meioses may not be independent.}, and the known recombination frequencies between markers as well as their ordering. These are then used to establish a likelihood score that rates each marker upon the aforementioned principles such that disease loci can be found by scanning for the highest likelihood.
+\end{spacing}
 
 \subsubsection{Likelihood and LODs}
 
@@ -427,6 +430,7 @@ Over time, a few notable speedups were incorporated without the cost of accuracy
 
 Each of these cut the complexity of a pedigree in half, together producing a significant (~6x) reduction in bit-size.
 
+\enlargethispage{\baselineskip}
 The Lander-Green algorithm scales linearly with the number of markers, a much better time complexity than the Elston-Stewart, however suffers drawbacks in the number of individuals in the pedigree where it scales exponentially with each meiosis.
 
 
@@ -466,6 +470,7 @@ This is still an approximation upon the data, since the most likely set of inher
 
 \section{Summary}
 
+\enlargethispage{-\baselineskip}
 We have seen that there are two main limiting steps in linkage analysis algorithms that scale either with the \textbf{number of meiosis} or the \textbf{number of markers}. The Elston-Stewart algorithm's complexity scaled linearly with the number of meiosis by collapsing computations on pivot individuals, but scaled exponentially with the number of markers. 
 
 The Lander-Green-Kruglyak algorithm was the inverse of this; where  the number of meiosis caused an exponential increase in complexity due to the possible inheritance vector states doubling at each step.  The number of markers scaled linearly however, and this is what made it the most widely-adopted algorithm in linkage analysis programs, since the density of genotyping chips have only increased over the time.
