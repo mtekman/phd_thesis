@@ -415,15 +415,12 @@ Table~\ref{table:haplo:trioalleles} shows the four main \gls{bio:trio} cases tha
 \emph{Trio Genotype} & \emph{Parental} & \multicolumn{2}{c}{\emph{Child Alleles}} & \multicolumn{4}{c}{\emph{Possible Allele Desc.}} \\
 \emph{Cases} & \emph{Alleles} & \emph{Possible} & \emph{Illegal} & \emph{R.} & \emph{A.} & \emph{PS} & \emph{Type} \\
 \midrule
-Homozygous  & AA | AA & AA & AB or BB & Y & Y & N & O \\
-(identical) & BB | BB & BB & AB or AA & N & Y & N & O \\
+            & AA | AA & AA & AB or BB & Y & Y & N & O \\
+Homozygous  & BB | BB & BB & AB or AA & N & Y & N & O \\
+            & AA | BB & AB & AA or BB & Y & Y & Y & B\\
 \hline
-Homozygous      &         & AA &    & N & N & Y & C\\
-(Non identical) & AA | BB & BB & -  & N & N & Y & C\\
-                &         & AB &    & Y & Y & Y & B\\
-\hline
-                &         & AA &    & Y & N & Y & C\\
-Heterozygous    & AB | AB & BB & -  & Y & N & Y & C\\
+                &         & AA &    & Y & N & Y & S\\
+Heterozygous    & AB | AB & BB & -  & Y & N & Y & S\\
                 &         & AB &    & N & Y & N & O\\
 \hline
 Homozygous and  & AA | AB & AA & BB & Y & Y & Y & B\\
@@ -444,7 +441,7 @@ The most ambiguous group by far are the identical homozygous parental alleles, c
 
 Though the heterozygous parental alleles and the non-identical homozygous parental alleles seem to share the same degree of ambiguity, with 2 out of 3 cases being of the sealed type, it is the latter group that has full parental-specificity.
 
-It is interesting to note that of the 12 individual cases presented only 4 are unambiguously phased, but that 5 of the remaining 8 ambiguous cases are parent-specific; illustrating that though the task at hand may seem difficult, it is only a quarter of the cases that we are completely unsure about.
+It is interesting to note that of the 10 individual cases presented only 2 are unambiguously phased, but that 5 of the remaining 8 ambiguous cases are parent-specific; illustrating that though the task at hand may seem difficult, it is only a third of the cases that we are completely unsure about.
 
 
 \subsection{Approaches}
